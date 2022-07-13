@@ -6,9 +6,15 @@
 //
 
 import UIKit
+import SideMenu
 
 protocol Routable: UIViewController {
     var router: MainRouter? { get set }
+}
+
+enum RootScreen {
+    case mainScreen
+    case innerScreen
 }
 
 class MainRouter: NSObject {
@@ -20,8 +26,14 @@ class MainRouter: NSObject {
         self.navigationController = navigationController
     }
     
+//    func pushBaseVC() {
+//        let baseVC = BaseVC()
+//        baseVC.router = self
+//        pushViewController(vc: baseVC, animated: true)
+//    }
+    
     func pushMainVC() {
-        let mainVC = MainViewController()
+        let mainVC = MainVC()
         mainVC.router = self
         pushViewController(vc: mainVC, animated: true)
     }
@@ -30,6 +42,15 @@ class MainRouter: NSObject {
 //    func start() {
 //
 //    }
+    
+    func presentSideMenu(rootScreen: RootScreen) {
+        let sideMenuVC = SideMenuVC()
+        sideMenuVC.router = self
+        sideMenuVC.rootScreen = rootScreen
+        let menu = SideMenuNavigationController(rootViewController: sideMenuVC)
+        menu.leftSide = true
+        navigationController.present(menu, animated: true, completion: nil)
+    }
     
     func back() {
         navigationController.popViewController(animated: true)
