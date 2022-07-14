@@ -209,7 +209,6 @@ class MainVC: UIViewController, Routable {
     // MARK: - Private actions
     
     @objc private func leftMenuButtonDidTap() {
-        print("leftMenuButtonDidTap")
         router?.presentSideMenu(rootScreen: .mainScreen)
     }
     
@@ -243,15 +242,13 @@ class MainVC: UIViewController, Routable {
     
 }
 
+// MARK: - SideMenuNavigationControllerDelegate
 extension MainVC: SideMenuNavigationControllerDelegate {
     func sideMenuWillAppear(menu: SideMenuNavigationController, animated: Bool) {
-        print("SideMenu Appearing! (animated: \(animated))")
         blurView.isHidden = false
     }
     
     func sideMenuWillDisappear(menu: SideMenuNavigationController, animated: Bool) {
-        print("SideMenu Disappeared! (animated: \(animated))")
-        
         blurView.isHidden = true
     }
 }

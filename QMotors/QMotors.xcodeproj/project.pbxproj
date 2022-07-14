@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		848D9AAF28804C6A00C4BC3F /* RouteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848D9AAE28804C6A00C4BC3F /* RouteButton.swift */; };
+		848D9AB1288054FF00C4BC3F /* SideMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848D9AB0288054FF00C4BC3F /* SideMenuButton.swift */; };
 		84DDD273287ED3A100272C19 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD272287ED3A100272C19 /* AppDelegate.swift */; };
 		84DDD275287ED3A100272C19 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD274287ED3A100272C19 /* SceneDelegate.swift */; };
 		84DDD27A287ED3A100272C19 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84DDD278287ED3A100272C19 /* Main.storyboard */; };
@@ -44,6 +46,8 @@
 		25EE654A6181C6218A5559D4 /* Pods-QMotors.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMotors.debug.xcconfig"; path = "Target Support Files/Pods-QMotors/Pods-QMotors.debug.xcconfig"; sourceTree = "<group>"; };
 		297813ADA6CD9EA7AE640A7E /* Pods-QMotors.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMotors.release.xcconfig"; path = "Target Support Files/Pods-QMotors/Pods-QMotors.release.xcconfig"; sourceTree = "<group>"; };
 		56FD0605EC1AF8C942E96CC2 /* Pods_QMotors.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QMotors.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		848D9AAE28804C6A00C4BC3F /* RouteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteButton.swift; sourceTree = "<group>"; };
+		848D9AB0288054FF00C4BC3F /* SideMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuButton.swift; sourceTree = "<group>"; };
 		84DDD26F287ED3A100272C19 /* QMotors.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QMotors.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84DDD272287ED3A100272C19 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84DDD274287ED3A100272C19 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -157,6 +161,8 @@
 			isa = PBXGroup;
 			children = (
 				84DDD291287F0A2E00272C19 /* MainScreenButton.swift */,
+				848D9AAE28804C6A00C4BC3F /* RouteButton.swift */,
+				848D9AB0288054FF00C4BC3F /* SideMenuButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -358,7 +364,9 @@
 				84DDD273287ED3A100272C19 /* AppDelegate.swift in Sources */,
 				84DDD275287ED3A100272C19 /* SceneDelegate.swift in Sources */,
 				84DDD2BE287F393300272C19 /* SideMenuVC.swift in Sources */,
+				848D9AB1288054FF00C4BC3F /* SideMenuButton.swift in Sources */,
 				84DDD28F287EF04700272C19 /* BaseVC.swift in Sources */,
+				848D9AAF28804C6A00C4BC3F /* RouteButton.swift in Sources */,
 				84DDD292287F0A2E00272C19 /* MainScreenButton.swift in Sources */,
 				84DDD2BB287F12FC00272C19 /* UIColor+Extension.swift in Sources */,
 			);

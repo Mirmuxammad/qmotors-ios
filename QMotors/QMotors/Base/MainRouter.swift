@@ -49,6 +49,7 @@ class MainRouter: NSObject {
         sideMenuVC.rootScreen = rootScreen
         let menu = SideMenuNavigationController(rootViewController: sideMenuVC)
         menu.leftSide = true
+        menu.menuWidth = 260
         navigationController.present(menu, animated: true, completion: nil)
     }
     
