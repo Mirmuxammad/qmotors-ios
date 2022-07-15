@@ -110,16 +110,20 @@ class MainVC: UIViewController, Routable {
         return view
     }()
     
+    private let phoneCallButtonView = PhoneCallView()
+    
     // MARK: - Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupViews()
         setupConstraints()
         
         setupButtons()
         blurView.isHidden = true
+        phoneCallButtonView.isHidden = true
+        
     }
     
     // MARK: - Private functions
@@ -127,11 +131,7 @@ class MainVC: UIViewController, Routable {
     private func setupViews() {
         
         view.addSubview(backgroundImageView)
-        view.addSubview(leftMenuButton)
-        view.addSubview(chatsButton)
-        view.addSubview(phoneCallButton)
         view.addSubview(logoImageView)
-        
         view.addSubview(verticalStack)
         verticalStack.addArrangedSubview(promoButton)
         verticalStack.addArrangedSubview(middleHorizontalStack)
@@ -142,8 +142,14 @@ class MainVC: UIViewController, Routable {
         bottomHorizontalStack.addArrangedSubview(personalAreaButton)
         
         view.addSubview(blurView)
+        
+        view.addSubview(leftMenuButton)
+        view.addSubview(chatsButton)
+        view.addSubview(phoneCallButton)
+        
+        view.addSubview(phoneCallButtonView)
     }
-
+    
     private func setupConstraints() {
         
         backgroundImageView.snp.makeConstraints { make in
@@ -174,10 +180,6 @@ class MainVC: UIViewController, Routable {
             make.centerX.equalToSuperview()
         }
         
-        blurView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
         verticalStack.snp.makeConstraints { make in
             make.height.equalTo(UIScreen.main.bounds.height/2)
             make.left.equalToSuperview().offset(20)
@@ -185,6 +187,15 @@ class MainVC: UIViewController, Routable {
             make.bottom.equalToSuperview().offset(-40)
         }
         
+        blurView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        phoneCallButtonView.snp.makeConstraints { make in
+            make.top.equalTo(phoneCallButton.snp.bottom)
+            make.right.equalToSuperview()
+            make.size.equalTo(CGSize(width: 245, height: 270))
+        }
         
     }
     
@@ -218,6 +229,14 @@ class MainVC: UIViewController, Routable {
     
     @objc private func phoneCallButtonDidTap() {
         print("phoneCallButtonDidTap")
+        
+        if blurView.isHidden && phoneCallButtonView.isHidden {
+            blurView.isHidden = false
+            phoneCallButtonView.isHidden = false
+        } else {
+            blurView.isHidden = true
+            phoneCallButtonView.isHidden = true
+        }
     }
     
     @objc private func promoButtonDidTap() {
@@ -245,6 +264,11 @@ class MainVC: UIViewController, Routable {
 // MARK: - SideMenuNavigationControllerDelegate
 extension MainVC: SideMenuNavigationControllerDelegate {
     func sideMenuWillAppear(menu: SideMenuNavigationController, animated: Bool) {
+        
+        if !phoneCallButtonView.isHidden {
+            phoneCallButtonView.isHidden = true
+        }
+        
         blurView.isHidden = false
     }
     
