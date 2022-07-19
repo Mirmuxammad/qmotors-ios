@@ -12,6 +12,10 @@
 		8456BA702881786600684AF5 /* RequestCallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8456BA6F2881786600684AF5 /* RequestCallButton.swift */; };
 		848D9AAF28804C6A00C4BC3F /* RouteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848D9AAE28804C6A00C4BC3F /* RouteButton.swift */; };
 		848D9AB1288054FF00C4BC3F /* SideMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848D9AB0288054FF00C4BC3F /* SideMenuButton.swift */; };
+		849836312886974800EF47D0 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849836302886974800EF47D0 /* BackButton.swift */; };
+		84D94F57288559D90023AA02 /* RegistrationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D94F56288559D90023AA02 /* RegistrationVC.swift */; };
+		84D94F5928855F0D0023AA02 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D94F5828855F0D0023AA02 /* MainVC.swift */; };
+		84D94F5B2885AD4A0023AA02 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D94F5A2885AD4A0023AA02 /* ActionButton.swift */; };
 		84DDD273287ED3A100272C19 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD272287ED3A100272C19 /* AppDelegate.swift */; };
 		84DDD275287ED3A100272C19 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD274287ED3A100272C19 /* SceneDelegate.swift */; };
 		84DDD27A287ED3A100272C19 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84DDD278287ED3A100272C19 /* Main.storyboard */; };
@@ -19,7 +23,7 @@
 		84DDD27F287ED3A200272C19 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84DDD27D287ED3A200272C19 /* LaunchScreen.storyboard */; };
 		84DDD288287ED54600272C19 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD287287ED54600272C19 /* MainRouter.swift */; };
 		84DDD28A287ED56200272C19 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD289287ED56200272C19 /* AppCoordinator.swift */; };
-		84DDD28D287EE24000272C19 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD28C287EE24000272C19 /* MainVC.swift */; };
+		84DDD28D287EE24000272C19 /* MainVCv1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD28C287EE24000272C19 /* MainVCv1.swift */; };
 		84DDD28F287EF04700272C19 /* BaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD28E287EF04700272C19 /* BaseVC.swift */; };
 		84DDD292287F0A2E00272C19 /* MainScreenButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD291287F0A2E00272C19 /* MainScreenButton.swift */; };
 		84DDD2A7287F0AE800272C19 /* Montserrat-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84DDD295287F0AE700272C19 /* Montserrat-Italic.ttf */; };
@@ -54,6 +58,10 @@
 		8456BA6F2881786600684AF5 /* RequestCallButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCallButton.swift; sourceTree = "<group>"; };
 		848D9AAE28804C6A00C4BC3F /* RouteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteButton.swift; sourceTree = "<group>"; };
 		848D9AB0288054FF00C4BC3F /* SideMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuButton.swift; sourceTree = "<group>"; };
+		849836302886974800EF47D0 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		84D94F56288559D90023AA02 /* RegistrationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVC.swift; sourceTree = "<group>"; };
+		84D94F5828855F0D0023AA02 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
+		84D94F5A2885AD4A0023AA02 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
 		84DDD26F287ED3A100272C19 /* QMotors.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QMotors.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84DDD272287ED3A100272C19 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		84DDD274287ED3A100272C19 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,7 +71,7 @@
 		84DDD280287ED3A200272C19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84DDD287287ED54600272C19 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		84DDD289287ED56200272C19 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
-		84DDD28C287EE24000272C19 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
+		84DDD28C287EE24000272C19 /* MainVCv1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVCv1.swift; sourceTree = "<group>"; };
 		84DDD28E287EF04700272C19 /* BaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseVC.swift; sourceTree = "<group>"; };
 		84DDD291287F0A2E00272C19 /* MainScreenButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenButton.swift; sourceTree = "<group>"; };
 		84DDD295287F0AE700272C19 /* Montserrat-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Italic.ttf"; sourceTree = "<group>"; };
@@ -118,6 +126,14 @@
 			path = PhoneCall;
 			sourceTree = "<group>";
 		};
+		84D94F55288557600023AA02 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				84D94F56288559D90023AA02 /* RegistrationVC.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
 		84DDD266287ED3A000272C19 = {
 			isa = PBXGroup;
 			children = (
@@ -166,9 +182,11 @@
 		84DDD28B287ED57B00272C19 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				84D94F55288557600023AA02 /* Authentication */,
 				84DDD2BC287F390200272C19 /* SideLeftMenu */,
 				84DDD28E287EF04700272C19 /* BaseVC.swift */,
-				84DDD28C287EE24000272C19 /* MainVC.swift */,
+				84DDD28C287EE24000272C19 /* MainVCv1.swift */,
+				84D94F5828855F0D0023AA02 /* MainVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -179,6 +197,8 @@
 				84DDD291287F0A2E00272C19 /* MainScreenButton.swift */,
 				848D9AAE28804C6A00C4BC3F /* RouteButton.swift */,
 				848D9AB0288054FF00C4BC3F /* SideMenuButton.swift */,
+				84D94F5A2885AD4A0023AA02 /* ActionButton.swift */,
+				849836302886974800EF47D0 /* BackButton.swift */,
 				8456BA6C2881652B00684AF5 /* PhoneCall */,
 			);
 			path = Components;
@@ -378,16 +398,20 @@
 				84DDD288287ED54600272C19 /* MainRouter.swift in Sources */,
 				84DDD28A287ED56200272C19 /* AppCoordinator.swift in Sources */,
 				8456BA6E2881659E00684AF5 /* PhoneCallButton.swift in Sources */,
-				84DDD28D287EE24000272C19 /* MainVC.swift in Sources */,
+				84DDD28D287EE24000272C19 /* MainVCv1.swift in Sources */,
 				84DDD273287ED3A100272C19 /* AppDelegate.swift in Sources */,
 				84DDD275287ED3A100272C19 /* SceneDelegate.swift in Sources */,
 				84DDD2BE287F393300272C19 /* SideMenuVC.swift in Sources */,
+				84D94F5B2885AD4A0023AA02 /* ActionButton.swift in Sources */,
 				848D9AB1288054FF00C4BC3F /* SideMenuButton.swift in Sources */,
 				8456BA6B28815AF200684AF5 /* PhoneCallView.swift in Sources */,
+				84D94F5928855F0D0023AA02 /* MainVC.swift in Sources */,
 				84DDD28F287EF04700272C19 /* BaseVC.swift in Sources */,
 				848D9AAF28804C6A00C4BC3F /* RouteButton.swift in Sources */,
 				8456BA702881786600684AF5 /* RequestCallButton.swift in Sources */,
+				849836312886974800EF47D0 /* BackButton.swift in Sources */,
 				84DDD292287F0A2E00272C19 /* MainScreenButton.swift in Sources */,
+				84D94F57288559D90023AA02 /* RegistrationVC.swift in Sources */,
 				84DDD2BB287F12FC00272C19 /* UIColor+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

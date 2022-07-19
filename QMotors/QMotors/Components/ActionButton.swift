@@ -1,29 +1,30 @@
 //
-//  RequestCallButton.swift
+//  ActionButton.swift
 //  QMotors
 //
-//  Created by Alexey Grebennikov on 15.07.22.
+//  Created by Alexey Grebennikov on 18.07.22.
 //
 
 import UIKit
 import SnapKit
 
-class RequestCallButton: UIView {
-    
+class ActionButton: UIView {
+
     // MARK: - UI Elements
-    
+        
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Montserrat-SemiBold", size: 14)
-        label.textColor = .black
-        label.textAlignment = .left
-        label.text = "ЗАКАЗАТЬ ЗВОНОК"
+        label.textColor = .white
+        label.textAlignment = .center
+        label.text = "ПОЛУЧИТЬ КОД"
         return label
     }()
     
     private let button: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
+        button.isEnabled = false
         return button
     }()
     
@@ -32,51 +33,53 @@ class RequestCallButton: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        layer.cornerRadius = 10
+        layer.backgroundColor = UIColor.init(hex: "#D4D4D4").cgColor
+        
         setupViews()
         setupConstraints()
-        titleUnderline()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+        
     // MARK: - Private functions
     
-    private func setupViews()  {
+    private func setupViews() {
         addSubview(titleLabel)
         addSubview(button)
     }
     
     private func setupConstraints() {
+            
         titleLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.centerY.equalToSuperview()
+            make.edges.equalToSuperview()
         }
-        
+    
         button.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
     }
     
-    private func titleUnderline() {
-        guard let text = titleLabel.text else { return }
-        let underlineAttriString = NSMutableAttributedString(string: text)
-        let range = (text as NSString).range(of: "ЗАКАЗАТЬ ЗВОНОК")
-        underlineAttriString.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: range)
-        titleLabel.attributedText = underlineAttriString
-    }
-    
-    // MARK: - Public functions
+    // MARK: - Public function
     
     func setupButton(target: Any, action: Selector) {
         button.addTarget(target, action: action, for: .touchUpInside)
     }
     
-    func setupTitleAndFont(title: String, font: UIFont) {
+    func isEnabled() {
+        layer.backgroundColor = UIColor.init(hex: "#9CC55A").cgColor
+        button.isEnabled = true
+    }
+    
+    func isDisabled() {
+        layer.backgroundColor = UIColor.init(hex: "#D4D4D4").cgColor
+        button.isEnabled = false
+    }
+    
+    func setupTitle(title: String) {
         titleLabel.text = title
-        titleLabel.font = font
     }
     
 }

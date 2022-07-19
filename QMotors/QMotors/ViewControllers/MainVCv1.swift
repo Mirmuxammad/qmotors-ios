@@ -2,15 +2,53 @@
 //  MainVC.swift
 //  QMotors
 //
-//  Created by Alexey Grebennikov on 18.07.22.
+//  Created by Alexey Grebennikov on 13.07.22.
 //
 
 import UIKit
 import SnapKit
+import SideMenu
 
-class MainVC: BaseVC {
+class MainVCv1: UIViewController, Routable {
     
-    // MARK: - UI Elements
+    // MARK: - Properties
+    
+    var router: MainRouter?
+    
+    // MARK: - UI elements
+    
+    private let backgroundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "main_background")
+        return imageView
+    }()
+    
+    private let leftMenuButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "left_menu_button"), for: .normal)
+        button.addTarget(self, action: #selector(leftMenuButtonDidTap), for: .touchUpInside)
+        return button
+    }()
+    
+    private let chatsButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "chats_button"), for: .normal)
+        button.addTarget(self, action: #selector(chatsButtonDidTap), for: .touchUpInside)
+        return button
+    }()
+    
+    private let phoneCallButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "phone_call_button"), for: .normal)
+        button.addTarget(self, action: #selector(phoneCallButtonDidTap), for: .touchUpInside)
+        return button
+    }()
+    
+    private let logoImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "large_logo")
+        return imageView
+    }()
     
     private let verticalStack: UIStackView = {
         let stackView = UIStackView()
@@ -66,22 +104,34 @@ class MainVC: BaseVC {
         return button
     }()
     
+    private let blurView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(hex: "#000000", alpha: 0.7)
+        return view
+    }()
+    
+    private let phoneCallButtonView = PhoneCallView()
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupView()
+        setupViews()
         setupConstraints()
         
         setupButtons()
+        blurView.isHidden = true
+        phoneCallButtonView.isHidden = true
         
     }
     
     // MARK: - Private functions
     
-    private func setupView() {
+    private func setupViews() {
         
+        view.addSubview(backgroundImageView)
+        view.addSubview(logoImageView)
         view.addSubview(verticalStack)
         verticalStack.addArrangedSubview(promoButton)
         verticalStack.addArrangedSubview(middleHorizontalStack)
@@ -91,15 +141,60 @@ class MainVC: BaseVC {
         bottomHorizontalStack.addArrangedSubview(technicalСenterButton)
         bottomHorizontalStack.addArrangedSubview(personalAreaButton)
         
+        view.addSubview(blurView)
+        
+        view.addSubview(leftMenuButton)
+        view.addSubview(chatsButton)
+        view.addSubview(phoneCallButton)
+        
+        view.addSubview(phoneCallButtonView)
     }
     
     private func setupConstraints() {
+        
+        backgroundImageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        leftMenuButton.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 36, height: 36))
+            make.top.equalTo(self.view.safeAreaLayoutGuide)
+            make.left.equalTo(self.view.safeAreaLayoutGuide).offset(20)
+        }
+        
+        chatsButton.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 36, height: 36))
+            make.top.equalTo(self.view.safeAreaLayoutGuide)
+            make.right.equalTo(phoneCallButton.snp.left).offset(-10)
+        }
+        
+        phoneCallButton.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 36, height: 36))
+            make.top.equalTo(self.view.safeAreaLayoutGuide)
+            make.right.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
+        }
+        
+        logoImageView.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 234, height: 99))
+            make.top.equalTo(leftMenuButton.snp.bottom).offset(40)
+            make.centerX.equalToSuperview()
+        }
         
         verticalStack.snp.makeConstraints { make in
             make.height.equalTo(UIScreen.main.bounds.height/2)
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview().offset(-40)
+        }
+        
+        blurView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        phoneCallButtonView.snp.makeConstraints { make in
+            make.top.equalTo(phoneCallButton.snp.bottom)
+            make.right.equalToSuperview()
+            make.size.equalTo(CGSize(width: 245, height: 270))
         }
         
     }
@@ -124,6 +219,26 @@ class MainVC: BaseVC {
     
     // MARK: - Private actions
     
+    @objc private func leftMenuButtonDidTap() {
+        router?.presentSideMenu(rootScreen: .mainScreen)
+    }
+    
+    @objc private func chatsButtonDidTap() {
+        print("chatsButtonDidTap")
+    }
+    
+    @objc private func phoneCallButtonDidTap() {
+        print("phoneCallButtonDidTap")
+        
+        if blurView.isHidden && phoneCallButtonView.isHidden {
+            blurView.isHidden = false
+            phoneCallButtonView.isHidden = false
+        } else {
+            blurView.isHidden = true
+            phoneCallButtonView.isHidden = true
+        }
+    }
+    
     @objc private func promoButtonDidTap() {
         print("promoButtonDidTap")
     }
@@ -142,6 +257,22 @@ class MainVC: BaseVC {
     
     @objc private func personalAreaButtonDidTap() {
         print("personalAreaButtonDidTap")
-//        router?.pushRegistrationVC()
+    }
+    
+}
+
+// MARK: - SideMenuNavigationControllerDelegate
+extension MainVCv1: SideMenuNavigationControllerDelegate {
+    func sideMenuWillAppear(menu: SideMenuNavigationController, animated: Bool) {
+        
+        if !phoneCallButtonView.isHidden {
+            phoneCallButtonView.isHidden = true
+        }
+        
+        blurView.isHidden = false
+    }
+    
+    func sideMenuWillDisappear(menu: SideMenuNavigationController, animated: Bool) {
+        blurView.isHidden = true
     }
 }

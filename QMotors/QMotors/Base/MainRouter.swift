@@ -38,6 +38,17 @@ class MainRouter: NSObject {
         pushViewController(vc: mainVC, animated: true)
     }
     
+    func pushMainVCTest() {
+        let vc = MainVCv1()
+        vc.router = self
+        pushViewController(vc: vc, animated: true)
+    }
+    
+    func pushRegistrationVC() {
+        let vc = RegistrationVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
     //Base
 //    func start() {
 //

@@ -50,7 +50,13 @@ class BaseVC: UIViewController, Routable {
         return imageView
     }()
     
-    private let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+    private let blurView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(hex: "#000000", alpha: 0.7)
+        return view
+    }()
+    
+    private let phoneCallButtonView = PhoneCallView()
     
     // MARK: - Lifecycle
 
@@ -59,8 +65,8 @@ class BaseVC: UIViewController, Routable {
 
         setupViews()
         setupConstraints()
-        
-        blurView.isHidden = true
+    
+        phoneCallButtonView.isHidden = true
     }
     
     // MARK: - Private functions
@@ -71,7 +77,10 @@ class BaseVC: UIViewController, Routable {
         view.addSubview(chatsButton)
         view.addSubview(phoneCallButton)
         view.addSubview(logoImageView)
-        view.addSubview(blurView)
+        view.addSubview(leftMenuButton)
+        view.addSubview(chatsButton)
+        view.addSubview(phoneCallButton)
+        view.addSubview(phoneCallButtonView)
     }
     
     private func setupConstraints() {
@@ -103,10 +112,34 @@ class BaseVC: UIViewController, Routable {
             make.centerX.equalToSuperview()
         }
         
+        phoneCallButtonView.snp.makeConstraints { make in
+            make.top.equalTo(phoneCallButton.snp.bottom)
+            make.right.equalToSuperview()
+            make.size.equalTo(CGSize(width: 245, height: 270))
+        }
+        
+    }
+    
+    private func blurBackgroundOn() {
+        view.addSubview(blurView)
+        view.bringSubviewToFront(leftMenuButton)
+        view.bringSubviewToFront(chatsButton)
+        view.bringSubviewToFront(phoneCallButton)
         blurView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+    }
+    
+    private func blurBackgroundOff() {
+        blurView.removeFromSuperview()
+    }
+    
+    private func blurViewIsHidden() -> Bool {
+        if view.subviews.contains(blurView) {
+            return false
+        } else {
+            return true
+        }
     }
     
     // MARK: - Private actions
@@ -122,14 +155,31 @@ class BaseVC: UIViewController, Routable {
     
     @objc private func phoneCallButtonDidTap() {
         print("phoneCallButtonDidTap")
+        
+        if blurViewIsHidden() && phoneCallButtonView.isHidden {
+            blurBackgroundOn()
+            view.bringSubviewToFront(phoneCallButtonView)
+            phoneCallButtonView.isHidden = false
+        } else {
+            blurBackgroundOff()
+            phoneCallButtonView.isHidden = true
+        }
     }
     
-
 }
 
 extension BaseVC: SideMenuNavigationControllerDelegate {
     func sideMenuWillAppear(menu: SideMenuNavigationController, animated: Bool) {
-        print("SideMenu Appearing! (animated: \(animated))")
-        blurView.isHidden = false
+        
+        blurBackgroundOn()
+
+        if !phoneCallButtonView.isHidden {
+            phoneCallButtonView.isHidden = true
+        }
+        
+    }
+    
+    func sideMenuWillDisappear(menu: SideMenuNavigationController, animated: Bool) {
+        blurBackgroundOff()
     }
 }
