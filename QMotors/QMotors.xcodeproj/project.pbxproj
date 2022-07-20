@@ -13,6 +13,15 @@
 		848D9AAF28804C6A00C4BC3F /* RouteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848D9AAE28804C6A00C4BC3F /* RouteButton.swift */; };
 		848D9AB1288054FF00C4BC3F /* SideMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848D9AB0288054FF00C4BC3F /* SideMenuButton.swift */; };
 		849836312886974800EF47D0 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849836302886974800EF47D0 /* BackButton.swift */; };
+		849836372886EDBC00EF47D0 /* AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849836362886EDBC00EF47D0 /* AuthResponse.swift */; };
+		849836482887252E00EF47D0 /* APIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849836472887252E00EF47D0 /* APIRouter.swift */; };
+		8498364A288725FA00EF47D0 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84983649288725FA00EF47D0 /* APIConstants.swift */; };
+		8498364C28872A6F00EF47D0 /* APINetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8498364B28872A6E00EF47D0 /* APINetworkReachability.swift */; };
+		8498364E28872AC000EF47D0 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8498364D28872AC000EF47D0 /* APIManager.swift */; };
+		8498365028872B6A00EF47D0 /* SmsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8498364F28872B6A00EF47D0 /* SmsResponse.swift */; };
+		8498365228872EE300EF47D0 /* APIRequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8498365128872EE300EF47D0 /* APIRequestInterceptor.swift */; };
+		849836542887310300EF47D0 /* APINetworkLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849836532887310300EF47D0 /* APINetworkLogger.swift */; };
+		84AFF8292887DBD0009207BD /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFF8282887DBD0009207BD /* CustomError.swift */; };
 		84D94F57288559D90023AA02 /* RegistrationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D94F56288559D90023AA02 /* RegistrationVC.swift */; };
 		84D94F5928855F0D0023AA02 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D94F5828855F0D0023AA02 /* MainVC.swift */; };
 		84D94F5B2885AD4A0023AA02 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D94F5A2885AD4A0023AA02 /* ActionButton.swift */; };
@@ -59,6 +68,15 @@
 		848D9AAE28804C6A00C4BC3F /* RouteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteButton.swift; sourceTree = "<group>"; };
 		848D9AB0288054FF00C4BC3F /* SideMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuButton.swift; sourceTree = "<group>"; };
 		849836302886974800EF47D0 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		849836362886EDBC00EF47D0 /* AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponse.swift; sourceTree = "<group>"; };
+		849836472887252E00EF47D0 /* APIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRouter.swift; sourceTree = "<group>"; };
+		84983649288725FA00EF47D0 /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
+		8498364B28872A6E00EF47D0 /* APINetworkReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINetworkReachability.swift; sourceTree = "<group>"; };
+		8498364D28872AC000EF47D0 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		8498364F28872B6A00EF47D0 /* SmsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmsResponse.swift; sourceTree = "<group>"; };
+		8498365128872EE300EF47D0 /* APIRequestInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequestInterceptor.swift; sourceTree = "<group>"; };
+		849836532887310300EF47D0 /* APINetworkLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINetworkLogger.swift; sourceTree = "<group>"; };
+		84AFF8282887DBD0009207BD /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
 		84D94F56288559D90023AA02 /* RegistrationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVC.swift; sourceTree = "<group>"; };
 		84D94F5828855F0D0023AA02 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
 		84D94F5A2885AD4A0023AA02 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
@@ -126,6 +144,38 @@
 			path = PhoneCall;
 			sourceTree = "<group>";
 		};
+		849836322886DEC500EF47D0 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				84983646288724E500EF47D0 /* Networking */,
+				849836352886E8AD00EF47D0 /* Models */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		849836352886E8AD00EF47D0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				849836362886EDBC00EF47D0 /* AuthResponse.swift */,
+				8498364F28872B6A00EF47D0 /* SmsResponse.swift */,
+				84AFF8282887DBD0009207BD /* CustomError.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		84983646288724E500EF47D0 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				849836472887252E00EF47D0 /* APIRouter.swift */,
+				8498364B28872A6E00EF47D0 /* APINetworkReachability.swift */,
+				84983649288725FA00EF47D0 /* APIConstants.swift */,
+				8498364D28872AC000EF47D0 /* APIManager.swift */,
+				8498365128872EE300EF47D0 /* APIRequestInterceptor.swift */,
+				849836532887310300EF47D0 /* APINetworkLogger.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
 		84D94F55288557600023AA02 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
@@ -155,6 +205,7 @@
 		84DDD271287ED3A100272C19 /* QMotors */ = {
 			isa = PBXGroup;
 			children = (
+				849836322886DEC500EF47D0 /* API */,
 				84DDD2B9287F12DA00272C19 /* Extensions */,
 				84DDD293287F0ABC00272C19 /* Fonts */,
 				84DDD290287F093B00272C19 /* Components */,
@@ -396,22 +447,31 @@
 			buildActionMask = 2147483647;
 			files = (
 				84DDD288287ED54600272C19 /* MainRouter.swift in Sources */,
+				849836482887252E00EF47D0 /* APIRouter.swift in Sources */,
 				84DDD28A287ED56200272C19 /* AppCoordinator.swift in Sources */,
 				8456BA6E2881659E00684AF5 /* PhoneCallButton.swift in Sources */,
 				84DDD28D287EE24000272C19 /* MainVCv1.swift in Sources */,
 				84DDD273287ED3A100272C19 /* AppDelegate.swift in Sources */,
+				8498365028872B6A00EF47D0 /* SmsResponse.swift in Sources */,
 				84DDD275287ED3A100272C19 /* SceneDelegate.swift in Sources */,
 				84DDD2BE287F393300272C19 /* SideMenuVC.swift in Sources */,
+				849836542887310300EF47D0 /* APINetworkLogger.swift in Sources */,
+				8498364C28872A6F00EF47D0 /* APINetworkReachability.swift in Sources */,
+				8498364A288725FA00EF47D0 /* APIConstants.swift in Sources */,
 				84D94F5B2885AD4A0023AA02 /* ActionButton.swift in Sources */,
 				848D9AB1288054FF00C4BC3F /* SideMenuButton.swift in Sources */,
+				84AFF8292887DBD0009207BD /* CustomError.swift in Sources */,
 				8456BA6B28815AF200684AF5 /* PhoneCallView.swift in Sources */,
 				84D94F5928855F0D0023AA02 /* MainVC.swift in Sources */,
 				84DDD28F287EF04700272C19 /* BaseVC.swift in Sources */,
 				848D9AAF28804C6A00C4BC3F /* RouteButton.swift in Sources */,
+				8498365228872EE300EF47D0 /* APIRequestInterceptor.swift in Sources */,
 				8456BA702881786600684AF5 /* RequestCallButton.swift in Sources */,
 				849836312886974800EF47D0 /* BackButton.swift in Sources */,
 				84DDD292287F0A2E00272C19 /* MainScreenButton.swift in Sources */,
 				84D94F57288559D90023AA02 /* RegistrationVC.swift in Sources */,
+				8498364E28872AC000EF47D0 /* APIManager.swift in Sources */,
+				849836372886EDBC00EF47D0 /* AuthResponse.swift in Sources */,
 				84DDD2BB287F12FC00272C19 /* UIColor+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

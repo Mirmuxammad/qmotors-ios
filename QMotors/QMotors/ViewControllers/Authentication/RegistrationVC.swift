@@ -14,8 +14,10 @@ class RegistrationVC: BaseVC {
     //MARK: - Properties
     
     private var codeButtonTitle = "ПОЛУЧИТЬ КОД"
+    private var requestCodeButtonTitle = "Отправить код повторно через"
     var timer: Timer?
     var timerLeftValue = 59
+    var authResult: AuthResult?
     
     // MARK: - UI Elements
     
@@ -107,6 +109,13 @@ class RegistrationVC: BaseVC {
         return button
     }()
     
+    private let activityIndicator: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView()
+        view.hidesWhenStopped = true
+        view.style = .large
+        return view
+    }()
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -136,6 +145,7 @@ class RegistrationVC: BaseVC {
         registrationView.addSubview(requestCodeButton)
         registrationView.addSubview(timerLabel)
         registrationView.addSubview(codeButton)
+        registrationView.addSubview(activityIndicator)
         view.addSubview(backButton)
     }
     
@@ -197,6 +207,10 @@ class RegistrationVC: BaseVC {
             make.bottom.equalToSuperview().offset(-20)
         }
         
+        activityIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        
         backButton.snp.makeConstraints { make in
             make.height.equalTo(55)
             make.left.equalToSuperview().offset(20)
@@ -253,21 +267,56 @@ class RegistrationVC: BaseVC {
         requestCodeButton.setAttributedTitle(attributeString, for: .normal)
     }
     
+    // MARK: - Network
+    
+    private func sendSmsCodeRequest() {
+        activityIndicator.startAnimating()
+        guard let phoneNumber = phoneTextField.text else { return }
+        APIManager.shared.sendSmsCode(phoneNumber: phoneNumber) { [weak self] response in
+            guard let self = self else { return }
+            print(response)
+            self.activityIndicator.stopAnimating()
+            
+        }
+    }
+    
+    private func fetchUserData() {
+        activityIndicator.startAnimating()
+        guard
+            let phoneNumber = phoneTextField.text,
+            let smsCode = codeTextField.text else { return }
+        APIManager.shared.fetchAuthResponse(phoneNumber: phoneNumber, smsCode: smsCode) { [weak self] response in
+            guard let self = self else { return }
+            self.activityIndicator.stopAnimating()
+            print(response)
+        }
+    }
+    
+    
+    
     // MARK: - Private actions
     
     @objc private func codeButtonDidTap() {
         if codeButtonTitle == "РЕГИСТРАЦИЯ" {
             print("registerButtonDidTap")
+            
+            fetchUserData()
         } else {
             print("codeButtonDidTap")
             phoneTextField.endEditing(true)
             transformRegistrationView()
+            sendSmsCodeRequest()
+            phoneTextField.isEnabled = false
         }
     }
     
     @objc private func requestCodeButtonDidTap() {
-        if timer == nil {
+        if timer == nil && requestCodeButtonTitle != "Отправить код еще раз" {
             print("requestCodeButtonDidTap")
+            createTimer()
+        } else if requestCodeButtonTitle == "Отправить код еще раз" {
+            print("Отправить код еще раз")
+            sendSmsCodeRequest()
             createTimer()
         } else {
             print("wait timer")
@@ -296,10 +345,12 @@ extension RegistrationVC: UITextFieldDelegate {
 extension RegistrationVC {
     @objc private func updateTimer() {
         setRequestCodeButtonTitle(title: "Отправить код повторно через")
+        requestCodeButtonTitle = "Отправить код повторно через"
         self.timerLeftValue = self.timerLeftValue - 1
         self.timerLabel.text = convertTime(self.timerLeftValue)
         if self.timerLeftValue <= 0 {
             setRequestCodeButtonTitle(title: "Отправить код еще раз")
+            requestCodeButtonTitle = "Отправить код еще раз"
             self.timerLabel.text = ""
             self.timer?.invalidate()
             self.timer = nil
