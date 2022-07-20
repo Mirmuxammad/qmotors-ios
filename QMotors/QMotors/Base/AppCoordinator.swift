@@ -26,7 +26,7 @@ class AppCoordinator: NSObject {
         let navController = UINavigationController()
         router = MainRouter(navigationController: navController)
 
-        router?.pushRegistrationVC()
+        router?.pushMainVC()
         
         
         self.window.rootViewController = navController

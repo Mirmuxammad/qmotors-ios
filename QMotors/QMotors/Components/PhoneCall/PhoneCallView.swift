@@ -113,22 +113,34 @@ class PhoneCallView: UIView {
 
     }
     
+    private func callNumber(phoneNumber: String) {
+        guard let url = URL(string: "telprompt://\(phoneNumber)"),
+              UIApplication.shared.canOpenURL(url) else {
+            return
+        }
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
+    
     // MARK: - Private actions
     
     @objc private func tagankaButtonDidTap() {
         print("tagankaButtonDidTap")
+        callNumber(phoneNumber: "+74951507073")
     }
     
     @objc private func mitinoButtonDidTap() {
         print("mitinoButtonDidTap")
+        callNumber(phoneNumber: "+74951507721")
     }
     
     @objc private func butovoButtonDidTap() {
         print("butovoButtonDidTap")
+        callNumber(phoneNumber: "+74953745055")
     }
     
     @objc private func medvezhkovoButtonDidTap() {
         print("medvezhkovoButtonDidTap")
+        callNumber(phoneNumber: "+74951507036")
     }
     
     @objc private func requestCallButtonDidTap() {

@@ -267,6 +267,26 @@ class RegistrationVC: BaseVC {
         requestCodeButton.setAttributedTitle(attributeString, for: .normal)
     }
     
+    private func invalidSmsCode() {
+        codeSmsLabel.text = "Код из СМС введен не верно"
+        codeSmsLabel.textColor = .red
+        codeSmsLabel.font = UIFont(name: "Montserrat-Regular", size: 16)
+        
+        codeTextField.textColor = .red
+        codeTextField.layer.borderColor = UIColor.red.cgColor
+        codeTextField.layer.borderWidth = 1
+    }
+    
+    private func validSmsCode() {
+        codeSmsLabel.text = "Введите код "
+        codeSmsLabel.textColor = .black
+        codeSmsLabel.font = UIFont(name: "Montserrat-Medium", size: 16)
+        
+        codeTextField.textColor = .black
+        codeTextField.layer.borderColor = UIColor.clear.cgColor
+        codeTextField.layer.borderWidth = 0
+    }
+    
     // MARK: - Network
     
     private func sendSmsCodeRequest() {
@@ -288,18 +308,23 @@ class RegistrationVC: BaseVC {
         APIManager.shared.fetchAuthResponse(phoneNumber: phoneNumber, smsCode: smsCode) { [weak self] response in
             guard let self = self else { return }
             self.activityIndicator.stopAnimating()
-            print(response)
+            
+            if response.result != nil {
+                print("correct code")
+                self.validSmsCode()
+            } else if let error = response.error {
+                print(error.message)
+                self.invalidSmsCode()
+            }
+            
         }
     }
-    
-    
     
     // MARK: - Private actions
     
     @objc private func codeButtonDidTap() {
         if codeButtonTitle == "РЕГИСТРАЦИЯ" {
             print("registerButtonDidTap")
-            
             fetchUserData()
         } else {
             print("codeButtonDidTap")
