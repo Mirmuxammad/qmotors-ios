@@ -18,27 +18,27 @@ class PhoneCallView: UIView {
         return imageView
     }()
     
-    private let tagankaButton: PhoneCallButton = {
+    private let michurinskyButton: PhoneCallButton = {
         let button = PhoneCallButton()
-        button.setupButton(title: "АТЦ \"ТАГАНКА\"", target: self, action: #selector(tagankaButtonDidTap))
+        button.setupButton(title: "АТЦ \"МИЧУРИНСКИЙ\"", target: self, action: #selector(michurinskyButtonDidTap))
         return button
     }()
     
-    private let mitinoButton: PhoneCallButton = {
+    private let sevastopolButton: PhoneCallButton = {
         let button = PhoneCallButton()
-        button.setupButton(title: "АТЦ \"МИТИНО\"", target: self, action: #selector(mitinoButtonDidTap))
+        button.setupButton(title: "АТЦ \"СЕВАСТОПОЛЬСКИЙ\"", target: self, action: #selector(sevastopolButtonDidTap))
         return button
     }()
     
-    private let butovoButton: PhoneCallButton = {
+    private let dmitrovkaButton: PhoneCallButton = {
         let button = PhoneCallButton()
-        button.setupButton(title: "АТЦ \"БУТОВО\"", target: self, action: #selector(butovoButtonDidTap))
+        button.setupButton(title: "АТЦ \"ДМИТРОВКА\"", target: self, action: #selector(dmitrovkaButtonDidTap))
         return button
     }()
     
-    private let medvezhkovoButton: PhoneCallButton = {
+    private let kalugaButton: PhoneCallButton = {
         let button = PhoneCallButton()
-        button.setupButton(title: "АТЦ \"МЕДВЕЖКОВО\"", target: self, action: #selector(medvezhkovoButtonDidTap))
+        button.setupButton(title: "АТЦ \"КАЛУЖСКАЯ\"", target: self, action: #selector(kalugaButtonDidTap))
         return button
     }()
     
@@ -68,10 +68,10 @@ class PhoneCallView: UIView {
     private func setupViews() {
         
         addSubview(backgroundImageView)
-        addSubview(tagankaButton)
-        addSubview(mitinoButton)
-        addSubview(butovoButton)
-        addSubview(medvezhkovoButton)
+        addSubview(michurinskyButton)
+        addSubview(sevastopolButton)
+        addSubview(dmitrovkaButton)
+        addSubview(kalugaButton)
         addSubview(requestCallButton)
     }
     
@@ -81,28 +81,28 @@ class PhoneCallView: UIView {
             make.edges.equalToSuperview()
         }
         
-        tagankaButton.snp.makeConstraints { make in
+        michurinskyButton.snp.makeConstraints { make in
             make.height.equalTo(17)
             make.left.right.equalToSuperview()
             make.top.equalToSuperview().offset(30)
         }
         
-        mitinoButton.snp.makeConstraints { make in
+        sevastopolButton.snp.makeConstraints { make in
             make.height.equalTo(17)
             make.left.right.equalToSuperview()
-            make.top.equalTo(tagankaButton.snp.bottom).offset(30)
+            make.top.equalTo(michurinskyButton.snp.bottom).offset(30)
         }
         
-        butovoButton.snp.makeConstraints { make in
+        dmitrovkaButton.snp.makeConstraints { make in
             make.height.equalTo(17)
             make.left.right.equalToSuperview()
-            make.top.equalTo(mitinoButton.snp.bottom).offset(30)
+            make.top.equalTo(sevastopolButton.snp.bottom).offset(30)
         }
         
-        medvezhkovoButton.snp.makeConstraints { make in
+        kalugaButton.snp.makeConstraints { make in
             make.height.equalTo(17)
             make.left.right.equalToSuperview()
-            make.top.equalTo(butovoButton.snp.bottom).offset(30)
+            make.top.equalTo(dmitrovkaButton.snp.bottom).offset(30)
         }
         
         requestCallButton.snp.makeConstraints { make in
@@ -123,24 +123,24 @@ class PhoneCallView: UIView {
     
     // MARK: - Private actions
     
-    @objc private func tagankaButtonDidTap() {
-        print("tagankaButtonDidTap")
-        callNumber(phoneNumber: "+74951507073")
-    }
-    
-    @objc private func mitinoButtonDidTap() {
-        print("mitinoButtonDidTap")
+    @objc private func michurinskyButtonDidTap() {
+        print("michurinskyButtonDidTap")
         callNumber(phoneNumber: "+74951507721")
     }
     
-    @objc private func butovoButtonDidTap() {
-        print("butovoButtonDidTap")
-        callNumber(phoneNumber: "+74953745055")
+    @objc private func sevastopolButtonDidTap() {
+        print("sevastopolButtonDidTap")
+        callNumber(phoneNumber: "+74951507036")
     }
     
-    @objc private func medvezhkovoButtonDidTap() {
-        print("medvezhkovoButtonDidTap")
-        callNumber(phoneNumber: "+74951507036")
+    @objc private func dmitrovkaButtonDidTap() {
+        print("dmitrovkaButtonDidTap")
+        callNumber(phoneNumber: "+74951507073")
+    }
+    
+    @objc private func kalugaButtonDidTap() {
+        print("kalugaButtonDidTap")
+        callNumber(phoneNumber: "+74953745055")
     }
     
     @objc private func requestCallButtonDidTap() {

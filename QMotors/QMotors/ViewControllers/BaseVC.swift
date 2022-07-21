@@ -115,7 +115,7 @@ class BaseVC: UIViewController, Routable {
         phoneCallButtonView.snp.makeConstraints { make in
             make.top.equalTo(phoneCallButton.snp.bottom)
             make.right.equalToSuperview()
-            make.size.equalTo(CGSize(width: 245, height: 270))
+            make.size.equalTo(CGSize(width: 270, height: 270))
         }
         
     }
