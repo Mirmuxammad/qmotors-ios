@@ -296,7 +296,6 @@ class RegistrationVC: BaseVC {
             guard let self = self else { return }
             print(response)
             self.activityIndicator.stopAnimating()
-            
         }
     }
     
@@ -308,6 +307,19 @@ class RegistrationVC: BaseVC {
         APIManager.shared.fetchAuthResponse(phoneNumber: phoneNumber, smsCode: smsCode) { [weak self] response in
             guard let self = self else { return }
             self.activityIndicator.stopAnimating()
+            
+            if (response.error != nil)
+            {
+                let alert = UIAlertController(title: "Ошибка", message: "Ввели неверный пароль", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
+            else
+            {
+                self.router?.pushMainVC()
+            }
             
             if response.result != nil {
                 print("correct code")
