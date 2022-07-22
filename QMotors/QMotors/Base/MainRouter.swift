@@ -49,6 +49,11 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
+    func pushPersonalAreaVC() {
+        let vc = PersonalAreaVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
     //Base
 //    func start() {
 //

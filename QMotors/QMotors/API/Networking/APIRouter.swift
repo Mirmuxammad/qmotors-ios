@@ -29,13 +29,9 @@ enum APIRouter {
     
     var method: HTTPMethod {
         switch self {
-        case .loginWithSmsCode:
+        case .loginWithSmsCode, .sendSmsCode:
             return .post
-        case .sendSmsCode:
-            return .post
-        case .fetchProfile:
-            return .get
-        case .fetchUserAutos:
+        case .fetchProfile, .fetchUserAutos:
             return .get
         }
     }

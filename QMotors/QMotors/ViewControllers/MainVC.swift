@@ -142,6 +142,7 @@ class MainVC: BaseVC {
     
     @objc private func personalAreaButtonDidTap() {
         print("personalAreaButtonDidTap")
-        router?.pushRegistrationVC()
+//        router?.pushRegistrationVC()
+        router?.pushPersonalAreaVC()
     }
 }

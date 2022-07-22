@@ -31,14 +31,41 @@ class SideMenuVC: UIViewController, Routable {
         return imageView
     }()
     
-    
     private let verticalStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.spacing = 20
         return stack
     }()
     
+    private let personalAreaButton: SideMenuButton = {
+        let button = SideMenuButton()
+        button.setupButton(title: "ЛИЧНЫЙ КАБИНЕТ", target: self, action: #selector(personalAreaButtonDidTap))
+        return button
+    }()
+    
+    private let singInButton: SideMenuButton = {
+        let button = SideMenuButton()
+        button.setupButton(title: "ЗАПИСЬ", target: self, action: #selector(singInButtonDidTap))
+        return button
+    }()
+    
+    private let techCentersButton: SideMenuButton = {
+        let button = SideMenuButton()
+        button.setupButton(title: "ТЕХЦЕНТРЫ", target: self, action: #selector(techCentersButtonDidTap))
+        return button
+    }()
+    
+    private let promoButton: SideMenuButton = {
+        let button = SideMenuButton()
+        button.setupButton(title: "АКЦИИ", target: self, action: #selector(promoButtonDidTap))
+        return button
+    }()
+    
+    private let reminderButton: SideMenuButton = {
+        let button = SideMenuButton()
+        button.setupButton(title: "УВЕДОМЛЕНИЯ", target: self, action: #selector(reminderButtonDidTap))
+        return button
+    }()
     
     private let reviewsButton: SideMenuButton = {
         let button = SideMenuButton()
@@ -69,7 +96,7 @@ class SideMenuVC: UIViewController, Routable {
         button.setupButton(title: "ШТРИХ-КОД", target: self, action: #selector(barcodeButtonDidTap))
         return button
     }()
-        
+    
     private let freeDiagnosticsButton: SideMenuButton = {
         let button = SideMenuButton()
         button.setupButton(title: "БЕСПЛАТНАЯ ДИАГНОСТИКА", target: self, action: #selector(freeDiagnosticsButtonDidTap))
@@ -82,9 +109,8 @@ class SideMenuVC: UIViewController, Routable {
         return button
     }()
     
-    
     // MARK: - Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -101,6 +127,15 @@ class SideMenuVC: UIViewController, Routable {
         view.addSubview(closeButton)
         view.addSubview(logoImageView)
         view.addSubview(verticalStackView)
+        
+        verticalStackView.addArrangedSubview(personalAreaButton)
+        verticalStackView.addArrangedSubview(singInButton)
+        verticalStackView.addArrangedSubview(techCentersButton)
+        verticalStackView.addArrangedSubview(promoButton)
+        verticalStackView.addArrangedSubview(reminderButton)
+        
+        
+        
         verticalStackView.addArrangedSubview(reviewsButton)
         verticalStackView.addArrangedSubview(chatButton)
         verticalStackView.addArrangedSubview(articlesButton)
@@ -123,23 +158,19 @@ class SideMenuVC: UIViewController, Routable {
             make.top.equalTo(closeButton.snp.bottom).offset(40)
             make.left.equalToSuperview().offset(20)
         }
-                
+        
         verticalStackView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview()
-            make.top.equalTo(logoImageView.snp.bottom).offset(30)
+            make.top.lessThanOrEqualTo(logoImageView.snp.bottom).offset(30)
             make.bottom.lessThanOrEqualTo(locationButton.snp.top)
         }
-        
-        
         
         locationButton.snp.makeConstraints { make in
             make.left.right.equalToSuperview()
             make.bottom.equalTo(self.view.safeAreaLayoutGuide)
             make.height.equalTo(130)
         }
-        
-        
         
     }
     
@@ -149,6 +180,28 @@ class SideMenuVC: UIViewController, Routable {
         dismiss(animated: true)
     }
     
+    @objc private func personalAreaButtonDidTap() {
+        print("personalAreaButtonDidTap")
+        dismiss(animated: true)
+        router?.pushPersonalAreaVC()
+        
+    }
+    
+    @objc private func singInButtonDidTap() {
+        print("singInButtonDidTap")
+    }
+    
+    @objc private func techCentersButtonDidTap() {
+        print("techCentersButtonDidTap")
+    }
+    
+    @objc private func promoButtonDidTap() {
+        print("promoButtonDidTap")
+    }
+    
+    @objc private func reminderButtonDidTap() {
+        print("reminderButtonDidTap")
+    }
     
     @objc private func reviewsButtonDidTap() {
         print("reviewsButtonDidTap")
@@ -174,15 +227,8 @@ class SideMenuVC: UIViewController, Routable {
         print("freeDiagnosticsButtonDidTap")
     }
     
-    
-    
-    
-    
-    
     @objc private func locationButtonDidTap() {
         print("locationButtonDidTap")
     }
     
-
-
 }

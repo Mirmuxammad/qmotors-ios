@@ -20,6 +20,9 @@
 		8498365028872B6A00EF47D0 /* SmsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8498364F28872B6A00EF47D0 /* SmsResponse.swift */; };
 		8498365228872EE300EF47D0 /* APIRequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8498365128872EE300EF47D0 /* APIRequestInterceptor.swift */; };
 		849836542887310300EF47D0 /* APINetworkLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849836532887310300EF47D0 /* APINetworkLogger.swift */; };
+		84A4AB692889C51700B657F1 /* PersonalAreaVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4AB682889C51700B657F1 /* PersonalAreaVC.swift */; };
+		84A4AB6B2889CCB900B657F1 /* LogoutButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4AB6A2889CCB900B657F1 /* LogoutButton.swift */; };
+		84A4AB6D2889CFB800B657F1 /* PersonalAreaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A4AB6C2889CFB800B657F1 /* PersonalAreaButton.swift */; };
 		84AFF8292887DBD0009207BD /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFF8282887DBD0009207BD /* CustomError.swift */; };
 		84D94F57288559D90023AA02 /* RegistrationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D94F56288559D90023AA02 /* RegistrationVC.swift */; };
 		84D94F5928855F0D0023AA02 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D94F5828855F0D0023AA02 /* MainVC.swift */; };
@@ -74,6 +77,9 @@
 		8498364F28872B6A00EF47D0 /* SmsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmsResponse.swift; sourceTree = "<group>"; };
 		8498365128872EE300EF47D0 /* APIRequestInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequestInterceptor.swift; sourceTree = "<group>"; };
 		849836532887310300EF47D0 /* APINetworkLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APINetworkLogger.swift; sourceTree = "<group>"; };
+		84A4AB682889C51700B657F1 /* PersonalAreaVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalAreaVC.swift; sourceTree = "<group>"; };
+		84A4AB6A2889CCB900B657F1 /* LogoutButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutButton.swift; sourceTree = "<group>"; };
+		84A4AB6C2889CFB800B657F1 /* PersonalAreaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalAreaButton.swift; sourceTree = "<group>"; };
 		84AFF8282887DBD0009207BD /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
 		84D94F56288559D90023AA02 /* RegistrationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVC.swift; sourceTree = "<group>"; };
 		84D94F5828855F0D0023AA02 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
@@ -235,6 +241,7 @@
 				84DDD28E287EF04700272C19 /* BaseVC.swift */,
 				84DDD28C287EE24000272C19 /* MainVCv1.swift */,
 				84D94F5828855F0D0023AA02 /* MainVC.swift */,
+				84A4AB682889C51700B657F1 /* PersonalAreaVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -247,6 +254,8 @@
 				848D9AB0288054FF00C4BC3F /* SideMenuButton.swift */,
 				84D94F5A2885AD4A0023AA02 /* ActionButton.swift */,
 				849836302886974800EF47D0 /* BackButton.swift */,
+				84A4AB6A2889CCB900B657F1 /* LogoutButton.swift */,
+				84A4AB6C2889CFB800B657F1 /* PersonalAreaButton.swift */,
 				8456BA6C2881652B00684AF5 /* PhoneCall */,
 			);
 			path = Components;
@@ -458,11 +467,14 @@
 				848D9AB1288054FF00C4BC3F /* SideMenuButton.swift in Sources */,
 				84AFF8292887DBD0009207BD /* CustomError.swift in Sources */,
 				8456BA6B28815AF200684AF5 /* PhoneCallView.swift in Sources */,
+				84A4AB6B2889CCB900B657F1 /* LogoutButton.swift in Sources */,
 				84D94F5928855F0D0023AA02 /* MainVC.swift in Sources */,
 				84DDD28F287EF04700272C19 /* BaseVC.swift in Sources */,
 				848D9AAF28804C6A00C4BC3F /* RouteButton.swift in Sources */,
 				8498365228872EE300EF47D0 /* APIRequestInterceptor.swift in Sources */,
+				84A4AB692889C51700B657F1 /* PersonalAreaVC.swift in Sources */,
 				8456BA702881786600684AF5 /* RequestCallButton.swift in Sources */,
+				84A4AB6D2889CFB800B657F1 /* PersonalAreaButton.swift in Sources */,
 				849836312886974800EF47D0 /* BackButton.swift in Sources */,
 				84DDD292287F0A2E00272C19 /* MainScreenButton.swift in Sources */,
 				84D94F57288559D90023AA02 /* RegistrationVC.swift in Sources */,
