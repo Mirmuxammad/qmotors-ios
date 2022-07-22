@@ -1,5 +1,5 @@
 //
-//  PersonalAreaVC.swift
+//  CabinetVC.swift
 //  QMotors
 //
 //  Created by Alexey Grebennikov on 21.07.22.
@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class PersonalAreaVC: BaseVC {
+class CabinetVC: BaseVC {
     
     // MARK: - UI Elements
     
@@ -169,6 +169,8 @@ class PersonalAreaVC: BaseVC {
     
     @objc private func logoutButtonDidTap() {
         print("logoutButtonDidTap")
+        UserDefaultsService.sharedInstance.removeAuthToken()
+        router?.back()
     }
 
 }

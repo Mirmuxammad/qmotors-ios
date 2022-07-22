@@ -143,6 +143,14 @@ class MainVC: BaseVC {
     @objc private func personalAreaButtonDidTap() {
         print("personalAreaButtonDidTap")
 //        router?.pushRegistrationVC()
-        router?.pushPersonalAreaVC()
+        
+        if UserDefaultsService.sharedInstance.authToken != nil {
+            router?.pushCabinetVC()
+        } else {
+            router?.pushRegistrationVC()
+        }
+        
+        
+        
     }
 }

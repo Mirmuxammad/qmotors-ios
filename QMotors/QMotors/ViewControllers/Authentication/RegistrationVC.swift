@@ -323,6 +323,10 @@ class RegistrationVC: BaseVC {
             
             if response.result != nil {
                 print("correct code")
+                
+                let token = response.result?.token
+                UserDefaultsService.sharedInstance.authToken = token
+                
                 self.validSmsCode()
             } else if let error = response.error {
                 print(error.message)

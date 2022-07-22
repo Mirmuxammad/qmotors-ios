@@ -49,8 +49,8 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
-    func pushPersonalAreaVC() {
-        let vc = PersonalAreaVC()
+    func pushCabinetVC() {
+        let vc = CabinetVC()
         pushViewController(vc: vc, animated: true)
     }
     

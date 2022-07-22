@@ -15,7 +15,22 @@ class SideMenuVC: UIViewController, Routable {
     var router: MainRouter?
     var rootScreen: RootScreen?
     
-    // MARK: - UI elements
+    var cellMenuItemsArray = [
+        NSLocalizedString("ГЛАВНАЯ", comment: ""),
+         NSLocalizedString("ЛИЧНЫЙ КАБИНЕТ", comment: ""),
+         NSLocalizedString("ЗАПИСЬ", comment: ""),
+         NSLocalizedString("ТЕХЦЕНТРЫ", comment: ""),
+         NSLocalizedString("АКЦИИ", comment: ""),
+         NSLocalizedString("УВЕДОМЛЕНИЕ", comment: ""),
+         NSLocalizedString("ОТЗЫВЫ", comment: ""),
+         NSLocalizedString("ЧАТ", comment: ""),
+         NSLocalizedString("СТАТЬИ", comment: ""),
+         NSLocalizedString("ПОМОЩЬ", comment: ""),
+         NSLocalizedString("ШТРИХ-КОД", comment: ""),
+         NSLocalizedString("БЕСПЛАТНАЯ ДИАГНОСТИКА", comment: "")]
+    
+    
+    // MARK: - UI Elements
     
     private let closeButton: UIButton = {
         let button = UIButton()
@@ -31,76 +46,12 @@ class SideMenuVC: UIViewController, Routable {
         return imageView
     }()
     
-    private let verticalStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        return stack
-    }()
-    
-    private let personalAreaButton: SideMenuButton = {
-        let button = SideMenuButton()
-        button.setupButton(title: "ЛИЧНЫЙ КАБИНЕТ", target: self, action: #selector(personalAreaButtonDidTap))
-        return button
-    }()
-    
-    private let singInButton: SideMenuButton = {
-        let button = SideMenuButton()
-        button.setupButton(title: "ЗАПИСЬ", target: self, action: #selector(singInButtonDidTap))
-        return button
-    }()
-    
-    private let techCentersButton: SideMenuButton = {
-        let button = SideMenuButton()
-        button.setupButton(title: "ТЕХЦЕНТРЫ", target: self, action: #selector(techCentersButtonDidTap))
-        return button
-    }()
-    
-    private let promoButton: SideMenuButton = {
-        let button = SideMenuButton()
-        button.setupButton(title: "АКЦИИ", target: self, action: #selector(promoButtonDidTap))
-        return button
-    }()
-    
-    private let reminderButton: SideMenuButton = {
-        let button = SideMenuButton()
-        button.setupButton(title: "УВЕДОМЛЕНИЯ", target: self, action: #selector(reminderButtonDidTap))
-        return button
-    }()
-    
-    private let reviewsButton: SideMenuButton = {
-        let button = SideMenuButton()
-        button.setupButton(title: "ОТЗЫВЫ", target: self, action: #selector(reviewsButtonDidTap))
-        return button
-    }()
-    
-    private let chatButton: SideMenuButton = {
-        let button = SideMenuButton()
-        button.setupButton(title: "ЧАТ", target: self, action: #selector(chatButtonDidTap))
-        return button
-    }()
-    
-    private let articlesButton: SideMenuButton = {
-        let button = SideMenuButton()
-        button.setupButton(title: "СТАТЬИ", target: self, action: #selector(articlesButtonDidTap))
-        return button
-    }()
-    
-    private let helpButton: SideMenuButton = {
-        let button = SideMenuButton()
-        button.setupButton(title: "ПОМОЩЬ", target: self, action: #selector(helpButtonDidTap))
-        return button
-    }()
-    
-    private let barcodeButton: SideMenuButton = {
-        let button = SideMenuButton()
-        button.setupButton(title: "ШТРИХ-КОД", target: self, action: #selector(barcodeButtonDidTap))
-        return button
-    }()
-    
-    private let freeDiagnosticsButton: SideMenuButton = {
-        let button = SideMenuButton()
-        button.setupButton(title: "БЕСПЛАТНАЯ ДИАГНОСТИКА", target: self, action: #selector(freeDiagnosticsButtonDidTap))
-        return button
+    private let tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.separatorStyle = .none
+        tableView.bounces = false
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
     }()
     
     private let locationButton: RouteButton = {
@@ -110,43 +61,37 @@ class SideMenuVC: UIViewController, Routable {
     }()
     
     // MARK: - Lifecycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.setNavigationBarHidden(true, animated: false)
         view.backgroundColor = .white
+        navigationController?.navigationBar.isHidden = true
         
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(SideMenuTableViewCell.self, forCellReuseIdentifier: SideMenuTableViewCell.identifier)
         setupViews()
         setupConstraints()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        router?.navigationController.setNavigationBarHidden(true, animated: animated)
     }
     
     // MARK: - Private functions
     
     private func setupViews() {
+        
         view.addSubview(closeButton)
         view.addSubview(logoImageView)
-        view.addSubview(verticalStackView)
-        
-        verticalStackView.addArrangedSubview(personalAreaButton)
-        verticalStackView.addArrangedSubview(singInButton)
-        verticalStackView.addArrangedSubview(techCentersButton)
-        verticalStackView.addArrangedSubview(promoButton)
-        verticalStackView.addArrangedSubview(reminderButton)
-        
-        
-        
-        verticalStackView.addArrangedSubview(reviewsButton)
-        verticalStackView.addArrangedSubview(chatButton)
-        verticalStackView.addArrangedSubview(articlesButton)
-        verticalStackView.addArrangedSubview(helpButton)
-        verticalStackView.addArrangedSubview(barcodeButton)
-        verticalStackView.addArrangedSubview(freeDiagnosticsButton)
-        
+        view.addSubview(tableView)
         view.addSubview(locationButton)
     }
     
     private func setupConstraints() {
+        
         closeButton.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 25, height: 25))
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(10)
@@ -159,11 +104,11 @@ class SideMenuVC: UIViewController, Routable {
             make.left.equalToSuperview().offset(20)
         }
         
-        verticalStackView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview()
-            make.top.lessThanOrEqualTo(logoImageView.snp.bottom).offset(30)
-            make.bottom.lessThanOrEqualTo(locationButton.snp.top)
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(logoImageView.snp.bottom).offset(25)
+            make.right.equalTo(view)
+            make.left.equalTo(view).offset(-20)
+            make.bottom.equalTo(locationButton.snp.top)
         }
         
         locationButton.snp.makeConstraints { make in
@@ -171,7 +116,6 @@ class SideMenuVC: UIViewController, Routable {
             make.bottom.equalTo(self.view.safeAreaLayoutGuide)
             make.height.equalTo(130)
         }
-        
     }
     
     // MARK: - Private actions
@@ -180,55 +124,72 @@ class SideMenuVC: UIViewController, Routable {
         dismiss(animated: true)
     }
     
-    @objc private func personalAreaButtonDidTap() {
-        print("personalAreaButtonDidTap")
-        dismiss(animated: true)
-        router?.pushPersonalAreaVC()
-        
-    }
-    
-    @objc private func singInButtonDidTap() {
-        print("singInButtonDidTap")
-    }
-    
-    @objc private func techCentersButtonDidTap() {
-        print("techCentersButtonDidTap")
-    }
-    
-    @objc private func promoButtonDidTap() {
-        print("promoButtonDidTap")
-    }
-    
-    @objc private func reminderButtonDidTap() {
-        print("reminderButtonDidTap")
-    }
-    
-    @objc private func reviewsButtonDidTap() {
-        print("reviewsButtonDidTap")
-    }
-    
-    @objc private func chatButtonDidTap() {
-        print("chatButtonDidTap")
-    }
-    
-    @objc private func articlesButtonDidTap() {
-        print("articlesButtonDidTap")
-    }
-    
-    @objc private func helpButtonDidTap() {
-        print("helpButtonDidTap")
-    }
-    
-    @objc private func barcodeButtonDidTap() {
-        print("barcodeButtonDidTap")
-    }
-    
-    @objc private func freeDiagnosticsButtonDidTap() {
-        print("freeDiagnosticsButtonDidTap")
-    }
-    
     @objc private func locationButtonDidTap() {
         print("locationButtonDidTap")
     }
     
+}
+
+//MARK: - UITableViewDelegate, UITableViewDataSource
+extension SideMenuVC: UITableViewDelegate, UITableViewDataSource {
+        
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        cellMenuItemsArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        guard
+            let cell = tableView.dequeueReusableCell(withIdentifier: SideMenuTableViewCell.identifier, for: indexPath) as? SideMenuTableViewCell else {
+            return UITableViewCell()
+        }
+        
+        let name = cellMenuItemsArray[indexPath.row]
+        cell.cellSideMenuConfigure(name: name)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // dismiss(animated: true)
+        
+        switch indexPath.row {
+        case 0:
+            dismiss(animated: true)
+            router?.pushMainVC()
+        case 1:
+            dismiss(animated: true)
+            if UserDefaultsService.sharedInstance.authToken != nil {
+                router?.pushCabinetVC()
+            } else {
+                router?.pushRegistrationVC()
+            }
+        case 2:
+            dismiss(animated: true)
+        case 3:
+            dismiss(animated: true)
+        case 4:
+            dismiss(animated: true)
+        case 5:
+            dismiss(animated: true)
+        case 6:
+            dismiss(animated: true)
+        case 7:
+            dismiss(animated: true)
+        case 8:
+            dismiss(animated: true)
+        case 9:
+            dismiss(animated: true)
+        case 10:
+            dismiss(animated: true)
+        case 11:
+            dismiss(animated: true)
+        default:
+            print("__Tap__")
+        }
+        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 46
+    }
 }
