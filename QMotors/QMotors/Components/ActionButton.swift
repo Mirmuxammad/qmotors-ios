@@ -33,7 +33,7 @@ class ActionButton: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        layer.cornerRadius = 10
+        layer.cornerRadius = 5
         layer.backgroundColor = UIColor.init(hex: "#D4D4D4").cgColor
         
         setupViews()
