@@ -71,6 +71,15 @@ class BaseVC: UIViewController, Routable {
         addRightSwipeAction()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch: UITouch? = touches.first
+        
+        if touch?.view != phoneCallButtonView {
+            blurBackgroundOff()
+            phoneCallButtonView.isHidden = true
+        }
+    }
+    
     // MARK: - Private functions
     
     private func setupViews() {
