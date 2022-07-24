@@ -67,6 +67,8 @@ class BaseVC: UIViewController, Routable {
         setupConstraints()
     
         phoneCallButtonView.isHidden = true
+        
+        addRightSwipeAction()
     }
     
     // MARK: - Private functions
@@ -142,6 +144,12 @@ class BaseVC: UIViewController, Routable {
         }
     }
     
+    private func addRightSwipeAction() {
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeHandler(_:)))
+        rightSwipe.direction = .right
+        view.addGestureRecognizer(rightSwipe)
+    }
+    
     // MARK: - Private actions
     
     @objc private func leftMenuButtonDidTap() {
@@ -163,6 +171,12 @@ class BaseVC: UIViewController, Routable {
         } else {
             blurBackgroundOff()
             phoneCallButtonView.isHidden = true
+        }
+    }
+    
+    @objc private func swipeHandler(_ gestureRecognizer: UISwipeGestureRecognizer) {
+        if gestureRecognizer.direction == .right {
+            router?.presentSideMenu(rootScreen: .mainScreen)
         }
     }
     
