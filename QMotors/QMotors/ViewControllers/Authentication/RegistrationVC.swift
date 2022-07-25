@@ -34,7 +34,7 @@ class RegistrationVC: BaseVC {
         label.textColor = .black
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.text = "Раздел доступен только \nдля зарегистрированных \nпользователей"
+        label.text = "Раздел доступен только \nдля авторизованных \nпользователей"
         return label
     }()
     
@@ -44,7 +44,7 @@ class RegistrationVC: BaseVC {
         label.textColor = UIColor.init(hex: "#3E3E3E")
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.text = "Введите номер телефона для \nполучения кода регистрации"
+        label.text = "Введите номер телефона для \nполучения кода регистрации или авторизации"
         return label
     }()
     
