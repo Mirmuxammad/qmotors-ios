@@ -1,15 +1,15 @@
 //
-//  BackButton.swift
+//  SmallBackButton.swift
 //  QMotors
 //
-//  Created by Alexey Grebennikov on 19.07.22.
+//  Created by Alexey Grebennikov on 23.07.22.
 //
 
 import UIKit
 import SnapKit
 
-class BackButton: UIView {
-    
+class SmallBackButton: UIView {
+
     // MARK: - UI Elements
     
     private let titleView: UIView = {
@@ -19,18 +19,16 @@ class BackButton: UIView {
     
     private let logoImageView: UIImageView = {
         let imageView = UIImageView()
-//        imageView.image = UIImage(systemName: "arrow.left")
-        imageView.image = UIImage(named: "back_white_arrow")
-//        imageView.tintColor = .white
+        imageView.image = UIImage(named: "back_black_arrow")
         return imageView
     }()
         
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Montserrat-SemiBold", size: 14)
-        label.textColor = .white
-        label.textAlignment = .center
-        label.text = "НАЗАД"
+        label.font = UIFont(name: "Montserrat-Regular", size: 14)
+        label.textColor = .black
+        label.textAlignment = .left
+        label.text = "Назад"
         return label
     }()
     
@@ -44,12 +42,7 @@ class BackButton: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        layer.cornerRadius = 5
-        layer.backgroundColor = UIColor.clear.cgColor
-        layer.borderColor = UIColor.white.cgColor
-        layer.borderWidth = 1.5
-        
+                
         setupViews()
         setupConstraints()
     }
@@ -70,7 +63,7 @@ class BackButton: UIView {
     private func setupConstraints() {
         
         titleView.snp.makeConstraints { make in
-            make.width.equalTo(100)
+            make.width.equalTo(80)
             make.center.equalToSuperview()
         }
         
@@ -80,7 +73,7 @@ class BackButton: UIView {
         }
             
         titleLabel.snp.makeConstraints { make in
-            make.left.equalTo(logoImageView.snp.right).offset(15)
+            make.left.equalTo(logoImageView.snp.right).offset(10)
             make.centerY.equalTo(logoImageView)
         }
     
@@ -97,3 +90,4 @@ class BackButton: UIView {
     
 
 }
+

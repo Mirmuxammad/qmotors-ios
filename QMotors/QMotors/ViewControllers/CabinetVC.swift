@@ -145,6 +145,7 @@ class CabinetVC: BaseVC {
     
     @objc private func myCarsButtonDidTap() {
         print("myCarsButtonDidTap")
+        router?.pushMyCarsVC()
     }
     
     @objc private func historyButtonDidTap() {

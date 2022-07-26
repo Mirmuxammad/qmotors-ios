@@ -105,7 +105,7 @@ class RegistrationVC: BaseVC {
     
     private let backButton: BackButton = {
         let button = BackButton()
-        button.setupButton(target: self, action: #selector(backButtonDidTap))
+        button.setupAction(target: self, action: #selector(backButtonDidTap))
         return button
     }()
     
