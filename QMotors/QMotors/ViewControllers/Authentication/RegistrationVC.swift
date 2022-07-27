@@ -292,9 +292,10 @@ class RegistrationVC: BaseVC {
     private func sendSmsCodeRequest() {
         activityIndicator.startAnimating()
         guard let phoneNumber = phoneTextField.text else { return }
-        APIManager.shared.sendSmsCode(phoneNumber: phoneNumber) { [weak self] response in
-            guard let self = self else { return }
-            print(response)
+        LoginAPI.sendSmsCode(phone: phoneNumber, success: { [weak self] jsonData in
+            self?.activityIndicator.stopAnimating()
+        }) { error in
+            print(error)
             self.activityIndicator.stopAnimating()
         }
     }
@@ -304,35 +305,16 @@ class RegistrationVC: BaseVC {
         guard
             let phoneNumber = phoneTextField.text,
             let smsCode = codeTextField.text else { return }
-        APIManager.shared.fetchAuthResponse(phoneNumber: phoneNumber, smsCode: smsCode) { [weak self] response in
-            guard let self = self else { return }
-            self.activityIndicator.stopAnimating()
+        LoginAPI.loginWithSmsCode(phone: phoneNumber, smsCode: Int(smsCode) ?? 0, success: { [weak self] jsonData in
+            guard let json = jsonData else { return }
+            self?.validSmsCode()
+        }) { [weak self] error in
+            print(error)
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
             
-            if (response.error != nil)
-            {
-                let alert = UIAlertController(title: "Ошибка", message: "Ввели неверный пароль", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                
-                }))
-                self.present(alert, animated: true, completion: nil)
-            }
-            else
-            {
-                self.router?.pushMainVC()
-            }
-            
-            if response.result != nil {
-                print("correct code")
-                
-                let token = response.result?.token
-                UserDefaultsService.sharedInstance.authToken = token
-                
-                self.validSmsCode()
-            } else if let error = response.error {
-                print(error.message)
-                self.invalidSmsCode()
-            }
-            
+            }))
+            self?.present(alert, animated: true, completion: nil)
         }
     }
     

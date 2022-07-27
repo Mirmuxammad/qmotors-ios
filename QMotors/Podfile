@@ -8,6 +8,7 @@ target 'QMotors' do
   pod 'SnapKit', '~> 5.0.0'
   pod 'SideMenu'
   pod 'SwiftMaskText'
+  pod 'SwiftyJSON'
   pod 'Alamofire'
 
 end
