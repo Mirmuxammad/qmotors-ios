@@ -263,7 +263,7 @@ extension CarVC {
             make.edges.equalToSuperview()
         }
         contentView.snp.makeConstraints { make in
-            make.top.bottom.width.height.equalTo(scrollView)
+            make.top.bottom.equalTo(scrollView)
             make.left.right.equalTo(backgroundView)
         }
         backButton.snp.makeConstraints { make in
@@ -348,6 +348,7 @@ extension CarVC {
             make.height.equalTo(54)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
+            make.bottom.equalToSuperview().offset(-40)
         }
     }
 }
