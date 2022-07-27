@@ -211,7 +211,8 @@ class MyCarsVC: BaseVC {
     }
     
     @objc private func addCarButtonDidTap() {
-        print("addCarButtonDidTap")
+        print(#function)
+        router?.pushCarVC()
     }
     
 

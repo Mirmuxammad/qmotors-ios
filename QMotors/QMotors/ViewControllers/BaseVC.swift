@@ -63,6 +63,7 @@ class BaseVC: UIViewController, Routable {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupHideKeyboardOnTapView()
         setupViews()
         setupConstraints()
     

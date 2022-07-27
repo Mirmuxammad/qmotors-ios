@@ -54,6 +54,11 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
+    func pushCarVC() {
+        let vc = CarVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
     //Base
 //    func start() {
 //
