@@ -17,4 +17,5 @@ struct Const {
     static let fontReg = "Montserrat-Regular"
     static let fontMed = "Montserrat-Medium"
     static let fontSemi = "Montserrat-SemiBold"
+    static let fontBold = "Montserrat-Bold"
 }
