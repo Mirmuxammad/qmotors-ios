@@ -9,13 +9,36 @@ import Alamofire
 import Foundation
 import SwiftyJSON
 
-enum RequestMethod: String {
-    case loginWithSmsCode = "login"
-    case sendSmsCode = "send-sms-code"
-    case profile = "profile"
-    case userAutos = "profile/autos"
-    case carMarkList = "car-mark/list"
-    case carModelList = "car-model/list"
+enum RequestMethod {
+    case loginWithSmsCode
+    case sendSmsCode
+    case profile
+    case userAutos
+    case carMarkList
+    case carModelList
+    case addCar
+    case addCarPhoto(Int)
+    
+    var path: String {
+        switch self {
+        case .loginWithSmsCode:
+            return "login"
+        case .sendSmsCode:
+            return "send-sms-code"
+        case .profile:
+            return "profile"
+        case .userAutos:
+            return "profile/autos"
+        case .carMarkList:
+            return "car-mark/list"
+        case .carModelList:
+            return "car-model/list"
+        case .addCar:
+            return "car"
+        case .addCarPhoto(let id):
+            return "car/\(id)/photo"
+        }
+    }
 }
 
 final class BaseAPI {
@@ -44,13 +67,39 @@ final class BaseAPI {
             headers.add(.authorization(bearerToken: "111|SYBnB7NDu2XgsMGTQmqyo5NdRNy88On9gOUKkceN"))
         }
         
-        authorizedSession.request(URL(string: BaseAPI.baseURL + reqMethod.rawValue)!, method: method, parameters: parameters, headers: headers).response { response in
-//            print("ReqMethod: \(reqMethod.rawValue)\nJSON Status: \(String(describing: response.response?.statusCode))\nResponse:", JSON(response.data ?? ""))
+        authorizedSession.request(URL(string: BaseAPI.baseURL + reqMethod.path)!, method: method, parameters: parameters, encoding: method == .post ? JSONEncoding.default : URLEncoding.default, headers: headers).response { response in
+            debugPrint(response)
+            print("ReqMethod: \(reqMethod)\nJSON Status: \(String(describing: response.response?.statusCode))\nResponse:", JSON(response.data ?? ""))
             if let data = response.data {
                 success(data)
             } else {
                 failure(NetworkError(.server, code: response.response?.statusCode))
             }
+        }
+    }
+    
+    fileprivate static func request(reqMethod: RequestMethod,
+                                    fieldName: String,
+                                    fileURLArray: [URL],
+                                    success: @escaping (Data?) -> Void,
+                                    failure: @escaping (NetworkError?) -> Void) {
+        var headers = BaseAPI().headers
+        
+//        guard let token = UserDefaultsService.sharedInstance.authToken else {
+//            failure(NetworkError(.other("Токен не найден!")))
+//            return
+//        }
+        headers.add(.authorization(bearerToken: "111|SYBnB7NDu2XgsMGTQmqyo5NdRNy88On9gOUKkceN"))
+        
+        authorizedSession.upload(multipartFormData: { multiPart in
+            print("🔴", fileURLArray)
+            for fileURL in fileURLArray {
+                if let fileData = try? Data(contentsOf: fileURL) {
+                    multiPart.append(fileData, withName: fieldName, fileName: fileURL.lastPathComponent, mimeType: "image/jpeg")
+                }
+            }
+        }, to: BaseAPI.baseURL + reqMethod.path, method: .post, headers: headers).response { response in
+            debugPrint(response)
         }
     }
     
@@ -70,5 +119,9 @@ final class BaseAPI {
     
     static func authorizedPostRequest(reqMethod: RequestMethod, parameters: Parameters, success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
         request(reqMethod: reqMethod, parameters: parameters, method: .post, isAuthorized: true, success: success, failure: failure)
+    }
+    
+    static func authorizedMultipartPostRequest(carId: Int, fieldName: String, fileURLArray: [URL], success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
+        request(reqMethod: .addCarPhoto(carId), fieldName: fieldName, fileURLArray: fileURLArray, success: success, failure: failure)
     }
 }

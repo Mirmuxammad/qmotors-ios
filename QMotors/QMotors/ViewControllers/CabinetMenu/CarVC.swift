@@ -13,6 +13,16 @@ class CarVC: BaseVC {
     private var options = ["option 1", "option 2", "option 3", "option 4", "option 5", "option 6"]
     private var carMarkDataStore = [CarMark]()
     private var carModelDataStore = [CarModel]()
+    private var carYearDataStore: [Int] = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy"
+        let currentYear = Int(formatter.string(from: Date()))!
+        var carYearArray = [Int]()
+        for year in (1980...currentYear).reversed() {
+            carYearArray.append(year)
+        }
+        return carYearArray
+    }()
     private var carMarkId: Int? {
         didSet {
             guard let carMarkId = carMarkId else { return }
@@ -28,6 +38,11 @@ class CarVC: BaseVC {
         }
     }
     private var carModelId: Int?
+    private var fileURLArray: [URL] = [] {
+        didSet {
+            print(fileURLArray)
+        }
+    }
     private let cellIdentifier = "optionsTableCell"
     
     // MARK: - UI Elements
@@ -159,6 +174,16 @@ class CarVC: BaseVC {
         return field
     }()
     
+    private let carNumberLabel: CustomLabel = {
+        let label = CustomLabel(text: "Номер", fontWeight: .medium)
+        return label
+    }()
+    
+    private let carNumberField: CustomTextField = {
+        let field = CustomTextField(placeholder: "Укажите номер автомобиля", keyboardType: .asciiCapable)
+        return field
+    }()
+    
     private let vinLabel: CustomLabel = {
         let label = CustomLabel(text: "VIN номер", fontWeight: .medium)
         return label
@@ -200,6 +225,14 @@ class CarVC: BaseVC {
     private let thirdPhotoView: CustomPhotoView = {
         let photoView = CustomPhotoView()
         return photoView
+    }()
+    
+    private let addCarButton: ActionButton = {
+        let button = ActionButton()
+        button.setupTitle(title: "ДОБАВИТЬ АВТОМОБИЛЬ")
+        button.setupButton(target: self, action: #selector(addCarButtonTapped))
+        button.isEnabled()
+        return button
     }()
     
     private let activityIndicator: UIActivityIndicatorView = {
@@ -263,6 +296,8 @@ class CarVC: BaseVC {
         carYearField.addSubview(carYearChevronButton)
         contentView.addSubview(mileageLabel)
         contentView.addSubview(mileageField)
+        contentView.addSubview(carNumberLabel)
+        contentView.addSubview(carNumberField)
         contentView.addSubview(vinLabel)
         contentView.addSubview(vinField)
         contentView.addSubview(imgLabel)
@@ -270,6 +305,7 @@ class CarVC: BaseVC {
         photosStackView.addArrangedSubview(firstPhotoView)
         photosStackView.addArrangedSubview(secondPhotoView)
         photosStackView.addArrangedSubview(thirdPhotoView)
+        contentView.addSubview(addCarButton)
         
         contentView.addSubview(carMarkOptionsTable)
         contentView.addSubview(carModelOptionsTable)
@@ -361,6 +397,62 @@ class CarVC: BaseVC {
         print(#function)
         let photoView = sender.superview as! CustomPhotoView
         photoView.carPhoto = UIImage(named: "empty-photo")!
+        if photoView == firstPhotoView {
+            fileURLArray.remove(at: 0)
+        } else if photoView == secondPhotoView {
+            fileURLArray.remove(at: 1)
+        } else if photoView == thirdPhotoView {
+            fileURLArray.remove(at: 2)
+        }
+        reloadCarPhotos()
+    }
+    
+    @objc private func addCarButtonTapped() {
+        print(#function)
+        guard let carModelId = carModelId, let carYear = carYearField.text, let carMileage = mileageField.text, let carNumber = carNumberField.text, let vin = vinField.text else { return }
+        guard let carYearInt = Int(carYear), let carMileageInt = Int(carMileage) else { return }
+        activityIndicator.startAnimating()
+        CarAPI.addCar(carModelId: carModelId, year: carYearInt, mileage: carMileageInt, number: carNumber, vin: vin, lastVisit: Date(), status: .active, success: { [weak self] result in
+            self?.addCarPhoto(carId: result["id"].intValue, completion: {})
+            self?.activityIndicator.stopAnimating()
+        }) { [weak self] error in
+            print(error)
+            self?.activityIndicator.stopAnimating()
+        }
+    }
+    
+    private func addCarPhoto(carId: Int, completion: @escaping () -> Void) {
+        CarAPI.addCarPhoto(carId: carId, fileURLArray: fileURLArray, success: { [weak self] result in
+            self?.reloadCarPhotos()
+            completion()
+        }) { error in
+            print(error)
+            completion()
+        }
+    }
+    
+    private func reloadCarPhotos() {
+        if fileURLArray.isEmpty {
+            firstPhotoView.carPhoto = UIImage(named: "empty-photo")!
+            secondPhotoView.carPhoto = UIImage(named: "empty-photo")!
+            thirdPhotoView.carPhoto = UIImage(named: "empty-photo")!
+            return
+        }
+        let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
+        firstPhotoView.carPhoto = UIImage(data: firstPhotoData)!
+        if fileURLArray.count < 2 {
+            secondPhotoView.carPhoto = UIImage(named: "empty-photo")!
+            thirdPhotoView.carPhoto = UIImage(named: "empty-photo")!
+            return
+        }
+        let secondPhotoData = try! Data(contentsOf: fileURLArray[1])
+        secondPhotoView.carPhoto = UIImage(data: secondPhotoData)!
+        if fileURLArray.count < 3 {
+            thirdPhotoView.carPhoto = UIImage(named: "empty-photo")!
+            return
+        }
+        let thirdPhotoData = try! Data(contentsOf: fileURLArray[2])
+        thirdPhotoView.carPhoto = UIImage(data: thirdPhotoData)!
     }
     
 }
@@ -405,23 +497,32 @@ extension CarVC: UITextFieldDelegate {
 // MARK: - UITableViewDelegate, UITableViewDataSource
 extension CarVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView == carMarkOptionsTable {
+        switch tableView {
+        case carMarkOptionsTable:
             return carMarkDataStore.count
-        } else if tableView == carModelOptionsTable {
+        case carModelOptionsTable:
             return carModelDataStore.count
+        case carYearOptionsTable:
+            return carYearDataStore.count
+        default:
+            break
         }
-        return options.count
+        
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         cell.selectionStyle = .gray
-        if tableView == carMarkOptionsTable {
+        switch tableView {
+        case carMarkOptionsTable:
             cell.textLabel?.text = carMarkDataStore[indexPath.row].name.uppercased()
-        } else if tableView == carModelOptionsTable {
+        case carModelOptionsTable:
             cell.textLabel?.text = carModelDataStore[indexPath.row].name.uppercased()
-        } else {
-            cell.textLabel?.text = options[indexPath.row]
+        case carYearOptionsTable:
+            cell.textLabel?.text = "\(carYearDataStore[indexPath.row])"
+        default:
+            break
         }
         return cell
     }
@@ -438,7 +539,7 @@ extension CarVC: UITableViewDelegate, UITableViewDataSource {
             carModelField.text = carModel.name.uppercased()
             carModelId = carModel.id
         case carYearOptionsTable:
-            carYearField.text = options[indexPath.row]
+            carYearField.text = "\(carYearDataStore[indexPath.row])"
         default:
             break
         }
@@ -455,6 +556,8 @@ extension CarVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate
             .appendingPathComponent(UUID().uuidString)
             .appendingPathExtension("jpg")
         try! data!.write(to: documentUrl)
+        
+        fileURLArray.append(documentUrl)
         
         print(documentUrl)
         
@@ -590,8 +693,19 @@ extension CarVC {
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
-        vinLabel.snp.makeConstraints { make in
+        carNumberLabel.snp.makeConstraints { make in
             make.top.equalTo(mileageField.snp.bottom).offset(12)
+            make.left.equalToSuperview().offset(lOffset)
+            make.right.equalToSuperview().offset(rOffset)
+        }
+        carNumberField.snp.makeConstraints { make in
+            make.top.equalTo(carNumberLabel.snp.bottom).offset(14)
+            make.height.equalTo(54)
+            make.left.equalToSuperview().offset(lOffset)
+            make.right.equalToSuperview().offset(rOffset)
+        }
+        vinLabel.snp.makeConstraints { make in
+            make.top.equalTo(carNumberField.snp.bottom).offset(12)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
@@ -610,7 +724,6 @@ extension CarVC {
             make.top.equalTo(imgLabel.snp.bottom).offset(28)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
-            make.bottom.equalToSuperview().offset(-40)
         }
         firstPhotoView.snp.makeConstraints { make in
             make.width.height.equalTo(100)
@@ -620,6 +733,13 @@ extension CarVC {
         }
         thirdPhotoView.snp.makeConstraints { make in
             make.width.height.equalTo(100)
+        }
+        addCarButton.snp.makeConstraints { make in
+            make.top.equalTo(photosStackView.snp.bottom).offset(28)
+            make.height.equalTo(54)
+            make.bottom.equalToSuperview().offset(-40)
+            make.left.equalToSuperview().offset(lOffset)
+            make.right.equalToSuperview().offset(rOffset)
         }
     }
 }
