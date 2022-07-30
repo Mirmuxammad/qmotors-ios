@@ -59,10 +59,10 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
-    //Base
-//    func start() {
-//
-//    }
+    func pushTechnicalCenterVC() {
+        let vc = TechnicalCenterVC()
+        pushViewController(vc: vc, animated: true)
+    }
     
     func presentSideMenu(rootScreen: RootScreen) {
         let sideMenuVC = SideMenuVC()
