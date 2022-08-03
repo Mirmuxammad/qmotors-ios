@@ -68,7 +68,6 @@ class TechnicalCenterTableViewCell: UITableViewCell {
     
     private let signUpButton = TechCellSingUpButton()
     
-    
     // MARK: - Initializers
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -85,19 +84,14 @@ class TechnicalCenterTableViewCell: UITableViewCell {
     // MARK: - Private functions
     
     private func setupViews() {
-        addSubview(containerView)
+        contentView.addSubview(containerView)
         containerView.addSubview(logoImageView)
-        
-        
         containerView.addSubview(titleLabel)
         containerView.addSubview(phoneNumberButton)
-        
         containerView.addSubview(addressLabel)
-        
         containerView.addSubview(horizontalStack)
         horizontalStack.addArrangedSubview(navigationButton)
         horizontalStack.addArrangedSubview(signUpButton)
-
     }
     
     private func setupConstraints() {
@@ -140,9 +134,7 @@ class TechnicalCenterTableViewCell: UITableViewCell {
             make.bottom.equalToSuperview().offset(-20)
         }
         
-        
     }
-    
     
     // MARK: - Private actions
     
@@ -160,7 +152,18 @@ class TechnicalCenterTableViewCell: UITableViewCell {
         titleLabel.text = with.title
         addressLabel.text = with.address
         phoneNumberButton.setTitle(with.phoneNumber, for: .normal)
-        
+    }
+    
+    func setupPhoneAction(target: Any, action: Selector) {
+        phoneNumberButton.addTarget(target, action: action, for: .touchUpInside)
+    }
+    
+    func setupNavigationAction(target: Any, action: Selector) {
+        navigationButton.setupAction(target: target, action: action)
+    }
+    
+    func setupSignUpAction(target: Any, action: Selector) {
+        signUpButton.setupAction(target: target, action: action)
     }
     
 }

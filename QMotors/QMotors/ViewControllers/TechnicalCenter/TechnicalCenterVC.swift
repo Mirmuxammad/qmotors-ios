@@ -45,14 +45,11 @@ class TechnicalCenterVC: BaseVC {
     
     private let tableView: UITableView = {
         let tableView = UITableView()
-//        tableView.backgroundColor = .gray
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
-        
         tableView.register(TechnicalCenterTableViewCell.self, forCellReuseIdentifier: TechnicalCenterTableViewCell.identifier)
         return tableView
     }()
-    
     
     // MARK: - Lifecycle
 
@@ -64,9 +61,6 @@ class TechnicalCenterVC: BaseVC {
 
         setupViews()
         setupConstraints()
-        
-        
-
     }
         
     // MARK: - Private functions
@@ -74,14 +68,9 @@ class TechnicalCenterVC: BaseVC {
     private func setupViews() {
         view.addSubview(logoImageView)
         view.addSubview(backgroundView)
-        
         backgroundView.addSubview(backButton)
         backgroundView.addSubview(titleLable)
         backgroundView.addSubview(tableView)
-        
-        
-        
-
     }
 
     private func setupConstraints() {
@@ -116,9 +105,7 @@ class TechnicalCenterVC: BaseVC {
             make.right.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview()
         }
-        
-
-        
+    
     }
 
     // MARK: - Private actions
@@ -128,7 +115,19 @@ class TechnicalCenterVC: BaseVC {
         router?.back()
     }
     
+    @objc private func phoneButtonDidTap(_ sender: UIButton) {
+        print("phoneButtonDidTap \(technicalCenters[sender.tag].phoneNumber)")
+    }
+    
+    @objc private func navigationButtonDidTap(_ sender: UIButton) {
+        print("navigationButtonDidTap \(technicalCenters[sender.tag].coordinates)")
 
+    }
+    
+    @objc private func singUpButtonDidTap(_ sender: UIButton) {
+        print("singUpButtonDidTap \(technicalCenters[sender.tag].title)")
+    }
+    
 }
 
 // MARK: - UITableViewDataSource
@@ -144,6 +143,9 @@ extension TechnicalCenterVC: UITableViewDataSource {
         else { return UITableViewCell() }
         
         cell.setupCell(technicalCenters[indexPath.row])
+        cell.setupPhoneAction(target: self, action: #selector(phoneButtonDidTap(_:)))
+        cell.setupNavigationAction(target: self, action: #selector(navigationButtonDidTap(_:)))
+        cell.setupSignUpAction(target: self, action: #selector(singUpButtonDidTap(_:)))
         
         return cell
     }

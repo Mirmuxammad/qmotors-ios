@@ -138,6 +138,7 @@ class MainVC: BaseVC {
     
     @objc private func technicalСenterButtonDidTap() {
         print("technicalСenterButtonDidTap")
+        router?.pushTechnicalCenterVC()
     }
     
     @objc private func personalAreaButtonDidTap() {
