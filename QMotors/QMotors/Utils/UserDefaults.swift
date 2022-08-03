@@ -21,6 +21,7 @@ class UserDefaultsService {
         
     var authToken: String? {
         get {
+            return "121|rvhFyrro03qn00cQdaJOSfarSAYLkPpLim6WuEpc"
             let authToken = UserDefaults.standard.value(forKey: Keys.authToken) as? String
             return authToken ?? nil
         }

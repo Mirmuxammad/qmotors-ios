@@ -7,6 +7,8 @@
 
 import UIKit
 import SnapKit
+import CoreLocation
+import MapKit
 
 class TechnicalCenterVC: BaseVC {
     
@@ -107,6 +109,14 @@ class TechnicalCenterVC: BaseVC {
         }
     
     }
+    
+    private func callNumber(phoneNumber: String) {
+        guard let url = URL(string: "telprompt://\(phoneNumber)"),
+              UIApplication.shared.canOpenURL(url) else {
+            return
+        }
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    }
 
     // MARK: - Private actions
     
@@ -117,17 +127,47 @@ class TechnicalCenterVC: BaseVC {
     
     @objc private func phoneButtonDidTap(_ sender: UIButton) {
         print("phoneButtonDidTap \(technicalCenters[sender.tag].phoneNumber)")
+        let phoneNumber = technicalCenters[sender.tag].phoneNumber
+
+        callNumber(phoneNumber: phoneNumber.formattedPhoneNumber)
     }
     
     @objc private func navigationButtonDidTap(_ sender: UIButton) {
         print("navigationButtonDidTap \(technicalCenters[sender.tag].coordinates)")
-
+        
+        let latitude = technicalCenters[sender.tag].coordinates.coordinate.latitude
+        let longitude = technicalCenters[sender.tag].coordinates.coordinate.longitude
+        
+        selectPreferedNaviApp(latitude: latitude, longitude: longitude)
     }
     
     @objc private func singUpButtonDidTap(_ sender: UIButton) {
         print("singUpButtonDidTap \(technicalCenters[sender.tag].title)")
     }
     
+    // MARK: - Location helper
+    
+    private func selectPreferedNaviApp(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        let actionSheet = UIAlertController(title: "Построить маршрут", message: "Выберите приложение", preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Google Карты", style: .default, handler: { _ in
+            guard let url = URL(string: "comgooglemaps://?daddr=\(latitude),\(longitude))&directionsmode=driving&zoom=14&views=traffic") else { return }
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Apple Карты", style: .default, handler: { _ in
+            let coordinate = CLLocationCoordinate2DMake(latitude, longitude)
+            let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary: nil))
+            mapItem.name = "Destination"
+            mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Yandex Карты", style: .default, handler: { _ in
+            guard let url = URL(string: "yandexmaps://maps.yandex.ru/?ll=\(longitude),\(latitude)&z=12&l=map") else { return }
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
+        self.present(actionSheet, animated: true, completion: nil)
+    }
 }
 
 // MARK: - UITableViewDataSource
