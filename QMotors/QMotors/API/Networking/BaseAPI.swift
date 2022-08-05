@@ -18,6 +18,7 @@ enum RequestMethod {
     case carModelList
     case addCar
     case addCarPhoto(Int)
+    case getTechCenterList
     
     var path: String {
         switch self {
@@ -37,6 +38,8 @@ enum RequestMethod {
             return "car"
         case .addCarPhoto(let id):
             return "car/\(id)/photo"
+        case .getTechCenterList:
+            return "tech-center/list"
         }
     }
 }
@@ -54,17 +57,12 @@ final class BaseAPI {
     fileprivate static func request(reqMethod: RequestMethod,
                                     parameters: Parameters,
                                     method: HTTPMethod,
-                                    isAuthorized: Bool,
                                     success: @escaping (Data?) -> Void,
                                     failure: @escaping (NetworkError?) -> Void) {
         var headers = BaseAPI().headers
         
-        if isAuthorized {
-//            guard let token = UserDefaultsService.sharedInstance.authToken else {
-//                failure(NetworkError(.other("Токен не найден!")))
-//                return
-//            }
-            headers.add(.authorization(bearerToken: "111|SYBnB7NDu2XgsMGTQmqyo5NdRNy88On9gOUKkceN"))
+        if let token = UserDefaultsService.sharedInstance.authToken {
+            headers.add(.authorization(bearerToken: token))
         }
         
         authorizedSession.request(URL(string: BaseAPI.baseURL + reqMethod.path)!, method: method, parameters: parameters, encoding: method == .post ? JSONEncoding.default : URLEncoding.default, headers: headers).response { response in
@@ -85,11 +83,11 @@ final class BaseAPI {
                                     failure: @escaping (NetworkError?) -> Void) {
         var headers = BaseAPI().headers
         
-//        guard let token = UserDefaultsService.sharedInstance.authToken else {
-//            failure(NetworkError(.other("Токен не найден!")))
-//            return
-//        }
-        headers.add(.authorization(bearerToken: "111|SYBnB7NDu2XgsMGTQmqyo5NdRNy88On9gOUKkceN"))
+        guard let token = UserDefaultsService.sharedInstance.authToken else {
+            failure(NetworkError(.other("Токен не найден!")))
+            return
+        }
+        headers.add(.authorization(bearerToken: token))
         
         authorizedSession.upload(multipartFormData: { multiPart in
             print("🔴", fileURLArray)
@@ -105,20 +103,24 @@ final class BaseAPI {
     
     // MARK: GET Requests
     static func unAuthorizedGetRequest(reqMethod: RequestMethod, parameters: Parameters, success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
-        request(reqMethod: reqMethod, parameters: parameters, method: .get, isAuthorized: false, success: success, failure: failure)
+        request(reqMethod: reqMethod, parameters: parameters, method: .get, success: success, failure: failure)
     }
     
     static func authorizedGetRequest(reqMethod: RequestMethod, parameters: Parameters, success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
-        request(reqMethod: reqMethod, parameters: parameters, method: .get, isAuthorized: true, success: success, failure: failure)
+        request(reqMethod: reqMethod, parameters: parameters, method: .get, success: success, failure: failure)
+    }
+    
+    static func getTechCenterList(reqMethod: RequestMethod, parameters: Parameters, success: @escaping(Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
+        request(reqMethod: reqMethod, parameters: parameters, method: .get, success: success, failure: failure)
     }
     
     // MARK: POST Requests
     static func unAuthorizedPostRequest(reqMethod: RequestMethod, parameters: Parameters, success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
-        request(reqMethod: reqMethod, parameters: parameters, method: .post, isAuthorized: false, success: success, failure: failure)
+        request(reqMethod: reqMethod, parameters: parameters, method: .post, success: success, failure: failure)
     }
     
     static func authorizedPostRequest(reqMethod: RequestMethod, parameters: Parameters, success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
-        request(reqMethod: reqMethod, parameters: parameters, method: .post, isAuthorized: true, success: success, failure: failure)
+        request(reqMethod: reqMethod, parameters: parameters, method: .post, success: success, failure: failure)
     }
     
     static func authorizedMultipartPostRequest(carId: Int, fieldName: String, fileURLArray: [URL], success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {

@@ -29,7 +29,7 @@ class AppCoordinator: NSObject {
         router?.pushMainVC()
 //        router?.pushPersonalAreaVC()
 //        router?.pushRegistrationVC()
-//        router?.pushMyCarsVC()
+//        router?.pushCarVC()
 //        router?.pushTechnicalCenterVC()
         
         

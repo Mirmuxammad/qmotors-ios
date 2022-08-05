@@ -14,7 +14,7 @@ class TechnicalCenterVC: BaseVC {
     
     // MARK: - Properties
     
-    let technicalCenters = TechnicalCenterData.shared.technicalCenters
+    var technicalCenters = [TechnicalCenter]()
 
     // MARK: - UI Elements
     
@@ -53,6 +53,12 @@ class TechnicalCenterVC: BaseVC {
         return tableView
     }()
     
+    private let activityIndicator: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView()
+        view.style = .large
+        return view
+    }()
+    
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -63,6 +69,7 @@ class TechnicalCenterVC: BaseVC {
 
         setupViews()
         setupConstraints()
+        loadTechCenters()
     }
         
     // MARK: - Private functions
@@ -73,6 +80,7 @@ class TechnicalCenterVC: BaseVC {
         backgroundView.addSubview(backButton)
         backgroundView.addSubview(titleLable)
         backgroundView.addSubview(tableView)
+        view.addSubview(activityIndicator)
     }
 
     private func setupConstraints() {
@@ -107,6 +115,10 @@ class TechnicalCenterVC: BaseVC {
             make.right.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview()
         }
+        
+        activityIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
     
     }
     
@@ -117,6 +129,25 @@ class TechnicalCenterVC: BaseVC {
         }
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
+    
+    // MARK: - Load tech centers
+    
+    private func loadTechCenters() {
+        activityIndicator.startAnimating()
+        TechCenterAPI.techCenterList { [weak self] jsonData in
+            guard let self = self else { return }
+            self.technicalCenters = jsonData
+            self.tableView.reloadData()
+            self.activityIndicator.stopAnimating()
+        } failure: { error in
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+
+    }
 
     // MARK: - Private actions
     
@@ -126,17 +157,17 @@ class TechnicalCenterVC: BaseVC {
     }
     
     @objc private func phoneButtonDidTap(_ sender: UIButton) {
-        print("phoneButtonDidTap \(technicalCenters[sender.tag].phoneNumber)")
-        let phoneNumber = technicalCenters[sender.tag].phoneNumber
+        print("phoneButtonDidTap \(technicalCenters[sender.tag].phone)")
+        let phoneNumber = technicalCenters[sender.tag].phone
 
         callNumber(phoneNumber: phoneNumber.formattedPhoneNumber)
     }
     
     @objc private func navigationButtonDidTap(_ sender: UIButton) {
-        print("navigationButtonDidTap \(technicalCenters[sender.tag].coordinates)")
+        print("navigationButtonDidTap \(technicalCenters[sender.tag].latitude), \(technicalCenters[sender.tag].longitude)")
         
-        let latitude = technicalCenters[sender.tag].coordinates.coordinate.latitude
-        let longitude = technicalCenters[sender.tag].coordinates.coordinate.longitude
+        let latitude = technicalCenters[sender.tag].latitude
+        let longitude = technicalCenters[sender.tag].longitude
         
         selectPreferedNaviApp(latitude: latitude, longitude: longitude)
     }
@@ -147,14 +178,19 @@ class TechnicalCenterVC: BaseVC {
     
     // MARK: - Location helper
     
-    private func selectPreferedNaviApp(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+    private func selectPreferedNaviApp(latitude: String, longitude: String) {
         let actionSheet = UIAlertController(title: "Построить маршрут", message: "Выберите приложение", preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "Google Карты", style: .default, handler: { _ in
             guard let url = URL(string: "comgooglemaps://?daddr=\(latitude),\(longitude))&directionsmode=driving&zoom=14&views=traffic") else { return }
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }))
         actionSheet.addAction(UIAlertAction(title: "Apple Карты", style: .default, handler: { _ in
-            let coordinate = CLLocationCoordinate2DMake(latitude, longitude)
+
+            guard
+                let lat = Double(latitude),
+                let lon = Double(longitude) else { return }
+            
+            let coordinate = CLLocationCoordinate2DMake(lat, lon)
             let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary: nil))
             mapItem.name = "Destination"
             mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])

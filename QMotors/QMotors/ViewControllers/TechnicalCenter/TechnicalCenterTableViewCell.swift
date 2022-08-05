@@ -151,7 +151,7 @@ class TechnicalCenterTableViewCell: UITableViewCell {
     func setupCell(_ with: TechnicalCenter) {
         titleLabel.text = with.title
         addressLabel.text = with.address
-        phoneNumberButton.setTitle(with.phoneNumber, for: .normal)
+        phoneNumberButton.setTitle(with.phone, for: .normal)
     }
     
     func setupPhoneAction(target: Any, action: Selector) {
