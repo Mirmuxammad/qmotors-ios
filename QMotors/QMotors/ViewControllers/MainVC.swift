@@ -130,6 +130,7 @@ class MainVC: BaseVC {
     
     @objc private func maintenanceRecordButtonDidTap() {
         print("maintenanceRecordButtonDidTap")
+        router?.pushMaintenanceVC()
     }
     
     @objc private func bonusButtonDidTap() {

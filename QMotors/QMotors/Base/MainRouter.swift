@@ -64,6 +64,17 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
+    func pushMaintenanceOrderVC() {
+        let vc = MaintenanceOrderVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
+    func pushMaintenanceVC() {
+        let vc = MaintenanceVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
+    
     func presentSideMenu(rootScreen: RootScreen) {
         let sideMenuVC = SideMenuVC()
         sideMenuVC.router = self

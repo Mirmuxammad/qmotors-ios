@@ -184,6 +184,7 @@ extension SideMenuVC: UITableViewDelegate, UITableViewDataSource {
             dismiss(animated: true)
         case 11:
             dismiss(animated: true)
+            router?.pushMaintenanceVC()
         default:
             print("__Tap__")
         }
