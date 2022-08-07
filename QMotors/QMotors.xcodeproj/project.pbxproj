@@ -83,6 +83,8 @@
 		84DDD2BB287F12FC00272C19 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD2BA287F12FC00272C19 /* UIColor+Extension.swift */; };
 		84DDD2BE287F393300272C19 /* SideMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD2BD287F393300272C19 /* SideMenuVC.swift */; };
 		E0CCAE56E74A9C8AB951C365 /* Pods_QMotors.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FD0605EC1AF8C942E96CC2 /* Pods_QMotors.framework */; };
+		F34B850D289FD199006334FD /* TechnicalRecordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34B850C289FD198006334FD /* TechnicalRecordVC.swift */; };
+		F34B850F28A01410006334FD /* UserAutos.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34B850E28A01410006334FD /* UserAutos.swift */; };
 		F371A61E289FBD8C0090472A /* MaintenanceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371A61D289FBD8C0090472A /* MaintenanceVC.swift */; };
 		F371A620289FBDB40090472A /* MaintenanceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371A61F289FBDB40090472A /* MaintenanceTableViewCell.swift */; };
 		F371A622289FBDCE0090472A /* MaintenanceOrderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371A621289FBDCE0090472A /* MaintenanceOrderVC.swift */; };
@@ -169,6 +171,8 @@
 		84DDD2A6287F0AE800272C19 /* Montserrat-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Black.ttf"; sourceTree = "<group>"; };
 		84DDD2BA287F12FC00272C19 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		84DDD2BD287F393300272C19 /* SideMenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuVC.swift; sourceTree = "<group>"; };
+		F34B850C289FD198006334FD /* TechnicalRecordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechnicalRecordVC.swift; sourceTree = "<group>"; };
+		F34B850E28A01410006334FD /* UserAutos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAutos.swift; sourceTree = "<group>"; };
 		F371A61D289FBD8C0090472A /* MaintenanceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceVC.swift; sourceTree = "<group>"; };
 		F371A61F289FBDB40090472A /* MaintenanceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceTableViewCell.swift; sourceTree = "<group>"; };
 		F371A621289FBDCE0090472A /* MaintenanceOrderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceOrderVC.swift; sourceTree = "<group>"; };
@@ -222,6 +226,7 @@
 				8498364F28872B6A00EF47D0 /* SmsResponse.swift */,
 				84AFF8282887DBD0009207BD /* CustomError.swift */,
 				84AC3B97289B007900353231 /* TechnicalCenter.swift */,
+				F34B850E28A01410006334FD /* UserAutos.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -245,6 +250,7 @@
 			children = (
 				84ACAF49289285320012508C /* TechnicalCenterVC.swift */,
 				84ACAF4B28929DE40012508C /* TechnicalCenterTableViewCell.swift */,
+				F34B850C289FD198006334FD /* TechnicalRecordVC.swift */,
 			);
 			path = TechnicalCenter;
 			sourceTree = "<group>";
@@ -621,6 +627,7 @@
 				84A4AB692889C51700B657F1 /* CabinetVC.swift in Sources */,
 				84AE2739288BD45E000870D4 /* SmallBackButton.swift in Sources */,
 				8456BA702881786600684AF5 /* RequestCallButton.swift in Sources */,
+				F34B850F28A01410006334FD /* UserAutos.swift in Sources */,
 				84A4AB6D2889CFB800B657F1 /* PersonalAreaButton.swift in Sources */,
 				849836312886974800EF47D0 /* BackButton.swift in Sources */,
 				84DDD292287F0A2E00272C19 /* MainScreenButton.swift in Sources */,
@@ -629,6 +636,7 @@
 				84D94F57288559D90023AA02 /* RegistrationVC.swift in Sources */,
 				84AE2730288AA63E000870D4 /* UserDefaults.swift in Sources */,
 				849836372886EDBC00EF47D0 /* AuthResponse.swift in Sources */,
+				F34B850D289FD199006334FD /* TechnicalRecordVC.swift in Sources */,
 				84ACAF3C28927D170012508C /* NetworkError.swift in Sources */,
 				84DDD2BB287F12FC00272C19 /* UIColor+Extension.swift in Sources */,
 				84AE273F288D2AFF000870D4 /* CarNumberView.swift in Sources */,

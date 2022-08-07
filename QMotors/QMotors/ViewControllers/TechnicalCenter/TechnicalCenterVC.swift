@@ -174,6 +174,7 @@ class TechnicalCenterVC: BaseVC {
     
     @objc private func singUpButtonDidTap(_ sender: UIButton) {
         print("singUpButtonDidTap \(technicalCenters[sender.tag].title)")
+        router?.pushTechnicalRecordVC()
     }
     
     // MARK: - Location helper

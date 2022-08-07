@@ -34,6 +34,13 @@ class MaintenanceVC: BaseVC {
         return view
     }()
     
+    private let colorImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "promo_background_button")
+        imageView.frame.size = CGSize(width: 570, height: 150)
+        return imageView
+    }()
+    
 
     
     // MARK: - Buttons
@@ -86,7 +93,7 @@ class MaintenanceVC: BaseVC {
     private let intdroductionBottomLabel: UILabel = {
         let label = UILabel()
         label.text = "Мы рады предложить вам список услуг, на которые вы можете записаться совершенно бесплатно"
-        label.font = UIFont(name: "Montserrat", size: 16)
+        label.font = UIFont(name: "Montserrat-Semibold", size: 16)
         label.textColor = .white
         label.textAlignment = .left
         label.numberOfLines = 4
@@ -118,6 +125,13 @@ class MaintenanceVC: BaseVC {
         setupViews()
         setupConstraints()
     }
+    
+    private let carModelChevronButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "chevron-icon"), for: .normal)
+        return button
+    }()
+    
     //MARK: - ViewSettings
     
     private func setupViews() {
@@ -130,8 +144,9 @@ class MaintenanceVC: BaseVC {
         backgroundView.addSubview(tableView)
         backgroundView.addSubview(orderButton)
         backgroundView.addSubview(informationLabel)
-        introductionView.addSubview(intdroductionLabel)
-        introductionView.addSubview(intdroductionBottomLabel)
+        colorImage.addSubview(intdroductionLabel)
+        colorImage.addSubview(intdroductionBottomLabel)
+        introductionView.addSubview(colorImage)
     }
     
     private func setupConstraints() {

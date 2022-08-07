@@ -74,6 +74,11 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
+    func pushTechnicalRecordVC() {
+        let vc = TechnicalRecordVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
     
     func presentSideMenu(rootScreen: RootScreen) {
         let sideMenuVC = SideMenuVC()
