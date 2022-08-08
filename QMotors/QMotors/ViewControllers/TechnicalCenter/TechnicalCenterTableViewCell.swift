@@ -154,15 +154,18 @@ class TechnicalCenterTableViewCell: UITableViewCell {
         phoneNumberButton.setTitle(with.phone, for: .normal)
     }
     
-    func setupPhoneAction(target: Any, action: Selector) {
+    func setupPhoneAction(target: Any, action: Selector, index: Int) {
+        phoneNumberButton.tag = index
         phoneNumberButton.addTarget(target, action: action, for: .touchUpInside)
     }
     
-    func setupNavigationAction(target: Any, action: Selector) {
+    func setupNavigationAction(target: Any, action: Selector, index: Int) {
+        navigationButton.tag = index
         navigationButton.setupAction(target: target, action: action)
     }
     
-    func setupSignUpAction(target: Any, action: Selector) {
+    func setupSignUpAction(target: Any, action: Selector, index: Int) {
+        signUpButton.tag = index
         signUpButton.setupAction(target: target, action: action)
     }
     
