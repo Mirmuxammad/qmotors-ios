@@ -70,6 +70,7 @@ class RegistrationVC: BaseVC {
     
     private let codeTextField: SwiftMaskField = {
         let textField = SwiftMaskField()
+        textField.maskString = "NNNNNN"
         textField.placeholder = "------"
         textField.borderStyle = .roundedRect
         textField.layer.borderColor = UIColor.init(hex: "#B6B6B6").cgColor
@@ -295,7 +296,8 @@ class RegistrationVC: BaseVC {
         LoginAPI.sendSmsCode(phone: phoneNumber, success: { [weak self] jsonData in
             self?.activityIndicator.stopAnimating()
         }) { error in
-            print(error)
+            guard let error = error else { return }
+            print(error.localizedDescription)
             self.activityIndicator.stopAnimating()
         }
     }
@@ -306,15 +308,22 @@ class RegistrationVC: BaseVC {
             let phoneNumber = phoneTextField.text,
             let smsCode = codeTextField.text else { return }
         LoginAPI.loginWithSmsCode(phone: phoneNumber, smsCode: Int(smsCode) ?? 0, success: { [weak self] jsonData in
-            guard let json = jsonData else { return }
-            self?.validSmsCode()
+            guard let self = self else { return }
+            self.validSmsCode()
+            self.activityIndicator.stopAnimating()
+            self.router?.pushMainVC()
         }) { [weak self] error in
-            print(error)
-            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            guard
+                let self = self,
+                let error = error else { return }
+            self.activityIndicator.stopAnimating()
+            self.invalidSmsCode()
+            print(error.localizedDescription)
+            let alert = UIAlertController(title: "Ошибка", message: error.message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
             
             }))
-            self?.present(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
