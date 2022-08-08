@@ -38,10 +38,3 @@ final class TechCenterAPI {
     }
 }
 
-/*
- var carMarks: [CarMark] = []
- for carMark in jsonData["result"].arrayValue {
- carMarks.append(CarMark(id: carMark["id"].intValue, name: carMark["name"].stringValue))
- }
- success(carMarks)
- */

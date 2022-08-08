@@ -130,6 +130,20 @@ class TechnicalCenterVC: BaseVC {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
+    private func showRegisterAlert() {
+        let alert = UIAlertController(title: "Зарегистрироватся?", message: "Записаться на ТО могут только зарегистрированные пользователи", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Регистрация", style: .default) { _ in
+            self.router?.pushRegistrationVC()
+        }
+        
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+        
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        
+        self.present(alert, animated: true)
+    }
+    
     // MARK: - Load tech centers
     
     private func loadTechCenters() {
@@ -146,7 +160,7 @@ class TechnicalCenterVC: BaseVC {
             }))
             self.present(alert, animated: true, completion: nil)
         }
-
+        
     }
 
     // MARK: - Private actions
@@ -174,7 +188,13 @@ class TechnicalCenterVC: BaseVC {
     
     @objc private func singUpButtonDidTap(_ sender: UIButton) {
         print("singUpButtonDidTap \(technicalCenters[sender.tag].title)")
-        router?.pushTechnicalRecordVC()
+        
+        if UserDefaultsService.sharedInstance.authToken != nil {
+            router?.pushTechnicalRecordVC()
+        } else {
+            showRegisterAlert()
+        }
+        
     }
     
     // MARK: - Location helper
@@ -220,9 +240,9 @@ extension TechnicalCenterVC: UITableViewDataSource {
         else { return UITableViewCell() }
         
         cell.setupCell(technicalCenters[indexPath.row])
-        cell.setupPhoneAction(target: self, action: #selector(phoneButtonDidTap(_:)))
-        cell.setupNavigationAction(target: self, action: #selector(navigationButtonDidTap(_:)))
-        cell.setupSignUpAction(target: self, action: #selector(singUpButtonDidTap(_:)))
+        cell.setupPhoneAction(target: self, action: #selector(phoneButtonDidTap(_:)), index: indexPath.row)
+        cell.setupNavigationAction(target: self, action: #selector(navigationButtonDidTap(_:)), index: indexPath.row)
+        cell.setupSignUpAction(target: self, action: #selector(singUpButtonDidTap(_:)), index: indexPath.row)
         
         return cell
     }
