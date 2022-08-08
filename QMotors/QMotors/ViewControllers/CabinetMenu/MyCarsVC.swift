@@ -10,6 +10,10 @@ import SnapKit
 
 class MyCarsVC: BaseVC {
     
+    // MARK: - Properties
+    
+    var myCar = [MyCarModel]()
+    
     // MARK: - UI Elements
     
     private let logoImageView: UIImageView = {
@@ -52,7 +56,7 @@ class MyCarsVC: BaseVC {
         let tableView = UITableView()
 //        tableView.backgroundColor = .gray
         tableView.separatorStyle = .none
-        tableView.allowsSelection = false
+        tableView.allowsSelection = true
         
         tableView.register(MyCarsTableViewCell.self, forCellReuseIdentifier: MyCarsTableViewCell.identifier)
         return tableView
@@ -69,6 +73,12 @@ class MyCarsVC: BaseVC {
         button.isEnabled()
         return button
     }()
+    
+    private let activityIndicator: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView()
+        view.style = .large
+        return view
+    }()
 
     
     // MARK: - Lifecycle
@@ -78,11 +88,12 @@ class MyCarsVC: BaseVC {
         
         tableView.dataSource = self
         tableView.delegate = self
-
+        loadMyCar()
         setupViews()
         setupConstraints()
-        
+
         setupSegmentedControl()
+        
 
     }
         
@@ -191,6 +202,25 @@ class MyCarsVC: BaseVC {
         
     }
     
+    //MARK: - Load My Car -
+    
+    private func loadMyCar() {
+        activityIndicator.startAnimating()
+        CarAPI.getMyCarModel { [weak self] jsonData in
+            guard let self = self else { return }
+            self.myCar = jsonData
+            self.tableView.reloadData()
+            self.activityIndicator.stopAnimating()
+            
+        } failure: { error in
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     
     // MARK: - Private actions
     
@@ -223,13 +253,15 @@ class MyCarsVC: BaseVC {
 extension MyCarsVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        5
+        myCar.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard
             let cell = tableView.dequeueReusableCell(withIdentifier: MyCarsTableViewCell.identifier, for: indexPath) as? MyCarsTableViewCell
         else { return UITableViewCell() }
+        
+        cell.setupCell(myCar[indexPath.row])
         
         return cell
     }
@@ -244,5 +276,6 @@ extension MyCarsVC: UITableViewDataSource {
 extension MyCarsVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("didSelectRowAt - \(indexPath.row)")
+        router?.pushCarInfoVC()
     }
 }

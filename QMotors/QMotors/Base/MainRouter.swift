@@ -79,6 +79,15 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
+    func pushCarInfoVC() {
+        let vc = CarInfoVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
+    func pushEditCarVC() {
+        let vc = EditCarVC()
+        pushViewController(vc: vc, animated: true)
+    }
     
     func presentSideMenu(rootScreen: RootScreen) {
         let sideMenuVC = SideMenuVC()

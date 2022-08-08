@@ -19,6 +19,7 @@ enum RequestMethod {
     case addCar
     case addCarPhoto(Int)
     case getTechCenterList
+    case getCars
     
     var path: String {
         switch self {
@@ -40,6 +41,8 @@ enum RequestMethod {
             return "car/\(id)/photo"
         case .getTechCenterList:
             return "tech-center/list"
+        case .getCars:
+            return "car"
         }
     }
 }

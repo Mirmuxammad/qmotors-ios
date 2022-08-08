@@ -58,6 +58,41 @@ final class CarAPI {
         }
     }
     
+    static func getMyCarModel(success: @escaping ([MyCarModel]) -> Void, failure: @escaping escapeNetworkError) {
+        let params: Parameters = [:]
+        
+        BaseAPI.authorizedGetRequest(reqMethod: .getCars, parameters: params, success: { data in
+            guard let data = data else { return }
+            let jsonData = JSON(data)
+            let errors = jsonData["errors"]
+            if errors.type == .null {
+                var myCarModels = [MyCarModel]()
+                for myCarModel in jsonData["result"].arrayValue {
+                    myCarModels.append(MyCarModel(id: myCarModel["id"].intValue,
+                                                  car_model_id:         myCarModel["car_model_id"].intValue,
+                                                  user_id: myCarModel["user_id"].intValue,
+                                                  year: myCarModel["year"].intValue,
+                                                  status: myCarModel["status"].intValue,
+                                                  last_visit: myCarModel["last_visit"].stringValue,
+                                                  vin: myCarModel["vin"].stringValue,
+                                                  mileage: myCarModel["mileage"].stringValue,
+                                                  created_at: myCarModel["created_at"].stringValue,
+                                                  updated_at: myCarModel["updated_at"].stringValue,
+                                                  number: myCarModel["number"].stringValue,
+                                                  //user_car_photos: myCarModel["user_car_photos"].arrayValue,
+                                                  model: myCarModel["model"]["name"].stringValue,
+                                                  mark: myCarModel["model"]["mark"]["name"].stringValue))
+                }
+                success(myCarModels)
+            } else {
+                failure(NetworkError(.other(errors.stringValue)))
+            }
+        }) { error in
+            failure(error)
+        }
+    }
+    
+    
     static func carModelListByMarkId(markId: Int, success: @escaping ([CarModel]) -> Void, failure: @escaping escapeNetworkError) {
         let params: Parameters = [
             "car_mark_id": markId

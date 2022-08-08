@@ -163,6 +163,12 @@ class MyCarsTableViewCell: UITableViewCell {
     
     // MARK: - Public functions
     
-
+    func setupCell(_ with: MyCarModel) {
+        modelLabel.text = with.model
+        mileageLabel.text = with.mileage
+        lastVisitLabel.text = with.last_visit
+    }
+    
+    
     
 }
