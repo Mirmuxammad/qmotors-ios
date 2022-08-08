@@ -70,7 +70,7 @@ class RegistrationVC: BaseVC {
     
     private let codeTextField: SwiftMaskField = {
         let textField = SwiftMaskField()
-        textField.placeholder = "----"
+        textField.placeholder = "------"
         textField.borderStyle = .roundedRect
         textField.layer.borderColor = UIColor.init(hex: "#B6B6B6").cgColor
         textField.keyboardType = .numberPad
