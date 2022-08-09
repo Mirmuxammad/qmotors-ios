@@ -10,6 +10,7 @@
 		401C746228A1297300CA5DAD /* EditCarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C746128A1297300CA5DAD /* EditCarVC.swift */; };
 		401C746428A1431600CA5DAD /* CarInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C746328A1431600CA5DAD /* CarInfoVC.swift */; };
 		4049212828A177AB00257750 /* CarResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4049212728A177AB00257750 /* CarResponse.swift */; };
+		40BA091328A23B8B00990A72 /* DeleteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40BA091228A23B8B00990A72 /* DeleteButton.swift */; };
 		8456BA6B28815AF200684AF5 /* PhoneCallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8456BA6A28815AF200684AF5 /* PhoneCallView.swift */; };
 		8456BA6E2881659E00684AF5 /* PhoneCallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8456BA6D2881659E00684AF5 /* PhoneCallButton.swift */; };
 		8456BA702881786600684AF5 /* RequestCallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8456BA6F2881786600684AF5 /* RequestCallButton.swift */; };
@@ -99,6 +100,7 @@
 		401C746128A1297300CA5DAD /* EditCarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCarVC.swift; sourceTree = "<group>"; };
 		401C746328A1431600CA5DAD /* CarInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarInfoVC.swift; sourceTree = "<group>"; };
 		4049212728A177AB00257750 /* CarResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarResponse.swift; sourceTree = "<group>"; };
+		40BA091228A23B8B00990A72 /* DeleteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteButton.swift; sourceTree = "<group>"; };
 		56FD0605EC1AF8C942E96CC2 /* Pods_QMotors.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QMotors.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8456BA6A28815AF200684AF5 /* PhoneCallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneCallView.swift; sourceTree = "<group>"; };
 		8456BA6D2881659E00684AF5 /* PhoneCallButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneCallButton.swift; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 				848D9AAE28804C6A00C4BC3F /* RouteButton.swift */,
 				848D9AB0288054FF00C4BC3F /* SideMenuButton.swift */,
 				84D94F5A2885AD4A0023AA02 /* ActionButton.swift */,
+				40BA091228A23B8B00990A72 /* DeleteButton.swift */,
 				849836302886974800EF47D0 /* BackButton.swift */,
 				84ACAF2C289184F70012508C /* CustomDropdown.swift */,
 				84ACAF2F289185060012508C /* CustomLabel.swift */,
@@ -623,6 +626,7 @@
 				84A4AB6B2889CCB900B657F1 /* LogoutButton.swift in Sources */,
 				84D94F5928855F0D0023AA02 /* MainVC.swift in Sources */,
 				84AE2737288AE772000870D4 /* MyCarsVC.swift in Sources */,
+				40BA091328A23B8B00990A72 /* DeleteButton.swift in Sources */,
 				84DDD28F287EF04700272C19 /* BaseVC.swift in Sources */,
 				84ACAF3D28927D170012508C /* ProfileAPI.swift in Sources */,
 				84ACAF292891848D0012508C /* CarVC.swift in Sources */,

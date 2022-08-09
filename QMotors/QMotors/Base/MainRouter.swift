@@ -79,8 +79,9 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
-    func pushCarInfoVC() {
+    func pushCarInfoVC(car: MyCarModel) {
         let vc = CarInfoVC()
+        vc.car = car
         pushViewController(vc: vc, animated: true)
     }
     
