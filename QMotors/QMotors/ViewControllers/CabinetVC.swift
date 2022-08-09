@@ -58,6 +58,12 @@ class CabinetVC: BaseVC {
         return button
     }()
     
+    private let backButton: CabinetBackButton = {
+        let button = CabinetBackButton()
+        button.setupButton(target: self, action: #selector(backButtonDidTap))
+        return button
+    }()
+    
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -83,6 +89,7 @@ class CabinetVC: BaseVC {
         verticalStackView.addArrangedSubview(bonusButton)
         verticalStackView.addArrangedSubview(signUpButton)
         backgroundView.addSubview(logoutButton)
+        backgroundView.addSubview(backButton)
     }
 
     private func setupConstraints() {
@@ -117,7 +124,14 @@ class CabinetVC: BaseVC {
             make.height.equalTo(55)
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
-            make.bottom.equalToSuperview().offset(-100)
+            make.bottom.equalTo(backButton.snp.top).offset(-20)
+        }
+        
+        backButton.snp.makeConstraints { make in
+            make.height.equalTo(55)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.bottom.equalToSuperview().offset(-20)
         }
         
     }
@@ -139,6 +153,22 @@ class CabinetVC: BaseVC {
         profileButton.setupButton(title: "ПРОФИЛЬ", image: profileImage, target: self, action: #selector(profileButtonnDidTap))
         bonusButton.setupButton(title: "БОНУСЫ", image: bonusImage, target: self, action: #selector(bonusButtonDidTap))
         signUpButton.setupButton(title: "ЗАПИСАТЬСЯ", image: signUpImage, target: self, action: #selector(signUpButtonDidTap))
+    }
+    
+    private func showLogoutAlert() {
+        let alert = UIAlertController(title: "Выход", message: "Вы точно хотите выйти из профиля?", preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+            UserDefaultsService.sharedInstance.removeAuthToken()
+            self?.router?.back()
+        }
+        
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+        
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        
+        self.present(alert, animated: true)
     }
     
     // MARK: - Private actions
@@ -170,7 +200,10 @@ class CabinetVC: BaseVC {
     
     @objc private func logoutButtonDidTap() {
         print("logoutButtonDidTap")
-        UserDefaultsService.sharedInstance.removeAuthToken()
+        showLogoutAlert()
+    }
+    
+    @objc private func backButtonDidTap() {
         router?.back()
     }
 
