@@ -27,6 +27,15 @@ class ProfileVC: BaseVC {
         return imageView
     }()
     
+    private let titleLable: UILabel = {
+        let label = UILabel()
+        label.text = "Создать профиль"
+        label.font = UIFont(name: "Montserrat-SemiBold", size: 22)
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+    
     private let backgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .red
@@ -36,16 +45,10 @@ class ProfileVC: BaseVC {
     private let scrollView: UIScrollView = {
         let view = UIScrollView()
         view.backgroundColor = .white
-//        view.contentSize = CGSize(width: view.frame.size.width, height: 2000)
-        view.showsHorizontalScrollIndicator = true
+        view.showsVerticalScrollIndicator = true
+        view.alwaysBounceVertical = true
         return view
     }()
-    
-//    private let backgroundView: UIView = {
-//        let view = UIView()
-//        view.backgroundColor = .white
-//        return view
-//    }()
     
     private let photoLabel: UILabel = {
         let label = UILabel()
@@ -68,14 +71,29 @@ class ProfileVC: BaseVC {
         return view
     }()
     
-    private let testTextField: SwiftMaskField = {
-        let textField = SwiftMaskField()
-        textField.maskString = "+N (NNN) NNN-NN-NN"
-        textField.placeholder = "+7 (___) __-__-__"
-        textField.borderStyle = .roundedRect
-        textField.layer.borderColor = UIColor.init(hex: "#B6B6B6").cgColor
-        textField.keyboardType = .numberPad
-        return textField
+    private let birthdayView: BirthdayPicker = {
+        let view = BirthdayPicker()
+        return view
+    }()
+    
+    
+    
+    
+    
+    
+    private let emailView: TitledTextField = {
+        let view = TitledTextField()
+        return view
+    }()
+    
+    private let phoneView: TitledTextField = {
+        let view = TitledTextField()
+        return view
+    }()
+    
+    private let extraPhoneView: TitledTextField = {
+        let view = TitledTextField()
+        return view
     }()
     
     private let backButton: SmallBackButton = {
@@ -84,14 +102,18 @@ class ProfileVC: BaseVC {
         return button
     }()
     
-    private let titleLable: UILabel = {
+
+    
+    private let servicesLable: UILabel = {
         let label = UILabel()
-        label.text = "Создать профиль"
-        label.font = UIFont(name: "Montserrat-SemiBold", size: 22)
+        label.text = "Управление услугами"
+        label.font = UIFont(name: Const.fontMed, size: 16)
         label.textColor = .black
         label.textAlignment = .left
         return label
     }()
+    
+    
     
     private let saveProfileButton: ActionButton = {
         let button = ActionButton()
@@ -117,10 +139,13 @@ class ProfileVC: BaseVC {
         setupConstraints()
         
         fullNameView.fullNameView(delegate: self)
+        emailView.emailView(delegate: self)
+        phoneView.phoneNumberView(delegate: self)
+        extraPhoneView.extraPhoneNumberView(delegate: self)
         
-        scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + 400)
-        scrollView.frame = self.view.bounds
-        backgroundView.frame.size = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + 400)
+        scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + 2000)
+//        scrollView.frame = self.view.bounds
+        
     }
         
     // MARK: - Private functions
@@ -131,13 +156,18 @@ class ProfileVC: BaseVC {
         
         scrollView.addSubview(backgroundView)
         
-        backgroundView.addSubview(backButton)
-        backgroundView.addSubview(titleLable)
-        backgroundView.addSubview(photoLabel)
-        backgroundView.addSubview(photoView)
-        backgroundView.addSubview(fullNameView)
-        backgroundView.addSubview(testTextField)
+        scrollView.addSubview(backButton)
+        scrollView.addSubview(titleLable)
+        scrollView.addSubview(photoLabel)
+        scrollView.addSubview(photoView)
+        scrollView.addSubview(fullNameView)
         
+        scrollView.addSubview(birthdayView)
+        
+        scrollView.addSubview(emailView)
+        scrollView.addSubview(phoneView)
+        scrollView.addSubview(extraPhoneView)
+        scrollView.addSubview(servicesLable)
         
         
         
@@ -193,12 +223,44 @@ class ProfileVC: BaseVC {
             make.top.equalTo(photoView.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
-             
+            make.height.equalTo(90)
         }
         
-        testTextField.snp.makeConstraints { make in
+        
+        birthdayView.snp.makeConstraints { make in
             make.top.equalTo(fullNameView.snp.bottom).offset(20)
-            make.left.right.equalToSuperview()
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.height.equalTo(125)
+        }
+        
+
+        emailView.snp.makeConstraints { make in
+            make.top.equalTo(birthdayView.snp.bottom).offset(20)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.height.equalTo(90)
+        }
+        
+        phoneView.snp.makeConstraints { make in
+            make.top.equalTo(emailView.snp.bottom).offset(20)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.height.equalTo(90)
+        }
+        
+        extraPhoneView.snp.makeConstraints { make in
+            make.top.equalTo(phoneView.snp.bottom).offset(20)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.height.equalTo(90)
+        }
+        
+        servicesLable.snp.makeConstraints { make in
+            make.top.equalTo(extraPhoneView.snp.bottom).offset(20)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.height.equalTo(20)
         }
 
         

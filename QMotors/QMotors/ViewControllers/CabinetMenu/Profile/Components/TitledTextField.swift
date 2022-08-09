@@ -39,8 +39,6 @@ class TitledTextField: UIView {
         
         setupViews()
         setupConstraints()
-        
-        backgroundColor = .red
     }
     
     required init?(coder: NSCoder) {
@@ -70,15 +68,34 @@ class TitledTextField: UIView {
     
     // MARK: - Public function
     
-//    func setupAction(target: Any, action: Selector) {
-//        button.addTarget(target, action: action, for: .touchUpInside)
-//    }
-    
     func fullNameView(delegate: UITextFieldDelegate) {
         textField.delegate = delegate
         titleLabel.text = "ФИО"
         textField.placeholder = "Ваше ФИО полностью"
+        textField.keyboardType = .default
+    }
+    
+    func emailView(delegate: UITextFieldDelegate) {
+        textField.delegate = delegate
+        titleLabel.text = "Ваш e-mail"
+        textField.placeholder = "ваш e-mail"
+        textField.keyboardType = .emailAddress
     }
 
+    func phoneNumberView(delegate: UITextFieldDelegate) {
+        textField.delegate = delegate
+        titleLabel.text = "Ваш номер телефона"
+        textField.maskString = "+N (NNN) NNN-NN-NN"
+        textField.placeholder = "+7 (___) __-__-__"
+        textField.keyboardType = .numberPad
+    }
+    
+    func extraPhoneNumberView(delegate: UITextFieldDelegate) {
+        textField.delegate = delegate
+        titleLabel.text = "Дополнительный номер телефона"
+        textField.maskString = "+N (NNN) NNN-NN-NN"
+        textField.placeholder = "+7 (___) __-__-__"
+        textField.keyboardType = .numberPad
+    }
 }
 
