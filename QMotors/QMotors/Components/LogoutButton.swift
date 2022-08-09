@@ -15,7 +15,7 @@ class LogoutButton: UIView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Montserrat-SemiBold", size: 14)
-        label.textColor = .black
+        label.textColor = .red
         label.textAlignment = .center
         label.text = "ВЫХОД"
         return label
@@ -34,7 +34,7 @@ class LogoutButton: UIView {
         
         layer.cornerRadius = 5
         layer.backgroundColor = UIColor.clear.cgColor
-        layer.borderColor = UIColor.black.cgColor
+        layer.borderColor = UIColor.red.cgColor
         layer.borderWidth = 1.5
         
         setupViews()

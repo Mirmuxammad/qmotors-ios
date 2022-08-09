@@ -1,32 +1,21 @@
 //
-//  BackButton.swift
+//  CabinetBackButton.swift
 //  QMotors
 //
-//  Created by Alexey Grebennikov on 19.07.22.
+//  Created by Alexey Grebennikov on 9.08.22.
 //
 
-import UIKit
+import Foundation
 import SnapKit
 
-class BackButton: UIView {
+class CabinetBackButton: UIView {
     
     // MARK: - UI Elements
-    
-    private let titleView: UIView = {
-        let view = UIView()
-        return view
-    }()
-    
-    private let logoImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "back_white_arrow")
-        return imageView
-    }()
         
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Montserrat-SemiBold", size: 14)
-        label.textColor = .white
+        label.textColor = .black
         label.textAlignment = .center
         label.text = "НАЗАД"
         return label
@@ -45,7 +34,7 @@ class BackButton: UIView {
         
         layer.cornerRadius = 5
         layer.backgroundColor = UIColor.clear.cgColor
-        layer.borderColor = UIColor.white.cgColor
+        layer.borderColor = UIColor.black.cgColor
         layer.borderWidth = 1.5
         
         setupViews()
@@ -59,27 +48,14 @@ class BackButton: UIView {
     // MARK: - Private functions
     
     private func setupViews() {
-        addSubview(titleView)
-        titleView.addSubview(logoImageView)
-        titleView.addSubview(titleLabel)
+        addSubview(titleLabel)
         addSubview(button)
     }
     
     private func setupConstraints() {
-        
-        titleView.snp.makeConstraints { make in
-            make.width.equalTo(100)
-            make.center.equalToSuperview()
-        }
-        
-        logoImageView.snp.makeConstraints { make in
-            make.left.equalToSuperview()
-            make.centerY.equalToSuperview()
-        }
             
         titleLabel.snp.makeConstraints { make in
-            make.left.equalTo(logoImageView.snp.right).offset(15)
-            make.centerY.equalTo(logoImageView)
+            make.edges.equalToSuperview()
         }
     
         button.snp.makeConstraints { make in
@@ -89,7 +65,7 @@ class BackButton: UIView {
     
     // MARK: - Public function
     
-    func setupAction(target: Any, action: Selector) {
+    func setupButton(target: Any, action: Selector) {
         button.addTarget(target, action: action, for: .touchUpInside)
     }
     
