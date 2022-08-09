@@ -188,6 +188,7 @@ class CabinetVC: BaseVC {
     
     @objc private func profileButtonnDidTap() {
         print("profileButtonnDidTap")
+        router?.pushProfileVC()
     }
     
     @objc private func bonusButtonDidTap() {
