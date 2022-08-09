@@ -15,7 +15,12 @@ class EditCarVC: BaseVC {
     var car: MyCarModel?{
         didSet {
             carMarkField.text = car?.mark
-            
+            carModelField.text = car?.model
+            carYearField.text = "\(car?.year ?? 0)"
+            mileageField.text = car?.mileage
+            vinField.text = car?.vin
+            carModelId = car?.car_model_id
+            carId = car?.id
         }
     }
     
@@ -48,6 +53,7 @@ class EditCarVC: BaseVC {
             }
         }
     }
+    private var carId: Int?
     private var carModelId: Int?
     private var fileURLArray: [URL] = [] {
         didSet {
@@ -185,15 +191,6 @@ class EditCarVC: BaseVC {
         return field
     }()
     
-    private let carNumberLabel: CustomLabel = {
-        let label = CustomLabel(text: "Номер", fontWeight: .medium)
-        return label
-    }()
-    
-    private let carNumberField: CustomTextField = {
-        let field = CustomTextField(placeholder: "Укажите номер автомобиля", keyboardType: .asciiCapable)
-        return field
-    }()
     
     private let vinLabel: CustomLabel = {
         let label = CustomLabel(text: "VIN номер", fontWeight: .medium)
@@ -238,10 +235,10 @@ class EditCarVC: BaseVC {
         return photoView
     }()
     
-    private let addCarButton: ActionButton = {
+    private let editCarButton: ActionButton = {
         let button = ActionButton()
-        button.setupTitle(title: "ДОБАВИТЬ АВТОМОБИЛЬ")
-        button.setupButton(target: self, action: #selector(addCarButtonTapped))
+        button.setupTitle(title: "Редактировать")
+        button.setupButton(target: self, action: #selector(editCarButtonTapped))
         button.isEnabled()
         return button
     }()
@@ -307,8 +304,6 @@ class EditCarVC: BaseVC {
         carYearField.addSubview(carYearChevronButton)
         contentView.addSubview(mileageLabel)
         contentView.addSubview(mileageField)
-        contentView.addSubview(carNumberLabel)
-        contentView.addSubview(carNumberField)
         contentView.addSubview(vinLabel)
         contentView.addSubview(vinField)
         contentView.addSubview(imgLabel)
@@ -316,7 +311,7 @@ class EditCarVC: BaseVC {
         photosStackView.addArrangedSubview(firstPhotoView)
         photosStackView.addArrangedSubview(secondPhotoView)
         photosStackView.addArrangedSubview(thirdPhotoView)
-        contentView.addSubview(addCarButton)
+        contentView.addSubview(editCarButton)
         
         contentView.addSubview(carMarkOptionsTable)
         contentView.addSubview(carModelOptionsTable)
@@ -418,14 +413,18 @@ class EditCarVC: BaseVC {
         reloadCarPhotos()
     }
     
-    @objc private func addCarButtonTapped() {
+    @objc private func editCarButtonTapped() {
         print(#function)
-        guard let carModelId = carModelId, let carYear = carYearField.text, let carMileage = mileageField.text, let carNumber = carNumberField.text, let vin = vinField.text else { return }
+        guard let carId = carId, let carModelId = carModelId, let carYear = carYearField.text, let carMileage = mileageField.text, let vin = vinField.text else { return }
         guard let carYearInt = Int(carYear), let carMileageInt = Int(carMileage) else { return }
+        print("🔴")
+        print(carModelId, carYearInt, carMileageInt, vin)
         activityIndicator.startAnimating()
-        CarAPI.addCar(carModelId: carModelId, year: carYearInt, mileage: carMileageInt, number: carNumber, vin: vin, lastVisit: Date(), status: .active, success: { [weak self] result in
-            self?.addCarPhoto(carId: result["id"].intValue, completion: {})
+        
+        CarAPI.editCar(carId: carId,carModelId: carModelId, year: carYearInt, mileage: carMileageInt, vin: vin, lastVisit: Date(), status: .active, success: { [weak self] result in
+            //self?.addCarPhoto(carId: result["id"].intValue, completion: {})
             self?.activityIndicator.stopAnimating()
+            self?.router?.pushMyCarsVC()
         }) { [weak self] error in
             print(error)
             self?.activityIndicator.stopAnimating()
@@ -704,19 +703,8 @@ extension EditCarVC {
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
-        carNumberLabel.snp.makeConstraints { make in
-            make.top.equalTo(mileageField.snp.bottom).offset(12)
-            make.left.equalToSuperview().offset(lOffset)
-            make.right.equalToSuperview().offset(rOffset)
-        }
-        carNumberField.snp.makeConstraints { make in
-            make.top.equalTo(carNumberLabel.snp.bottom).offset(14)
-            make.height.equalTo(54)
-            make.left.equalToSuperview().offset(lOffset)
-            make.right.equalToSuperview().offset(rOffset)
-        }
         vinLabel.snp.makeConstraints { make in
-            make.top.equalTo(carNumberField.snp.bottom).offset(12)
+            make.top.equalTo(mileageField.snp.bottom).offset(12)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
@@ -745,7 +733,7 @@ extension EditCarVC {
         thirdPhotoView.snp.makeConstraints { make in
             make.width.height.equalTo(100)
         }
-        addCarButton.snp.makeConstraints { make in
+        editCarButton.snp.makeConstraints { make in
             make.top.equalTo(photosStackView.snp.bottom).offset(28)
             make.height.equalTo(54)
             make.bottom.equalToSuperview().offset(-40)
@@ -753,110 +741,5 @@ extension EditCarVC {
             make.right.equalToSuperview().offset(rOffset)
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-//    //MARK: -UI Elements-
-//
-//    private let logoImageView: UIImageView = {
-//        let imageView = UIImageView()
-//        imageView.image = UIImage(named: "small_logo")
-//        return imageView
-//    }()
-//
-//    private let backgroundView: UIView = {
-//        let view = UIView()
-//        view.backgroundColor = .white
-//        return view
-//    }()
-//
-//    private let backButton: SmallBackButton = {
-//       let button = SmallBackButton()
-//        button.setupAction(target: self, action: #selector(backButtonDidTap))
-//        return button
-//    }()
-//
-//    private let titleLabel: UILabel = {
-//        let label = UILabel()
-//        label.text = "Редактировать"
-//        label.font = UIFont(name: "Montserrat-SemiBold", size: 22)
-//        label.textColor = .black
-//        label.textAlignment = .left
-//        return label
-//    }()
-//
-//    private let saveButton: ActionButton = {
-//        let button = ActionButton()
-//        button.setupButton(target: self, action: #selector(editButtonDidTap))
-//        button.setupTitle(title: "Редактировать")
-//        button.isEnabled()
-//        return button
-//    }()
-//
-//    private let trashButton: ActionButton = {
-//        let button = ActionButton()
-//        button.setupButton(target: self, action: #selector(trashButtonDidTap))
-//        button.setupTitle(title: "\(UIImage(named: "trash"))")
-//        button.isEnabled()
-//        return button
-//    }()
-//
-//    // MARK: - Lifecycle -
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        setupView()
-//        setupConstraints()
-//    }
-//
-//    // MARK: - Private functions -
-//
-//
-//    private func setupView() {
-//        view.addSubview(logoImageView)
-//        view.addSubview(backgroundView)
-//
-//        backgroundView.addSubview(titleLabel)
-//        backgroundView.addSubview(saveButton)
-//        backgroundView.addSubview(trashButton)
-//    }
-//
-//    private func setupConstraints() {
-//
-//        logoImageView.snp.makeConstraints { make in
-//            make.size.equalTo(CGSize(width: 55, height: 55))
-//            make.centerX.equalToSuperview()
-//            make.top.equalTo(self.view.safeAreaLayoutGuide)
-//        }
-//
-//        backgroundView.snp.makeConstraints { make in
-//            make.top.equalTo(logoImageView.snp.bottom).offset(20)
-//            make.left.right.bottom.equalToSuperview()
-//        }
-//
-//
-//    }
-//
-//    //MARK: -Private Action-
-//
-//    @objc private func backButtonDidTap() {
-//        router?.back()
-//    }
-//
-//    @objc private func editButtonDidTap() {
-//
-//    }
-//
-//    @objc private func trashButtonDidTap() {
-//
-//    }
 }
 

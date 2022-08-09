@@ -20,6 +20,7 @@ enum RequestMethod {
     case addCarPhoto(Int)
     case getTechCenterList
     case getCars
+    case editCar(Int)
     
     var path: String {
         switch self {
@@ -43,6 +44,8 @@ enum RequestMethod {
             return "tech-center/list"
         case .getCars:
             return "car"
+        case .editCar(let id):
+            return "car/\(id)"
         }
     }
 }
@@ -68,7 +71,7 @@ final class BaseAPI {
             headers.add(.authorization(bearerToken: token))
         }
         
-        authorizedSession.request(URL(string: BaseAPI.baseURL + reqMethod.path)!, method: method, parameters: parameters, encoding: method == .post ? JSONEncoding.default : URLEncoding.default, headers: headers).response { response in
+        authorizedSession.request(URL(string: BaseAPI.baseURL + reqMethod.path)!, method: method, parameters: parameters, encoding: method == .post || method == .put ? JSONEncoding.default : URLEncoding.default, headers: headers).response { response in
             debugPrint(response)
             print("ReqMethod: \(reqMethod)\nJSON Status: \(String(describing: response.response?.statusCode))\nResponse:", JSON(response.data ?? ""))
             if let data = response.data {
@@ -128,5 +131,9 @@ final class BaseAPI {
     
     static func authorizedMultipartPostRequest(carId: Int, fieldName: String, fileURLArray: [URL], success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
         request(reqMethod: .addCarPhoto(carId), fieldName: fieldName, fileURLArray: fileURLArray, success: success, failure: failure)
+    }
+    //MARK: - Put request
+    static func authorizedPutRequest(reqMethod: RequestMethod, parameters: Parameters, success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
+        request(reqMethod: reqMethod, parameters: parameters, method: .put, success: success, failure: failure)
     }
 }

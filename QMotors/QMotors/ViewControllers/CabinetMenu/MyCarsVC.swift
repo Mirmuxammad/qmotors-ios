@@ -244,8 +244,6 @@ class MyCarsVC: BaseVC {
         print(#function)
         router?.pushCarVC()
     }
-    
-
 
 }
 
