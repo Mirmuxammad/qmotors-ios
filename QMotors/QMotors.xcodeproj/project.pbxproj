@@ -88,6 +88,9 @@
 		84DDD2B8287F0AE800272C19 /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84DDD2A6287F0AE800272C19 /* Montserrat-Black.ttf */; };
 		84DDD2BB287F12FC00272C19 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD2BA287F12FC00272C19 /* UIColor+Extension.swift */; };
 		84DDD2BE287F393300272C19 /* SideMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD2BD287F393300272C19 /* SideMenuVC.swift */; };
+		E02E316828A2BB060067CEAB /* OrderAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02E316728A2BB060067CEAB /* OrderAPI.swift */; };
+		E02E316A28A2BCA30067CEAB /* OrderTypeResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02E316928A2BCA30067CEAB /* OrderTypeResponce.swift */; };
+		E02E316C28A2BFAD0067CEAB /* NewOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02E316B28A2BFAD0067CEAB /* NewOrder.swift */; };
 		E0CCAE56E74A9C8AB951C365 /* Pods_QMotors.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FD0605EC1AF8C942E96CC2 /* Pods_QMotors.framework */; };
 		F34B850D289FD199006334FD /* TechnicalRecordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34B850C289FD198006334FD /* TechnicalRecordVC.swift */; };
 		F34B850F28A01410006334FD /* UserAutos.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34B850E28A01410006334FD /* UserAutos.swift */; };
@@ -183,6 +186,9 @@
 		84DDD2A6287F0AE800272C19 /* Montserrat-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Black.ttf"; sourceTree = "<group>"; };
 		84DDD2BA287F12FC00272C19 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		84DDD2BD287F393300272C19 /* SideMenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuVC.swift; sourceTree = "<group>"; };
+		E02E316728A2BB060067CEAB /* OrderAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderAPI.swift; sourceTree = "<group>"; };
+		E02E316928A2BCA30067CEAB /* OrderTypeResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderTypeResponce.swift; sourceTree = "<group>"; };
+		E02E316B28A2BFAD0067CEAB /* NewOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewOrder.swift; sourceTree = "<group>"; };
 		F34B850C289FD198006334FD /* TechnicalRecordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechnicalRecordVC.swift; sourceTree = "<group>"; };
 		F34B850E28A01410006334FD /* UserAutos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAutos.swift; sourceTree = "<group>"; };
 		F371A61D289FBD8C0090472A /* MaintenanceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceVC.swift; sourceTree = "<group>"; };
@@ -240,6 +246,8 @@
 				84AC3B97289B007900353231 /* TechnicalCenter.swift */,
 				F34B850E28A01410006334FD /* UserAutos.swift */,
 				4049212728A177AB00257750 /* CarResponse.swift */,
+				E02E316928A2BCA30067CEAB /* OrderTypeResponce.swift */,
+				E02E316B28A2BFAD0067CEAB /* NewOrder.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -254,6 +262,7 @@
 				84ACAF3628927D170012508C /* NetworkError.swift */,
 				84ACAF3728927D170012508C /* ProfileAPI.swift */,
 				84ACAF3828927D170012508C /* RequestInterceptor.swift */,
+				E02E316728A2BB060067CEAB /* OrderAPI.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -623,12 +632,14 @@
 				84ACAF342891857F0012508C /* UITextField+Extension.swift in Sources */,
 				84ACAF4628927DEB0012508C /* CarModelResponse.swift in Sources */,
 				84DDD275287ED3A100272C19 /* SceneDelegate.swift in Sources */,
+				E02E316828A2BB060067CEAB /* OrderAPI.swift in Sources */,
 				84DDD2BE287F393300272C19 /* SideMenuVC.swift in Sources */,
 				84ACAF31289185070012508C /* CustomLabel.swift in Sources */,
 				84ACAF4128927D170012508C /* LoginAPI.swift in Sources */,
 				84D94F5B2885AD4A0023AA02 /* ActionButton.swift in Sources */,
 				84ACAF502892C6C70012508C /* TechCellSingUpButton.swift in Sources */,
 				84ACAF352891857F0012508C /* UIViewController+Extension.swift in Sources */,
+				E02E316C28A2BFAD0067CEAB /* NewOrder.swift in Sources */,
 				848D9AB1288054FF00C4BC3F /* SideMenuButton.swift in Sources */,
 				84AE2742288D4792000870D4 /* Formatter+Separator.swift in Sources */,
 				84AFF8292887DBD0009207BD /* CustomError.swift in Sources */,
@@ -655,6 +666,7 @@
 				84AE273D288BF10E000870D4 /* MyCarsTableViewCell.swift in Sources */,
 				84ACAF4728927DEB0012508C /* CarMarkResponse.swift in Sources */,
 				84A4AB692889C51700B657F1 /* CabinetVC.swift in Sources */,
+				E02E316A28A2BCA30067CEAB /* OrderTypeResponce.swift in Sources */,
 				84AE2739288BD45E000870D4 /* SmallBackButton.swift in Sources */,
 				8456BA702881786600684AF5 /* RequestCallButton.swift in Sources */,
 				F34B850F28A01410006334FD /* UserAutos.swift in Sources */,

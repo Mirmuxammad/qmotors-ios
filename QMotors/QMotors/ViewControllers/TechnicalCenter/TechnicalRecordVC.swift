@@ -9,13 +9,12 @@ import UIKit
 import SnapKit
 
 class TechnicalRecordVC: BaseVC {
-    
-    let testArray = ["Техническое обслуживания", "Слесарный ремонт", "Кузовной ремонт", "Детайлинг", "Другое"]
-    
+        
     private let cellIdentifier = "optionsTableCell"
-    private var userAutosData = [UserAutos]()
     private var technicalCentersData = [TechnicalCenter]()
-    private var myCar = [MyCarModel]()
+    private var myCars = [MyCarModel]()
+    private var orderTypes = [OrderType]()
+    private var order = NewOrder()
     
     
     private var fileURLArray: [URL] = [] {
@@ -226,7 +225,11 @@ class TechnicalRecordVC: BaseVC {
         UserDefaults.standard.set(nil, forKey: "firstPhotoUrl")
         UserDefaults.standard.set(nil, forKey: "secondPhotoUrl")
         UserDefaults.standard.set(nil, forKey: "thirdPhotoUrl")
+        
+        infoField.delegate = self
     
+        datePicker.addTarget(self, action: #selector(setDate(picker:)), for: .valueChanged)
+        order.guarantee = false
         setupView()
     }
     
@@ -305,6 +308,7 @@ class TechnicalRecordVC: BaseVC {
     private func loadInfo() {
         self.showLoadingIndicator()
         let dg = DispatchGroup()
+        loadOrderTypes(dg: dg)
         loadMyCar(dg: dg)
         loadTechCenters(dg: dg)
         updateTableViews(dg: dg)
@@ -346,11 +350,29 @@ class TechnicalRecordVC: BaseVC {
         
     }
     
+    
+    private func loadOrderTypes(dg: DispatchGroup) {
+        dg.enter()
+        OrderAPI.orderTybeList { [weak self] jsonData in
+            guard let self = self else { return }
+            self.orderTypes = jsonData
+            dg.leave()
+        } failure: { error in
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+            self.present(alert, animated: true, completion: nil)
+            dg.leave()
+        }
+        
+    }
+    
     private func loadMyCar(dg: DispatchGroup) {
         dg.enter()
         CarAPI.getMyCarModel { [weak self] jsonData in
             guard let self = self else { return }
-            self.myCar = jsonData
+            self.myCars = jsonData
             dg.leave()
         } failure: { error in
             let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
@@ -366,6 +388,7 @@ class TechnicalRecordVC: BaseVC {
         dg.notify(queue: .main) {
             self.technicalCenterTable.reloadData()
             self.userCarTable.reloadData()
+            self.optionTable.reloadData()
             self.dismissLoadingIndicator()
         }
     }
@@ -377,7 +400,21 @@ class TechnicalRecordVC: BaseVC {
     }
     
     @objc private func addSendButtonTapped() {
-        print("addSendButtonTapped")
+        self.showLoadingIndicator()
+        print(order)
+
+        OrderAPI.addNewOrder(order: order) { json in
+            print(json)
+            self.dismissLoadingIndicator()
+        } failure: { error in
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+            self.dismissLoadingIndicator()
+            self.present(alert, animated: true, completion: nil)
+        }
+
     }
     
     @objc private func chevronButtonTapped(_ sender: UIButton) {
@@ -429,6 +466,13 @@ class TechnicalRecordVC: BaseVC {
         reloadCarPhotos()
     }
     
+    @objc private func setDate(picker: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+        let dateString = dateFormatter.string(from: picker.date)
+        order.date = dateString
+    }
+    
     private func reloadCarPhotos() {
         if fileURLArray.isEmpty {
             firstPhotoView.carPhoto = UIImage(named: "empty-photo")!
@@ -457,6 +501,12 @@ class TechnicalRecordVC: BaseVC {
 extension TechnicalRecordVC: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        if textField == infoField {
+            order.description = textField.text ?? "" + string
+            return true
+        }
+        
         return textField != userCarField || textField != optionField
     }
     
@@ -499,9 +549,9 @@ extension TechnicalRecordVC: UITableViewDelegate, UITableViewDataSource {
         case technicalCenterTable:
             return technicalCentersData.count
         case userCarTable:
-            return myCar.count
+            return myCars.count
         case optionTable:
-            return testArray.count
+            return orderTypes.count
         default:
             break
         }
@@ -515,9 +565,9 @@ extension TechnicalRecordVC: UITableViewDelegate, UITableViewDataSource {
         case technicalCenterTable:
             cell.textLabel?.text = technicalCentersData[indexPath.row].title
         case userCarTable:
-            cell.textLabel?.text = myCar[indexPath.row].mark + " " + myCar[indexPath.row].model
+            cell.textLabel?.text = myCars[indexPath.row].mark + " " + myCars[indexPath.row].model
         case optionTable:
-            cell.textLabel?.text = testArray[indexPath.row]
+            cell.textLabel?.text = orderTypes[indexPath.row].name
         default:
             break
         }
@@ -530,12 +580,16 @@ extension TechnicalRecordVC: UITableViewDelegate, UITableViewDataSource {
         case technicalCenterTable:
             let centerName = technicalCentersData[indexPath.row].title
             technicalCenterField.text = centerName
+            order.techCenterId = technicalCentersData[indexPath.row].id
         case userCarTable:
-            let carMark = myCar[indexPath.row].mark + " " + myCar[indexPath.row].model
+            let carMark = myCars[indexPath.row].mark + " " + myCars[indexPath.row].model
             userCarField.text = carMark
+            order.carId = String(myCars[indexPath.row].id)
+            order.carNumber = myCars[indexPath.row].number
         case optionTable:
-            let optionModel = testArray[indexPath.row]
-            optionField.text = testArray[indexPath.row]
+            let optionModel = orderTypes[indexPath.row].name
+            optionField.text = optionModel
+            order.orderTypeId = orderTypes[indexPath.row].id
         default:
             break
         }
