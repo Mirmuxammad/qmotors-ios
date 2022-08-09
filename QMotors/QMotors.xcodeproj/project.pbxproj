@@ -90,6 +90,7 @@
 		84DDD2BE287F393300272C19 /* SideMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD2BD287F393300272C19 /* SideMenuVC.swift */; };
 		84EB2DFA28A29306003D4353 /* TitledTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB2DF928A29306003D4353 /* TitledTextField.swift */; };
 		84EB2DFE28A2E1A6003D4353 /* BirthdayPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB2DFD28A2E1A6003D4353 /* BirthdayPicker.swift */; };
+		84EB2E0228A2ED2C003D4353 /* SwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB2E0128A2ED2C003D4353 /* SwitchView.swift */; };
 		E0CCAE56E74A9C8AB951C365 /* Pods_QMotors.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FD0605EC1AF8C942E96CC2 /* Pods_QMotors.framework */; };
 		F34B850D289FD199006334FD /* TechnicalRecordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34B850C289FD198006334FD /* TechnicalRecordVC.swift */; };
 		F34B850F28A01410006334FD /* UserAutos.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34B850E28A01410006334FD /* UserAutos.swift */; };
@@ -187,6 +188,7 @@
 		84DDD2BD287F393300272C19 /* SideMenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuVC.swift; sourceTree = "<group>"; };
 		84EB2DF928A29306003D4353 /* TitledTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitledTextField.swift; sourceTree = "<group>"; };
 		84EB2DFD28A2E1A6003D4353 /* BirthdayPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayPicker.swift; sourceTree = "<group>"; };
+		84EB2E0128A2ED2C003D4353 /* SwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchView.swift; sourceTree = "<group>"; };
 		F34B850C289FD198006334FD /* TechnicalRecordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechnicalRecordVC.swift; sourceTree = "<group>"; };
 		F34B850E28A01410006334FD /* UserAutos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAutos.swift; sourceTree = "<group>"; };
 		F371A61D289FBD8C0090472A /* MaintenanceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceVC.swift; sourceTree = "<group>"; };
@@ -466,6 +468,7 @@
 			children = (
 				84EB2DF928A29306003D4353 /* TitledTextField.swift */,
 				84EB2DFD28A2E1A6003D4353 /* BirthdayPicker.swift */,
+				84EB2E0128A2ED2C003D4353 /* SwitchView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -662,6 +665,7 @@
 				84ACAF4C28929DE40012508C /* TechnicalCenterTableViewCell.swift in Sources */,
 				848D9AAF28804C6A00C4BC3F /* RouteButton.swift in Sources */,
 				84EB2DFA28A29306003D4353 /* TitledTextField.swift in Sources */,
+				84EB2E0228A2ED2C003D4353 /* SwitchView.swift in Sources */,
 				84AE2734288AB460000870D4 /* SideMenuTableViewCell.swift in Sources */,
 				F371A61E289FBD8C0090472A /* MaintenanceVC.swift in Sources */,
 				84ACAF3F28927D170012508C /* BaseAPI.swift in Sources */,
