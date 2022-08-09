@@ -36,15 +36,15 @@ class ProfileVC: BaseVC {
         return label
     }()
     
-    private let backgroundView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .red
-        return view
-    }()
-    
+//    private let backgroundView: UIView = {
+//        let view = UIView()
+//        view.backgroundColor = .red
+//        return view
+//    }()
+//
     private let scrollView: UIScrollView = {
         let view = UIScrollView()
-        view.backgroundColor = .white
+        view.backgroundColor = .red
         view.showsVerticalScrollIndicator = true
         view.alwaysBounceVertical = true
         return view
@@ -154,7 +154,7 @@ class ProfileVC: BaseVC {
         view.addSubview(logoImageView)
         view.addSubview(scrollView)
         
-        scrollView.addSubview(backgroundView)
+     //   scrollView.addSubview(backgroundView)
         
         scrollView.addSubview(backButton)
         scrollView.addSubview(titleLable)
@@ -186,13 +186,13 @@ class ProfileVC: BaseVC {
         scrollView.snp.makeConstraints { make in
             make.top.equalTo(logoImageView.snp.bottom).offset(20)
             make.left.right.bottom.equalToSuperview()
-            make.width.equalTo(self.view.frame.size.width)
+            make.bottom.equalTo(saveProfileButton.snp.top).offset(-10)
         }
         
-        backgroundView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.width.equalTo(self.view.frame.size.width)
-        }
+//        backgroundView.snp.makeConstraints { make in
+//            make.edges.equalToSuperview()
+//            make.width.equalTo(self.view.frame.size.width)
+//        }
                 
         backButton.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 100, height: 23))
@@ -259,14 +259,11 @@ class ProfileVC: BaseVC {
         servicesLable.snp.makeConstraints { make in
             make.top.equalTo(extraPhoneView.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(20)
+            make.bottom.equalToSuperview().offset(-16)
             make.right.equalToSuperview().offset(-20)
             make.height.equalTo(20)
         }
 
-        
-        
-        
-                
         saveProfileButton.snp.makeConstraints { make in
             make.height.equalTo(55)
             make.left.equalToSuperview().offset(20)
