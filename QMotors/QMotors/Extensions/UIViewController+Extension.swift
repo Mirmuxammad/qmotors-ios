@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 extension UIViewController {
     func setupHideKeyboardOnTapView() {
@@ -24,5 +25,18 @@ extension UIViewController {
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return paths[0]
+    }
+    
+    func showLoadingIndicator() {
+        DispatchQueue.main.async {
+            let hud = MBProgressHUD.showAdded(to: self.navigationController?.view ?? self.view, animated: true)
+            hud.bezelView.color = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
+        }
+    }
+    
+    func dismissLoadingIndicator() {
+        DispatchQueue.main.async {
+            MBProgressHUD.hide(for: self.navigationController?.view ?? self.view, animated: true)
+        }
     }
 }
