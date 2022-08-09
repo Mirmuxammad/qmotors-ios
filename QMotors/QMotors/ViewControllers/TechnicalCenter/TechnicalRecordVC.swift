@@ -468,7 +468,7 @@ class TechnicalRecordVC: BaseVC {
     
     @objc private func setDate(picker: UIDatePicker) {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MM-yyyy"
+        dateFormatter.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatter.string(from: picker.date)
         order.date = dateString
     }
