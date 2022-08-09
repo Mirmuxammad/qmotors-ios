@@ -13,11 +13,9 @@ class CarInfoVC: BaseVC {
     
     var car: MyCarModel?{
         didSet {
-            print("🔴")
-            print(car)
             carModelLabel.text = car?.model
             millageLabel.text = car?.mileage
-            lastVisitLabel.text = car?.last_visit
+            lastVisitLabel.text = car?.last_visit.getDateString()
             VINLabel.text = car?.vin
         }
     }
@@ -199,7 +197,7 @@ class CarInfoVC: BaseVC {
         }
         
         carModelLabel.snp.makeConstraints { make in
-            make.height.equalTo(22)
+            make.height.equalTo(25)
             make.width.equalTo(93)
             make.left.equalToSuperview().offset(16)
             make.top.equalTo(carImageView.snp.bottom).offset(19)
@@ -265,20 +263,11 @@ class CarInfoVC: BaseVC {
     }
     
     @objc private func editCarButtonDidTap() {
-        
+        router?.pushEditCarVC(car: car!)
     }
     
     @objc private func trashCarButtonDidTap() {
         
     }
-    
-    // MARK: - Public functions
-    
-//    func setupCarInfo(car: MyCarModel) {
-//        carModelLabel.text = car.model
-//        millageLabel.text = car.mileage
-//        lastVisitLabel.text = car.last_visit
-//        VINLabel.text = car.vin
-//    }
     
 }

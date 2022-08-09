@@ -79,6 +79,7 @@ class MyCarsTableViewCell: UITableViewCell {
         label.textColor = .black
         label.textAlignment = .left
         label.text = "25.09.2016"
+        
         return label
     }()
 
@@ -166,7 +167,7 @@ class MyCarsTableViewCell: UITableViewCell {
     func setupCell(_ with: MyCarModel) {
         modelLabel.text = with.model
         mileageLabel.text = with.mileage
-        lastVisitLabel.text = with.last_visit
+        lastVisitLabel.text = with.last_visit.getDateString()
     }
     
     

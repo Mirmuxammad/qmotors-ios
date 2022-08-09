@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4006221C28A273B000E55C04 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006221B28A273B000E55C04 /* Date+Extension.swift */; };
 		401C746228A1297300CA5DAD /* EditCarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C746128A1297300CA5DAD /* EditCarVC.swift */; };
 		401C746428A1431600CA5DAD /* CarInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C746328A1431600CA5DAD /* CarInfoVC.swift */; };
 		4049212828A177AB00257750 /* CarResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4049212728A177AB00257750 /* CarResponse.swift */; };
@@ -98,6 +99,7 @@
 /* Begin PBXFileReference section */
 		25EE654A6181C6218A5559D4 /* Pods-QMotors.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMotors.debug.xcconfig"; path = "Target Support Files/Pods-QMotors/Pods-QMotors.debug.xcconfig"; sourceTree = "<group>"; };
 		297813ADA6CD9EA7AE640A7E /* Pods-QMotors.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMotors.release.xcconfig"; path = "Target Support Files/Pods-QMotors/Pods-QMotors.release.xcconfig"; sourceTree = "<group>"; };
+		4006221B28A273B000E55C04 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		401C746128A1297300CA5DAD /* EditCarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCarVC.swift; sourceTree = "<group>"; };
 		401C746328A1431600CA5DAD /* CarInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarInfoVC.swift; sourceTree = "<group>"; };
 		4049212728A177AB00257750 /* CarResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarResponse.swift; sourceTree = "<group>"; };
@@ -432,6 +434,7 @@
 				84ACAF322891857F0012508C /* UITextField+Extension.swift */,
 				84ACAF332891857F0012508C /* UIViewController+Extension.swift */,
 				84AC3B95289AAE5300353231 /* String+Extension.swift */,
+				4006221B28A273B000E55C04 /* Date+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -612,6 +615,7 @@
 				84ACAF342891857F0012508C /* UITextField+Extension.swift in Sources */,
 				84ACAF4628927DEB0012508C /* CarModelResponse.swift in Sources */,
 				84DDD275287ED3A100272C19 /* SceneDelegate.swift in Sources */,
+				4006221C28A273B000E55C04 /* Date+Extension.swift in Sources */,
 				84DDD2BE287F393300272C19 /* SideMenuVC.swift in Sources */,
 				84ACAF31289185070012508C /* CustomLabel.swift in Sources */,
 				84ACAF4128927D170012508C /* LoginAPI.swift in Sources */,
