@@ -35,7 +35,11 @@ class MyCarsTableViewCell: UITableViewCell {
 //        return imageView
 //    }()
     
-    private let carNumberView = CarNumberView()
+    private let carNumberView: CarInfoNumberView = {
+        let view = CarInfoNumberView()
+        
+        return view
+    }()
     
     private let modelLabel: UILabel = {
         let label = UILabel()
@@ -127,10 +131,8 @@ class MyCarsTableViewCell: UITableViewCell {
         }
         
         carNumberView.snp.makeConstraints { make in
-            make.height.equalTo(20)
-            make.left.equalToSuperview().offset(10)
-            make.right.equalToSuperview().offset(-10)
-            make.bottom.equalToSuperview().offset(-10)
+            make.left.equalTo(carImageView.snp.left).offset(12)
+            make.bottom.equalToSuperview().offset(-32)
         }
         
         modelLabel.snp.makeConstraints { make in
@@ -168,8 +170,7 @@ class MyCarsTableViewCell: UITableViewCell {
         modelLabel.text = with.model
         mileageLabel.text = with.mileage
         lastVisitLabel.text = with.last_visit.getDateString()
+        carNumberView.numberTitle.text = with.number.replaceToDots(cutCount: 8, count: 10)
     }
-    
-    
     
 }

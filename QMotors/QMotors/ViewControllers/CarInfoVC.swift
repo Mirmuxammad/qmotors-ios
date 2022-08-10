@@ -19,6 +19,7 @@ class CarInfoVC: BaseVC {
             VINLabel.text = car?.vin
             carId = car?.id
             carYear = car?.year
+            carNumberView.numberTitle.text = car?.number
         }
     }
     // MARK: - Properties
@@ -61,7 +62,12 @@ class CarInfoVC: BaseVC {
         return label
     }()
     
-    private let carNumberView = CarNumberView()
+    private let carNumberView: CarInfoNumberView = {
+        let view = CarInfoNumberView()
+        view.numberTitle.font = UIFont.boldSystemFont(ofSize: 15)
+        view.numberTitle.text?.replaceToDots(cutCount: 30, count: 30)
+        return view
+    }()
     
     private let millageTitleLabel: UILabel = {
         let label = UILabel()
@@ -188,17 +194,15 @@ class CarInfoVC: BaseVC {
         }
         
         carImageView.snp.makeConstraints { make in
+            make.height.equalTo(self.view.frame.width / 3)
             make.top.equalTo(backButton.snp.bottom).offset(17)
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
-            make.bottom.equalToSuperview().offset(-477)
         }
         
         carNumberView.snp.makeConstraints { make in
-            make.height.equalTo(20)
-            make.left.equalToSuperview().offset(10)
-            make.right.equalToSuperview().offset(-10)
-            make.bottom.equalToSuperview().offset(-10)
+            make.left.equalToSuperview().offset(16)
+            make.bottom.equalTo(carImageView.snp.bottom).offset(-40)
         }
         
         carModelLabel.snp.makeConstraints { make in

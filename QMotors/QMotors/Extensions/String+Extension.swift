@@ -25,4 +25,14 @@ extension String {
             return nil
         }
     }
+    
+    func replaceToDots(cutCount: Int, count: Int) -> String {
+        if self.count >= count {
+            let returner = self.prefix(cutCount) + "..."
+            return String(returner)
+        } else {
+            return self
+        }
+    }
+    
 }

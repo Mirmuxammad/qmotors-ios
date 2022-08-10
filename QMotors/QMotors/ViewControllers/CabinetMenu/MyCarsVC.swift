@@ -62,10 +62,6 @@ class MyCarsVC: BaseVC {
         return tableView
     }()
     
-    
-    
-    
-    
     private let addCarButton: ActionButton = {
         let button = ActionButton()
         button.setupButton(target: self, action: #selector(addCarButtonDidTap))
