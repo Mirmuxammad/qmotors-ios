@@ -71,7 +71,7 @@ final class BaseAPI {
             headers.add(.authorization(bearerToken: token))
         }
         
-        authorizedSession.request(URL(string: BaseAPI.baseURL + reqMethod.path)!, method: method, parameters: parameters, encoding: method == .post || method == .put ? JSONEncoding.default : URLEncoding.default, headers: headers).response { response in
+        authorizedSession.request(URL(string: BaseAPI.baseURL + reqMethod.path)!, method: method, parameters: parameters, encoding: method == .post || method == .put || method == .delete ? JSONEncoding.default : URLEncoding.default, headers: headers).response { response in
             debugPrint(response)
             print("ReqMethod: \(reqMethod)\nJSON Status: \(String(describing: response.response?.statusCode))\nResponse:", JSON(response.data ?? ""))
             if let data = response.data {
@@ -136,4 +136,9 @@ final class BaseAPI {
     static func authorizedPutRequest(reqMethod: RequestMethod, parameters: Parameters, success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
         request(reqMethod: reqMethod, parameters: parameters, method: .put, success: success, failure: failure)
     }
+    
+    static func authorizedDeleteRequest(reqMethod: RequestMethod, parameters: Parameters, success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
+        request(reqMethod: reqMethod, parameters: parameters, method: .delete, success: success, failure: failure)
+    }
+    
 }

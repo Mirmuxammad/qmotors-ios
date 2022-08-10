@@ -17,8 +17,14 @@ class CarInfoVC: BaseVC {
             millageLabel.text = car?.mileage
             lastVisitLabel.text = car?.last_visit.getDateString()
             VINLabel.text = car?.vin
+            carId = car?.id
+            carYear = car?.year
         }
     }
+    // MARK: - Properties
+    
+    private var carId: Int?
+    private var carYear: Int?
     
     //MARK: -UI Elements-
     
@@ -122,7 +128,6 @@ class CarInfoVC: BaseVC {
     private let trashCarButton: DeleteButton = {
         let button = DeleteButton()
         button.setupButton(target: self, action: #selector(trashCarButtonDidTap))
-        button.backgroundColor = .red
         return button
     }()
     
@@ -267,7 +272,15 @@ class CarInfoVC: BaseVC {
     }
     
     @objc private func trashCarButtonDidTap() {
+        print("🔴")
         
+        guard let carid = carId else { return }
+        
+        CarAPI.deleteCar(carId: carid, status: .deleted, success: { [weak self] result in
+            self?.router?.back()
+        }) { [weak self] error in
+            print(error)
+        }
     }
     
 }
