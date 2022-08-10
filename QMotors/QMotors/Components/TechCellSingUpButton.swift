@@ -88,7 +88,8 @@ class TechCellSingUpButton: UIView {
     
     // MARK: - Public function
     
-    func setupAction(target: Any, action: Selector) {
+    func setupAction(target: Any, action: Selector, tag: Int) {
+        button.tag = tag
         button.addTarget(target, action: action, for: .touchUpInside)
     }
 

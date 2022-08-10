@@ -216,8 +216,22 @@ class TechnicalRecordVC: BaseVC {
     
     private let thirdPhotoView: CustomPhotoView = {
         let photoView = CustomPhotoView()
+        
         return photoView
     }()
+    
+    init(techCenterId: Int) {
+        super .init(nibName: nil, bundle: nil)
+        order.techCenterId = techCenterId
+    }
+    
+    init() {
+        super .init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     
     override func viewDidLoad() {
@@ -386,6 +400,12 @@ class TechnicalRecordVC: BaseVC {
     
     private func updateTableViews(dg: DispatchGroup) {
         dg.notify(queue: .main) {
+            
+            if let id = self.order.techCenterId {
+                let centerName = self.technicalCentersData[id - 1].title
+                self.technicalCenterField.text = centerName
+            }
+            
             self.technicalCenterTable.reloadData()
             self.userCarTable.reloadData()
             self.optionTable.reloadData()

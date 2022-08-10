@@ -84,6 +84,11 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
+    func pushTechnicalRecordVCWhithID(id: Int) {
+        let vc = TechnicalRecordVC(techCenterId: id)
+        pushViewController(vc: vc, animated: true)
+    }
+    
     func pushCarInfoVC(car: MyCarModel) {
         let vc = CarInfoVC()
         vc.car = car

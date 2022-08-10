@@ -190,7 +190,7 @@ class TechnicalCenterVC: BaseVC {
         print("singUpButtonDidTap \(technicalCenters[sender.tag].title)")
         
         if UserDefaultsService.sharedInstance.authToken != nil {
-            router?.pushTechnicalRecordVC()
+            router?.pushTechnicalRecordVCWhithID(id: technicalCenters[sender.tag].id)
         } else {
             showRegisterAlert()
         }
@@ -238,7 +238,6 @@ extension TechnicalCenterVC: UITableViewDataSource {
         guard
             let cell = tableView.dequeueReusableCell(withIdentifier: TechnicalCenterTableViewCell.identifier, for: indexPath) as? TechnicalCenterTableViewCell
         else { return UITableViewCell() }
-        
         cell.setupCell(technicalCenters[indexPath.row])
         cell.setupPhoneAction(target: self, action: #selector(phoneButtonDidTap(_:)), index: indexPath.row)
         cell.setupNavigationAction(target: self, action: #selector(navigationButtonDidTap(_:)), index: indexPath.row)
