@@ -17,7 +17,7 @@ extension String {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let newDate = dateFormatter.date(from: self)
         let returnFormatter = DateFormatter()
-        returnFormatter.dateFormat = "yyyy-MM-dd"
+        returnFormatter.dateFormat = "dd.MM.yyyy"
         
         if let str = newDate {
             return returnFormatter.string(from: str)
@@ -33,6 +33,16 @@ extension String {
         } else {
             return self
         }
+    }
+    
+    func getCarRegionNumber() -> String {
+        let number = self.suffix(2)
+        return String(number)
+    }
+    
+    func getCarNumber() -> String {
+        let number = self.prefix(6)
+        return String(number)
     }
     
 }

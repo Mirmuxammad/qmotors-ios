@@ -21,6 +21,7 @@ class EditCarVC: BaseVC {
             vinField.text = car?.vin
             carModelId = car?.car_model_id
             carId = car?.id
+            carNumberLabel.text = car?.number
         }
     }
     
@@ -191,6 +192,15 @@ class EditCarVC: BaseVC {
         return field
     }()
     
+    private let carNumberLabel: CustomLabel = {
+        let label = CustomLabel(text: "Номер", fontWeight: .medium)
+        return label
+    }()
+    
+    private let carNumberField: CustomTextField = {
+        let field = CustomTextField(placeholder: "Укажите номер автомобиля", keyboardType: .asciiCapable)
+        return field
+    }()
     
     private let vinLabel: CustomLabel = {
         let label = CustomLabel(text: "VIN номер", fontWeight: .medium)
@@ -304,6 +314,8 @@ class EditCarVC: BaseVC {
         carYearField.addSubview(carYearChevronButton)
         contentView.addSubview(mileageLabel)
         contentView.addSubview(mileageField)
+        contentView.addSubview(carNumberLabel)
+        contentView.addSubview(carNumberField)
         contentView.addSubview(vinLabel)
         contentView.addSubview(vinField)
         contentView.addSubview(imgLabel)
@@ -415,13 +427,11 @@ class EditCarVC: BaseVC {
     
     @objc private func editCarButtonTapped() {
         print(#function)
-        guard let carId = carId, let carModelId = carModelId, let carYear = carYearField.text, let carMileage = mileageField.text, let vin = vinField.text else { return }
+        guard let carId = carId, let carModelId = carModelId, let carYear = carYearField.text, let carMileage = mileageField.text,let carNumber = carNumberField.text, let vin = vinField.text else { return }
         guard let carYearInt = Int(carYear), let carMileageInt = Int(carMileage) else { return }
-        print("🔴")
-        print(carModelId, carYearInt, carMileageInt, vin)
         activityIndicator.startAnimating()
         
-        CarAPI.editCar(carId: carId,carModelId: carModelId, year: carYearInt, mileage: carMileageInt, vin: vin, lastVisit: Date(), status: .active, success: { [weak self] result in
+        CarAPI.editCar(carId: carId,carModelId: carModelId, year: carYearInt, mileage: carMileageInt, number: carNumber, vin: vin, lastVisit: Date(), status: .active, success: { [weak self] result in
             //self?.addCarPhoto(carId: result["id"].intValue, completion: {})
             self?.activityIndicator.stopAnimating()
             self?.router?.pushMyCarsVC()
@@ -703,8 +713,19 @@ extension EditCarVC {
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
-        vinLabel.snp.makeConstraints { make in
+        carNumberLabel.snp.makeConstraints { make in
             make.top.equalTo(mileageField.snp.bottom).offset(12)
+            make.left.equalToSuperview().offset(lOffset)
+            make.right.equalToSuperview().offset(rOffset)
+        }
+        carNumberField.snp.makeConstraints { make in
+            make.top.equalTo(carNumberLabel.snp.bottom).offset(14)
+            make.height.equalTo(54)
+            make.left.equalToSuperview().offset(lOffset)
+            make.right.equalToSuperview().offset(rOffset)
+        }
+        vinLabel.snp.makeConstraints { make in
+            make.top.equalTo(carNumberField.snp.bottom).offset(12)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }

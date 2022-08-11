@@ -132,7 +132,7 @@ final class CarAPI {
         }
     }
     
-    static func editCar(carId: Int, carModelId: Int, year: Int, mileage: Int, vin: String, lastVisit: Date, status: CarStatus, success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError) {
+    static func editCar(carId: Int, carModelId: Int, year: Int, mileage: Int, number: String, vin: String, lastVisit: Date, status: CarStatus, success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError) {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         let lastVisitStr = formatter.string(from: lastVisit)
@@ -141,6 +141,7 @@ final class CarAPI {
             "car_model_id": carModelId,
             "year": year,
             "mileage": mileage,
+            "number": number,
             "vin": vin,
             "last_visit": lastVisitStr,
             "status": status.rawValue

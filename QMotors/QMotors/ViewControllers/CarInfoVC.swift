@@ -19,7 +19,8 @@ class CarInfoVC: BaseVC {
             VINLabel.text = car?.vin
             carId = car?.id
             carYear = car?.year
-            carNumberView.numberTitle.text = car?.number
+            carNumberView.numberTitle.text = car?.number.getCarNumber()
+            carNumberView.regionNumber.text = car?.number.getCarRegionNumber()
         }
     }
     // MARK: - Properties
@@ -50,6 +51,8 @@ class CarInfoVC: BaseVC {
     private let carImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "subaru")
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -64,8 +67,6 @@ class CarInfoVC: BaseVC {
     
     private let carNumberView: CarInfoNumberView = {
         let view = CarInfoNumberView()
-        view.numberTitle.font = UIFont.boldSystemFont(ofSize: 15)
-        view.numberTitle.text?.replaceToDots(cutCount: 30, count: 30)
         return view
     }()
     
@@ -194,20 +195,19 @@ class CarInfoVC: BaseVC {
         }
         
         carImageView.snp.makeConstraints { make in
-            make.height.equalTo(self.view.frame.width / 3)
+            make.size.equalTo(CGSize(width: (self.view.frame.width - 32), height: (self.view.frame.width / 3)))
             make.top.equalTo(backButton.snp.bottom).offset(17)
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
         }
         
         carNumberView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(16)
-            make.bottom.equalTo(carImageView.snp.bottom).offset(-40)
+            make.centerX.equalToSuperview().offset(-140)
+            make.centerY.equalToSuperview().offset(50)
         }
         
         carModelLabel.snp.makeConstraints { make in
             make.height.equalTo(25)
-            make.width.equalTo(93)
             make.left.equalToSuperview().offset(16)
             make.top.equalTo(carImageView.snp.bottom).offset(19)
         }
