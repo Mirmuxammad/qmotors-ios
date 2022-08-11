@@ -14,19 +14,6 @@ class CarInfoVC: BaseVC {
     
     var car: MyCarModel?{
         didSet {
-<<<<<<< HEAD
-            carModelLabel.text = car?.model
-            
-            guard let inMillage = Int(car!.mileage) else { return }
-            millageLabel.text = "\(inMillage.formattedWithSeparator) км"
-            
-            lastVisitLabel.text = car?.last_visit.getDateString()
-            VINLabel.text = car?.vin
-            carId = car?.id
-            carYear = car?.year
-            carNumberView.numberTitle.text = car?.number.getCarNumber()
-            carNumberView.regionNumber.text = car?.number.getCarRegionNumber()
-=======
             guard
                 let car = car,
                 let intMileage = Int(car.mileage) else { return }
@@ -38,7 +25,6 @@ class CarInfoVC: BaseVC {
             carYear = car.year
             carNumberView.numberTitle.text = car.number.getCarNumber()
             carNumberView.regionNumber.text = car.number.getCarRegionNumber()
->>>>>>> 8d2a2fc37b63f0b00d187a4cce3b04abb12d4e4e
         }
     }
     // MARK: - Properties
