@@ -11,10 +11,10 @@ import SnapKit
 class CustomPhotoView: UIView {
 
     // MARK: - Properties
-    var carPhoto: UIImage = UIImage(named: "empty-photo")! {
+    var photo: UIImage = UIImage(named: "empty-photo")! {
         didSet {
-            imageView.image = carPhoto
-            if carPhoto == UIImage(named: "empty-photo") {
+            imageView.image = photo
+            if photo == UIImage(named: "empty-photo") {
                 self.layer.borderWidth = 1
                 photoButton.isEnabled = true
                 removePhotoButton.isHidden = true
@@ -69,7 +69,7 @@ class CustomPhotoView: UIView {
 // MARK: - Setup View
 extension CustomPhotoView {
     private func setupView() {
-        imageView.image = carPhoto
+        imageView.image = photo
         
         self.backgroundColor = UIColor(hex: "F8F8F8")
         self.layer.borderWidth = 1
