@@ -30,15 +30,8 @@ class MyCarsTableViewCell: UITableViewCell {
         return imageView
     }()
     
-//    private let carNumberImageView: UIImageView = {
-//        let imageView = UIImageView()
-//        imageView.image = UIImage(named: "car_number")
-//        return imageView
-//    }()
-    
     private let carNumberView: CarInfoNumberView = {
         let view = CarInfoNumberView()
-        
         return view
     }()
     
@@ -169,7 +162,8 @@ class MyCarsTableViewCell: UITableViewCell {
     
     func setupCell(_ with: MyCarModel) {
         modelLabel.text = with.model
-        mileageLabel.text = with.mileage
+        guard let intMileage = Int(with.mileage) else { return }
+        mileageLabel.text = "\(intMileage.formattedWithSeparator) км"
         lastVisitLabel.text = with.last_visit.getDateString()
         carNumberView.numberTitle.text = with.number.getCarNumber()
         carNumberView.regionNumber.text = with.number.getCarRegionNumber()

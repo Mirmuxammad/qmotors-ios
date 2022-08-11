@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class CarInfoVC: BaseVC {
     
@@ -13,14 +14,17 @@ class CarInfoVC: BaseVC {
     
     var car: MyCarModel?{
         didSet {
-            carModelLabel.text = car?.model
-            millageLabel.text = car?.mileage
-            lastVisitLabel.text = car?.last_visit.getDateString()
-            VINLabel.text = car?.vin
-            carId = car?.id
-            carYear = car?.year
-            carNumberView.numberTitle.text = car?.number.getCarNumber()
-            carNumberView.regionNumber.text = car?.number.getCarRegionNumber()
+            guard
+                let car = car,
+                let intMileage = Int(car.mileage) else { return }
+            carModelLabel.text = car.model
+            millageLabel.text = "\(intMileage.formattedWithSeparator) км"
+            lastVisitLabel.text = car.last_visit.getDateString()
+            VINLabel.text = car.vin
+            carId = car.id
+            carYear = car.year
+            carNumberView.numberTitle.text = car.number.getCarNumber()
+            carNumberView.regionNumber.text = car.number.getCarRegionNumber()
         }
     }
     // MARK: - Properties
