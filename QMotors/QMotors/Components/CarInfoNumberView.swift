@@ -91,7 +91,6 @@ class CarInfoNumberView: UIView {
         rightView.addSubview(regionNumber)
         rightView.addSubview(rusTitle)
         rightView.addSubview(flagImage)
-        
     }
     
     private func setupConstraints() {

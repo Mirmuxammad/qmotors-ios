@@ -45,4 +45,13 @@ extension String {
         return String(number)
     }
     
+    func getMillageNumber() -> String {
+        let formatter = NumberFormatter()
+        formatter.groupingSeparator = " "
+        formatter.numberStyle = .decimal
+        
+        let millage = NSNumber(pointer: self)
+        let formatMillage = formatter.string(from: millage) ?? ""
+        return formatMillage
+    }
 }

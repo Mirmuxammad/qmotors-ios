@@ -14,7 +14,10 @@ class CarInfoVC: BaseVC {
     var car: MyCarModel?{
         didSet {
             carModelLabel.text = car?.model
-            millageLabel.text = car?.mileage
+            
+            guard let inMillage = Int(car!.mileage) else { return }
+            millageLabel.text = "\(inMillage.formattedWithSeparator) км"
+            
             lastVisitLabel.text = car?.last_visit.getDateString()
             VINLabel.text = car?.vin
             carId = car?.id
@@ -202,8 +205,8 @@ class CarInfoVC: BaseVC {
         }
         
         carNumberView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview().offset(-140)
-            make.centerY.equalToSuperview().offset(50)
+            make.left.equalToSuperview().offset(60)
+            make.bottom.equalToSuperview().offset(-19)
         }
         
         carModelLabel.snp.makeConstraints { make in
@@ -276,7 +279,6 @@ class CarInfoVC: BaseVC {
     }
     
     @objc private func trashCarButtonDidTap() {
-        print("🔴")
         
         guard let carid = carId else { return }
         

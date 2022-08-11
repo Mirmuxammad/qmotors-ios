@@ -169,7 +169,10 @@ class MyCarsTableViewCell: UITableViewCell {
     
     func setupCell(_ with: MyCarModel) {
         modelLabel.text = with.model
-        mileageLabel.text = with.mileage
+        
+        guard let inMillage = Int(with.mileage) else { return }
+        mileageLabel.text = "\(inMillage.formattedWithSeparator) км"
+        
         lastVisitLabel.text = with.last_visit.getDateString()
         carNumberView.numberTitle.text = with.number.getCarNumber()
         carNumberView.regionNumber.text = with.number.getCarRegionNumber()
