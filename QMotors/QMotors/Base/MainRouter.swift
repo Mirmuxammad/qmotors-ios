@@ -59,6 +59,11 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
+    func pushProfileVC() {
+        let vc = ProfileVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
     func pushTechnicalCenterVC() {
         let vc = TechnicalCenterVC()
         pushViewController(vc: vc, animated: true)
@@ -76,6 +81,11 @@ class MainRouter: NSObject {
     
     func pushTechnicalRecordVC() {
         let vc = TechnicalRecordVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
+    func pushTechnicalRecordVCWhithID(id: Int) {
+        let vc = TechnicalRecordVC(techCenterId: id)
         pushViewController(vc: vc, animated: true)
     }
     

@@ -165,6 +165,7 @@ extension SideMenuVC: UITableViewDelegate, UITableViewDataSource {
             }
         case 2:
             dismiss(animated: true)
+            router?.pushTechnicalRecordVC()
         case 3:
             dismiss(animated: true)
             router?.pushTechnicalCenterVC()

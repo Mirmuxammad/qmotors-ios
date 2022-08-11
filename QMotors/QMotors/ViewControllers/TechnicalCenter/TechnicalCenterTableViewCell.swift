@@ -165,8 +165,9 @@ class TechnicalCenterTableViewCell: UITableViewCell {
     }
     
     func setupSignUpAction(target: Any, action: Selector, index: Int) {
-        signUpButton.tag = index
-        signUpButton.setupAction(target: target, action: action)
+//        signUpButton.tag = index
+//        print(signUpButton.tag)
+        signUpButton.setupAction(target: target, action: action, tag: index)
     }
     
 }
