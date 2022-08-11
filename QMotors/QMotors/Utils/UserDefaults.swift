@@ -13,6 +13,7 @@ class UserDefaultsService {
 
     private enum Keys {
         static let authToken = "authToken"
+        static let techCenters = "techCenters"
     }
 
     func removeAuthToken() {
@@ -26,6 +27,16 @@ class UserDefaultsService {
         }
         set {
             UserDefaults.standard.setValue(newValue, forKey: Keys.authToken)
+        }
+    }
+    
+    var centras: [String]? {
+        get {
+            let centras = UserDefaults.standard.value(forKey: Keys.techCenters) as? [String]
+            return centras ?? nil
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: Keys.techCenters)
         }
     }
 

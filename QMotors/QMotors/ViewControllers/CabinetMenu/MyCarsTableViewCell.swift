@@ -81,21 +81,6 @@ class MyCarsTableViewCell: UITableViewCell {
         label.text = "25.09.2016"
         return label
     }()
-
-    
-    // MARK: - Initializers
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        setupViews()
-        setupConstraints()
-        
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
         
     // MARK: - Private functions
     
@@ -115,14 +100,15 @@ class MyCarsTableViewCell: UITableViewCell {
         
         containerView.snp.makeConstraints { make in
             make.left.right.equalToSuperview()
-            make.top.equalToSuperview().offset(5)
-            make.bottom.equalToSuperview().offset(-5)
+            make.top.equalToSuperview().offset(10)
+            make.bottom.equalToSuperview().offset(-10)
         }
         
         carImageView.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: 110, height: 110))
+            make.height.width.equalTo(110)
             make.left.equalToSuperview().offset(20)
-            make.centerY.equalToSuperview()
+            make.top.equalToSuperview().offset(20)
+            make.bottom.equalToSuperview().offset(-20)
         }
         
         carNumberView.snp.makeConstraints { make in
@@ -166,7 +152,10 @@ class MyCarsTableViewCell: UITableViewCell {
     func setupCell(_ with: MyCarModel) {
         modelLabel.text = with.model
         mileageLabel.text = with.mileage
-        lastVisitLabel.text = with.last_visit
+        lastVisitLabel.text = with.last_visit.getFormattedDate()
+        selectionStyle = .none
+        setupViews()
+        setupConstraints()
     }
     
     

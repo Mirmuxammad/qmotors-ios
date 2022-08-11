@@ -180,6 +180,7 @@ class CabinetVC: BaseVC {
     
     @objc private func historyButtonDidTap() {
         print("historyButtonDidTap")
+        router?.pushHistoryCarsVC()
     }
     
     @objc private func reminderButtonDidTap() {
