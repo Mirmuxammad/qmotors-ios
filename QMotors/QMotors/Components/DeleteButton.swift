@@ -15,7 +15,6 @@ class  DeleteButton: UIView {
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "trash")
-        imageView.backgroundColor = .clear
         imageView.tintColor = .white
         return imageView
     }()
@@ -23,7 +22,7 @@ class  DeleteButton: UIView {
     private let button: UIButton = {
         let button = UIButton()
         button.backgroundColor = .clear
-        button.isEnabled = false
+        button.isEnabled = true
         return button
     }()
     
@@ -33,7 +32,7 @@ class  DeleteButton: UIView {
         super.init(frame: frame)
         
         layer.cornerRadius = 5
-        layer.backgroundColor = UIColor.init(hex: "#D4D4D4").cgColor
+        layer.backgroundColor = UIColor.init(hex: "#EF4646").cgColor
         
         setupViews()
         setupConstraints()
@@ -60,6 +59,7 @@ class  DeleteButton: UIView {
     
         button.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+            
         }
     }
     

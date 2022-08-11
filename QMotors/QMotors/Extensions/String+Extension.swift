@@ -11,7 +11,7 @@ extension String {
     var formattedPhoneNumber: String {
         return "+\(components(separatedBy: NSCharacterSet.decimalDigits.inverted).joined(separator: ""))"
     }
-    
+
     func getFormattedDate() -> String {
         let str = self.prefix(10)
         
@@ -24,5 +24,47 @@ extension String {
         let result = formatter.string(from: date)
         
         return result
+    }
+    func getDateString() -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let newDate = dateFormatter.date(from: self)
+        let returnFormatter = DateFormatter()
+        returnFormatter.dateFormat = "dd.MM.yyyy"
+        
+        if let str = newDate {
+            return returnFormatter.string(from: str)
+        } else {
+            return nil
+        }
+    }
+    
+    func replaceToDots(cutCount: Int, count: Int) -> String {
+        if self.count >= count {
+            let returner = self.prefix(cutCount) + "..."
+            return String(returner)
+        } else {
+            return self
+        }
+    }
+    
+    func getCarRegionNumber() -> String {
+        let number = self.suffix(2)
+        return String(number)
+    }
+    
+    func getCarNumber() -> String {
+        let number = self.prefix(6)
+        return String(number)
+    }
+    
+    func getMillageNumber() -> String {
+        let formatter = NumberFormatter()
+        formatter.groupingSeparator = " "
+        formatter.numberStyle = .decimal
+        
+        let millage = NSNumber(pointer: self)
+        let formatMillage = formatter.string(from: millage) ?? ""
+        return formatMillage
     }
 }

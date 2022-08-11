@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Разрешить получение местоположения, чтобы показать маршрут, когда приложение используется</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Разрешить всегда получать местоположения, чтобы показать маршрут</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>UIAppFonts</key>

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class CarInfoVC: BaseVC {
     
@@ -13,14 +14,23 @@ class CarInfoVC: BaseVC {
     
     var car: MyCarModel?{
         didSet {
-            print("🔴")
-            print(car)
-            carModelLabel.text = car?.model
-            millageLabel.text = car?.mileage
-            lastVisitLabel.text = car?.last_visit
-            VINLabel.text = car?.vin
+            guard
+                let car = car,
+                let intMileage = Int(car.mileage) else { return }
+            carModelLabel.text = car.model
+            millageLabel.text = "\(intMileage.formattedWithSeparator) км"
+            lastVisitLabel.text = car.last_visit.getDateString()
+            VINLabel.text = car.vin
+            carId = car.id
+            carYear = car.year
+            carNumberView.numberTitle.text = car.number.getCarNumber()
+            carNumberView.regionNumber.text = car.number.getCarRegionNumber()
         }
     }
+    // MARK: - Properties
+    
+    private var carId: Int?
+    private var carYear: Int?
     
     //MARK: -UI Elements-
     
@@ -45,6 +55,8 @@ class CarInfoVC: BaseVC {
     private let carImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "subaru")
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -57,7 +69,10 @@ class CarInfoVC: BaseVC {
         return label
     }()
     
-    private let carNumberView = CarNumberView()
+    private let carNumberView: CarInfoNumberView = {
+        let view = CarInfoNumberView()
+        return view
+    }()
     
     private let millageTitleLabel: UILabel = {
         let label = UILabel()
@@ -124,7 +139,6 @@ class CarInfoVC: BaseVC {
     private let trashCarButton: DeleteButton = {
         let button = DeleteButton()
         button.setupButton(target: self, action: #selector(trashCarButtonDidTap))
-        button.backgroundColor = .red
         return button
     }()
     
@@ -185,22 +199,19 @@ class CarInfoVC: BaseVC {
         }
         
         carImageView.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: (self.view.frame.width - 32), height: (self.view.frame.width / 3)))
             make.top.equalTo(backButton.snp.bottom).offset(17)
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
-            make.bottom.equalToSuperview().offset(-477)
         }
         
         carNumberView.snp.makeConstraints { make in
-            make.height.equalTo(20)
-            make.left.equalToSuperview().offset(10)
-            make.right.equalToSuperview().offset(-10)
-            make.bottom.equalToSuperview().offset(-10)
+            make.left.equalToSuperview().offset(60)
+            make.bottom.equalToSuperview().offset(-19)
         }
         
         carModelLabel.snp.makeConstraints { make in
-            make.height.equalTo(22)
-            make.width.equalTo(93)
+            make.height.equalTo(25)
             make.left.equalToSuperview().offset(16)
             make.top.equalTo(carImageView.snp.bottom).offset(19)
         }
@@ -265,20 +276,18 @@ class CarInfoVC: BaseVC {
     }
     
     @objc private func editCarButtonDidTap() {
-        
+        router?.pushEditCarVC(car: car!)
     }
     
     @objc private func trashCarButtonDidTap() {
         
+        guard let carid = carId else { return }
+        
+        CarAPI.deleteCar(carId: carid, status: .deleted, success: { [weak self] result in
+            self?.router?.back()
+        }) { [weak self] error in
+            print(error)
+        }
     }
-    
-    // MARK: - Public functions
-    
-//    func setupCarInfo(car: MyCarModel) {
-//        carModelLabel.text = car.model
-//        millageLabel.text = car.mileage
-//        lastVisitLabel.text = car.last_visit
-//        VINLabel.text = car.vin
-//    }
     
 }

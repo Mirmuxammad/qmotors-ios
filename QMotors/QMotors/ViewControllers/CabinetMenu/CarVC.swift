@@ -208,7 +208,6 @@ class CarVC: BaseVC {
         stackView.axis = .horizontal
         stackView.distribution = .equalSpacing
         stackView.alignment = .center
-//        stackView.spacing
         return stackView
     }()
     
@@ -242,6 +241,7 @@ class CarVC: BaseVC {
         view.layer.zPosition = 1
         return view
     }()
+
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -306,7 +306,7 @@ class CarVC: BaseVC {
         photosStackView.addArrangedSubview(secondPhotoView)
         photosStackView.addArrangedSubview(thirdPhotoView)
         contentView.addSubview(addCarButton)
-        
+
         contentView.addSubview(carMarkOptionsTable)
         contentView.addSubview(carModelOptionsTable)
         contentView.addSubview(carYearOptionsTable)
@@ -320,6 +320,7 @@ class CarVC: BaseVC {
         secondPhotoView.removePhotoButton.addTarget(self, action: #selector(removePhotoButtonTapped), for: .touchUpInside)
         thirdPhotoView.photoButton.addTarget(self, action: #selector(photoButtonTapped), for: .touchUpInside)
         thirdPhotoView.removePhotoButton.addTarget(self, action: #selector(removePhotoButtonTapped), for: .touchUpInside)
+
         
         setupConstraints()
     }
@@ -353,7 +354,7 @@ class CarVC: BaseVC {
             completion()
         }
     }
-    
+
     @objc private func backButtonDidTap() {
         print("backButtonDidTap")
         router?.back()
@@ -396,7 +397,7 @@ class CarVC: BaseVC {
     @objc private func removePhotoButtonTapped(_ sender: UIButton) {
         print(#function)
         let photoView = sender.superview as! CustomPhotoView
-        photoView.carPhoto = UIImage(named: "empty-photo")!
+        photoView.photo = UIImage(named: "empty-photo")!
         if photoView == firstPhotoView {
             fileURLArray.remove(at: 0)
         } else if photoView == secondPhotoView {
@@ -405,6 +406,7 @@ class CarVC: BaseVC {
             fileURLArray.remove(at: 2)
         }
         reloadCarPhotos()
+
     }
     
     @objc private func addCarButtonTapped() {
@@ -413,8 +415,13 @@ class CarVC: BaseVC {
         guard let carYearInt = Int(carYear), let carMileageInt = Int(carMileage) else { return }
         activityIndicator.startAnimating()
         CarAPI.addCar(carModelId: carModelId, year: carYearInt, mileage: carMileageInt, number: carNumber, vin: vin, lastVisit: Date(), status: .active, success: { [weak self] result in
-            self?.addCarPhoto(carId: result["id"].intValue, completion: {})
-            self?.activityIndicator.stopAnimating()
+            self?.addCarPhoto(carId: result["id"].intValue, completion: { [weak self] in
+                guard let strongSelf = self else { return }
+                self?.activityIndicator.stopAnimating()
+                [strongSelf.carMarkField, strongSelf.carModelField, strongSelf.carYearField, strongSelf.mileageField, strongSelf.carNumberField, strongSelf.vinField].forEach { $0.text?.removeAll() }
+                [strongSelf.firstPhotoView, strongSelf.secondPhotoView, strongSelf.thirdPhotoView].forEach { $0.photo = UIImage(named: "empty-photo")! }
+                self?.router?.back()
+            })
         }) { [weak self] error in
             print(error)
             self?.activityIndicator.stopAnimating()
@@ -422,8 +429,13 @@ class CarVC: BaseVC {
     }
     
     private func addCarPhoto(carId: Int, completion: @escaping () -> Void) {
+        if fileURLArray.isEmpty {
+            completion()
+            return
+        }
         CarAPI.addCarPhoto(carId: carId, fileURLArray: fileURLArray, success: { [weak self] result in
             self?.reloadCarPhotos()
+            self?.fileURLArray = []
             completion()
         }) { error in
             print(error)
@@ -433,28 +445,28 @@ class CarVC: BaseVC {
     
     private func reloadCarPhotos() {
         if fileURLArray.isEmpty {
-            firstPhotoView.carPhoto = UIImage(named: "empty-photo")!
-            secondPhotoView.carPhoto = UIImage(named: "empty-photo")!
-            thirdPhotoView.carPhoto = UIImage(named: "empty-photo")!
+            firstPhotoView.photo = UIImage(named: "empty-photo")!
+            secondPhotoView.photo = UIImage(named: "empty-photo")!
+            thirdPhotoView.photo = UIImage(named: "empty-photo")!
             return
         }
         let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
-        firstPhotoView.carPhoto = UIImage(data: firstPhotoData)!
+        firstPhotoView.photo = UIImage(data: firstPhotoData)!
         if fileURLArray.count < 2 {
-            secondPhotoView.carPhoto = UIImage(named: "empty-photo")!
-            thirdPhotoView.carPhoto = UIImage(named: "empty-photo")!
+            secondPhotoView.photo = UIImage(named: "empty-photo")!
+            thirdPhotoView.photo = UIImage(named: "empty-photo")!
             return
         }
         let secondPhotoData = try! Data(contentsOf: fileURLArray[1])
-        secondPhotoView.carPhoto = UIImage(data: secondPhotoData)!
+        secondPhotoView.photo = UIImage(data: secondPhotoData)!
         if fileURLArray.count < 3 {
-            thirdPhotoView.carPhoto = UIImage(named: "empty-photo")!
+            thirdPhotoView.photo = UIImage(named: "empty-photo")!
             return
         }
         let thirdPhotoData = try! Data(contentsOf: fileURLArray[2])
-        thirdPhotoView.carPhoto = UIImage(data: thirdPhotoData)!
+        thirdPhotoView.photo = UIImage(data: thirdPhotoData)!
     }
-    
+
 }
 
 // MARK: - UITextFieldDelegate
@@ -476,6 +488,7 @@ extension CarVC: UITextFieldDelegate {
         } else if textField.subviews.contains(carYearChevronButton) {
             carYearChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
         }
+
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -507,7 +520,7 @@ extension CarVC: UITableViewDelegate, UITableViewDataSource {
         default:
             break
         }
-        
+
         return 0
     }
     
@@ -524,6 +537,7 @@ extension CarVC: UITableViewDelegate, UITableViewDataSource {
         default:
             break
         }
+
         return cell
     }
     
@@ -556,21 +570,21 @@ extension CarVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate
             .appendingPathComponent(UUID().uuidString)
             .appendingPathExtension("jpg")
         try! data!.write(to: documentUrl)
-        
+
         fileURLArray.append(documentUrl)
-        
+
         print(documentUrl)
         
         dismiss(animated: true) { [weak self] in
             if let data = data, let image = UIImage(data: data) {
-                if self?.firstPhotoView.carPhoto == UIImage(named: "empty-photo") {
-                    self?.firstPhotoView.carPhoto = image
+                if self?.firstPhotoView.photo == UIImage(named: "empty-photo") {
+                    self?.firstPhotoView.photo = image
                     UserDefaults.standard.set("\(documentUrl)", forKey: "firstPhotoUrl")
-                } else if self?.secondPhotoView.carPhoto == UIImage(named: "empty-photo") {
-                    self?.secondPhotoView.carPhoto = image
+                } else if self?.secondPhotoView.photo == UIImage(named: "empty-photo") {
+                    self?.secondPhotoView.photo = image
                     UserDefaults.standard.set("\(documentUrl)", forKey: "secondPhotoUrl")
-                } else if self?.thirdPhotoView.carPhoto == UIImage(named: "empty-photo") {
-                    self?.thirdPhotoView.carPhoto = image
+                } else if self?.thirdPhotoView.photo == UIImage(named: "empty-photo") {
+                    self?.thirdPhotoView.photo = image
                     UserDefaults.standard.set("\(documentUrl)", forKey: "thirdPhotoUrl")
                 }
             }

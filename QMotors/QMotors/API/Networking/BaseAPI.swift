@@ -20,6 +20,7 @@ enum RequestMethod {
     case addCarPhoto(Int)
     case getTechCenterList
     case getCars
+    case editCar(Int)
     case orderTypeList
     case order
     case orderList(Int)
@@ -46,6 +47,8 @@ enum RequestMethod {
             return "tech-center/list"
         case .getCars:
             return "car"
+        case .editCar(let id):
+            return "car/\(id)"
         case .orderTypeList:
             return "order-type/list"
         case .order:
@@ -77,7 +80,7 @@ final class BaseAPI {
             headers.add(.authorization(bearerToken: token))
         }
         
-        authorizedSession.request(URL(string: BaseAPI.baseURL + reqMethod.path)!, method: method, parameters: parameters, encoding: method == .post ? JSONEncoding.default : URLEncoding.default, headers: headers).response { response in
+        authorizedSession.request(URL(string: BaseAPI.baseURL + reqMethod.path)!, method: method, parameters: parameters, encoding: method == .post || method == .put || method == .delete ? JSONEncoding.default : URLEncoding.default, headers: headers).response { response in
             debugPrint(response)
             print("ReqMethod: \(reqMethod)\nJSON Status: \(String(describing: response.response?.statusCode))\nResponse:", JSON(response.data ?? ""))
             if let data = response.data {
@@ -138,4 +141,13 @@ final class BaseAPI {
     static func authorizedMultipartPostRequest(carId: Int, fieldName: String, fileURLArray: [URL], success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
         request(reqMethod: .addCarPhoto(carId), fieldName: fieldName, fileURLArray: fileURLArray, success: success, failure: failure)
     }
+    //MARK: - Put request
+    static func authorizedPutRequest(reqMethod: RequestMethod, parameters: Parameters, success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
+        request(reqMethod: reqMethod, parameters: parameters, method: .put, success: success, failure: failure)
+    }
+    
+    static func authorizedDeleteRequest(reqMethod: RequestMethod, parameters: Parameters, success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
+        request(reqMethod: reqMethod, parameters: parameters, method: .delete, success: success, failure: failure)
+    }
+    
 }

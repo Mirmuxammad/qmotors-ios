@@ -26,16 +26,14 @@ class MyCarsTableViewCell: UITableViewCell {
     private let carImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "subaru")
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
-//    private let carNumberImageView: UIImageView = {
-//        let imageView = UIImageView()
-//        imageView.image = UIImage(named: "car_number")
-//        return imageView
-//    }()
-    
-    private let carNumberView = CarNumberView()
+    private let carNumberView: CarInfoNumberView = {
+        let view = CarInfoNumberView()
+        return view
+    }()
     
     private let modelLabel: UILabel = {
         let label = UILabel()
@@ -112,10 +110,8 @@ class MyCarsTableViewCell: UITableViewCell {
         }
         
         carNumberView.snp.makeConstraints { make in
-            make.height.equalTo(20)
-            make.left.equalToSuperview().offset(10)
-            make.right.equalToSuperview().offset(-10)
-            make.bottom.equalToSuperview().offset(-10)
+            make.bottom.equalToSuperview().offset(-20)
+            make.centerX.equalTo(carImageView.snp.centerX)
         }
         
         modelLabel.snp.makeConstraints { make in
@@ -150,14 +146,18 @@ class MyCarsTableViewCell: UITableViewCell {
     // MARK: - Public functions
     
     func setupCell(_ with: MyCarModel) {
-        modelLabel.text = with.model
-        mileageLabel.text = with.mileage
-        lastVisitLabel.text = with.last_visit.getFormattedDate()
         selectionStyle = .none
         setupViews()
         setupConstraints()
+        
+        modelLabel.text = with.model
+        mileageLabel.text = with.mileage
+        lastVisitLabel.text = with.last_visit.getFormattedDate()
+        guard let inMillage = Int(with.mileage) else { return }
+        mileageLabel.text = "\(inMillage.formattedWithSeparator) км"
+        lastVisitLabel.text = with.last_visit.getDateString()
+        carNumberView.numberTitle.text = with.number.getCarNumber()
+        carNumberView.regionNumber.text = with.number.getCarRegionNumber()
     }
-    
-    
     
 }

@@ -62,10 +62,6 @@ class MyCarsVC: BaseVC {
         return tableView
     }()
     
-    
-    
-    
-    
     private let addCarButton: ActionButton = {
         let button = ActionButton()
         button.setupButton(target: self, action: #selector(addCarButtonDidTap))
@@ -244,8 +240,6 @@ class MyCarsVC: BaseVC {
         print(#function)
         router?.pushCarVC()
     }
-    
-
 
 }
 
@@ -260,7 +254,7 @@ extension MyCarsVC: UITableViewDataSource {
         guard
             let cell = tableView.dequeueReusableCell(withIdentifier: MyCarsTableViewCell.identifier, for: indexPath) as? MyCarsTableViewCell
         else { return UITableViewCell() }
-        
+        cell.selectionStyle = .none
         cell.setupCell(myCar[indexPath.row])
         
         return cell
