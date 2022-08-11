@@ -434,7 +434,7 @@ class EditCarVC: BaseVC {
         CarAPI.editCar(carId: carId,carModelId: carModelId, year: carYearInt, mileage: carMileageInt, number: carNumber, vin: vin, lastVisit: Date(), status: .active, success: { [weak self] result in
             //self?.addCarPhoto(carId: result["id"].intValue, completion: {})
             self?.activityIndicator.stopAnimating()
-            self?.router?.pushMyCarsVC()
+            self?.router?.back()
         }) { [weak self] error in
             print(error)
             self?.activityIndicator.stopAnimating()
