@@ -36,7 +36,7 @@ class CabinetVC: BaseVC {
     private let verticalStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.spacing = 20
+        stack.spacing = 10
         return stack
     }()
     
