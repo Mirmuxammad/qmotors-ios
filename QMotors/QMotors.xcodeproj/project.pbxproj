@@ -12,6 +12,9 @@
 		401C746428A1431600CA5DAD /* CarInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C746328A1431600CA5DAD /* CarInfoVC.swift */; };
 		4049212828A177AB00257750 /* CarResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4049212728A177AB00257750 /* CarResponse.swift */; };
 		40BA091328A23B8B00990A72 /* DeleteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40BA091228A23B8B00990A72 /* DeleteButton.swift */; };
+		7EA2EB5F28A5067900C70910 /* BirthdayPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA2EB5C28A5067900C70910 /* BirthdayPicker.swift */; };
+		7EA2EB6028A5067900C70910 /* TitledTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA2EB5D28A5067900C70910 /* TitledTextField.swift */; };
+		7EA2EB6128A5067900C70910 /* SwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA2EB5E28A5067900C70910 /* SwitchView.swift */; };
 		8456BA6B28815AF200684AF5 /* PhoneCallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8456BA6A28815AF200684AF5 /* PhoneCallView.swift */; };
 		8456BA6E2881659E00684AF5 /* PhoneCallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8456BA6D2881659E00684AF5 /* PhoneCallButton.swift */; };
 		8456BA702881786600684AF5 /* RequestCallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8456BA6F2881786600684AF5 /* RequestCallButton.swift */; };
@@ -110,6 +113,9 @@
 		4049212728A177AB00257750 /* CarResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarResponse.swift; sourceTree = "<group>"; };
 		40BA091228A23B8B00990A72 /* DeleteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteButton.swift; sourceTree = "<group>"; };
 		56FD0605EC1AF8C942E96CC2 /* Pods_QMotors.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QMotors.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EA2EB5C28A5067900C70910 /* BirthdayPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BirthdayPicker.swift; sourceTree = "<group>"; };
+		7EA2EB5D28A5067900C70910 /* TitledTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitledTextField.swift; sourceTree = "<group>"; };
+		7EA2EB5E28A5067900C70910 /* SwitchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchView.swift; sourceTree = "<group>"; };
 		8456BA6A28815AF200684AF5 /* PhoneCallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneCallView.swift; sourceTree = "<group>"; };
 		8456BA6D2881659E00684AF5 /* PhoneCallButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneCallButton.swift; sourceTree = "<group>"; };
 		8456BA6F2881786600684AF5 /* RequestCallButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCallButton.swift; sourceTree = "<group>"; };
@@ -219,6 +225,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7EA2EB5B28A5067900C70910 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				7EA2EB5C28A5067900C70910 /* BirthdayPicker.swift */,
+				7EA2EB5D28A5067900C70910 /* TitledTextField.swift */,
+				7EA2EB5E28A5067900C70910 /* SwitchView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		8456BA6C2881652B00684AF5 /* PhoneCall */ = {
 			isa = PBXGroup;
 			children = (
@@ -273,6 +289,7 @@
 		84A509AD28A26DEC00B30D6E /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				7EA2EB5B28A5067900C70910 /* Components */,
 				84A509AE28A26E3200B30D6E /* ProfileVC.swift */,
 			);
 			path = Profile;
@@ -630,6 +647,7 @@
 				84ACAF30289185070012508C /* CustomTextField.swift in Sources */,
 				84ACAF2D289184F80012508C /* CustomDropdown.swift in Sources */,
 				4049212828A177AB00257750 /* CarResponse.swift in Sources */,
+				7EA2EB6128A5067900C70910 /* SwitchView.swift in Sources */,
 				8456BA6E2881659E00684AF5 /* PhoneCallButton.swift in Sources */,
 				84DDD273287ED3A100272C19 /* AppDelegate.swift in Sources */,
 				84ACAF4E2892B1250012508C /* TechCellNaviButton.swift in Sources */,
@@ -642,9 +660,11 @@
 				84ACAF31289185070012508C /* CustomLabel.swift in Sources */,
 				84ACAF4128927D170012508C /* LoginAPI.swift in Sources */,
 				84D94F5B2885AD4A0023AA02 /* ActionButton.swift in Sources */,
+				7EA2EB5F28A5067900C70910 /* BirthdayPicker.swift in Sources */,
 				84ACAF502892C6C70012508C /* TechCellSingUpButton.swift in Sources */,
 				84ACAF352891857F0012508C /* UIViewController+Extension.swift in Sources */,
 				E02E316C28A2BFAD0067CEAB /* NewOrder.swift in Sources */,
+				7EA2EB6028A5067900C70910 /* TitledTextField.swift in Sources */,
 				848D9AB1288054FF00C4BC3F /* SideMenuButton.swift in Sources */,
 				84AE2742288D4792000870D4 /* Formatter+Separator.swift in Sources */,
 				84AFF8292887DBD0009207BD /* CustomError.swift in Sources */,

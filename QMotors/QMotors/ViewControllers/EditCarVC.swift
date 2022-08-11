@@ -414,7 +414,7 @@ class EditCarVC: BaseVC {
     @objc private func removePhotoButtonTapped(_ sender: UIButton) {
         print(#function)
         let photoView = sender.superview as! CustomPhotoView
-        photoView.carPhoto = UIImage(named: "empty-photo")!
+        photoView.photo = UIImage(named: "empty-photo")!
         if photoView == firstPhotoView {
             fileURLArray.remove(at: 0)
         } else if photoView == secondPhotoView {
@@ -453,26 +453,26 @@ class EditCarVC: BaseVC {
     
     private func reloadCarPhotos() {
         if fileURLArray.isEmpty {
-            firstPhotoView.carPhoto = UIImage(named: "empty-photo")!
-            secondPhotoView.carPhoto = UIImage(named: "empty-photo")!
-            thirdPhotoView.carPhoto = UIImage(named: "empty-photo")!
+            firstPhotoView.photo = UIImage(named: "empty-photo")!
+            secondPhotoView.photo = UIImage(named: "empty-photo")!
+            thirdPhotoView.photo = UIImage(named: "empty-photo")!
             return
         }
         let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
-        firstPhotoView.carPhoto = UIImage(data: firstPhotoData)!
+        firstPhotoView.photo = UIImage(data: firstPhotoData)!
         if fileURLArray.count < 2 {
-            secondPhotoView.carPhoto = UIImage(named: "empty-photo")!
-            thirdPhotoView.carPhoto = UIImage(named: "empty-photo")!
+            secondPhotoView.photo = UIImage(named: "empty-photo")!
+            thirdPhotoView.photo = UIImage(named: "empty-photo")!
             return
         }
         let secondPhotoData = try! Data(contentsOf: fileURLArray[1])
-        secondPhotoView.carPhoto = UIImage(data: secondPhotoData)!
+        secondPhotoView.photo = UIImage(data: secondPhotoData)!
         if fileURLArray.count < 3 {
-            thirdPhotoView.carPhoto = UIImage(named: "empty-photo")!
+            thirdPhotoView.photo = UIImage(named: "empty-photo")!
             return
         }
         let thirdPhotoData = try! Data(contentsOf: fileURLArray[2])
-        thirdPhotoView.carPhoto = UIImage(data: thirdPhotoData)!
+        thirdPhotoView.photo = UIImage(data: thirdPhotoData)!
     }
     
 }
@@ -583,14 +583,14 @@ extension EditCarVC: UIImagePickerControllerDelegate, UINavigationControllerDele
         
         dismiss(animated: true) { [weak self] in
             if let data = data, let image = UIImage(data: data) {
-                if self?.firstPhotoView.carPhoto == UIImage(named: "empty-photo") {
-                    self?.firstPhotoView.carPhoto = image
+                if self?.firstPhotoView.photo == UIImage(named: "empty-photo") {
+                    self?.firstPhotoView.photo = image
                     UserDefaults.standard.set("\(documentUrl)", forKey: "firstPhotoUrl")
-                } else if self?.secondPhotoView.carPhoto == UIImage(named: "empty-photo") {
-                    self?.secondPhotoView.carPhoto = image
+                } else if self?.secondPhotoView.photo == UIImage(named: "empty-photo") {
+                    self?.secondPhotoView.photo = image
                     UserDefaults.standard.set("\(documentUrl)", forKey: "secondPhotoUrl")
-                } else if self?.thirdPhotoView.carPhoto == UIImage(named: "empty-photo") {
-                    self?.thirdPhotoView.carPhoto = image
+                } else if self?.thirdPhotoView.photo == UIImage(named: "empty-photo") {
+                    self?.thirdPhotoView.photo = image
                     UserDefaults.standard.set("\(documentUrl)", forKey: "thirdPhotoUrl")
                 }
             }

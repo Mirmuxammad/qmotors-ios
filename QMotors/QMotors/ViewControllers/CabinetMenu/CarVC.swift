@@ -419,7 +419,7 @@ class CarVC: BaseVC {
                 guard let strongSelf = self else { return }
                 self?.activityIndicator.stopAnimating()
                 [strongSelf.carMarkField, strongSelf.carModelField, strongSelf.carYearField, strongSelf.mileageField, strongSelf.carNumberField, strongSelf.vinField].forEach { $0.text?.removeAll() }
-                [strongSelf.firstPhotoView, strongSelf.secondPhotoView, strongSelf.thirdPhotoView].forEach { $0.carPhoto = UIImage(named: "empty-photo")! }
+                [strongSelf.firstPhotoView, strongSelf.secondPhotoView, strongSelf.thirdPhotoView].forEach { $0.photo = UIImage(named: "empty-photo")! }
                 self?.router?.back()
             })
         }) { [weak self] error in
