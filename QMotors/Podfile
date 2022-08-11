@@ -10,5 +10,6 @@ target 'QMotors' do
   pod 'SwiftMaskText'
   pod 'SwiftyJSON'
   pod 'Alamofire'
+  pod 'MBProgressHUD', '~> 1.2.0'
 
 end

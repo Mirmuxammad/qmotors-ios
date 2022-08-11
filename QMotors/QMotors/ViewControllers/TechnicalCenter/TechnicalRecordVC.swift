@@ -9,11 +9,13 @@ import UIKit
 import SnapKit
 
 class TechnicalRecordVC: BaseVC {
-    
-    let testArray = ["Техническое обслуживания", "Слесарный ремонт", "Кузовной ремонт", "Детайлинг", "Другое"]
-    
+        
     private let cellIdentifier = "optionsTableCell"
-    private var userAutosData = [UserAutos]()
+    private var technicalCentersData = [TechnicalCenter]()
+    private var myCars = [MyCarModel]()
+    private var orderTypes = [OrderType]()
+    private var order = NewOrder()
+    
     
     private var fileURLArray: [URL] = [] {
         didSet {
@@ -53,6 +55,12 @@ class TechnicalRecordVC: BaseVC {
         return button
     }()
     
+    private let technicalCenterChevronButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "chevron-icon"), for: .normal)
+        return button
+    }()
+    
     private let carModelChevronButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "chevron-icon"), for: .normal)
@@ -81,6 +89,11 @@ class TechnicalRecordVC: BaseVC {
         label.font = UIFont(name: Const.fontSemi, size: 22)
         label.textColor = .black
         label.textAlignment = .left
+        return label
+    }()
+    
+    private let technicalCenterLable: CustomLabel = {
+        let label = CustomLabel(text: "Технический центр", fontWeight: .medium)
         return label
     }()
     
@@ -115,6 +128,11 @@ class TechnicalRecordVC: BaseVC {
     
     
     //MARK: - TextFields
+    private let technicalCenterField: CustomTextField = {
+        let field = CustomTextField(placeholder: "Выберите из списка")
+        return field
+    }()
+    
     private let userCarField: CustomTextField = {
         let field = CustomTextField(placeholder: "Из спика ваших автомобилей")
         return field
@@ -137,6 +155,19 @@ class TechnicalRecordVC: BaseVC {
     
     
     //MARK: - Tables
+    private lazy var technicalCenterTable: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = .white
+        tableView.separatorStyle = .none
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.isHidden = true
+        tableView.layer.borderWidth = 1
+        tableView.layer.borderColor = UIColor(hex: "B6B6B6").cgColor
+        tableView.layer.cornerRadius = 8
+        tableView.layer.zPosition = 1
+        return tableView
+    }()
+    
     private lazy var userCarTable: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .white
@@ -185,8 +216,22 @@ class TechnicalRecordVC: BaseVC {
     
     private let thirdPhotoView: CustomPhotoView = {
         let photoView = CustomPhotoView()
+        
         return photoView
     }()
+    
+    init(techCenterId: Int) {
+        super .init(nibName: nil, bundle: nil)
+        order.techCenterId = techCenterId
+    }
+    
+    init() {
+        super .init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     
     override func viewDidLoad() {
@@ -195,20 +240,33 @@ class TechnicalRecordVC: BaseVC {
         UserDefaults.standard.set(nil, forKey: "secondPhotoUrl")
         UserDefaults.standard.set(nil, forKey: "thirdPhotoUrl")
         
+        infoField.delegate = self
+    
+        datePicker.addTarget(self, action: #selector(setDate(picker:)), for: .valueChanged)
+        order.guarantee = false
         setupView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadInfo()
     }
     
     
     private func setupView() {
+        technicalCenterField.inputView = UIView()
         userCarField.inputView = UIView()
         optionField.inputView = UIView()
         
+        technicalCenterField.delegate = self
         userCarField.delegate = self
         optionField.delegate = self
         
+        technicalCenterTable.dataSource = self
         userCarTable.dataSource = self
         optionTable.dataSource = self
         
+        technicalCenterTable.delegate = self
         userCarTable.delegate = self
         optionTable.delegate = self
         
@@ -220,8 +278,11 @@ class TechnicalRecordVC: BaseVC {
         
         contentView.addSubview(backButton)
         contentView.addSubview(headingLabel)
+        contentView.addSubview(technicalCenterLable)
+        contentView.addSubview(technicalCenterField)
         contentView.addSubview(userCarLabel)
         contentView.addSubview(userCarField)
+        technicalCenterField.addSubview(technicalCenterChevronButton)
         userCarField.addSubview(carModelChevronButton)
         optionField.addSubview(optionsChevronButton)
         contentView.addSubview(timeMarkLabel)
@@ -238,9 +299,11 @@ class TechnicalRecordVC: BaseVC {
         photosStackView.addArrangedSubview(thirdPhotoView)
         contentView.addSubview(sendOrderButton)
         
+        contentView.addSubview(technicalCenterTable)
         contentView.addSubview(userCarTable)
         contentView.addSubview(optionTable)
         
+        technicalCenterChevronButton.addTarget(self, action: #selector(chevronButtonTapped), for: .touchUpInside)
         carModelChevronButton.addTarget(self, action: #selector(chevronButtonTapped), for: .touchUpInside)
         optionsChevronButton.addTarget(self, action: #selector(chevronButtonTapped), for: .touchUpInside)
         firstPhotoView.photoButton.addTarget(self, action: #selector(photoButtonTapped), for: .touchUpInside)
@@ -255,6 +318,15 @@ class TechnicalRecordVC: BaseVC {
     }
     
     //MARK: - FetchDataMethod
+    
+    private func loadInfo() {
+        self.showLoadingIndicator()
+        let dg = DispatchGroup()
+        loadOrderTypes(dg: dg)
+        loadMyCar(dg: dg)
+        loadTechCenters(dg: dg)
+        updateTableViews(dg: dg)
+    }
 
 //    private func getUserAutos(completion: @escaping () -> Void) {
 //        print(#function)
@@ -275,7 +347,71 @@ class TechnicalRecordVC: BaseVC {
 //        }
 //    }
     
+    private func loadTechCenters(dg: DispatchGroup) {
+        dg.enter()
+        TechCenterAPI.techCenterList { [weak self] jsonData in
+            guard let self = self else { return }
+            self.technicalCentersData = jsonData
+            dg.leave()
+        } failure: { error in
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+            self.present(alert, animated: true, completion: nil)
+            dg.leave()
+        }
+        
+    }
     
+    
+    private func loadOrderTypes(dg: DispatchGroup) {
+        dg.enter()
+        OrderAPI.orderTybeList { [weak self] jsonData in
+            guard let self = self else { return }
+            self.orderTypes = jsonData
+            dg.leave()
+        } failure: { error in
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+            self.present(alert, animated: true, completion: nil)
+            dg.leave()
+        }
+        
+    }
+    
+    private func loadMyCar(dg: DispatchGroup) {
+        dg.enter()
+        CarAPI.getMyCarModel { [weak self] jsonData in
+            guard let self = self else { return }
+            self.myCars = jsonData
+            dg.leave()
+        } failure: { error in
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+            self.present(alert, animated: true, completion: nil)
+            dg.leave()
+        }
+    }
+    
+    private func updateTableViews(dg: DispatchGroup) {
+        dg.notify(queue: .main) {
+            
+            if let id = self.order.techCenterId {
+                let centerName = self.technicalCentersData[id - 1].title
+                self.technicalCenterField.text = centerName
+            }
+            
+            self.technicalCenterTable.reloadData()
+            self.userCarTable.reloadData()
+            self.optionTable.reloadData()
+            self.dismissLoadingIndicator()
+        }
+    }
     
     // MARK: - Private actions
     @objc private func backButtonDidTap() {
@@ -284,7 +420,21 @@ class TechnicalRecordVC: BaseVC {
     }
     
     @objc private func addSendButtonTapped() {
-        print("addSendButtonTapped")
+        self.showLoadingIndicator()
+        print(order)
+
+        OrderAPI.addNewOrder(order: order) { json in
+            print(json)
+            self.dismissLoadingIndicator()
+        } failure: { error in
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+            self.dismissLoadingIndicator()
+            self.present(alert, animated: true, completion: nil)
+        }
+
     }
     
     @objc private func chevronButtonTapped(_ sender: UIButton) {
@@ -301,6 +451,12 @@ class TechnicalRecordVC: BaseVC {
                 optionField.resignFirstResponder()
             } else {
                 optionField.becomeFirstResponder()
+            }
+        case technicalCenterChevronButton:
+            if technicalCenterField.isFirstResponder {
+                technicalCenterField.resignFirstResponder()
+            } else {
+                technicalCenterField.becomeFirstResponder()
             }
         default:
             break
@@ -319,7 +475,7 @@ class TechnicalRecordVC: BaseVC {
     @objc private func removePhotoButtonTapped(_ sender: UIButton) {
         print(#function)
         let photoView = sender.superview as! CustomPhotoView
-        photoView.carPhoto = UIImage(named: "empty-photo")!
+        photoView.photo = UIImage(named: "empty-photo")!
         if photoView == firstPhotoView {
             fileURLArray.remove(at: 0)
         } else if photoView == secondPhotoView {
@@ -330,39 +486,53 @@ class TechnicalRecordVC: BaseVC {
         reloadCarPhotos()
     }
     
+    @objc private func setDate(picker: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: picker.date)
+        order.date = dateString
+    }
+    
     private func reloadCarPhotos() {
         if fileURLArray.isEmpty {
-            firstPhotoView.carPhoto = UIImage(named: "empty-photo")!
-            secondPhotoView.carPhoto = UIImage(named: "empty-photo")!
-            thirdPhotoView.carPhoto = UIImage(named: "empty-photo")!
+            firstPhotoView.photo = UIImage(named: "empty-photo")!
+            secondPhotoView.photo = UIImage(named: "empty-photo")!
+            thirdPhotoView.photo = UIImage(named: "empty-photo")!
             return
         }
         let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
-        firstPhotoView.carPhoto = UIImage(data: firstPhotoData)!
+        firstPhotoView.photo = UIImage(data: firstPhotoData)!
         if fileURLArray.count < 2 {
-            secondPhotoView.carPhoto = UIImage(named: "empty-photo")!
-            thirdPhotoView.carPhoto = UIImage(named: "empty-photo")!
+            secondPhotoView.photo = UIImage(named: "empty-photo")!
+            thirdPhotoView.photo = UIImage(named: "empty-photo")!
             return
         }
         let secondPhotoData = try! Data(contentsOf: fileURLArray[1])
-        secondPhotoView.carPhoto = UIImage(data: secondPhotoData)!
+        secondPhotoView.photo = UIImage(data: secondPhotoData)!
         if fileURLArray.count < 3 {
-            thirdPhotoView.carPhoto = UIImage(named: "empty-photo")!
+            thirdPhotoView.photo = UIImage(named: "empty-photo")!
             return
         }
         let thirdPhotoData = try! Data(contentsOf: fileURLArray[2])
-        thirdPhotoView.carPhoto = UIImage(data: thirdPhotoData)!
+        thirdPhotoView.photo = UIImage(data: thirdPhotoData)!
     }
 }
 //MARK: -  UITextFieldDalegate
 extension TechnicalRecordVC: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        if textField == infoField {
+            order.description = textField.text ?? "" + string
+            return true
+        }
+        
         return textField != userCarField || textField != optionField
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         print(#function)
+        technicalCenterTable.isHidden = !technicalCenterField.isEditing
         userCarTable.isHidden = !userCarField.isEditing
         optionTable.isHidden = !optionField.isEditing
         
@@ -370,11 +540,14 @@ extension TechnicalRecordVC: UITextFieldDelegate {
             carModelChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
         } else if textField.subviews.contains(optionsChevronButton) {
             optionsChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
+        } else if textField.subviews.contains(technicalCenterChevronButton) {
+            technicalCenterChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
         }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         print(#function)
+        technicalCenterTable.isHidden = !technicalCenterField.isEditing
         userCarTable.isHidden = !userCarField.isEditing
         optionTable.isHidden = !optionField.isEditing
         
@@ -382,6 +555,8 @@ extension TechnicalRecordVC: UITextFieldDelegate {
             carModelChevronButton.transform = .identity
         } else if textField.subviews.contains(optionsChevronButton) {
             optionsChevronButton.transform = .identity
+        } else if textField.subviews.contains(technicalCenterChevronButton) {
+            technicalCenterChevronButton.transform = .identity
         }
     }
 }
@@ -391,10 +566,12 @@ extension TechnicalRecordVC: UITextFieldDelegate {
 extension TechnicalRecordVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch tableView {
+        case technicalCenterTable:
+            return technicalCentersData.count
         case userCarTable:
-            return testArray.count
+            return myCars.count
         case optionTable:
-            return testArray.count
+            return orderTypes.count
         default:
             break
         }
@@ -405,10 +582,12 @@ extension TechnicalRecordVC: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         cell.selectionStyle = .gray
         switch tableView {
+        case technicalCenterTable:
+            cell.textLabel?.text = technicalCentersData[indexPath.row].title
         case userCarTable:
-            cell.textLabel?.text = testArray[indexPath.row]
+            cell.textLabel?.text = myCars[indexPath.row].mark + " " + myCars[indexPath.row].model
         case optionTable:
-            cell.textLabel?.text = testArray[indexPath.row]
+            cell.textLabel?.text = orderTypes[indexPath.row].name
         default:
             break
         }
@@ -418,12 +597,19 @@ extension TechnicalRecordVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(#function)
         switch tableView {
+        case technicalCenterTable:
+            let centerName = technicalCentersData[indexPath.row].title
+            technicalCenterField.text = centerName
+            order.techCenterId = technicalCentersData[indexPath.row].id
         case userCarTable:
-            let carMark = testArray[indexPath.row]
-            userCarField.text = testArray[indexPath.row]
+            let carMark = myCars[indexPath.row].mark + " " + myCars[indexPath.row].model
+            userCarField.text = carMark
+            order.carId = String(myCars[indexPath.row].id)
+            order.carNumber = myCars[indexPath.row].number
         case optionTable:
-            let optionModel = testArray[indexPath.row]
-            optionField.text = testArray[indexPath.row]
+            let optionModel = orderTypes[indexPath.row].name
+            optionField.text = optionModel
+            order.orderTypeId = orderTypes[indexPath.row].id
         default:
             break
         }
@@ -448,14 +634,14 @@ extension TechnicalRecordVC: UITableViewDelegate, UITableViewDataSource {
             
             dismiss(animated: true) { [weak self] in
                 if let data = data, let image = UIImage(data: data) {
-                    if self?.firstPhotoView.carPhoto == UIImage(named: "empty-photo") {
-                        self?.firstPhotoView.carPhoto = image
+                    if self?.firstPhotoView.photo == UIImage(named: "empty-photo") {
+                        self?.firstPhotoView.photo = image
                         UserDefaults.standard.set("\(documentUrl)", forKey: "firstPhotoUrl")
-                    } else if self?.secondPhotoView.carPhoto == UIImage(named: "empty-photo") {
-                        self?.secondPhotoView.carPhoto = image
+                    } else if self?.secondPhotoView.photo == UIImage(named: "empty-photo") {
+                        self?.secondPhotoView.photo = image
                         UserDefaults.standard.set("\(documentUrl)", forKey: "secondPhotoUrl")
-                    } else if self?.thirdPhotoView.carPhoto == UIImage(named: "empty-photo") {
-                        self?.thirdPhotoView.carPhoto = image
+                    } else if self?.thirdPhotoView.photo == UIImage(named: "empty-photo") {
+                        self?.thirdPhotoView.photo = image
                         UserDefaults.standard.set("\(documentUrl)", forKey: "thirdPhotoUrl")
                     }
                 }
@@ -502,8 +688,35 @@ extension TechnicalRecordVC {
             make.right.equalToSuperview().offset(rOffset)
         }
         
-        userCarLabel.snp.makeConstraints { make in
+        technicalCenterLable.snp.makeConstraints { make in
             make.top.equalTo(headingLabel.snp.bottom).offset(24)
+            make.left.equalToSuperview().offset(lOffset)
+            make.right.equalToSuperview().offset(rOffset)
+        }
+        
+        technicalCenterField.snp.makeConstraints { make in
+            make.top.equalTo(technicalCenterLable.snp.bottom).offset(14)
+            make.height.equalTo(54)
+            make.left.equalToSuperview().offset(lOffset)
+            make.right.equalToSuperview().offset(rOffset)
+        }
+        
+        technicalCenterChevronButton.snp.makeConstraints { make in
+            make.right.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.height.equalTo(54)
+            make.width.equalTo(54)
+        }
+        
+        technicalCenterTable.snp.makeConstraints { make in
+            make.top.equalTo(technicalCenterField.snp.bottom).offset(4)
+            make.height.equalTo(140)
+            make.left.equalToSuperview().offset(lOffset)
+            make.right.equalToSuperview().offset(rOffset)
+        }
+        
+        userCarLabel.snp.makeConstraints { make in
+            make.top.equalTo(technicalCenterField.snp.bottom).offset(24)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }

@@ -60,8 +60,10 @@ class PersonalAreaButton: UIView {
     }
     
     private func setupConstraints() {
-        
         titleView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.height.equalTo(50)
             make.width.equalTo(100)
 //            make.center.equalToSuperview()
             make.left.equalToSuperview()
@@ -78,7 +80,7 @@ class PersonalAreaButton: UIView {
         }
     
         button.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalToSuperview().offset(0)
         }
     }
     

@@ -254,7 +254,7 @@ extension MyCarsVC: UITableViewDataSource {
         guard
             let cell = tableView.dequeueReusableCell(withIdentifier: MyCarsTableViewCell.identifier, for: indexPath) as? MyCarsTableViewCell
         else { return UITableViewCell() }
-        
+        cell.selectionStyle = .none
         cell.setupCell(myCar[indexPath.row])
         
         return cell

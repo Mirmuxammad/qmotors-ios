@@ -21,6 +21,8 @@ enum RequestMethod {
     case getTechCenterList
     case getCars
     case editCar(Int)
+    case orderTypeList
+    case order
     
     var path: String {
         switch self {
@@ -46,6 +48,10 @@ enum RequestMethod {
             return "car"
         case .editCar(let id):
             return "car/\(id)"
+        case .orderTypeList:
+            return "order-type/list"
+        case .order:
+            return "order"
         }
     }
 }
@@ -56,7 +62,7 @@ final class BaseAPI {
     static let authorizedSession = Session(interceptor: RequestInterceptor())
     
     private let headers: HTTPHeaders = {
-        var headers = ["Content-Type": "application/json"]
+        var headers = ["Accept": "application/json"]
         return HTTPHeaders(headers)
     }()
     
