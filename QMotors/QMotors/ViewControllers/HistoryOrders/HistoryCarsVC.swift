@@ -82,9 +82,22 @@ extension HistoryCarsVC {
         CarAPI.getMyCarModel { [weak self] jsonData in
             guard let self = self else { return }
             self.myCar = jsonData
+            self.loadTechCenters()
+            
+        } failure: { error in
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+            self.dismissLoadingIndicator()
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    private func loadTechCenters() {
+        TechCenterAPI.techCenterList { _ in
             self.tableView.reloadData()
             self.dismissLoadingIndicator()
-            
         } failure: { error in
             let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
