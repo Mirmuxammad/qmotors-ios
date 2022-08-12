@@ -567,10 +567,34 @@ extension TechnicalRecordVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch tableView {
         case technicalCenterTable:
+            technicalCenterTable.snp.updateConstraints { make in
+                let heightTableView = CGFloat(46 * technicalCentersData.count)
+                if heightTableView < (self.view.frame.height / 2) {
+                    make.height.equalTo(heightTableView)
+                } else {
+                    make.height.equalTo(self.view.frame.height / 2)
+                }
+            }
             return technicalCentersData.count
         case userCarTable:
+            userCarTable.snp.updateConstraints { make in
+                let heightTableView = CGFloat(46 * myCars.count)
+                if heightTableView < (self.view.frame.height / 2) {
+                    make.height.equalTo(heightTableView)
+                } else {
+                    make.height.equalTo(self.view.frame.height / 2)
+                }
+            }
             return myCars.count
         case optionTable:
+            optionTable.snp.updateConstraints { make in
+                let heightTableView = CGFloat(46 * orderTypes.count)
+                if heightTableView < (self.view.frame.height / 2) {
+                    make.height.equalTo(heightTableView)
+                } else {
+                    make.height.equalTo(self.view.frame.height / 2)
+                }
+            }
             return orderTypes.count
         default:
             break
