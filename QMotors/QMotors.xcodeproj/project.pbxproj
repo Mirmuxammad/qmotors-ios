@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4006222028A3CC2200E55C04 /* CarInfoNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006221F28A3CC2200E55C04 /* CarInfoNumberView.swift */; };
-		401C746228A1297300CA5DAD /* EditCarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C746128A1297300CA5DAD /* EditCarVC.swift */; };
 		401C746428A1431600CA5DAD /* CarInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C746328A1431600CA5DAD /* CarInfoVC.swift */; };
 		4049212828A177AB00257750 /* CarResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4049212728A177AB00257750 /* CarResponse.swift */; };
 		40BA091328A23B8B00990A72 /* DeleteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40BA091228A23B8B00990A72 /* DeleteButton.swift */; };
@@ -108,7 +107,6 @@
 		297813ADA6CD9EA7AE640A7E /* Pods-QMotors.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMotors.release.xcconfig"; path = "Target Support Files/Pods-QMotors/Pods-QMotors.release.xcconfig"; sourceTree = "<group>"; };
 		4006221B28A273B000E55C04 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		4006221F28A3CC2200E55C04 /* CarInfoNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarInfoNumberView.swift; sourceTree = "<group>"; };
-		401C746128A1297300CA5DAD /* EditCarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCarVC.swift; sourceTree = "<group>"; };
 		401C746328A1431600CA5DAD /* CarInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarInfoVC.swift; sourceTree = "<group>"; };
 		4049212728A177AB00257750 /* CarResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarResponse.swift; sourceTree = "<group>"; };
 		40BA091228A23B8B00990A72 /* DeleteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteButton.swift; sourceTree = "<group>"; };
@@ -398,7 +396,6 @@
 				84DDD28E287EF04700272C19 /* BaseVC.swift */,
 				84D94F5828855F0D0023AA02 /* MainVC.swift */,
 				84A4AB682889C51700B657F1 /* CabinetVC.swift */,
-				401C746128A1297300CA5DAD /* EditCarVC.swift */,
 				401C746328A1431600CA5DAD /* CarInfoVC.swift */,
 				84AE2735288AE720000870D4 /* CabinetMenu */,
 			);
@@ -668,7 +665,6 @@
 				848D9AB1288054FF00C4BC3F /* SideMenuButton.swift in Sources */,
 				84AE2742288D4792000870D4 /* Formatter+Separator.swift in Sources */,
 				84AFF8292887DBD0009207BD /* CustomError.swift in Sources */,
-				401C746228A1297300CA5DAD /* EditCarVC.swift in Sources */,
 				84ACAF3E28927D170012508C /* RequestInterceptor.swift in Sources */,
 				84AC3B96289AAE5300353231 /* String+Extension.swift in Sources */,
 				401C746428A1431600CA5DAD /* CarInfoVC.swift in Sources */,

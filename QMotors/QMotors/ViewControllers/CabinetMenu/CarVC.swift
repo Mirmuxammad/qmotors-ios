@@ -58,10 +58,8 @@ class CarVC: BaseVC {
                 carModelId = car?.car_model_id
                 carId = car?.id
                 carNumberField.text = car?.number
-                addCarButton.setupTitle(title: "СОХРАНИТ")
+                addCarButton.setupTitle(title: "СОХРАНИТЬ")
                 headingLabel.text = "Редактировать"
-            } else {
-                addCarButton.setupTitle(title: "ДОБАВИТЬ АВТОМОБИЛЬ")
             }
         }
     }
@@ -250,6 +248,7 @@ class CarVC: BaseVC {
     private let addCarButton: ActionButton = {
         let button = ActionButton()
         button.setupButton(target: self, action: #selector(addCarButtonTapped))
+        button.setupTitle(title: "ДОБАВИТЬ АВТОМОБИЛЬ")
         button.isEnabled()
         return button
     }()
@@ -441,7 +440,6 @@ class CarVC: BaseVC {
                 //self?.addCarPhoto(carId: result["id"].intValue, completion: {})
                 self?.activityIndicator.stopAnimating()
                 self?.openEditCarVC = false
-                self?.navigationController?.popToRootViewController(animated: true)
             }) { [weak self] error in
                 print(error)
                 self?.activityIndicator.stopAnimating()
@@ -457,7 +455,6 @@ class CarVC: BaseVC {
                     [strongSelf.carMarkField, strongSelf.carModelField, strongSelf.carYearField, strongSelf.mileageField, strongSelf.carNumberField, strongSelf.vinField].forEach { $0.text?.removeAll() }
                     [strongSelf.firstPhotoView, strongSelf.secondPhotoView, strongSelf.thirdPhotoView].forEach { $0.photo = UIImage(named: "empty-photo")! }
                     self?.openEditCarVC = false
-                    self?.navigationController?.popToRootViewController(animated: true)
                 })
             }) { [weak self] error in
                 print(error)
@@ -635,6 +632,7 @@ extension CarVC {
     private func setupConstraints() {
         let lOffset = Const.lOffset
         let rOffset = Const.rOffset
+        let height = self.view.snp.bottom
         
         activityIndicator.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -684,7 +682,7 @@ extension CarVC {
         }
         carMarkOptionsTable.snp.makeConstraints { make in
             make.top.equalTo(carMarkField.snp.bottom).offset(4)
-            make.height.equalTo(140)
+            make.bottom.equalTo(self.view.snp.bottom).offset(-40)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
@@ -707,7 +705,7 @@ extension CarVC {
         }
         carModelOptionsTable.snp.makeConstraints { make in
             make.top.equalTo(carModelField.snp.bottom).offset(4)
-            make.height.equalTo(140)
+            make.bottom.equalTo(self.view.snp.bottom).offset(-40)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
@@ -730,7 +728,7 @@ extension CarVC {
         }
         carYearOptionsTable.snp.makeConstraints { make in
             make.top.equalTo(carYearField.snp.bottom).offset(4)
-            make.height.equalTo(140)
+            make.bottom.equalTo(self.view.snp.bottom).offset(-40)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
