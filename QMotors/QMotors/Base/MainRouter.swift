@@ -32,6 +32,16 @@ class MainRouter: NSObject {
 //        pushViewController(vc: baseVC, animated: true)
 //    }
     
+    func pushOrdersForCarVC(myCar: MyCarModel) {
+        let vc = OrdersForCarVC(myCar: myCar)
+        pushViewController(vc: vc, animated: true)
+    }
+    
+    func pushHistoryCarsVC() {
+        let vc = HistoryCarsVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
     func pushMainVC() {
         let mainVC = MainVC()
         mainVC.router = self

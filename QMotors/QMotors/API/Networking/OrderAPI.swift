@@ -57,4 +57,23 @@ final class OrderAPI {
             failure(error)
         }
     }
+    
+    static func orderList(userCarId: Int, success: @escaping (CarOrderResponce) -> Void, failure: @escaping escapeNetworkError) {
+        let params: Parameters = [:]
+        
+        BaseAPI.authorizedGetRequest(reqMethod: .orderList(userCarId), parameters: params, success: { data in
+            guard let data = data else { return }
+            let jsonData = JSON(data)
+            let errors = jsonData["errors"]
+            if errors.type == .null {
+                let decoder = JSONDecoder()
+                let decod = try! decoder.decode(CarOrderResponce.self, from: data)
+                success(decod)
+            } else {
+                failure(NetworkError(.other(errors.stringValue)))
+            }
+        }) { error in
+            failure(error)
+        }
+    }
 }
