@@ -22,6 +22,12 @@ class MyCarsVC: BaseVC {
         return imageView
     }()
     
+    private let carSearchTextField: UISearchTextField = {
+        let textField = UISearchTextField()
+        textField.placeholder = "Поиск"
+        return textField
+    }()
+    
     private let backgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -99,6 +105,7 @@ class MyCarsVC: BaseVC {
         view.addSubview(logoImageView)
         view.addSubview(backgroundView)
         
+        backgroundView.addSubview(carSearchTextField)
         backgroundView.addSubview(backButton)
         backgroundView.addSubview(segmentedControl)
         backgroundView.addSubview(titleLable)
@@ -128,11 +135,18 @@ class MyCarsVC: BaseVC {
             make.top.equalToSuperview().offset(40)
         }
         
-        segmentedControl.snp.makeConstraints { make in
+        carSearchTextField.snp.makeConstraints { make in
             make.height.equalTo(34)
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
             make.top.equalTo(backButton.snp.bottom).offset(15)
+        }
+        
+        segmentedControl.snp.makeConstraints { make in
+            make.height.equalTo(34)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.top.equalTo(carSearchTextField.snp.bottom).offset(15)
         }
         
         titleLable.snp.makeConstraints { make in
