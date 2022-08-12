@@ -453,6 +453,7 @@ class CarVC: BaseVC {
                 //self?.addCarPhoto(carId: result["id"].intValue, completion: {})
                 self?.activityIndicator.stopAnimating()
                 self?.openEditCarVC = false
+                self?.router?.popEditCarVC()
             }) { [weak self] error in
                 print(error)
                 self?.activityIndicator.stopAnimating()
@@ -468,6 +469,8 @@ class CarVC: BaseVC {
                     [strongSelf.carMarkField, strongSelf.carModelField, strongSelf.carYearField, strongSelf.mileageField, strongSelf.carNumberField, strongSelf.vinField].forEach { $0.text?.removeAll() }
                     [strongSelf.firstPhotoView, strongSelf.secondPhotoView, strongSelf.thirdPhotoView].forEach { $0.photo = UIImage(named: "empty-photo")! }
                     self?.openEditCarVC = false
+                    
+                    self?.router?.back()
                 })
             }) { [weak self] error in
                 print(error)
@@ -478,7 +481,7 @@ class CarVC: BaseVC {
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-
+            
             var safeArea = self.view.frame
             safeArea.size.height += scrollView.contentOffset.y
             safeArea.size.height -= keyboardSize.height + (UIScreen.main.bounds.height*0.04)
@@ -505,11 +508,12 @@ class CarVC: BaseVC {
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
-            if distance == 0 {
-                return
-            }
-            scrollOffset = 0
-            distance = 0
+        if distance == 0 {
+            return
+        }
+        self.scrollView.setContentOffset(CGPoint(x: 0, y: scrollOffset), animated: true)
+        scrollOffset = 0
+        distance = 0
     }
     
     

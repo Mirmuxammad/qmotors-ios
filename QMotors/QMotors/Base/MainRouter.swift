@@ -112,7 +112,10 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
-    
+    func popEditCarVC() {
+        let vc = MyCarsVC()
+        navigationController.popToViewController(vc, animated: true)
+    }
     
     func presentSideMenu(rootScreen: RootScreen) {
         let sideMenuVC = SideMenuVC()

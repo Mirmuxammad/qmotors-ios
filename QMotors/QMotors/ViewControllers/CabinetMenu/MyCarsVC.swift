@@ -89,8 +89,11 @@ class MyCarsVC: BaseVC {
         setupConstraints()
 
         setupSegmentedControl()
-        
-
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadMyCar()
     }
         
     // MARK: - Private functions
@@ -263,6 +266,8 @@ extension MyCarsVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 160
     }
+    
+    
     
 }
 

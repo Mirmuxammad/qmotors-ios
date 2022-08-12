@@ -31,6 +31,7 @@ class CarInfoVC: BaseVC {
     
     private var carId: Int?
     private var carYear: Int?
+    private var openEditCar: Bool = false
     
     //MARK: -UI Elements-
     
@@ -145,6 +146,14 @@ class CarInfoVC: BaseVC {
     
     
     // MARK: - Lifecycle
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if openEditCar {
+            self.router?.back()
+            openEditCar = false
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -278,6 +287,7 @@ class CarInfoVC: BaseVC {
     @objc private func editCarButtonDidTap() {
         if let car = car {
             router?.pushCarVCForEdit(car: car)
+            openEditCar = true
         }
     }
     
