@@ -200,7 +200,7 @@ class MyCarsVC: BaseVC {
     
     //MARK: - Load My Car -
     
-    private func loadMyCar() {
+    func loadMyCar() {
         activityIndicator.startAnimating()
         CarAPI.getMyCarModel { [weak self] jsonData in
             guard let self = self else { return }

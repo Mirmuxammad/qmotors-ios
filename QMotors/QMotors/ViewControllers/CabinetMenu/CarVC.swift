@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 class CarVC: BaseVC {
-    // MARK: - Properties
+    
     private var options = ["option 1", "option 2", "option 3", "option 4", "option 5", "option 6"]
     private var carMarkDataStore = [CarMark]()
     private var carModelDataStore = [CarModel]()
@@ -37,13 +37,34 @@ class CarVC: BaseVC {
             }
         }
     }
+    private var carId: Int?
     private var carModelId: Int?
     private var fileURLArray: [URL] = [] {
         didSet {
             print(fileURLArray)
         }
     }
+    
     private let cellIdentifier = "optionsTableCell"
+    var openEditCarVC = false
+    var car: MyCarModel?{
+        didSet {
+            if openEditCarVC == true {
+                carMarkField.text = car?.mark
+                carModelField.text = car?.model
+                carYearField.text = "\(car?.year ?? 0)"
+                mileageField.text = car?.mileage
+                vinField.text = car?.vin
+                carModelId = car?.car_model_id
+                carId = car?.id
+                carNumberField.text = car?.number
+                addCarButton.setupTitle(title: "СОХРАНИТ")
+                headingLabel.text = "Редактировать"
+            } else {
+                addCarButton.setupTitle(title: "ДОБАВИТЬ АВТОМОБИЛЬ")
+            }
+        }
+    }
     
     // MARK: - UI Elements
     private let logoImageView: UIImageView = {
@@ -228,7 +249,6 @@ class CarVC: BaseVC {
     
     private let addCarButton: ActionButton = {
         let button = ActionButton()
-        button.setupTitle(title: "ДОБАВИТЬ АВТОМОБИЛЬ")
         button.setupButton(target: self, action: #selector(addCarButtonTapped))
         button.isEnabled()
         return button
@@ -411,20 +431,38 @@ class CarVC: BaseVC {
     
     @objc private func addCarButtonTapped() {
         print(#function)
-        guard let carModelId = carModelId, let carYear = carYearField.text, let carMileage = mileageField.text, let carNumber = carNumberField.text, let vin = vinField.text else { return }
-        guard let carYearInt = Int(carYear), let carMileageInt = Int(carMileage) else { return }
-        activityIndicator.startAnimating()
-        CarAPI.addCar(carModelId: carModelId, year: carYearInt, mileage: carMileageInt, number: carNumber, vin: vin, lastVisit: Date(), status: .active, success: { [weak self] result in
-            self?.addCarPhoto(carId: result["id"].intValue, completion: { [weak self] in
-                guard let strongSelf = self else { return }
+        
+        if openEditCarVC == true {
+            guard let carId = carId, let carModelId = carModelId, let carYear = carYearField.text, let carMileage = mileageField.text,let carNumber = carNumberField.text, let vin = vinField.text else { return }
+            guard let carYearInt = Int(carYear), let carMileageInt = Int(carMileage) else { return }
+            activityIndicator.startAnimating()
+            
+            CarAPI.editCar(carId: carId,carModelId: carModelId, year: carYearInt, mileage: carMileageInt, number: carNumber, vin: vin, lastVisit: Date(), status: .active, success: { [weak self] result in
+                //self?.addCarPhoto(carId: result["id"].intValue, completion: {})
                 self?.activityIndicator.stopAnimating()
-                [strongSelf.carMarkField, strongSelf.carModelField, strongSelf.carYearField, strongSelf.mileageField, strongSelf.carNumberField, strongSelf.vinField].forEach { $0.text?.removeAll() }
-                [strongSelf.firstPhotoView, strongSelf.secondPhotoView, strongSelf.thirdPhotoView].forEach { $0.photo = UIImage(named: "empty-photo")! }
-                self?.router?.back()
-            })
-        }) { [weak self] error in
-            print(error)
-            self?.activityIndicator.stopAnimating()
+                self?.openEditCarVC = false
+                self?.navigationController?.popToRootViewController(animated: true)
+            }) { [weak self] error in
+                print(error)
+                self?.activityIndicator.stopAnimating()
+            }
+        } else {
+            guard let carModelId = carModelId, let carYear = carYearField.text, let carMileage = mileageField.text, let carNumber = carNumberField.text, let vin = vinField.text else { return }
+            guard let carYearInt = Int(carYear), let carMileageInt = Int(carMileage) else { return }
+            activityIndicator.startAnimating()
+            CarAPI.addCar(carModelId: carModelId, year: carYearInt, mileage: carMileageInt, number: carNumber, vin: vin, lastVisit: Date(), status: .active, success: { [weak self] result in
+                self?.addCarPhoto(carId: result["id"].intValue, completion: { [weak self] in
+                    guard let strongSelf = self else { return }
+                    self?.activityIndicator.stopAnimating()
+                    [strongSelf.carMarkField, strongSelf.carModelField, strongSelf.carYearField, strongSelf.mileageField, strongSelf.carNumberField, strongSelf.vinField].forEach { $0.text?.removeAll() }
+                    [strongSelf.firstPhotoView, strongSelf.secondPhotoView, strongSelf.thirdPhotoView].forEach { $0.photo = UIImage(named: "empty-photo")! }
+                    self?.openEditCarVC = false
+                    self?.navigationController?.popToRootViewController(animated: true)
+                })
+            }) { [weak self] error in
+                print(error)
+                self?.activityIndicator.stopAnimating()
+            }
         }
     }
     
@@ -756,4 +794,5 @@ extension CarVC {
             make.right.equalToSuperview().offset(rOffset)
         }
     }
+    
 }

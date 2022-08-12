@@ -276,7 +276,9 @@ class CarInfoVC: BaseVC {
     }
     
     @objc private func editCarButtonDidTap() {
-        router?.pushEditCarVC(car: car!)
+        if let car = car {
+            router?.pushCarVCForEdit(car: car)
+        }
     }
     
     @objc private func trashCarButtonDidTap() {
