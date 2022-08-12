@@ -609,7 +609,7 @@ extension TechnicalRecordVC: UITableViewDelegate, UITableViewDataSource {
         case technicalCenterTable:
             cell.textLabel?.text = technicalCentersData[indexPath.row].title
         case userCarTable:
-            cell.textLabel?.text = myCars[indexPath.row].mark + " " + myCars[indexPath.row].model
+            cell.textLabel?.text = myCars[indexPath.row].mark + " " + myCars[indexPath.row].model + " " + myCars[indexPath.row].number
         case optionTable:
             cell.textLabel?.text = orderTypes[indexPath.row].name
         default:
