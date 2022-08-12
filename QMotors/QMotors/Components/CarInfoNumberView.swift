@@ -49,7 +49,7 @@ class CarInfoNumberView: UIView {
     let regionNumber: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 11)
+        label.font = UIFont.boldSystemFont(ofSize: 10)
         return label
     }()
     

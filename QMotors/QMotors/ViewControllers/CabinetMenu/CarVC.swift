@@ -63,6 +63,9 @@ class CarVC: BaseVC {
             }
         }
     }
+    var scrollOffset: CGFloat = 0
+    var distance: CGFloat = 0
+    
     
     // MARK: - UI Elements
     private let logoImageView: UIImageView = {
@@ -270,6 +273,9 @@ class CarVC: BaseVC {
         UserDefaults.standard.set(nil, forKey: "secondPhotoUrl")
         UserDefaults.standard.set(nil, forKey: "thirdPhotoUrl")
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
         activityIndicator.startAnimating()
         fetchDropdownData { [weak self] in
             self?.activityIndicator.stopAnimating()
@@ -277,11 +283,16 @@ class CarVC: BaseVC {
         setupView()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     // MARK: - Setup View
     private func setupView() {
-        carMarkField.inputView = UIView()
-        carModelField.inputView = UIView()
-        carYearField.inputView = UIView()
+//        carMarkField.inputView = UIView()
+//        carModelField.inputView = UIView()
+//        carYearField.inputView = UIView()
         
         carMarkField.delegate = self
         carModelField.delegate = self
@@ -381,6 +392,8 @@ class CarVC: BaseVC {
     
     @objc private func chevronButtonTapped(_ sender: UIButton) {
         print(#function)
+        
+        //scrollView.contentInset.bottom = view.convert(keyboardFrame.cgRectValue, from: nil).size.height
         switch sender {
         case carMarkChevronButton:
             if carMarkField.isFirstResponder {
@@ -462,6 +475,43 @@ class CarVC: BaseVC {
             }
         }
     }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+
+            var safeArea = self.view.frame
+            safeArea.size.height += scrollView.contentOffset.y
+            safeArea.size.height -= keyboardSize.height + (UIScreen.main.bounds.height*0.04)
+            
+            let activeField: CustomTextField? = [carMarkField, carModelField, carYearField, carNumberField, mileageField,vinField].first { $0.isFirstResponder }
+            if let activeField = activeField {
+                if activeField == carModelField {
+                    distance = activeField.frame.maxY / 1.42
+                } else if activeField == carMarkField {
+                    distance = activeField.frame.maxY / 2
+                } else if activeField == carYearField {
+                    distance = activeField.frame.maxY / 1.28
+                } else if activeField == carNumberField {
+                    distance = activeField.frame.maxY / 1.3
+                } else if activeField == mileageField {
+                    distance = activeField.frame.maxY / 1.3
+                } else if activeField == vinField {
+                    distance = activeField.frame.maxY / 1.3
+                }
+                self.scrollView.setContentOffset(CGPoint(x: 0, y: distance), animated: true)
+            }
+            scrollView.isScrollEnabled = true
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+            if distance == 0 {
+                return
+            }
+            scrollOffset = 0
+            distance = 0
+    }
+    
     
     private func addCarPhoto(carId: Int, completion: @escaping () -> Void) {
         if fileURLArray.isEmpty {
