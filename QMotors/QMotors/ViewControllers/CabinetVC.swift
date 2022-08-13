@@ -198,6 +198,7 @@ class CabinetVC: BaseVC {
     
     @objc private func signUpButtonDidTap() {
         print("signUpButtonDidTap")
+        router?.pushTechnicalRecordVC()
     }
     
     @objc private func logoutButtonDidTap() {
