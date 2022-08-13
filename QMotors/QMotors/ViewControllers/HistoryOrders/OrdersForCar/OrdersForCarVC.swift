@@ -86,7 +86,9 @@ extension OrdersForCarVC {
     private func loadOrders() {
         OrderAPI.orderList(userCarId: myCar.id) { responce in
             let carOrders = responce.result
-            guard let carOrder = carOrders.last else { return }
+            guard let carOrder = carOrders.last else {
+                self.dismissLoadingIndicator()
+                return }
             self.ordersData = carOrder.orders
             self.tableView.reloadData()
             self.dismissLoadingIndicator()
