@@ -79,7 +79,7 @@ class HistoryCarsVC: BaseVC {
 extension HistoryCarsVC {
     private func loadMyCar() {
         self.showLoadingIndicator()
-        CarAPI.getMyCarModel { [weak self] jsonData in
+        CarAPI.getMyCars { [weak self] jsonData in
             guard let self = self else { return }
             self.myCar = jsonData
             self.loadTechCenters()

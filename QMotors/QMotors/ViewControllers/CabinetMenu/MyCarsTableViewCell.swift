@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import SDWebImage
 
 class MyCarsTableViewCell: UITableViewCell {
     
@@ -25,8 +26,9 @@ class MyCarsTableViewCell: UITableViewCell {
     
     private let carImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "subaru")
+        imageView.image = UIImage(named: "empty-photo")
         imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -79,11 +81,40 @@ class MyCarsTableViewCell: UITableViewCell {
         label.text = "25.09.2016"
         return label
     }()
+    
+    // MARK: - Public functions
+    
+    func setupCell(_ with: MyCarModel) {
+        selectionStyle = .none
+        setupViews()
+        setupConstraints()
         
-    // MARK: - Private functions
+        if let carPhotos = with.user_car_photos {
+            for carPhoto in carPhotos {
+                let photoUrl = BaseAPI.baseURL + carPhoto.photo
+                print(photoUrl)
+                carImageView.sd_setImage(with: URL(string: photoUrl), placeholderImage: nil)
+            }
+        }
+        modelLabel.text = with.model
+        mileageLabel.text = with.mileage
+        lastVisitLabel.text = with.last_visit.getFormattedDate()
+        if let inMillage = Int(with.mileage) {
+            mileageLabel.text = "\(inMillage.formattedWithSeparator) км"
+        }
+        lastVisitLabel.text = with.last_visit.getDateString()
+        carNumberView.numberTitle.text = with.number.getCarNumber()
+        carNumberView.regionNumber.text = with.number.getCarRegionNumber()
+    }
+    
+}
+
+// MARK: - Setup View
+
+extension MyCarsTableViewCell {
     
     private func setupViews() {
-        addSubview(containerView)
+        contentView.addSubview(containerView)
         containerView.addSubview(carImageView)
         carImageView.addSubview(carNumberView)
         
@@ -142,22 +173,4 @@ class MyCarsTableViewCell: UITableViewCell {
         }
         
     }
-    
-    // MARK: - Public functions
-    
-    func setupCell(_ with: MyCarModel) {
-        selectionStyle = .none
-        setupViews()
-        setupConstraints()
-        
-        modelLabel.text = with.model
-        mileageLabel.text = with.mileage
-        lastVisitLabel.text = with.last_visit.getFormattedDate()
-        guard let inMillage = Int(with.mileage) else { return }
-        mileageLabel.text = "\(inMillage.formattedWithSeparator) км"
-        lastVisitLabel.text = with.last_visit.getDateString()
-        carNumberView.numberTitle.text = with.number.getCarNumber()
-        carNumberView.regionNumber.text = with.number.getCarRegionNumber()
-    }
-    
 }

@@ -384,7 +384,7 @@ class TechnicalRecordVC: BaseVC {
     
     private func loadMyCar(dg: DispatchGroup) {
         dg.enter()
-        CarAPI.getMyCarModel { [weak self] jsonData in
+        CarAPI.getMyCars { [weak self] jsonData in
             guard let self = self else { return }
             self.myCars = jsonData
             dg.leave()

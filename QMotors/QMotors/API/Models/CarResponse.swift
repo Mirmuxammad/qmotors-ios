@@ -8,12 +8,12 @@
 import Foundation
 import UIKit
 
-struct MyCarModelResponse: Codable {
+struct MyCarModelResponse {
     let result: [MyCarModel]
     let error: CustomError?
 }
 
-struct MyCarModel: Codable {
+struct MyCarModel {
     let id: Int
     let car_model_id: Int
     let user_id: Int
@@ -25,7 +25,15 @@ struct MyCarModel: Codable {
     let created_at: String
     let updated_at: String
     let number: String
-    //let user_car_photos: [String]
+    let user_car_photos: [CarPhoto]?
     let model: String
     let mark: String
+}
+
+struct CarPhoto {
+    let id: Int
+    let user_car_id: Int
+    let photo: String
+    let created_at: String
+    let updated_at: String
 }

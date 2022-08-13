@@ -58,16 +58,28 @@ final class CarAPI {
         }
     }
     
-    static func getMyCarModel(success: @escaping ([MyCarModel]) -> Void, failure: @escaping escapeNetworkError) {
+    static func getMyCars(success: @escaping ([MyCarModel]) -> Void, failure: @escaping escapeNetworkError) {
         let params: Parameters = [:]
         
-        BaseAPI.authorizedGetRequest(reqMethod: .getCars, parameters: params, success: { data in
+        BaseAPI.authorizedGetRequest(reqMethod: .getMyCars, parameters: params, success: { data in
             guard let data = data else { return }
             let jsonData = JSON(data)
             let errors = jsonData["errors"]
             if errors.type == .null {
                 var myCarModels = [MyCarModel]()
                 for myCarModel in jsonData["result"].arrayValue {
+                    var carPhotos: [CarPhoto] = []
+                    if myCarModel["user_car_photos"].arrayValue.count > 0 {
+                        for carPhoto in myCarModel["user_car_photos"].arrayValue {
+                            let carPhotoModel = CarPhoto(id: carPhoto["id"].intValue,
+                                                         user_car_id: carPhoto["user_car_id"].intValue,
+                                                         photo: carPhoto["photo"].stringValue,
+                                                         created_at: carPhoto["created_at"].stringValue,
+                                                         updated_at: carPhoto["updated_at"].stringValue)
+                            carPhotos.append(carPhotoModel)
+                        }
+                    }
+
                     myCarModels.append(MyCarModel(id: myCarModel["id"].intValue,
                                                   car_model_id: myCarModel["car_model_id"].intValue,
                                                   user_id: myCarModel["user_id"].intValue,
@@ -79,6 +91,7 @@ final class CarAPI {
                                                   created_at: myCarModel["created_at"].stringValue,
                                                   updated_at: myCarModel["updated_at"].stringValue,
                                                   number: myCarModel["number"].stringValue,
+                                                  user_car_photos: carPhotos.count == 0 ? nil : carPhotos,
                                                   model: myCarModel["model"]["name"].stringValue,
                                                   mark: myCarModel["model"]["mark"]["name"].stringValue))
                 }

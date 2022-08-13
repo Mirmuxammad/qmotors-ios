@@ -13,7 +13,7 @@ final class TechCenterAPI {
     static func techCenterList(success: @escaping ([TechnicalCenter]) -> Void, failure: @escaping escapeNetworkError) {
         let params: Parameters = [:]
         
-        BaseAPI.getTechCenterList(reqMethod: .getTechCenterList, parameters: params, success: { data in
+        BaseAPI.authorizedGetRequest(reqMethod: .getTechCenterList, parameters: params, success: { data in
             guard let data = data else { return }
             let jsonData = JSON(data)
             let errors = jsonData["errors"]

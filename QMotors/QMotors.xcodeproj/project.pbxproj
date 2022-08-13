@@ -290,11 +290,11 @@
 				84ACAF3928927D170012508C /* BaseAPI.swift */,
 				84ACAF3A28927D170012508C /* CarAPI.swift */,
 				84ACAF3B28927D170012508C /* LoginAPI.swift */,
-				84AC3B99289B0F7800353231 /* TechCenterAPI.swift */,
 				84ACAF3628927D170012508C /* NetworkError.swift */,
+				E02E316728A2BB060067CEAB /* OrderAPI.swift */,
 				84ACAF3728927D170012508C /* ProfileAPI.swift */,
 				84ACAF3828927D170012508C /* RequestInterceptor.swift */,
-				E02E316728A2BB060067CEAB /* OrderAPI.swift */,
+				84AC3B99289B0F7800353231 /* TechCenterAPI.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
