@@ -82,6 +82,13 @@ class MyCarsTableViewCell: UITableViewCell {
         return label
     }()
     
+    // MARK: - Lifecycle
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        carImageView.image = UIImage(named: "empty-photo")
+    }
+    
     // MARK: - Public functions
     
     func setupCell(_ with: MyCarModel) {

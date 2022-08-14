@@ -7,16 +7,20 @@
 
 import UIKit
 import SnapKit
+import SDWebImage
 
 class CarInfoVC: BaseVC {
     
     // MARK: - Properties
     
-    var car: MyCarModel?{
+    var car: MyCarModel? {
         didSet {
-            guard
-                let car = car,
-                let intMileage = Int(car.mileage) else { return }
+            guard let car = car, let intMileage = Int(car.mileage) else { return }
+            if let carPhotos = car.user_car_photos {
+                carPhotos.forEach({
+                    carImageView.sd_setImage(with: URL(string: BaseAPI.baseURL + $0.photo), placeholderImage: nil)
+                })
+            }
             carModelLabel.text = car.model
             millageLabel.text = "\(intMileage.formattedWithSeparator) км"
             lastVisitLabel.text = car.last_visit.getDateString()
@@ -55,7 +59,7 @@ class CarInfoVC: BaseVC {
     
     private let carImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "subaru")
+        imageView.image = UIImage(named: "empty-photo")
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         return imageView
