@@ -297,13 +297,21 @@ class CarInfoVC: BaseVC {
     
     @objc private func trashCarButtonDidTap() {
         
-        guard let carid = carId else { return }
+        let alert = UIAlertController(title: "Внимание", message: "Вы уверены, что хотите удалить?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Да", style: .default, handler: { action in
         
-        CarAPI.deleteCar(carId: carid, status: .deleted, success: { [weak self] result in
-            self?.router?.back()
-        }) { [weak self] error in
-            print(error)
-        }
+            guard let carid = self.carId else { return }
+            
+            CarAPI.deleteCar(carId: carid, status: .deleted, success: { [weak self] result in
+                self?.router?.back()
+            }) { [weak self] error in
+                print(error)
+            }
+            
+        }))
+        alert.addAction(UIAlertAction(title: "Нет", style: .cancel))
+        self.present(alert, animated: true, completion: nil)
+        
     }
     
 }
