@@ -91,6 +91,7 @@
 		84DDD2B8287F0AE800272C19 /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84DDD2A6287F0AE800272C19 /* Montserrat-Black.ttf */; };
 		84DDD2BB287F12FC00272C19 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD2BA287F12FC00272C19 /* UIColor+Extension.swift */; };
 		84DDD2BE287F393300272C19 /* SideMenuVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84DDD2BD287F393300272C19 /* SideMenuVC.swift */; };
+		88038F4928A905A5009A0A59 /* CarInfoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88038F4828A905A5009A0A59 /* CarInfoCollectionViewCell.swift */; };
 		E02E316828A2BB060067CEAB /* OrderAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02E316728A2BB060067CEAB /* OrderAPI.swift */; };
 		E02E316A28A2BCA30067CEAB /* OrderTypeResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02E316928A2BCA30067CEAB /* OrderTypeResponce.swift */; };
 		E02E316C28A2BFAD0067CEAB /* NewOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02E316B28A2BFAD0067CEAB /* NewOrder.swift */; };
@@ -200,6 +201,7 @@
 		84DDD2A6287F0AE800272C19 /* Montserrat-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Black.ttf"; sourceTree = "<group>"; };
 		84DDD2BA287F12FC00272C19 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		84DDD2BD287F393300272C19 /* SideMenuVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuVC.swift; sourceTree = "<group>"; };
+		88038F4828A905A5009A0A59 /* CarInfoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarInfoCollectionViewCell.swift; sourceTree = "<group>"; };
 		E02E316728A2BB060067CEAB /* OrderAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderAPI.swift; sourceTree = "<group>"; };
 		E02E316928A2BCA30067CEAB /* OrderTypeResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderTypeResponce.swift; sourceTree = "<group>"; };
 		E02E316B28A2BFAD0067CEAB /* NewOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewOrder.swift; sourceTree = "<group>"; };
@@ -332,8 +334,8 @@
 			children = (
 				84A509AD28A26DEC00B30D6E /* Profile */,
 				84ACAF282891848D0012508C /* CarVC.swift */,
-				84AE2736288AE772000870D4 /* MyCarsVC.swift */,
-				84AE273C288BF10E000870D4 /* MyCarsTableViewCell.swift */,
+				88038F4628A9050C009A0A59 /* MyCars */,
+				88038F4728A90532009A0A59 /* MyCarsDetail */,
 			);
 			path = CabinetMenu;
 			sourceTree = "<group>";
@@ -412,7 +414,6 @@
 				84DDD28E287EF04700272C19 /* BaseVC.swift */,
 				84D94F5828855F0D0023AA02 /* MainVC.swift */,
 				84A4AB682889C51700B657F1 /* CabinetVC.swift */,
-				401C746328A1431600CA5DAD /* CarInfoVC.swift */,
 				84AE2735288AE720000870D4 /* CabinetMenu */,
 			);
 			path = ViewControllers;
@@ -498,6 +499,24 @@
 				84AE2733288AB460000870D4 /* SideMenuTableViewCell.swift */,
 			);
 			path = SideLeftMenu;
+			sourceTree = "<group>";
+		};
+		88038F4628A9050C009A0A59 /* MyCars */ = {
+			isa = PBXGroup;
+			children = (
+				84AE2736288AE772000870D4 /* MyCarsVC.swift */,
+				84AE273C288BF10E000870D4 /* MyCarsTableViewCell.swift */,
+			);
+			path = MyCars;
+			sourceTree = "<group>";
+		};
+		88038F4728A90532009A0A59 /* MyCarsDetail */ = {
+			isa = PBXGroup;
+			children = (
+				401C746328A1431600CA5DAD /* CarInfoVC.swift */,
+				88038F4828A905A5009A0A59 /* CarInfoCollectionViewCell.swift */,
+			);
+			path = MyCarsDetail;
 			sourceTree = "<group>";
 		};
 		C02F9647BA4FDAE91C78CA2A /* Pods */ = {
@@ -724,6 +743,7 @@
 				84AE2737288AE772000870D4 /* MyCarsVC.swift in Sources */,
 				40BA091328A23B8B00990A72 /* DeleteButton.swift in Sources */,
 				E02E317E28A51AC90067CEAB /* DeteilOrderForCarVC.swift in Sources */,
+				88038F4928A905A5009A0A59 /* CarInfoCollectionViewCell.swift in Sources */,
 				84DDD28F287EF04700272C19 /* BaseVC.swift in Sources */,
 				84ACAF3D28927D170012508C /* ProfileAPI.swift in Sources */,
 				84ACAF292891848D0012508C /* CarVC.swift in Sources */,

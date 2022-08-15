@@ -17,9 +17,8 @@ class CarInfoVC: BaseVC {
         didSet {
             guard let car = car, let intMileage = Int(car.mileage) else { return }
             if let carPhotos = car.user_car_photos {
-                carPhotos.forEach({
-                    carImageView.sd_setImage(with: URL(string: BaseAPI.baseURL + $0.photo), placeholderImage: nil)
-                })
+                self.carPhotos = carPhotos
+                carImageSlider.reloadData()
             }
             carModelLabel.text = car.model
             millageLabel.text = "\(intMileage.formattedWithSeparator) км"
@@ -27,15 +26,13 @@ class CarInfoVC: BaseVC {
             VINLabel.text = car.vin
             carId = car.id
             carYear = car.year
-            carNumberView.numberTitle.text = car.number.getCarNumber()
-            carNumberView.regionNumber.text = car.number.getCarRegionNumber()
         }
     }
-    // MARK: - Properties
     
     private var carId: Int?
     private var carYear: Int?
     private var openEditCar: Bool = false
+    private var carPhotos: [CarPhoto]?
     
     //MARK: -UI Elements-
     
@@ -57,12 +54,16 @@ class CarInfoVC: BaseVC {
         return button
     }()
     
-    private let carImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "empty-photo")
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        return imageView
+    private let carImageSlider: UICollectionView = {
+        let slider = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        slider.setCollectionViewLayout(layout, animated: true)
+        slider.showsVerticalScrollIndicator = false
+        slider.showsHorizontalScrollIndicator = false
+        slider.isPagingEnabled = true
+        slider.register(CarInfoCollectionViewCell.self, forCellWithReuseIdentifier: CarInfoCollectionViewCell.cellIdentifier)
+        return slider
     }()
     
     private let carModelLabel: UILabel = {
@@ -72,11 +73,6 @@ class CarInfoVC: BaseVC {
         label.textColor = .black
         label.textAlignment = .left
         return label
-    }()
-    
-    private let carNumberView: CarInfoNumberView = {
-        let view = CarInfoNumberView()
-        return view
     }()
     
     private let millageTitleLabel: UILabel = {
@@ -169,14 +165,15 @@ class CarInfoVC: BaseVC {
     
     
     private func setupView() {
+        carImageSlider.delegate = self
+        carImageSlider.dataSource = self
+        
         view.addSubview(logoImageView)
         view.addSubview(backgroundView)
         
         backgroundView.addSubview(backButton)
-        backgroundView.addSubview(carImageView)
+        backgroundView.addSubview(carImageSlider)
         backgroundView.addSubview(carModelLabel)
-        
-        carImageView.addSubview(carNumberView)
         
         backgroundView.addSubview(millageTitleLabel)
         backgroundView.addSubview(millageLabel)
@@ -192,6 +189,67 @@ class CarInfoVC: BaseVC {
         
     }
     
+    //MARK: -Private Action-
+    
+    
+    @objc private func backButtonDidTap() {
+        router?.back()
+    }
+    
+    @objc private func editCarButtonDidTap() {
+        if let car = car {
+            router?.pushCarVCForEdit(car: car)
+            openEditCar = true
+        }
+    }
+    
+    @objc private func trashCarButtonDidTap() {
+        
+        guard let carid = carId else { return }
+        
+        CarAPI.deleteCar(carId: carid, status: .deleted, success: { [weak self] result in
+            self?.router?.back()
+        }) { [weak self] error in
+            print(error)
+        }
+    }
+    
+}
+
+// MARK: -
+extension CarInfoVC: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let carPhotos = carPhotos else { return 1 }
+        
+        if !carPhotos.isEmpty { return carPhotos.count }
+        
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CarInfoCollectionViewCell.cellIdentifier, for: indexPath) as! CarInfoCollectionViewCell
+        if let carPhotos = self.carPhotos,
+           !carPhotos.isEmpty {
+            cell.sliderImage = URL(string: BaseAPI.baseURL + "\(carPhotos[indexPath.item].photo)")
+        }
+        if let car = car {
+            cell.carNumberTitle = car.number.getCarNumber()
+            cell.carNumberRegion = car.number.getCarRegionNumber()
+        }
+        return cell
+    }
+    
+    
+}
+
+extension CarInfoVC: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: carImageSlider.frame.width, height: carImageSlider.frame.height)
+    }
+}
+
+// MARK: - Constraints
+extension CarInfoVC {
     private func setupConstraints() {
         
         logoImageView.snp.makeConstraints { make in
@@ -211,22 +269,17 @@ class CarInfoVC: BaseVC {
             make.top.equalToSuperview().offset(40)
         }
         
-        carImageView.snp.makeConstraints { make in
+        carImageSlider.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: (self.view.frame.width - 32), height: (self.view.frame.width / 3)))
             make.top.equalTo(backButton.snp.bottom).offset(17)
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
         }
         
-        carNumberView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(60)
-            make.bottom.equalToSuperview().offset(-19)
-        }
-        
         carModelLabel.snp.makeConstraints { make in
             make.height.equalTo(25)
             make.left.equalToSuperview().offset(16)
-            make.top.equalTo(carImageView.snp.bottom).offset(19)
+            make.top.equalTo(carImageSlider.snp.bottom).offset(19)
         }
         
         millageTitleLabel.snp.makeConstraints { make in
@@ -280,30 +333,4 @@ class CarInfoVC: BaseVC {
         }
         
     }
-    
-    //MARK: -Private Action-
-    
-    
-    @objc private func backButtonDidTap() {
-        router?.back()
-    }
-    
-    @objc private func editCarButtonDidTap() {
-        if let car = car {
-            router?.pushCarVCForEdit(car: car)
-            openEditCar = true
-        }
-    }
-    
-    @objc private func trashCarButtonDidTap() {
-        
-        guard let carid = carId else { return }
-        
-        CarAPI.deleteCar(carId: carid, status: .deleted, success: { [weak self] result in
-            self?.router?.back()
-        }) { [weak self] error in
-            print(error)
-        }
-    }
-    
 }
