@@ -189,31 +189,6 @@ class CarInfoVC: BaseVC {
         
     }
     
-    //MARK: -Private Action-
-    
-    
-    @objc private func backButtonDidTap() {
-        router?.back()
-    }
-    
-    @objc private func editCarButtonDidTap() {
-        if let car = car {
-            router?.pushCarVCForEdit(car: car)
-            openEditCar = true
-        }
-    }
-    
-    @objc private func trashCarButtonDidTap() {
-        
-        guard let carid = carId else { return }
-        
-        CarAPI.deleteCar(carId: carid, status: .deleted, success: { [weak self] result in
-            self?.router?.back()
-        }) { [weak self] error in
-            print(error)
-        }
-    }
-    
 }
 
 // MARK: -
@@ -331,6 +306,39 @@ extension CarInfoVC {
             make.top.equalTo(VINLabel.snp.bottom).offset(19)
             make.height.equalTo(55)
         }
+        
+    }
+    
+    //MARK: -Private Action-
+    
+    
+    @objc private func backButtonDidTap() {
+        router?.back()
+    }
+    
+    @objc private func editCarButtonDidTap() {
+        if let car = car {
+            router?.pushCarVCForEdit(car: car)
+            openEditCar = true
+        }
+    }
+    
+    @objc private func trashCarButtonDidTap() {
+        
+        let alert = UIAlertController(title: "Внимание", message: "Вы уверены, что хотите удалить?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Да", style: .default, handler: { action in
+        
+            guard let carid = self.carId else { return }
+            
+            CarAPI.deleteCar(carId: carid, status: .deleted, success: { [weak self] result in
+                self?.router?.back()
+            }) { [weak self] error in
+                print(error)
+            }
+            
+        }))
+        alert.addAction(UIAlertAction(title: "Нет", style: .cancel))
+        self.present(alert, animated: true, completion: nil)
         
     }
 }

@@ -137,7 +137,8 @@ extension OrdersForCarVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(111)
+        let order = ordersData[indexPath.row - 1]
+        print(order.status)
     }
     
 }
