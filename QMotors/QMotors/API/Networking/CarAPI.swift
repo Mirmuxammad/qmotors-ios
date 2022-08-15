@@ -188,8 +188,8 @@ final class CarAPI {
     
     static func deleteCar(carId: Int, status: CarStatus, success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError) {
 
-        let params: Parameters = [
-            "status": status.rawValue
+        let params: Parameters = [:
+           // "status": status.rawValue
         ]
         
         BaseAPI.authorizedDeleteRequest(reqMethod: .editCar(carId), parameters: params, success: { data in

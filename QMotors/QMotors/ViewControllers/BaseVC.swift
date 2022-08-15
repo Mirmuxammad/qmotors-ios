@@ -15,6 +15,8 @@ class BaseVC: UIViewController, Routable {
     
     var router: MainRouter?
     
+    let sideMenuVC = SideMenuVC()
+    
     // MARK: - UI elements
     
     private let backgroundImageView: UIImageView = {
@@ -164,7 +166,12 @@ class BaseVC: UIViewController, Routable {
     
     @objc private func leftMenuButtonDidTap() {
         print("leftMenuButtonDidTap")
-        router?.presentSideMenu(rootScreen: .mainScreen)
+        sideMenuVC.router = router
+        sideMenuVC.rootScreen = .mainScreen
+        let menu = SideMenuNavigationController(rootViewController: sideMenuVC)
+        menu.leftSide = true
+        menu.menuWidth = 260
+        router?.navigationController.present(menu, animated: true, completion: nil)
     }
     
     @objc private func chatsButtonDidTap() {

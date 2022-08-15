@@ -331,7 +331,8 @@ extension CarInfoVC {
             guard let carid = self.carId else { return }
             
             CarAPI.deleteCar(carId: carid, status: .deleted, success: { [weak self] result in
-                self?.router?.back()
+                print(result)
+             //   self?.router?.back()
             }) { [weak self] error in
                 print(error)
             }
