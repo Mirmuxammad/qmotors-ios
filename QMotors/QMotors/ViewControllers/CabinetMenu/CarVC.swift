@@ -570,7 +570,7 @@ class CarVC: BaseVC {
 // MARK: - UITextFieldDelegate
 extension CarVC: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        return textField != carModelField || textField != carMarkField || textField != carYearField
+        return textField != carModelField && textField != carMarkField && textField != carYearField
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -641,6 +641,7 @@ extension CarVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(#function)
+        tableView.isHidden = true
         switch tableView {
         case carMarkOptionsTable:
             let carMark = carMarkDataStore[indexPath.row]
