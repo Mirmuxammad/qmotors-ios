@@ -16,6 +16,7 @@ class CarInfoCollectionViewCell: UICollectionViewCell {
     var sliderImage: URL? {
         didSet {
             sliderImageView.sd_setImage(with: sliderImage, placeholderImage: nil)
+            sliderImageView.contentMode = .scaleAspectFill
         }
     }
     
@@ -37,7 +38,7 @@ class CarInfoCollectionViewCell: UICollectionViewCell {
     private let sliderImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "empty-photo")
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         return imageView
     }()
