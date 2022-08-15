@@ -415,6 +415,7 @@
 				84D94F5828855F0D0023AA02 /* MainVC.swift */,
 				84A4AB682889C51700B657F1 /* CabinetVC.swift */,
 				84AE2735288AE720000870D4 /* CabinetMenu */,
+				401C746328A1431600CA5DAD /* CarInfoVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -513,7 +514,6 @@
 		88038F4728A90532009A0A59 /* MyCarsDetail */ = {
 			isa = PBXGroup;
 			children = (
-				401C746328A1431600CA5DAD /* CarInfoVC.swift */,
 				88038F4828A905A5009A0A59 /* CarInfoCollectionViewCell.swift */,
 			);
 			path = MyCarsDetail;
