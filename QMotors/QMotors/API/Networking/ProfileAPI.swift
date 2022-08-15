@@ -10,10 +10,34 @@ import SwiftyJSON
 import Alamofire
 
 final class ProfileAPI {
-    static func profile(phone: String, success: @escaping escapeJSON, failure: @escaping escapeNetworkError) {
+    static func profile(success: @escaping (ProfileResponse) -> Void, failure: @escaping escapeNetworkError) {
         let params: Parameters = [:]
         
         BaseAPI.authorizedGetRequest(reqMethod: .profile, parameters: params, success: { data in
+            guard let data = data else { return }
+            let jsonData = JSON(data)
+            let errors = jsonData["errors"]
+            if errors.type == .null {
+                do {
+                    let decoder = JSONDecoder()
+                    let userModel = try decoder.decode(ProfileResponse.self, from: data)
+                    success(userModel)
+                } catch let error {
+                    print(error)
+                    failure(NetworkError(.decoding))
+                }
+            } else {
+                failure(NetworkError(.other(errors.stringValue)))
+            }
+        }) { error in
+            failure(error)
+        }
+    }
+    
+    static func userAutos(success: @escaping escapeJSON, failure: @escaping escapeNetworkError) {
+        let params: Parameters = [:]
+        
+        BaseAPI.authorizedGetRequest(reqMethod: .userAutos, parameters: params, success: { data in
             guard let data = data else { return }
             let jsonData = JSON(data)
             let errors = jsonData["errors"]
@@ -27,10 +51,17 @@ final class ProfileAPI {
         }
     }
     
-    static func userAutos(success: @escaping escapeJSON, failure: @escaping escapeNetworkError) {
-        let params: Parameters = [:]
+    static func postUser(surname: String, name: String,patronymic: String, phoneNumber: String, email: String, brithday: String, gender: Int, success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError){
+        let params: Parameters = [
+            "surname": surname,
+            "name": name,
+            "phone_number": phoneNumber,
+            "email": email,
+            "birthday": brithday,
+            "gender": gender
+        ]
         
-        BaseAPI.authorizedGetRequest(reqMethod: .userAutos, parameters: params, success: { data in
+        BaseAPI.authorizedPostRequest(reqMethod: .postProfile, parameters: params, success: { data in
             guard let data = data else { return }
             let jsonData = JSON(data)
             let errors = jsonData["errors"]

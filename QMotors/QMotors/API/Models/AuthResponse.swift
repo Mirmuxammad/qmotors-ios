@@ -18,6 +18,12 @@ struct AuthResult: Codable {
     let user: User
     let token: String
 }
+// MARK: - Response
+
+struct ProfileResponse: Codable {
+    let result: User
+    let error: CustomError?
+}
 
 // MARK: - User
 struct User: Codable {
@@ -35,7 +41,8 @@ struct User: Codable {
     let smsCode: Int?
 
     enum CodingKeys: String, CodingKey {
-        case id, email
+        case id = "id"
+        case email = "email"
         case encryptedPassword = "encrypted_password"
         case phoneNumber = "phone_number"
         case isComplete = "is_complete"
