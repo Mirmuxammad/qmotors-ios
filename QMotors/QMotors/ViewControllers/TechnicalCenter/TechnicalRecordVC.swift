@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import DropDown
 
 class TechnicalRecordVC: BaseVC {
         
@@ -153,6 +154,35 @@ class TechnicalRecordVC: BaseVC {
         return field
     }()
     
+    //MARK: - Buttons for TextFields
+    private let technicalCenterButton: UIButton = UIButton()
+    private let userCarButton: UIButton = UIButton()
+    private let optionButon: UIButton = UIButton()
+    
+    //MARK: - DropDowns
+    private let technicalCenterDropDown: DropDown = {
+        let dropDown = DropDown()
+        dropDown.layer.borderWidth = 1
+        dropDown.layer.borderColor = UIColor(hex: "B6B6B6").cgColor
+        dropDown.layer.cornerRadius = 8
+        return dropDown
+    }()
+    
+    private let userCarDropDown: DropDown = {
+        let dropDown = DropDown()
+        dropDown.layer.borderWidth = 1
+        dropDown.layer.borderColor = UIColor(hex: "B6B6B6").cgColor
+        dropDown.layer.cornerRadius = 8
+        return dropDown
+    }()
+    
+    private let optionDropDown: DropDown = {
+        let dropDown = DropDown()
+        dropDown.layer.borderWidth = 1
+        dropDown.layer.borderColor = UIColor(hex: "B6B6B6").cgColor
+        dropDown.layer.cornerRadius = 8
+        return dropDown
+    }()
     
     //MARK: - Tables
     private lazy var technicalCenterTable: UITableView = {
@@ -243,6 +273,9 @@ class TechnicalRecordVC: BaseVC {
         infoField.delegate = self
     
         datePicker.addTarget(self, action: #selector(setDate(picker:)), for: .valueChanged)
+        technicalCenterButton.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
+        userCarButton.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
+        optionButon.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
         order.guarantee = false
         setupView()
     }
@@ -280,8 +313,10 @@ class TechnicalRecordVC: BaseVC {
         contentView.addSubview(headingLabel)
         contentView.addSubview(technicalCenterLable)
         contentView.addSubview(technicalCenterField)
+        contentView.addSubview(technicalCenterButton)
         contentView.addSubview(userCarLabel)
         contentView.addSubview(userCarField)
+        contentView.addSubview(userCarButton)
         technicalCenterField.addSubview(technicalCenterChevronButton)
         userCarField.addSubview(carModelChevronButton)
         optionField.addSubview(optionsChevronButton)
@@ -290,6 +325,7 @@ class TechnicalRecordVC: BaseVC {
         contentView.addSubview(datePicker)
         contentView.addSubview(optionLabel)
         contentView.addSubview(optionField)
+        contentView.addSubview(optionButon)
         contentView.addSubview(infoLabel)
         contentView.addSubview(infoField)
         contentView.addSubview(imgLabel)
@@ -327,25 +363,6 @@ class TechnicalRecordVC: BaseVC {
         loadTechCenters(dg: dg)
         updateTableViews(dg: dg)
     }
-
-//    private func getUserAutos(completion: @escaping () -> Void) {
-//        print(#function)
-//        let group = DispatchGroup()
-//
-//        group.enter()
-//        ProfileAPI.userAutos(success: { [weak self] jsonData in
-//            self?.userAutosData = jsonData
-//            self?.userCarTable.reloadData()
-//            group.leave()
-//        }) { error in
-//            print(error)
-//            group.leave()
-//        }
-//        group.enter()
-//        group.notify(queue: .main) {
-//            completion()
-//        }
-//    }
     
     private func loadTechCenters(dg: DispatchGroup) {
         dg.enter()
@@ -405,15 +422,62 @@ class TechnicalRecordVC: BaseVC {
                 let centerName = self.technicalCentersData[id - 1].title
                 self.technicalCenterField.text = centerName
             }
-            
-            self.technicalCenterTable.reloadData()
-            self.userCarTable.reloadData()
-            self.optionTable.reloadData()
+            self.setDropDowns()
             self.dismissLoadingIndicator()
         }
     }
     
     // MARK: - Private actions
+    private func setDropDowns() {
+        technicalCenterDropDown.dataSource = technicalCentersData.map({ i in
+            i.title
+        })
+        userCarDropDown.dataSource = myCars.map({ i in
+            i.mark + " " + i.model
+        })
+        
+        optionDropDown.dataSource = orderTypes.map({ i in
+            i.name
+        })
+        
+        technicalCenterDropDown.anchorView = technicalCenterButton
+        userCarDropDown.anchorView = userCarButton
+        optionDropDown.anchorView = optionButon
+        
+        technicalCenterDropDown.direction = .bottom
+        userCarDropDown.direction = .bottom
+        optionDropDown.direction = .bottom
+        
+        technicalCenterDropDown.width = technicalCenterButton.frame.width
+        userCarDropDown.width = userCarButton.frame.width
+        optionDropDown.width = optionButon.frame.width
+        
+        
+        technicalCenterDropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            self?.technicalCenterField.text = item
+            self?.order.techCenterId = self?.technicalCentersData[index].id
+            self?.technicalCenterDropDown.hide()
+            self?.technicalCenterChevronButton.transform = .identity
+        }
+        
+        userCarDropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            self?.userCarField.text = item
+            guard let id = self?.myCars[index].id else { return }
+            self?.order.carId = String(id)
+            self?.order.carNumber = self?.myCars[index].number
+            self?.userCarDropDown.hide()
+            self?.carModelChevronButton.transform = .identity
+        }
+        
+        optionDropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            self?.optionField.text = item
+            self?.order.orderTypeId = self?.orderTypes[index].id
+            self?.optionDropDown.hide()
+            self?.optionsChevronButton.transform = .identity
+        }
+        
+    }
+    
     @objc private func backButtonDidTap() {
         print("backButtonDidTap")
         router?.back()
@@ -516,6 +580,24 @@ class TechnicalRecordVC: BaseVC {
         let thirdPhotoData = try! Data(contentsOf: fileURLArray[2])
         thirdPhotoView.photo = UIImage(data: thirdPhotoData)!
     }
+    
+    @objc private func openDropDown(_ sender: UIButton) {
+        
+        switch sender {
+        case technicalCenterButton:
+            technicalCenterDropDown.show()
+            technicalCenterChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
+        case userCarButton:
+            userCarDropDown.show()
+            carModelChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
+        case optionButon:
+            optionDropDown.show()
+            optionsChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
+        default:
+            print(111)
+        }
+    }
+    
 }
 //MARK: -  UITextFieldDalegate
 extension TechnicalRecordVC: UITextFieldDelegate {
@@ -725,6 +807,10 @@ extension TechnicalRecordVC {
             make.right.equalToSuperview().offset(rOffset)
         }
         
+        technicalCenterButton.snp.makeConstraints { make in
+            make.edges.equalTo(technicalCenterField)
+        }
+        
         technicalCenterChevronButton.snp.makeConstraints { make in
             make.right.equalToSuperview()
             make.centerY.equalToSuperview()
@@ -750,6 +836,10 @@ extension TechnicalRecordVC {
             make.height.equalTo(54)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
+        }
+        
+        userCarButton.snp.makeConstraints { make in
+            make.edges.equalTo(userCarField)
         }
         
         carModelChevronButton.snp.makeConstraints { make in
@@ -788,6 +878,10 @@ extension TechnicalRecordVC {
             make.height.equalTo(54)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
+        }
+        
+        optionButon.snp.makeConstraints { make in
+            make.edges.equalTo(optionField)
         }
         
         optionsChevronButton.snp.makeConstraints { make in
