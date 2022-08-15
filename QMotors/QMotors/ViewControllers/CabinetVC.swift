@@ -75,6 +75,11 @@ class CabinetVC: BaseVC {
         setupButtons()
     }
     
+    override func leftMenuButtonDidTap() {
+        sideMenuVC.rootScreen = .personalAccount
+        super.leftMenuButtonDidTap()
+    }
+    
     // MARK: - Private functions
     
     private func setupViews() {

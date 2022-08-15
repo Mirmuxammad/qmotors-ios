@@ -78,6 +78,11 @@ class MainVC: BaseVC {
         
     }
     
+    override func leftMenuButtonDidTap() {
+        sideMenuVC.rootScreen = .main
+        super.leftMenuButtonDidTap()
+    }
+    
     // MARK: - Private functions
     
     private func setupView() {

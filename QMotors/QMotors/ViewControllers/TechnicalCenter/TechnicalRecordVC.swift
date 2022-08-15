@@ -285,6 +285,11 @@ class TechnicalRecordVC: BaseVC {
         loadInfo()
     }
     
+    override func leftMenuButtonDidTap() {
+        sideMenuVC.rootScreen = .record
+        super.leftMenuButtonDidTap()
+    }
+    
     
     private func setupView() {
         technicalCenterField.inputView = UIView()
