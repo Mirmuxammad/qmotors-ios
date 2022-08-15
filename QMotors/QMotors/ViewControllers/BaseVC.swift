@@ -71,7 +71,7 @@ class BaseVC: UIViewController, Routable {
     
         phoneCallButtonView.isHidden = true
         
-        addRightSwipeAction()
+       // addRightSwipeAction()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -156,18 +156,18 @@ class BaseVC: UIViewController, Routable {
         }
     }
     
-    private func addRightSwipeAction() {
-        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeHandler(_:)))
-        rightSwipe.direction = .right
-        view.addGestureRecognizer(rightSwipe)
-    }
+//    private func addRightSwipeAction() {
+//        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeHandler(_:)))
+//        rightSwipe.direction = .right
+//        view.addGestureRecognizer(rightSwipe)
+//    }
     
     // MARK: - Private actions
     
-    @objc private func leftMenuButtonDidTap() {
+    @objc func leftMenuButtonDidTap() {
         print("leftMenuButtonDidTap")
         sideMenuVC.router = router
-        sideMenuVC.rootScreen = .mainScreen
+       // sideMenuVC.rootScreen = .main
         let menu = SideMenuNavigationController(rootViewController: sideMenuVC)
         menu.leftSide = true
         menu.menuWidth = 260
@@ -191,11 +191,11 @@ class BaseVC: UIViewController, Routable {
         }
     }
     
-    @objc private func swipeHandler(_ gestureRecognizer: UISwipeGestureRecognizer) {
-        if gestureRecognizer.direction == .right {
-            router?.presentSideMenu(rootScreen: .mainScreen)
-        }
-    }
+//    @objc private func swipeHandler(_ gestureRecognizer: UISwipeGestureRecognizer) {
+//        if gestureRecognizer.direction == .right {
+//            router?.presentSideMenu(rootScreen: .main)
+//        }
+//    }
     
 }
 

@@ -934,7 +934,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = G2225WD3CL;
+				DEVELOPMENT_TEAM = 2NJA6A6R83;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = QMotors/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Разрешить всегда получать местоположения, чтобы показать маршрут";
@@ -967,7 +967,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = G2225WD3CL;
+				DEVELOPMENT_TEAM = 2NJA6A6R83;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = QMotors/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Разрешить всегда получать местоположения, чтобы показать маршрут";

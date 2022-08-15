@@ -71,6 +71,11 @@ class TechnicalCenterVC: BaseVC {
         setupConstraints()
         loadTechCenters()
     }
+    
+    override func leftMenuButtonDidTap() {
+        sideMenuVC.rootScreen = .techCenter
+        super.leftMenuButtonDidTap()
+    }
         
     // MARK: - Private functions
     

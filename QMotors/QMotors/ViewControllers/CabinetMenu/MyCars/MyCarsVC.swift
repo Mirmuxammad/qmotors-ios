@@ -13,6 +13,8 @@ class MyCarsVC: BaseVC {
     // MARK: - Properties
     
     var myCar = [MyCarModel]()
+    var actuallyCars = [MyCarModel]()
+    var archiveCars = [MyCarModel]()
     
     // MARK: - UI Elements
     
@@ -207,7 +209,18 @@ class MyCarsVC: BaseVC {
         self.showLoadingIndicator()
         CarAPI.getMyCars { [weak self] jsonData in
             guard let self = self else { return }
-            self.myCar = jsonData
+            var archive = [MyCarModel]()
+            var actually = [MyCarModel]()
+            for car in jsonData {
+                if car.status != 0 {
+                    archive.append(car)
+                } else {
+                    actually.append(car)
+                }
+            }
+            self.actuallyCars = actually
+            self.archiveCars = archive
+            self.myCar = actually
             self.tableView.reloadData()
             self.dismissLoadingIndicator()
             
@@ -233,8 +246,12 @@ class MyCarsVC: BaseVC {
         switch sender.selectedSegmentIndex {
         case 0:
             showAddCarButton()
+            myCar = actuallyCars
+            tableView.reloadData()
         case 1:
             hideAddCarButton()
+            myCar = archiveCars
+            tableView.reloadData()
         default:
             print("Segment is out of range")
         }

@@ -8,6 +8,21 @@
 import UIKit
 import SnapKit
 
+enum SideMenu {
+    case main
+    case personalAccount
+    case record
+    case techCenter
+    case stocks
+    case notification
+    case reviews
+    case chat
+    case articles
+    case FAQ
+    case barcode
+    case freeDiagnost
+}
+
 class SideMenuVC: UIViewController, Routable {
     
     // MARK: - Properties
@@ -66,7 +81,7 @@ class SideMenuVC: UIViewController, Routable {
         
         view.backgroundColor = .white
         navigationController?.navigationBar.isHidden = true
-        
+        print(rootScreen)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(SideMenuTableViewCell.self, forCellReuseIdentifier: SideMenuTableViewCell.identifier)
@@ -154,38 +169,94 @@ extension SideMenuVC: UITableViewDelegate, UITableViewDataSource {
         
         switch indexPath.row {
         case 0:
-            dismiss(animated: true)
-            router?.pushMainVC()
+            if rootScreen == .main {
+                dismiss(animated: true)
+            } else {
+                dismiss(animated: true)
+                router?.pushMainVC()
+            }
         case 1:
-            dismiss(animated: true)
             if UserDefaultsService.sharedInstance.authToken != nil {
-                router?.pushCabinetVC()
+                
+                if rootScreen == .personalAccount {
+                    dismiss(animated: true)
+                } else {
+                    dismiss(animated: true)
+                    router?.pushCabinetVC()
+                }
             } else {
                 router?.pushRegistrationVC()
             }
         case 2:
-            dismiss(animated: true)
-            router?.pushTechnicalRecordVC()
+            if rootScreen == .record {
+                dismiss(animated: true)
+            } else {
+                dismiss(animated: true)
+                router?.pushTechnicalRecordVC()
+            }
         case 3:
-            dismiss(animated: true)
-            router?.pushTechnicalCenterVC()
+            if rootScreen == .techCenter {
+                dismiss(animated: true)
+            } else {
+                dismiss(animated: true)
+                router?.pushTechnicalCenterVC()
+            }
         case 4:
-            dismiss(animated: true)
+            if rootScreen == .stocks {
+                dismiss(animated: true)
+            } else {
+                dismiss(animated: true)
+                //  router
+            }
         case 5:
-            dismiss(animated: true)
+            if rootScreen == .notification {
+                dismiss(animated: true)
+            } else {
+                dismiss(animated: true)
+                //  router
+            }
         case 6:
-            dismiss(animated: true)
+            if rootScreen == .reviews {
+                dismiss(animated: true)
+            } else {
+                dismiss(animated: true)
+                //  router
+            }
         case 7:
-            dismiss(animated: true)
+            if rootScreen == .chat {
+                dismiss(animated: true)
+            } else {
+                dismiss(animated: true)
+                //  router
+            }
         case 8:
-            dismiss(animated: true)
+            if rootScreen == .articles {
+                dismiss(animated: true)
+            } else {
+                dismiss(animated: true)
+                //  router
+            }
         case 9:
-            dismiss(animated: true)
+            if rootScreen == .FAQ {
+                dismiss(animated: true)
+            } else {
+                dismiss(animated: true)
+                //  router
+            }
         case 10:
-            dismiss(animated: true)
+            if rootScreen == .barcode {
+                dismiss(animated: true)
+            } else {
+                dismiss(animated: true)
+              //  router
+            }
         case 11:
-            dismiss(animated: true)
-            router?.pushMaintenanceVC()
+            if rootScreen == .freeDiagnost {
+                dismiss(animated: true)
+            } else {
+                dismiss(animated: true)
+                router?.pushMaintenanceVC()
+            }
         default:
             print("__Tap__")
         }
