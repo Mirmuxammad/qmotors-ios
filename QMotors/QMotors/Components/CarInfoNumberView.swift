@@ -41,7 +41,7 @@ class CarInfoNumberView: UIView {
         let label = UILabel()
         label.text = "р 070 вк"
         label.textAlignment = .center
-        label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.font = UIFont.boldSystemFont(ofSize: 13)
         
         return label
     }()

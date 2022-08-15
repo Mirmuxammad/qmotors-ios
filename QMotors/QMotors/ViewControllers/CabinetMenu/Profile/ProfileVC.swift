@@ -18,6 +18,8 @@ class ProfileVC: BaseVC {
             print(fileURLArray)
         }
     }
+    private var isMale: Int = 1
+    private var user: User?
 
     // MARK: - UI Elements
     
@@ -71,15 +73,34 @@ class ProfileVC: BaseVC {
         return view
     }()
     
-    private let birthdayView: BirthdayPicker = {
-        let view = BirthdayPicker()
+    private let genderTextLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Ваш пол"
+        label.font = UIFont(name: Const.fontMed, size: 16)
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private let maleGenderSwitch: GenderSwitch = {
+        let view = GenderSwitch()
+        view.genderText.text = "мужской"
+        view.setupAction(target: self, action: #selector(genderButton))
         return view
     }()
     
     
+    private let famaleGenderSwitch: GenderSwitch = {
+        let view = GenderSwitch()
+        view.genderText.text = "женский"
+        view.setupAction(target: self, action: #selector(genderButton))
+        return view
+    }()
     
-    
-    
+    private let birthdayView: BirthdayPicker = {
+        let view = BirthdayPicker()
+        return view
+    }()
     
     private let emailView: TitledTextField = {
         let view = TitledTextField()
@@ -134,7 +155,6 @@ class ProfileVC: BaseVC {
     }()
     
     
-    
     private let saveProfileButton: ActionButton = {
         let button = ActionButton()
         button.setupButton(target: self, action: #selector(saveProfileButtonDidTap))
@@ -157,6 +177,8 @@ class ProfileVC: BaseVC {
         
         setupViews()
         setupConstraints()
+        
+        genderSwitchLoad()
         
         fullNameView.fullNameView(delegate: self)
         emailView.emailView(delegate: self)
@@ -186,6 +208,10 @@ class ProfileVC: BaseVC {
         scrollView.addSubview(photoLabel)
         scrollView.addSubview(photoView)
         scrollView.addSubview(fullNameView)
+        
+        scrollView.addSubview(genderTextLabel)
+        scrollView.addSubview(maleGenderSwitch)
+        scrollView.addSubview(famaleGenderSwitch)
         
         scrollView.addSubview(birthdayView)
         
@@ -254,9 +280,27 @@ class ProfileVC: BaseVC {
             make.height.equalTo(90)
         }
         
-
-        birthdayView.snp.makeConstraints { make in
+        genderTextLabel.snp.makeConstraints { make in
             make.top.equalTo(fullNameView.snp.bottom).offset(20)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.height.equalTo(20)
+        }
+
+        maleGenderSwitch.snp.makeConstraints { make in
+            make.top.equalTo(genderTextLabel.snp.bottom).offset(20)
+            make.left.equalToSuperview().offset(20)
+            make.height.equalTo(30)
+        }
+        
+        famaleGenderSwitch.snp.makeConstraints { make in
+            make.top.equalTo(genderTextLabel.snp.bottom).offset(20)
+            make.left.equalToSuperview().offset(160)
+            make.height.equalTo(30)
+        }
+        
+        birthdayView.snp.makeConstraints { make in
+            make.top.equalTo(famaleGenderSwitch.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
             make.height.equalTo(125)
@@ -341,12 +385,42 @@ class ProfileVC: BaseVC {
             print(error.localizedDescription)
         }
     }
+    
+    private func loadUSerInfo() {
+        
+    }
+    
+    private func genderSwitchLoad(){
+        if isMale == 1 {
+            maleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
+            famaleGenderSwitch.smallElipce.backgroundColor = .clear
+        } else {
+            maleGenderSwitch.smallElipce.backgroundColor = .clear
+            famaleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
+        }
+    }
 
     // MARK: - Private actions
     
     @objc private func backButtonDidTap() {
         print("backButtonDidTap")
         router?.back()
+    }
+    
+    @objc private func genderButton() {
+        if isMale == 1 {
+            isMale = 2
+        } else if isMale == 2 {
+            isMale = 1
+        }
+        if isMale == 1 {
+            maleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
+            famaleGenderSwitch.smallElipce.backgroundColor = .clear
+        } else {
+            maleGenderSwitch.smallElipce.backgroundColor = .clear
+            famaleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
+        }
+        print(isMale)
     }
     
     @objc private func photoButtonTapped() {
@@ -363,12 +437,12 @@ class ProfileVC: BaseVC {
         photoView.photo = UIImage(named: "empty-photo")!
         if photoView == self.photoView {
             fileURLArray.removeAll()
-        } 
+        }
         reloadUserPhotos()
     }
     
     @objc private func saveProfileButtonDidTap() {
-        print("saveProfileButtonDidTap")
+        
     }
     
 
