@@ -118,22 +118,25 @@ final class BaseAPI {
         }
         headers.add(.authorization(bearerToken: token))
         
-        authorizedSession.upload(multipartFormData: { multiPart in
-            for fileURL in fileURLArray {
-                if let fileData = try? Data(contentsOf: fileURL) {
+        for fileURL in fileURLArray {
+            if let fileData = try? Data(contentsOf: fileURL) {
+                authorizedSession.upload(multipartFormData: { multiPart in
                     multiPart.append(fileData,
                                      withName: fieldName,
                                      fileName: fileURL.lastPathComponent,
                                      mimeType: "image/jpeg")
+                    
+                    
+                }, to: BaseAPI.baseAPIURL + reqMethod.path, method: .post, headers: headers).response { response in
+                    debugPrint(response)
+                    if let data = response.data {
+                        success(data)
+                    } else {
+                        failure(NetworkError(.server, code: response.response?.statusCode))
+                    }
                 }
             }
-        }, to: BaseAPI.baseAPIURL + reqMethod.path, method: .post, headers: headers).response { response in
-            debugPrint(response)
-            if let data = response.data {
-                success(data)
-            } else {
-                failure(NetworkError(.server, code: response.response?.statusCode))
-            }
+            
         }
     }
     
