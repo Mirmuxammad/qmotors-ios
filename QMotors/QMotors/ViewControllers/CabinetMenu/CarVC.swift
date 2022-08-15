@@ -453,7 +453,7 @@ class CarVC: BaseVC {
                 //self?.addCarPhoto(carId: result["id"].intValue, completion: {})
                 self?.activityIndicator.stopAnimating()
                 self?.openEditCarVC = false
-                self?.router?.popEditCarVC()
+                self?.router?.back()
             }) { [weak self] error in
                 print(error)
                 self?.activityIndicator.stopAnimating()
