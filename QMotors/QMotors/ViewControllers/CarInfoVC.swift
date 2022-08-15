@@ -57,6 +57,8 @@ class CarInfoVC: BaseVC {
         let slider = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
         slider.setCollectionViewLayout(layout, animated: true)
         slider.showsVerticalScrollIndicator = false
         slider.showsHorizontalScrollIndicator = false
