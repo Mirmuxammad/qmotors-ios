@@ -460,18 +460,26 @@ class CarVC: BaseVC {
             }
         } else {
             guard let carModelId = carModelId, let carYear = carYearField.text, let carMileage = mileageField.text, let carNumber = carNumberField.text, let vin = vinField.text else { return }
+            activityIndicator.stopAnimating()
             guard let carYearInt = Int(carYear), let carMileageInt = Int(carMileage) else { return }
             activityIndicator.startAnimating()
-            CarAPI.addCar(carModelId: carModelId, year: carYearInt, mileage: carMileageInt, number: carNumber, vin: vin, lastVisit: Date(), status: .active, success: { [weak self] result in
+            CarAPI.addCar(carModelId: carModelId, year: carYearInt,
+                          mileage: carMileageInt, number: carNumber,
+                          vin: vin, lastVisit: Date(),
+                          status: .active, success: { [weak self] result in
+                
                 self?.addCarPhoto(carId: result["id"].intValue, completion: { [weak self] in
-                    guard let strongSelf = self else { return }
                     self?.activityIndicator.stopAnimating()
-                    [strongSelf.carMarkField, strongSelf.carModelField, strongSelf.carYearField, strongSelf.mileageField, strongSelf.carNumberField, strongSelf.vinField].forEach { $0.text?.removeAll() }
+                    guard let strongSelf = self else { return }
+                    [strongSelf.carMarkField, strongSelf.carModelField,
+                     strongSelf.carYearField, strongSelf.mileageField,
+                     strongSelf.carNumberField, strongSelf.vinField].forEach { $0.text?.removeAll() }
                     [strongSelf.firstPhotoView, strongSelf.secondPhotoView, strongSelf.thirdPhotoView].forEach { $0.photo = UIImage(named: "empty-photo")! }
                     self?.openEditCarVC = false
-                    
+                    print(#function)
                     self?.router?.back()
                 })
+                
             }) { [weak self] error in
                 print(error)
                 self?.activityIndicator.stopAnimating()
@@ -518,6 +526,7 @@ class CarVC: BaseVC {
     
     
     private func addCarPhoto(carId: Int, completion: @escaping () -> Void) {
+        print(#function)
         if fileURLArray.isEmpty {
             completion()
             return

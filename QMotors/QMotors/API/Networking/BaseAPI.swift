@@ -129,6 +129,11 @@ final class BaseAPI {
             }
         }, to: BaseAPI.baseAPIURL + reqMethod.path, method: .post, headers: headers).response { response in
             debugPrint(response)
+            if let data = response.data {
+                success(data)
+            } else {
+                failure(NetworkError(.server, code: response.response?.statusCode))
+            }
         }
     }
     
