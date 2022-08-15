@@ -31,7 +31,6 @@ class CarInfoVC: BaseVC {
     
     private var carId: Int?
     private var carYear: Int?
-    private var openEditCar: Bool = false
     private var carPhotos: [CarPhoto]?
     
     //MARK: -UI Elements-
@@ -149,10 +148,7 @@ class CarInfoVC: BaseVC {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if openEditCar {
-            self.router?.back()
-            openEditCar = false
-        }
+
     }
     
     override func viewDidLoad() {
@@ -319,7 +315,6 @@ extension CarInfoVC {
     @objc private func editCarButtonDidTap() {
         if let car = car {
             router?.pushCarVCForEdit(car: car)
-            openEditCar = true
         }
     }
     
@@ -332,7 +327,7 @@ extension CarInfoVC {
             
             CarAPI.deleteCar(carId: carid, status: .deleted, success: { [weak self] result in
                 print(result)
-             //   self?.router?.back()
+                self?.router?.back()
             }) { [weak self] error in
                 print(error)
             }

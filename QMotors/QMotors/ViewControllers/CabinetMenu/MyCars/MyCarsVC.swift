@@ -204,18 +204,19 @@ class MyCarsVC: BaseVC {
     //MARK: - Load My Car -
     
     func loadMyCar() {
-        activityIndicator.startAnimating()
+        self.showLoadingIndicator()
         CarAPI.getMyCars { [weak self] jsonData in
             guard let self = self else { return }
             self.myCar = jsonData
             self.tableView.reloadData()
-            self.activityIndicator.stopAnimating()
+            self.dismissLoadingIndicator()
             
         } failure: { error in
             let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
             
             }))
+            self.dismissLoadingIndicator()
             self.present(alert, animated: true, completion: nil)
         }
     }
