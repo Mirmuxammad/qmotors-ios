@@ -12,46 +12,16 @@ import SwiftMaskText
 class ProfileVC: BaseVC {
     
     // MARK: - Properties
-    private var user: User? {
-        didSet {
-            guard let name = user?.name else { return }
-            guard let surname = user?.surname else { return }
-            guard let patronymic = user?.patronymic else { return }
-            fullNameView.textField.text = String("\(surname) \(name) \(patronymic)")
-            if user?.gender == 1 {
-                maleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
-                famaleGenderSwitch.smallElipce.backgroundColor = .clear
-            } else {
-                famaleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
-                maleGenderSwitch.smallElipce.backgroundColor = .clear
-            }
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
-            let userBrithday = formatter.date(from: user?.birthday ?? "")
-            guard let userBrithday = userBrithday else { return }
-            birthdayView.datePicker.date = userBrithday
-            emailView.textField.text = user?.email
-            phoneView.textField.text = user?.phoneNumber
-            if user == nil {
-                titleLable.text = "Создать профиль"
-            } else {
-                titleLable.text = "Редактировать"
-            }
-            guard let sms = user?.agreeSMS, let calls = user?.agreeCalls, let agreeData = user?.agreeData, let pushNoti = user?.agreeNotification else { return }
-            pushView.switchButton.isOn = pushNoti
-            callView.switchButton.isOn = calls
-            mobileDataView.switchButton.isOn = agreeData
-            smsView.switchButton.isOn = sms
-            
-            if let userAvatar = user?.avatar{
-                let photoUrl = BaseAPI.baseURL + userAvatar
-                photoView.imageView.sd_setImage(with: URL(string: photoUrl), placeholderImage: nil)
-            }
-        }
-    }
+    
     private var fileURLArray: [URL] = [] {
         didSet {
             print(fileURLArray)
+        }
+    }
+
+    private var user: User? {
+        didSet {
+            
         }
     }
     private var isMale: Int = 1
@@ -198,22 +168,22 @@ class ProfileVC: BaseVC {
     
     private let activityIndicator: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView()
+        view.hidesWhenStopped = true
         view.style = .large
+        view.layer.zPosition = 1
         return view
     }()
-
     
     // MARK: - Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadUSerInfo()
         
         setupViews()
         setupConstraints()
         
         genderSwitchLoad()
-        
-        loadUSerInfo()
         
         fullNameView.fullNameView(delegate: self)
         emailView.emailView(delegate: self)
@@ -235,7 +205,7 @@ class ProfileVC: BaseVC {
     private func setupViews() {
         view.addSubview(logoImageView)
         view.addSubview(scrollView)
-        
+        view.addSubview(activityIndicator)
      //   scrollView.addSubview(backgroundView)
         
         scrollView.addSubview(backButton)
@@ -266,6 +236,10 @@ class ProfileVC: BaseVC {
 
     private func setupConstraints() {
         
+        activityIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        
         logoImageView.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 55, height: 55))
             make.centerX.equalToSuperview()
@@ -277,6 +251,7 @@ class ProfileVC: BaseVC {
             make.left.right.bottom.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+        
         
 //        backgroundView.snp.makeConstraints { make in
 //            make.edges.equalToSuperview()
@@ -421,11 +396,17 @@ class ProfileVC: BaseVC {
     }
     
     private func loadUSerInfo() {
+        self.activityIndicator.startAnimating()
         ProfileAPI.profile { user in
+            print(user.result)
             self.user = user.result
+            self.userInfoLoad(user: user.result)
+            self.activityIndicator.stopAnimating()
         } failure: { error in
             print(error)
+            self.activityIndicator.stopAnimating()
         }
+        
     }
     
     private func genderSwitchLoad(){
@@ -435,6 +416,43 @@ class ProfileVC: BaseVC {
         } else {
             maleGenderSwitch.smallElipce.backgroundColor = .clear
             famaleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
+        }
+    }
+    
+    private func userInfoLoad(user: User) {
+        let name = user.name ?? ""
+        let surname = user.surname ?? ""
+        let patronymic = user.patronymic ?? ""
+        fullNameView.textField.text = String("\(surname) \(name) \(patronymic)")
+        if user.gender == 0 {
+            maleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
+            famaleGenderSwitch.smallElipce.backgroundColor = .clear
+        } else {
+            famaleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
+            maleGenderSwitch.smallElipce.backgroundColor = .clear
+        }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let userBrithday = formatter.date(from: user.birthday ?? "")
+        birthdayView.datePicker.date = userBrithday  ?? Date()
+        emailView.textField.text = user.email
+        phoneView.textField.text = user.phoneNumber
+        if user.phoneNumber == "" {
+            titleLable.text = "Создать профиль"
+        } else {
+            titleLable.text = "Редактировать"
+        }
+        let sms = user.agreeSMS
+        let calls = user.agreeCalls
+        let agreeData = user.agreeData
+        let pushNoti = user.agreeNotification
+        pushView.switchButton.isOn = pushNoti
+        callView.switchButton.isOn = calls
+        mobileDataView.switchButton.isOn = agreeData
+        smsView.switchButton.isOn = sms
+        if let userAvatar = user.avatar{
+            let photoUrl = BaseAPI.baseURL + userAvatar
+            photoView.imageView.sd_setImage(with: URL(string: photoUrl), placeholderImage: nil)
         }
     }
     
@@ -452,6 +470,7 @@ class ProfileVC: BaseVC {
             completion()
         }
     }
+    
 
     // MARK: - Private actions
     
@@ -473,7 +492,6 @@ class ProfileVC: BaseVC {
             maleGenderSwitch.smallElipce.backgroundColor = .clear
             famaleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
         }
-        print(isMale)
     }
     
     @objc private func photoButtonTapped() {
@@ -495,21 +513,35 @@ class ProfileVC: BaseVC {
     }
     
     @objc private func saveProfileButtonDidTap() {
-        let split = fullNameView.textField.text?.split(separator: " ") ?? []
-        var userName: String = String(split[1]) ?? ""
-        var surname: String = String(split[0]) ?? ""
-        var patronymic: String = String(split[2]) ?? ""
-        print("🔴")
-        print(patronymic)
-        print(split)
+        
+        guard let split = fullNameView.textField.text?.split(separator: " ") else { return }
+        
+        var userName: String
+        var surname: String
+        var patronymic: String
+        
         if split.count == 4{
             userName = String(split[1])
             surname = String(split[0])
             patronymic = String(split[2] + split[3])
+        } else if split.count == 3 {
+            userName = String(split[1])
+            surname = String(split[0])
+            patronymic = String(split[2])
+        } else if split.count == 2 {
+            userName = String(split[1])
+            surname = String(split[0])
+            patronymic = ""
+        } else if split.count == 1 {
+            userName = String(split[0])
+            surname = ""
+            patronymic = ""
+        } else {
+            userName = ""
+            surname = ""
+            patronymic = ""
         }
         guard let userId = user?.id else { return }
-        print("🎁")
-        print(fileURLArray)
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
