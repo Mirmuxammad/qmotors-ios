@@ -12,7 +12,7 @@ class SwitchView: UIView {
 
     // MARK: - UI Elements
     
-    private let switchButton: UISwitch = {
+    let switchButton: UISwitch = {
         let button = UISwitch()
         button.onTintColor = UIColor.init(hex: "#9CC55A")
         return button

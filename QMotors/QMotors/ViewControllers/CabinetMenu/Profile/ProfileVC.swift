@@ -32,6 +32,21 @@ class ProfileVC: BaseVC {
             birthdayView.datePicker.date = userBrithday
             emailView.textField.text = user?.email
             phoneView.textField.text = user?.phoneNumber
+            if user == nil {
+                titleLable.text = "Создать профиль"
+            } else {
+                titleLable.text = "Редактировать"
+            }
+            guard let sms = user?.agreeSMS, let calls = user?.agreeCalls, let agreeData = user?.agreeData, let pushNoti = user?.agreeNotification else { return }
+            pushView.switchButton.isOn = pushNoti
+            callView.switchButton.isOn = calls
+            mobileDataView.switchButton.isOn = agreeData
+            smsView.switchButton.isOn = sms
+            
+            if let userAvatar = user?.avatar{
+                let photoUrl = BaseAPI.baseURL + userAvatar
+                photoView.imageView.sd_setImage(with: URL(string: photoUrl), placeholderImage: nil)
+            }
         }
     }
     private var fileURLArray: [URL] = [] {
@@ -40,7 +55,6 @@ class ProfileVC: BaseVC {
         }
     }
     private var isMale: Int = 1
-
     // MARK: - UI Elements
     
     private let logoImageView: UIImageView = {
@@ -51,7 +65,6 @@ class ProfileVC: BaseVC {
     
     private let titleLable: UILabel = {
         let label = UILabel()
-        label.text = "Создать профиль"
         label.font = UIFont(name: "Montserrat-SemiBold", size: 22)
         label.textColor = .black
         label.textAlignment = .left
@@ -129,6 +142,8 @@ class ProfileVC: BaseVC {
     
     private let phoneView: TitledTextField = {
         let view = TitledTextField()
+        view.textField.isUserInteractionEnabled = false
+        view.textField.textColor = .systemGray
         return view
     }()
     
@@ -422,6 +437,21 @@ class ProfileVC: BaseVC {
             famaleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
         }
     }
+    
+    private func addUserAvatar(userId: Int, completion: @escaping () -> Void) {
+        print(#function)
+        guard let avatarURL = fileURLArray.first else { return }
+        if fileURLArray.isEmpty {
+            completion()
+            return
+        }
+        ProfileAPI.addAvatar(userId: userId, fileURL: avatarURL, success: { [weak self] result in
+            self?.fileURLArray = []
+        }) { error in
+            print(error)
+            completion()
+        }
+    }
 
     // MARK: - Private actions
     
@@ -466,9 +496,20 @@ class ProfileVC: BaseVC {
     
     @objc private func saveProfileButtonDidTap() {
         let split = fullNameView.textField.text?.split(separator: " ") ?? []
-        let userName: String = String(split[1])
-        let surname: String = String(split[0])
-        let patronymic: String = String(split[2])
+        var userName: String = String(split[1]) ?? ""
+        var surname: String = String(split[0]) ?? ""
+        var patronymic: String = String(split[2]) ?? ""
+        print("🔴")
+        print(patronymic)
+        print(split)
+        if split.count == 4{
+            userName = String(split[1])
+            surname = String(split[0])
+            patronymic = String(split[2] + split[3])
+        }
+        guard let userId = user?.id else { return }
+        print("🎁")
+        print(fileURLArray)
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
@@ -476,7 +517,15 @@ class ProfileVC: BaseVC {
         
         guard let phoneNumber = phoneView.textField.text, let email = emailView.textField.text else { return }
         
-        ProfileAPI.postUser(surname: surname, name: userName, patronymic: patronymic, phoneNumber: phoneNumber, email: email, brithday: brithdayStr, gender: isMale, success: { [weak self] result in
+        ProfileAPI.postUser(surname: surname, name: userName, patronymic: patronymic, phoneNumber: phoneNumber, email: email, brithday: brithdayStr, gender: isMale, agreeNotification: pushView.switchButton.isOn , agreeSms: smsView.switchButton.isOn, agreeCalls: callView.switchButton.isOn, agreeData: mobileDataView.switchButton.isOn,  success: { [weak self] result in
+            
+            self?.addUserAvatar(userId: result["id"].intValue, completion: { [weak self] in
+                self?.activityIndicator.stopAnimating()
+                guard let strongSelf = self else { return }
+                [strongSelf.photoView].forEach { $0.photo = UIImage(named: "empty-photo")! }
+                self?.router?.back()
+            })
+            
             self?.router?.back()
         }) { [weak self] error in
             
@@ -496,7 +545,7 @@ extension ProfileVC: UIImagePickerControllerDelegate, UINavigationControllerDele
             .appendingPathExtension("jpg")
         try! data!.write(to: documentUrl)
         
-        fileURLArray.append(documentUrl)
+        fileURLArray = [(documentUrl)]
         
         print(documentUrl)
         

@@ -27,7 +27,7 @@ class CustomPhotoView: UIView {
     }
     
     // MARK: - UI Elements
-    private let imageView: UIImageView = {
+    let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true

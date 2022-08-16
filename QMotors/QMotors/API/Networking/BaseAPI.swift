@@ -143,6 +143,37 @@ final class BaseAPI {
         }
     }
     
+    fileprivate static func userAvatarRequest(reqMethod: RequestMethod,
+                                    fieldName: String,
+                                    fileURL: URL,
+                                    success: @escaping (Data?) -> Void,
+                                    failure: @escaping (NetworkError?) -> Void) {
+        var headers = BaseAPI().headers
+        
+        guard let token = UserDefaultsService.sharedInstance.authToken else {
+            failure(NetworkError(.other("Токен не найден!")))
+            return
+        }
+        headers.add(.authorization(bearerToken: token))
+            if let fileData = try? Data(contentsOf: fileURL) {
+                authorizedSession.upload(multipartFormData: { multiPart in
+                    multiPart.append(fileData,
+                                     withName: fieldName,
+                                     fileName: fileURL.lastPathComponent,
+                                     mimeType: "image/jpeg")
+                    
+                    
+                }, to: BaseAPI.baseAPIURL + reqMethod.path, method: .post, headers: headers).response { response in
+                    debugPrint(response)
+                    if let data = response.data {
+                        success(data)
+                    } else {
+                        failure(NetworkError(.server, code: response.response?.statusCode))
+                    }
+                }
+        }
+    }
+    
     // MARK: GET Requests
     
     // для неавторизованных запросов
@@ -170,6 +201,10 @@ final class BaseAPI {
     // загрузка фото для авторизованных запросов
     static func authorizedMultipartPostRequest(carId: Int, fieldName: String, fileURLArray: [URL], success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
         request(reqMethod: .addCarPhoto(carId), fieldName: fieldName, fileURLArray: fileURLArray, success: success, failure: failure)
+    }
+    // загрузка фото пользовотеля
+    static func authorizedMultipartPostUserAvatarRequest(userId: Int, fieldName: String, fileURL: URL, success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
+        userAvatarRequest(reqMethod: .postProfile, fieldName: fieldName, fileURL: fileURL, success: success, failure: failure)
     }
     
     // MARK: - PUT Requests
