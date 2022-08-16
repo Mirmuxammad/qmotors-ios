@@ -184,46 +184,6 @@ class TechnicalRecordVC: BaseVC {
         return dropDown
     }()
     
-    //MARK: - Tables
-    private lazy var technicalCenterTable: UITableView = {
-        let tableView = UITableView()
-        tableView.backgroundColor = .white
-        tableView.separatorStyle = .none
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.isHidden = true
-        tableView.layer.borderWidth = 1
-        tableView.layer.borderColor = UIColor(hex: "B6B6B6").cgColor
-        tableView.layer.cornerRadius = 8
-        tableView.layer.zPosition = 1
-        return tableView
-    }()
-    
-    private lazy var userCarTable: UITableView = {
-        let tableView = UITableView()
-        tableView.backgroundColor = .white
-        tableView.separatorStyle = .none
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.isHidden = true
-        tableView.layer.borderWidth = 1
-        tableView.layer.borderColor = UIColor(hex: "B6B6B6").cgColor
-        tableView.layer.cornerRadius = 8
-        tableView.layer.zPosition = 1
-        return tableView
-    }()
-    
-    private lazy var optionTable: UITableView = {
-        let tableView = UITableView()
-        tableView.backgroundColor = .white
-        tableView.separatorStyle = .none
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.isHidden = true
-        tableView.layer.borderWidth = 1
-        tableView.layer.borderColor = UIColor(hex: "B6B6B6").cgColor
-        tableView.layer.cornerRadius = 8
-        tableView.layer.zPosition = 1
-        return tableView
-    }()
-    
     //MARK: -  StackView
     private let photosStackView: UIStackView = {
         let stackView = UIStackView()
@@ -300,14 +260,6 @@ class TechnicalRecordVC: BaseVC {
         userCarField.delegate = self
         optionField.delegate = self
         
-        technicalCenterTable.dataSource = self
-        userCarTable.dataSource = self
-        optionTable.dataSource = self
-        
-        technicalCenterTable.delegate = self
-        userCarTable.delegate = self
-        optionTable.delegate = self
-        
         view.addSubview(logoImageView)
         view.addSubview(backgroundView)
         
@@ -340,13 +292,6 @@ class TechnicalRecordVC: BaseVC {
         photosStackView.addArrangedSubview(thirdPhotoView)
         contentView.addSubview(sendOrderButton)
         
-        contentView.addSubview(technicalCenterTable)
-        contentView.addSubview(userCarTable)
-        contentView.addSubview(optionTable)
-        
-        technicalCenterChevronButton.addTarget(self, action: #selector(chevronButtonTapped), for: .touchUpInside)
-        carModelChevronButton.addTarget(self, action: #selector(chevronButtonTapped), for: .touchUpInside)
-        optionsChevronButton.addTarget(self, action: #selector(chevronButtonTapped), for: .touchUpInside)
         firstPhotoView.photoButton.addTarget(self, action: #selector(photoButtonTapped), for: .touchUpInside)
         firstPhotoView.removePhotoButton.addTarget(self, action: #selector(removePhotoButtonTapped), for: .touchUpInside)
         secondPhotoView.photoButton.addTarget(self, action: #selector(photoButtonTapped), for: .touchUpInside)
@@ -453,6 +398,10 @@ class TechnicalRecordVC: BaseVC {
         userCarDropDown.direction = .bottom
         optionDropDown.direction = .bottom
         
+        technicalCenterDropDown.bottomOffset = CGPoint(x: 0, y:technicalCenterButton.frame.height + 10)
+        userCarDropDown.bottomOffset = CGPoint(x: 0, y:userCarButton.frame.height + 10)
+        optionDropDown.bottomOffset = CGPoint(x: 0, y:optionButon.frame.height + 10)
+        
         technicalCenterDropDown.width = technicalCenterButton.frame.width
         userCarDropDown.width = userCarButton.frame.width
         optionDropDown.width = optionButon.frame.width
@@ -504,33 +453,6 @@ class TechnicalRecordVC: BaseVC {
             self.present(alert, animated: true, completion: nil)
         }
 
-    }
-    
-    @objc private func chevronButtonTapped(_ sender: UIButton) {
-        print(#function)
-        switch sender {
-        case carModelChevronButton:
-            if userCarField.isFirstResponder {
-                userCarField.resignFirstResponder()
-            } else {
-                userCarField.becomeFirstResponder()
-            }
-        case optionsChevronButton:
-            if optionField.isFirstResponder {
-                optionField.resignFirstResponder()
-            } else {
-                optionField.becomeFirstResponder()
-            }
-        case technicalCenterChevronButton:
-            if technicalCenterField.isFirstResponder {
-                technicalCenterField.resignFirstResponder()
-            } else {
-                technicalCenterField.becomeFirstResponder()
-            }
-        default:
-            break
-        }
-        
     }
     
     @objc private func photoButtonTapped() {
@@ -616,117 +538,8 @@ extension TechnicalRecordVC: UITextFieldDelegate {
         
         return textField != userCarField || textField != optionField
     }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        print(#function)
-        technicalCenterTable.isHidden = !technicalCenterField.isEditing
-        userCarTable.isHidden = !userCarField.isEditing
-        optionTable.isHidden = !optionField.isEditing
-        
-        if textField.subviews.contains(carModelChevronButton) {
-            carModelChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
-        } else if textField.subviews.contains(optionsChevronButton) {
-            optionsChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
-        } else if textField.subviews.contains(technicalCenterChevronButton) {
-            technicalCenterChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
-        }
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        print(#function)
-        technicalCenterTable.isHidden = !technicalCenterField.isEditing
-        userCarTable.isHidden = !userCarField.isEditing
-        optionTable.isHidden = !optionField.isEditing
-        
-        if textField.subviews.contains(carModelChevronButton) {
-            carModelChevronButton.transform = .identity
-        } else if textField.subviews.contains(optionsChevronButton) {
-            optionsChevronButton.transform = .identity
-        } else if textField.subviews.contains(technicalCenterChevronButton) {
-            technicalCenterChevronButton.transform = .identity
-        }
-    }
 }
 
-
-//MARK: - UITableViewDelegate, UITableViewDataSource
-extension TechnicalRecordVC: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch tableView {
-        case technicalCenterTable:
-            technicalCenterTable.snp.updateConstraints { make in
-                let heightTableView = CGFloat(46 * technicalCentersData.count)
-                if heightTableView < (self.view.frame.height / 2) {
-                    make.height.equalTo(heightTableView)
-                } else {
-                    make.height.equalTo(self.view.frame.height / 2)
-                }
-            }
-            return technicalCentersData.count
-        case userCarTable:
-            userCarTable.snp.updateConstraints { make in
-                let heightTableView = CGFloat(46 * myCars.count)
-                if heightTableView < (self.view.frame.height / 2) {
-                    make.height.equalTo(heightTableView)
-                } else {
-                    make.height.equalTo(self.view.frame.height / 2)
-                }
-            }
-            return myCars.count
-        case optionTable:
-            optionTable.snp.updateConstraints { make in
-                let heightTableView = CGFloat(46 * orderTypes.count)
-                if heightTableView < (self.view.frame.height / 2) {
-                    make.height.equalTo(heightTableView)
-                } else {
-                    make.height.equalTo(self.view.frame.height / 2)
-                }
-            }
-            return orderTypes.count
-        default:
-            break
-        }
-        return 0
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-        cell.selectionStyle = .gray
-        switch tableView {
-        case technicalCenterTable:
-            cell.textLabel?.text = technicalCentersData[indexPath.row].title
-        case userCarTable:
-            cell.textLabel?.text = myCars[indexPath.row].mark + " " + myCars[indexPath.row].model + " " + myCars[indexPath.row].number
-        case optionTable:
-            cell.textLabel?.text = orderTypes[indexPath.row].name
-        default:
-            break
-        }
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(#function)
-        switch tableView {
-        case technicalCenterTable:
-            let centerName = technicalCentersData[indexPath.row].title
-            technicalCenterField.text = centerName
-            order.techCenterId = technicalCentersData[indexPath.row].id
-        case userCarTable:
-            let carMark = myCars[indexPath.row].mark + " " + myCars[indexPath.row].model
-            userCarField.text = carMark
-            order.carId = String(myCars[indexPath.row].id)
-            order.carNumber = myCars[indexPath.row].number
-        case optionTable:
-            let optionModel = orderTypes[indexPath.row].name
-            optionField.text = optionModel
-            order.orderTypeId = orderTypes[indexPath.row].id
-        default:
-            break
-        }
-    }
-}
-    
     // MARK: - UIImagePickerControllerDelegate
     extension TechnicalRecordVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         
@@ -823,13 +636,6 @@ extension TechnicalRecordVC {
             make.width.equalTo(54)
         }
         
-        technicalCenterTable.snp.makeConstraints { make in
-            make.top.equalTo(technicalCenterField.snp.bottom).offset(4)
-            make.height.equalTo(140)
-            make.left.equalToSuperview().offset(lOffset)
-            make.right.equalToSuperview().offset(rOffset)
-        }
-        
         userCarLabel.snp.makeConstraints { make in
             make.top.equalTo(technicalCenterField.snp.bottom).offset(24)
             make.left.equalToSuperview().offset(lOffset)
@@ -852,13 +658,6 @@ extension TechnicalRecordVC {
             make.centerY.equalToSuperview()
             make.height.equalTo(54)
             make.width.equalTo(54)
-        }
-        
-        userCarTable.snp.makeConstraints { make in
-            make.top.equalTo(userCarField.snp.bottom).offset(4)
-            make.height.equalTo(140)
-            make.left.equalToSuperview().offset(lOffset)
-            make.right.equalToSuperview().offset(rOffset)
         }
         
         timeMarkLabel.snp.makeConstraints { make in
@@ -894,13 +693,6 @@ extension TechnicalRecordVC {
             make.centerY.equalToSuperview()
             make.height.equalTo(54)
             make.width.equalTo(54)
-        }
-
-        optionTable.snp.makeConstraints { make in
-            make.top.equalTo(optionField.snp.bottom).offset(4)
-            make.height.equalTo(140)
-            make.left.equalToSuperview().offset(lOffset)
-            make.right.equalToSuperview().offset(rOffset)
         }
         
         infoLabel.snp.makeConstraints { make in
