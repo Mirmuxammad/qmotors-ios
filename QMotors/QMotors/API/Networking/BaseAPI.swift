@@ -13,6 +13,7 @@ enum RequestMethod {
     case loginWithSmsCode
     case sendSmsCode
     case profile
+    case postProfile
     case userAutos
     case carMarkList
     case carModelList
@@ -33,6 +34,8 @@ enum RequestMethod {
             return "send-sms-code"
         case .profile:
             return "profile"
+        case .postProfile:
+            return "profile/update"
         case .userAutos:
             return "profile/autos"
         case .carMarkList:

@@ -12,7 +12,7 @@ class BirthdayPicker: UIView {
 
     // MARK: - UI Elements
 
-    private let titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: Const.fontMed, size: 16)
         label.textColor = .black
@@ -21,7 +21,7 @@ class BirthdayPicker: UIView {
         return label
     }()
     
-    private let datePicker: UIDatePicker = {
+    let datePicker: UIDatePicker = {
         let picker = UIDatePicker()
         let localeID = Locale.preferredLanguages.first
         picker.locale = Locale(identifier: localeID!)

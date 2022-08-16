@@ -13,8 +13,18 @@ protocol Routable: UIViewController {
 }
 
 enum RootScreen {
-    case mainScreen
-    case innerScreen
+    case main
+    case personalAccount
+    case record
+    case techCenter
+    case stocks
+    case notification
+    case reviews
+    case chat
+    case articles
+    case FAQ
+    case barcode
+    case freeDiagnost
 }
 
 class MainRouter: NSObject {

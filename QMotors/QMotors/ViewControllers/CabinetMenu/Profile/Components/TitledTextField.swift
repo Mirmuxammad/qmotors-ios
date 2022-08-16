@@ -13,7 +13,7 @@ class TitledTextField: UIView {
 
     // MARK: - UI Elements
 
-    private let titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: Const.fontMed, size: 16)
         label.textColor = .black
@@ -21,7 +21,7 @@ class TitledTextField: UIView {
         return label
     }()
     
-    private let textField: SwiftMaskField = {
+    let textField: SwiftMaskField = {
         let textField = SwiftMaskField()
 //        textField.maskString = "+N (NNN) NNN-NN-NN"
 //        textField.placeholder = "+7 (___) __-__-__"

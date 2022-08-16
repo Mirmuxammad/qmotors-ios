@@ -12,14 +12,34 @@ import SwiftMaskText
 class ProfileVC: BaseVC {
     
     // MARK: - Properties
-    
+    private var user: User? {
+        didSet {
+            guard let name = user?.name else { return }
+            guard let surname = user?.surname else { return }
+            guard let patronymic = user?.patronymic else { return }
+            fullNameView.textField.text = String("\(surname) \(name) \(patronymic)")
+            if user?.gender == 1 {
+                maleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
+                famaleGenderSwitch.smallElipce.backgroundColor = .clear
+            } else {
+                famaleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
+                maleGenderSwitch.smallElipce.backgroundColor = .clear
+            }
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            let userBrithday = formatter.date(from: user?.birthday ?? "")
+            guard let userBrithday = userBrithday else { return }
+            birthdayView.datePicker.date = userBrithday
+            emailView.textField.text = user?.email
+            phoneView.textField.text = user?.phoneNumber
+        }
+    }
     private var fileURLArray: [URL] = [] {
         didSet {
             print(fileURLArray)
         }
     }
     private var isMale: Int = 1
-    private var user: User?
 
     // MARK: - UI Elements
     
@@ -123,8 +143,6 @@ class ProfileVC: BaseVC {
         return button
     }()
     
-
-    
     private let servicesLable: UILabel = {
         let label = UILabel()
         label.text = "Управление услугами"
@@ -179,6 +197,8 @@ class ProfileVC: BaseVC {
         setupConstraints()
         
         genderSwitchLoad()
+        
+        loadUSerInfo()
         
         fullNameView.fullNameView(delegate: self)
         emailView.emailView(delegate: self)
@@ -369,7 +389,6 @@ class ProfileVC: BaseVC {
             make.right.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview().offset(-40)
         }
-        
     }
     
     private func reloadUserPhotos() {
@@ -387,7 +406,11 @@ class ProfileVC: BaseVC {
     }
     
     private func loadUSerInfo() {
-        
+        ProfileAPI.profile { user in
+            self.user = user.result
+        } failure: { error in
+            print(error)
+        }
     }
     
     private func genderSwitchLoad(){
@@ -442,11 +465,24 @@ class ProfileVC: BaseVC {
     }
     
     @objc private func saveProfileButtonDidTap() {
+        let split = fullNameView.textField.text?.split(separator: " ") ?? []
+        let userName: String = String(split[1])
+        let surname: String = String(split[0])
+        let patronymic: String = String(split[2])
         
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let brithdayStr = formatter.string(from: birthdayView.datePicker.date)
+        
+        guard let phoneNumber = phoneView.textField.text, let email = emailView.textField.text else { return }
+        
+        ProfileAPI.postUser(surname: surname, name: userName, patronymic: patronymic, phoneNumber: phoneNumber, email: email, brithday: brithdayStr, gender: isMale, success: { [weak self] result in
+            self?.router?.back()
+        }) { [weak self] error in
+            
+            self?.activityIndicator.stopAnimating()
+        }
     }
-    
-
-
 }
 
 // MARK: - UIImagePickerControllerDelegate
