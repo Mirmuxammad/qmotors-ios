@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import DropDown
 
 class CarVC: BaseVC {
     
@@ -29,7 +30,9 @@ class CarVC: BaseVC {
             activityIndicator.startAnimating()
             CarAPI.carModelListByMarkId(markId: carMarkId, success: { [weak self] carModels in
                 self?.carModelDataStore = carModels
-                self?.carModelOptionsTable.reloadData()
+                self?.carModelOptionsDropDown.dataSource = (self?.carModelDataStore.map({ i in
+                    i.name
+                }))!
                 self?.activityIndicator.stopAnimating()
             }) { [weak self] error in
                 print(error)
@@ -52,6 +55,7 @@ class CarVC: BaseVC {
             if openEditCarVC == true {
                 carMarkField.text = car?.mark
                 carModelField.text = car?.model
+                
                 carYearField.text = "\(car?.year ?? 0)"
                 mileageField.text = car?.mileage
                 vinField.text = car?.vin
@@ -114,20 +118,7 @@ class CarVC: BaseVC {
         button.setImage(UIImage(named: "chevron-icon"), for: .normal)
         return button
     }()
-    
-    private lazy var carMarkOptionsTable: UITableView = {
-        let tableView = UITableView()
-        tableView.backgroundColor = .white
-        tableView.separatorStyle = .none
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.isHidden = true
-        tableView.layer.borderWidth = 1
-        tableView.layer.borderColor = UIColor(hex: "B6B6B6").cgColor
-        tableView.layer.cornerRadius = 8
-        tableView.layer.zPosition = 1
-        return tableView
-    }()
-    
+
     private let carModelLabel: CustomLabel = {
         let label = CustomLabel(text: "Модель автомобиля", fontWeight: .medium)
         return label
@@ -144,19 +135,6 @@ class CarVC: BaseVC {
         return button
     }()
     
-    private lazy var carModelOptionsTable: UITableView = {
-        let tableView = UITableView()
-        tableView.backgroundColor = .white
-        tableView.separatorStyle = .none
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.isHidden = true
-        tableView.layer.borderWidth = 1
-        tableView.layer.borderColor = UIColor(hex: "B6B6B6").cgColor
-        tableView.layer.cornerRadius = 8
-        tableView.layer.zPosition = 1
-        return tableView
-    }()
-    
     private let carYearLabel: CustomLabel = {
         let label = CustomLabel(text: "Год выпуска", fontWeight: .medium)
         return label
@@ -171,19 +149,6 @@ class CarVC: BaseVC {
         let button = UIButton()
         button.setImage(UIImage(named: "chevron-icon"), for: .normal)
         return button
-    }()
-    
-    private lazy var carYearOptionsTable: UITableView = {
-        let tableView = UITableView()
-        tableView.backgroundColor = .white
-        tableView.separatorStyle = .none
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.isHidden = true
-        tableView.layer.borderWidth = 1
-        tableView.layer.borderColor = UIColor(hex: "B6B6B6").cgColor
-        tableView.layer.cornerRadius = 8
-        tableView.layer.zPosition = 1
-        return tableView
     }()
     
     private let mileageLabel: CustomLabel = {
@@ -263,6 +228,36 @@ class CarVC: BaseVC {
         view.layer.zPosition = 1
         return view
     }()
+    
+    //MARK: - Buttons for TextFields
+    private let carModelOptionsButton: UIButton = UIButton()
+    private let carMarkOptionsButton: UIButton = UIButton()
+    private let carYearOptionsButon: UIButton = UIButton()
+    
+    //MARK: - DropDowns
+    private let carModelOptionsDropDown: DropDown = {
+        let dropDown = DropDown()
+        dropDown.layer.borderWidth = 1
+        dropDown.layer.borderColor = UIColor(hex: "B6B6B6").cgColor
+        dropDown.layer.cornerRadius = 8
+        return dropDown
+    }()
+    
+    private let carMarkOptionsDropDown: DropDown = {
+        let dropDown = DropDown()
+        dropDown.layer.borderWidth = 1
+        dropDown.layer.borderColor = UIColor(hex: "B6B6B6").cgColor
+        dropDown.layer.cornerRadius = 8
+        return dropDown
+    }()
+    
+    private let carYearOptionsDropDown: DropDown = {
+        let dropDown = DropDown()
+        dropDown.layer.borderWidth = 1
+        dropDown.layer.borderColor = UIColor(hex: "B6B6B6").cgColor
+        dropDown.layer.cornerRadius = 8
+        return dropDown
+    }()
 
     
     // MARK: - Lifecycle
@@ -278,6 +273,15 @@ class CarVC: BaseVC {
         
         activityIndicator.startAnimating()
         fetchDropdownData { [weak self] in
+            self?.setDropDowns()
+            
+            if let car = self?.car, let carMarks = self?.carMarkDataStore {
+                for mark in carMarks {
+                    if mark.name == car.mark {
+                        self?.carMarkId = mark.id
+                    }
+                }
+            }
             self?.activityIndicator.stopAnimating()
         }
         setupView()
@@ -290,21 +294,6 @@ class CarVC: BaseVC {
     
     // MARK: - Setup View
     private func setupView() {
-//        carMarkField.inputView = UIView()
-//        carModelField.inputView = UIView()
-//        carYearField.inputView = UIView()
-        
-        carMarkField.delegate = self
-        carModelField.delegate = self
-        carYearField.delegate = self
-        
-        carMarkOptionsTable.dataSource = self
-        carModelOptionsTable.dataSource = self
-        carYearOptionsTable.dataSource = self
-        
-        carMarkOptionsTable.delegate = self
-        carModelOptionsTable.delegate = self
-        carYearOptionsTable.delegate = self
         
         view.addSubview(activityIndicator)
         view.addSubview(logoImageView)
@@ -317,12 +306,15 @@ class CarVC: BaseVC {
         contentView.addSubview(headingLabel)
         contentView.addSubview(carMarkLabel)
         contentView.addSubview(carMarkField)
+        contentView.addSubview(carMarkOptionsButton)
         carMarkField.addSubview(carMarkChevronButton)
         contentView.addSubview(carModelLabel)
         contentView.addSubview(carModelField)
+        contentView.addSubview(carModelOptionsButton)
         carModelField.addSubview(carModelChevronButton)
         contentView.addSubview(carYearLabel)
         contentView.addSubview(carYearField)
+        contentView.addSubview(carYearOptionsButon)
         carYearField.addSubview(carYearChevronButton)
         contentView.addSubview(mileageLabel)
         contentView.addSubview(mileageField)
@@ -337,13 +329,11 @@ class CarVC: BaseVC {
         photosStackView.addArrangedSubview(thirdPhotoView)
         contentView.addSubview(addCarButton)
 
-        contentView.addSubview(carMarkOptionsTable)
-        contentView.addSubview(carModelOptionsTable)
-        contentView.addSubview(carYearOptionsTable)
         
-        carMarkChevronButton.addTarget(self, action: #selector(chevronButtonTapped), for: .touchUpInside)
-        carModelChevronButton.addTarget(self, action: #selector(chevronButtonTapped), for: .touchUpInside)
-        carYearChevronButton.addTarget(self, action: #selector(chevronButtonTapped), for: .touchUpInside)
+        carMarkOptionsButton.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
+        carModelOptionsButton.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
+        carYearOptionsButon.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
+        
         firstPhotoView.photoButton.addTarget(self, action: #selector(photoButtonTapped), for: .touchUpInside)
         firstPhotoView.removePhotoButton.addTarget(self, action: #selector(removePhotoButtonTapped), for: .touchUpInside)
         secondPhotoView.photoButton.addTarget(self, action: #selector(photoButtonTapped), for: .touchUpInside)
@@ -355,7 +345,77 @@ class CarVC: BaseVC {
         setupConstraints()
     }
     
+    private func setDropDowns() {
+        carMarkOptionsDropDown.dataSource = carMarkDataStore.map({ i in
+            i.name
+        })
+        carModelOptionsDropDown.dataSource = carModelDataStore.map({ i in
+            i.name
+        })
+        
+        carYearOptionsDropDown.dataSource = carYearDataStore.map({ i in
+            String(i)
+        })
+        
+        carMarkOptionsDropDown.anchorView = carMarkOptionsButton
+        carModelOptionsDropDown.anchorView = carModelOptionsButton
+        carYearOptionsDropDown.anchorView = carYearOptionsButon
+        
+        carMarkOptionsDropDown.direction = .bottom
+        carModelOptionsDropDown.direction = .bottom
+        carYearOptionsDropDown.direction = .bottom
+        
+        carMarkOptionsDropDown.bottomOffset = CGPoint(x: 0, y:carMarkOptionsButton.frame.height + 10)
+        carModelOptionsDropDown.bottomOffset = CGPoint(x: 0, y:carModelOptionsButton.frame.height + 10)
+        carYearOptionsDropDown.bottomOffset = CGPoint(x: 0, y:carYearOptionsButon.frame.height + 10)
+        
+        carMarkOptionsDropDown.width = carMarkOptionsButton.frame.width
+        carModelOptionsDropDown.width = carModelOptionsButton.frame.width
+        carYearOptionsDropDown.width = carYearOptionsButon.frame.width
+        
+        
+        carMarkOptionsDropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            self?.carMarkField.text = item
+            guard let carMark = self?.carMarkDataStore[index] else { return }
+            self?.carMarkId = carMark.id
+            self?.carMarkOptionsDropDown.hide()
+            self?.carMarkChevronButton.transform = .identity
+        }
+        
+        carModelOptionsDropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            self?.carModelField.text = item
+            guard let carModel = self?.carModelDataStore[index] else { return }
+            self?.carModelId = carModel.id
+            self?.carModelOptionsDropDown.hide()
+            self?.carModelChevronButton.transform = .identity
+        }
+        
+        carYearOptionsDropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            self?.carYearField.text = item
+            self?.carYearOptionsDropDown.hide()
+            self?.carYearChevronButton.transform = .identity
+        }
+    }
+    
     // MARK: - Methods
+    
+    @objc private func openDropDown(_ sender: UIButton) {
+        
+        switch sender {
+        case carMarkOptionsButton:
+            carMarkOptionsDropDown.show()
+            carMarkChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
+        case carModelOptionsButton:
+            carModelOptionsDropDown.show()
+            carModelChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
+        case carYearOptionsButon:
+            carYearOptionsDropDown.show()
+            carYearOptionsButon.transform = CGAffineTransform(rotationAngle: .pi)
+        default:
+            print(111)
+        }
+    }
+    
     private func fetchDropdownData(completion: @escaping () -> Void) {
         print(#function)
         let group = DispatchGroup()
@@ -363,7 +423,6 @@ class CarVC: BaseVC {
         group.enter()
         CarAPI.carMarkList(success: { [weak self] carMarks in
             self?.carMarkDataStore = carMarks
-            self?.carMarkOptionsTable.reloadData()
             group.leave()
         }) { error in
             print(error)
@@ -373,7 +432,6 @@ class CarVC: BaseVC {
         group.enter()
         CarAPI.carModelList(success: { [weak self] carModels in
             self?.carModelDataStore = carModels
-            self?.carModelOptionsTable.reloadData()
             group.leave()
         }) { error in
             print(error)
@@ -390,40 +448,30 @@ class CarVC: BaseVC {
         router?.back()
     }
     
-    @objc private func chevronButtonTapped(_ sender: UIButton) {
-        print(#function)
-        
-        //scrollView.contentInset.bottom = view.convert(keyboardFrame.cgRectValue, from: nil).size.height
-        switch sender {
-        case carMarkChevronButton:
-            if carMarkField.isFirstResponder {
-                carMarkField.resignFirstResponder()
-            } else {
-                carMarkField.becomeFirstResponder()
-            }
-        case carModelChevronButton:
-            if carModelField.isFirstResponder {
-                carModelField.resignFirstResponder()
-            } else {
-                carModelField.becomeFirstResponder()
-            }
-        case carYearChevronButton:
-            if carYearField.isFirstResponder {
-                carYearField.resignFirstResponder()
-            } else {
-                carYearField.becomeFirstResponder()
-            }
-        default:
-            break
-        }
-    }
-    
     @objc private func photoButtonTapped() {
         print(#function)
-        let picker = UIImagePickerController()
-        picker.allowsEditing = true
-        picker.delegate = self
-        self.present(picker, animated: true)
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let galary = UIAlertAction(title: "Галерея", style: .default) { action in
+            let picker = UIImagePickerController()
+            picker.allowsEditing = true
+            picker.delegate = self
+            self.present(picker, animated: true)
+        }
+        let camera = UIAlertAction(title: "Камера", style: .default) { action in
+            let picker = UIImagePickerController()
+            picker.allowsEditing = true
+            picker.sourceType = .camera
+            picker.delegate = self
+            self.present(picker, animated: true)
+        }
+        
+        let cancel = UIAlertAction(title: "Отмена", style: .cancel)
+        
+        alert.addAction(galary)
+        alert.addAction(camera)
+        alert.addAction(cancel)
+        self.present(alert, animated: true)
     }
     
     @objc private func removePhotoButtonTapped(_ sender: UIButton) {
@@ -517,11 +565,15 @@ class CarVC: BaseVC {
     
     @objc func keyboardWillHide(notification: NSNotification) {
         if distance == 0 {
+            carModelChevronButton.transform = .identity
+            carMarkChevronButton.transform = .identity
+            carYearChevronButton.transform = .identity
             return
         }
         self.scrollView.setContentOffset(CGPoint(x: 0, y: scrollOffset), animated: true)
         scrollOffset = 0
         distance = 0
+
     }
     
     
@@ -565,98 +617,6 @@ class CarVC: BaseVC {
         thirdPhotoView.photo = UIImage(data: thirdPhotoData)!
     }
 
-}
-
-// MARK: - UITextFieldDelegate
-extension CarVC: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        return textField != carModelField && textField != carMarkField && textField != carYearField
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        print(#function)
-        carMarkOptionsTable.isHidden = !carMarkField.isEditing
-        carModelOptionsTable.isHidden = !carModelField.isEditing
-        carYearOptionsTable.isHidden = !carYearField.isEditing
-        
-        if textField.subviews.contains(carMarkChevronButton) {
-            carMarkChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
-        } else if textField.subviews.contains(carModelChevronButton) {
-            carModelChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
-        } else if textField.subviews.contains(carYearChevronButton) {
-            carYearChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
-        }
-
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        print(#function)
-        carMarkOptionsTable.isHidden = !carMarkField.isEditing
-        carModelOptionsTable.isHidden = !carMarkField.isEditing
-        carYearOptionsTable.isHidden = !carYearField.isEditing
-        
-        if textField.subviews.contains(carMarkChevronButton) {
-            carMarkChevronButton.transform = .identity
-        } else if textField.subviews.contains(carModelChevronButton) {
-            carModelChevronButton.transform = .identity
-        } else if textField.subviews.contains(carYearChevronButton) {
-            carYearChevronButton.transform = .identity
-        }
-    }
-}
-
-// MARK: - UITableViewDelegate, UITableViewDataSource
-extension CarVC: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch tableView {
-        case carMarkOptionsTable:
-            return carMarkDataStore.count
-        case carModelOptionsTable:
-            return carModelDataStore.count
-        case carYearOptionsTable:
-            return carYearDataStore.count
-        default:
-            break
-        }
-
-        return 0
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-        cell.selectionStyle = .gray
-        switch tableView {
-        case carMarkOptionsTable:
-            cell.textLabel?.text = carMarkDataStore[indexPath.row].name.uppercased()
-        case carModelOptionsTable:
-            cell.textLabel?.text = carModelDataStore[indexPath.row].name.uppercased()
-        case carYearOptionsTable:
-            cell.textLabel?.text = "\(carYearDataStore[indexPath.row])"
-        default:
-            break
-        }
-
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(#function)
-        tableView.isHidden = true
-        switch tableView {
-        case carMarkOptionsTable:
-            let carMark = carMarkDataStore[indexPath.row]
-            carMarkField.text = carMark.name.uppercased()
-            carMarkId = carMark.id
-        case carModelOptionsTable:
-            let carModel = carModelDataStore[indexPath.row]
-            carModelField.text = carModel.name.uppercased()
-            carModelId = carModel.id
-        case carYearOptionsTable:
-            carYearField.text = "\(carYearDataStore[indexPath.row])"
-        default:
-            break
-        }
-    }
 }
 
 // MARK: - UIImagePickerControllerDelegate
@@ -738,17 +698,15 @@ extension CarVC {
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
+        
+        carMarkOptionsButton.snp.makeConstraints { make in
+            make.edges.equalTo(carMarkField)
+        }
         carMarkChevronButton.snp.makeConstraints { make in
             make.right.equalToSuperview()
             make.centerY.equalToSuperview()
             make.height.equalTo(54)
             make.width.equalTo(54)
-        }
-        carMarkOptionsTable.snp.makeConstraints { make in
-            make.top.equalTo(carMarkField.snp.bottom).offset(4)
-            make.bottom.equalTo(self.view.snp.bottom).offset(-40)
-            make.left.equalToSuperview().offset(lOffset)
-            make.right.equalToSuperview().offset(rOffset)
         }
         carModelLabel.snp.makeConstraints { make in
             make.top.equalTo(carMarkField.snp.bottom).offset(12)
@@ -761,17 +719,14 @@ extension CarVC {
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
+        carModelOptionsButton.snp.makeConstraints { make in
+            make.edges.equalTo(carModelField)
+        }
         carModelChevronButton.snp.makeConstraints { make in
             make.right.equalToSuperview()
             make.centerY.equalToSuperview()
             make.height.equalTo(54)
             make.width.equalTo(54)
-        }
-        carModelOptionsTable.snp.makeConstraints { make in
-            make.top.equalTo(carModelField.snp.bottom).offset(4)
-            make.bottom.equalTo(self.view.snp.bottom).offset(-40)
-            make.left.equalToSuperview().offset(lOffset)
-            make.right.equalToSuperview().offset(rOffset)
         }
         carYearLabel.snp.makeConstraints { make in
             make.top.equalTo(carModelField.snp.bottom).offset(12)
@@ -784,17 +739,14 @@ extension CarVC {
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
+        carYearOptionsButon.snp.makeConstraints { make in
+            make.edges.equalTo(carYearField)
+        }
         carYearChevronButton.snp.makeConstraints { make in
             make.right.equalToSuperview()
             make.centerY.equalToSuperview()
             make.height.equalTo(54)
             make.width.equalTo(54)
-        }
-        carYearOptionsTable.snp.makeConstraints { make in
-            make.top.equalTo(carYearField.snp.bottom).offset(4)
-            make.bottom.equalTo(self.view.snp.bottom).offset(-40)
-            make.left.equalToSuperview().offset(lOffset)
-            make.right.equalToSuperview().offset(rOffset)
         }
         mileageLabel.snp.makeConstraints { make in
             make.top.equalTo(carYearField.snp.bottom).offset(12)

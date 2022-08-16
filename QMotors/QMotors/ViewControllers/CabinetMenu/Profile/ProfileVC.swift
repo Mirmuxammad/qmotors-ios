@@ -496,10 +496,28 @@ class ProfileVC: BaseVC {
     
     @objc private func photoButtonTapped() {
         print(#function)
-        let picker = UIImagePickerController()
-        picker.allowsEditing = true
-        picker.delegate = self
-        self.present(picker, animated: true)
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let galary = UIAlertAction(title: "Галерея", style: .default) { action in
+            let picker = UIImagePickerController()
+            picker.allowsEditing = true
+            picker.delegate = self
+            self.present(picker, animated: true)
+        }
+        let camera = UIAlertAction(title: "Камера", style: .default) { action in
+            let picker = UIImagePickerController()
+            picker.allowsEditing = true
+            picker.sourceType = .camera
+            picker.delegate = self
+            self.present(picker, animated: true)
+        }
+        
+        let cancel = UIAlertAction(title: "Отмена", style: .cancel)
+        
+        alert.addAction(galary)
+        alert.addAction(camera)
+        alert.addAction(cancel)
+        self.present(alert, animated: true)
     }
     
     @objc private func removePhotoButtonTapped(_ sender: UIButton) {

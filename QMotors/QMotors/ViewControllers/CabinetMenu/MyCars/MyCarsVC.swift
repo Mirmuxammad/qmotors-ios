@@ -293,6 +293,6 @@ extension MyCarsVC: UITableViewDataSource {
 extension MyCarsVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("didSelectRowAt - \(indexPath.row)")
-        router?.pushCarInfoVC(car: myCar[indexPath.row])
+        router?.pushCarInfoVC(carId: myCar[indexPath.row].id)
     }
 }

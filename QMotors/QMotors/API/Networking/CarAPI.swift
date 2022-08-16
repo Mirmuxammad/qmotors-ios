@@ -104,6 +104,49 @@ final class CarAPI {
         }
     }
     
+    static func getMyCar(id:Int, success: @escaping (MyCarModel) -> Void, failure: @escaping escapeNetworkError) {
+        let params: Parameters = [:]
+        
+        BaseAPI.authorizedGetRequest(reqMethod: .editCar(id), parameters: params, success: { data in
+            guard let data = data else { return }
+            let jsonData = JSON(data)
+            let errors = jsonData["errors"]
+            if errors.type == .null {
+                let carJson = jsonData["result"]
+                var carPhotos: [CarPhoto] = []
+                if carJson["user_car_photos"].arrayValue.count > 0 {
+                    for carPhoto in carJson["user_car_photos"].arrayValue {
+                        let carPhotoModel = CarPhoto(id: carPhoto["id"].intValue,
+                                                     user_car_id: carPhoto["user_car_id"].intValue,
+                                                     photo: carPhoto["photo"].stringValue,
+                                                     created_at: carPhoto["created_at"].stringValue,
+                                                     updated_at: carPhoto["updated_at"].stringValue)
+                        carPhotos.append(carPhotoModel)
+                    }
+                }
+                let myCarModel = MyCarModel(id: carJson["id"].intValue,
+                                            car_model_id: carJson["car_model_id"].intValue,
+                                            user_id: carJson["user_id"].intValue,
+                                            year: carJson["year"].intValue,
+                                            status: carJson["status"].intValue,
+                                            last_visit: carJson["last_visit"].stringValue,
+                                            vin: carJson["vin"].stringValue,
+                                            mileage: carJson["mileage"].stringValue,
+                                            created_at: carJson["created_at"].stringValue,
+                                            updated_at: carJson["updated_at"].stringValue,
+                                            number: carJson["number"].stringValue,
+                                            user_car_photos: carPhotos.count == 0 ? nil : carPhotos,
+                                            model: carJson["model"]["name"].stringValue,
+                                            mark: carJson["model"]["mark"]["name"].stringValue)
+                success(myCarModel)
+            } else {
+                failure(NetworkError(.other(errors.stringValue)))
+            }
+        }) { error in
+            failure(error)
+        }
+    }
+    
     
     static func carModelListByMarkId(markId: Int, success: @escaping ([CarModel]) -> Void, failure: @escaping escapeNetworkError) {
         let params: Parameters = [
