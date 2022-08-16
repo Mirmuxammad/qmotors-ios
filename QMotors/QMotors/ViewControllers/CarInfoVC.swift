@@ -150,7 +150,7 @@ class CarInfoVC: BaseVC {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        loadInfoCar()
     }
     
     override func viewDidLoad() {
@@ -159,7 +159,30 @@ class CarInfoVC: BaseVC {
         setupConstraints()
     }
     
+    init(carId: Int) {
+        self.carId = carId
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Private functions -
+    
+    private func loadInfoCar() {
+        guard let carId = carId else {
+            return
+        }
+
+        CarAPI.getMyCar(id: carId) { [weak self] car in
+            self?.car = car
+        } failure: { error in
+            print(error)
+        }
+
+    }
+    
     
     
     private func setupView() {
