@@ -55,6 +55,7 @@ class CarVC: BaseVC {
             if openEditCarVC == true {
                 carMarkField.text = car?.mark
                 carModelField.text = car?.model
+                
                 carYearField.text = "\(car?.year ?? 0)"
                 mileageField.text = car?.mileage
                 vinField.text = car?.vin
@@ -273,6 +274,14 @@ class CarVC: BaseVC {
         activityIndicator.startAnimating()
         fetchDropdownData { [weak self] in
             self?.setDropDowns()
+            
+            if let car = self?.car, let carMarks = self?.carMarkDataStore {
+                for mark in carMarks {
+                    if mark.name == car.mark {
+                        self?.carMarkId = mark.id
+                    }
+                }
+            }
             self?.activityIndicator.stopAnimating()
         }
         setupView()
