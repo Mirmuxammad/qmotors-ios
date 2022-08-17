@@ -277,11 +277,7 @@ extension MyCarsVC: UITableViewDataSource {
         else { return UITableViewCell() }
         cell.selectionStyle = .none
         
-        if self.segmentedControl.selectedSegmentIndex == 0 {
-            cell.setupCell(actuallyCars[indexPath.row])
-        } else if self.segmentedControl.selectedSegmentIndex == 1 {
-            cell.setupCell(archiveCars[indexPath.row])
-        }
+        cell.setupCell(myCar[indexPath.row])
         
         return cell
     }

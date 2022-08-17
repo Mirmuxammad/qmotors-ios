@@ -18,7 +18,6 @@ class CarInfoVC: BaseVC {
             guard let car = car, let intMileage = Int(car.mileage) else { return }
             if let carPhotos = car.user_car_photos {
                 self.carPhotos = carPhotos
-                carImageSlider.reloadData()
             }
             carModelLabel.text = car.model
             millageLabel.text = "\(intMileage.formattedWithSeparator) км"
@@ -27,8 +26,7 @@ class CarInfoVC: BaseVC {
             carId = car.id
             carYear = car.year
             carNumber = car.number
-            print("🔴")
-            print(car.number)
+            carImageSlider.reloadData()
         }
     }
     
