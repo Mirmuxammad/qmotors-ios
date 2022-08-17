@@ -438,21 +438,27 @@ class TechnicalRecordVC: BaseVC {
     }
     
     @objc private func addSendButtonTapped() {
-        self.showLoadingIndicator()
-        print(order)
+        
+        if order.date == nil {
+            let alert = UIAlertController(title: "Ошибка", message: "Выберите дату записи на ТО", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        } else {
+            self.showLoadingIndicator()
+            print(order)
 
-        OrderAPI.addNewOrder(order: order) { json in
-            print(json)
-            self.dismissLoadingIndicator()
-        } failure: { error in
-            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-            
-            }))
-            self.dismissLoadingIndicator()
-            self.present(alert, animated: true, completion: nil)
+            OrderAPI.addNewOrder(order: order) { json in
+                print(json)
+                self.dismissLoadingIndicator()
+            } failure: { error in
+                let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                
+                }))
+                self.dismissLoadingIndicator()
+                self.present(alert, animated: true, completion: nil)
+            }
         }
-
     }
     
     @objc private func photoButtonTapped() {
