@@ -353,7 +353,7 @@ class TechnicalRecordVC: BaseVC {
         dg.enter()
         CarAPI.getMyCars { [weak self] jsonData in
             guard let self = self else { return }
-            self.myCars = jsonData
+            self.myCars = jsonData.filter { $0.status == 0 }
             dg.leave()
         } failure: { error in
             let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
@@ -383,7 +383,7 @@ class TechnicalRecordVC: BaseVC {
             i.title
         })
         userCarDropDown.dataSource = myCars.map({ i in
-            i.mark + " " + i.model
+            i.mark + " " + i.model + " " + i.number
         })
         
         optionDropDown.dataSource = orderTypes.map({ i in
