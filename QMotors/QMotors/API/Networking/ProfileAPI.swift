@@ -51,8 +51,14 @@ final class ProfileAPI {
         }
     }
     
-    static func postUser(surname: String, name: String,patronymic: String, phoneNumber: String, email: String, brithday: String, gender: Int,agreeNotification: Bool, agreeSms: Bool, agreeCalls: Bool, agreeData: Bool,  success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError){
-        let params: Parameters = [
+    static func postUser(surname: String, name: String,
+                         patronymic: String, phoneNumber: String,
+                         email: String, brithday: String,
+                         gender: Int, agreeNotification: Bool,
+                         agreeSms: Bool, agreeCalls: Bool,
+                         agreeData: Bool, additionalPhoneNumber: String?,
+                         success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError){
+        var params: Parameters = [
             "surname": surname,
             "name": name,
             "phone_number": phoneNumber,
@@ -65,6 +71,10 @@ final class ProfileAPI {
             "agree_calls": agreeCalls,
             "agree_data": agreeData
         ]
+        
+        if let additionalPhoneNumber = additionalPhoneNumber {
+            params["additional_phone_number"] = additionalPhoneNumber
+        }
         
         BaseAPI.authorizedPostRequest(reqMethod: .postProfile, parameters: params, success: { data in
             guard let data = data else { return }

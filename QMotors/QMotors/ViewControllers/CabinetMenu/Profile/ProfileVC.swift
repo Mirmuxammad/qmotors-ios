@@ -24,7 +24,7 @@ class ProfileVC: BaseVC {
             
         }
     }
-    private var isMale: Int = 1
+    private var gender: Int = 0
     // MARK: - UI Elements
     
     private let logoImageView: UIImageView = {
@@ -410,10 +410,10 @@ class ProfileVC: BaseVC {
     }
     
     private func genderSwitchLoad(){
-        if isMale == 1 {
+        if gender == 0 {
             maleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
             famaleGenderSwitch.smallElipce.backgroundColor = .clear
-        } else {
+        } else if gender == 1 {
             maleGenderSwitch.smallElipce.backgroundColor = .clear
             famaleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
         }
@@ -441,6 +441,9 @@ class ProfileVC: BaseVC {
             titleLable.text = "Создать профиль"
         } else {
             titleLable.text = "Редактировать"
+        }
+        if let additionalPhoneNumber = user.additionalPhoneNumber {
+            extraPhoneView.textField.text = additionalPhoneNumber
         }
         let sms = user.agreeSMS
         let calls = user.agreeCalls
@@ -480,15 +483,15 @@ class ProfileVC: BaseVC {
     }
     
     @objc private func genderButton() {
-        if isMale == 1 {
-            isMale = 2
-        } else if isMale == 2 {
-            isMale = 1
+        if gender == 1 {
+            gender = 0
+        } else if gender == 0 {
+            gender = 1
         }
-        if isMale == 1 {
+        if gender == 0 {
             maleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
             famaleGenderSwitch.smallElipce.backgroundColor = .clear
-        } else {
+        } else if gender == 1 {
             maleGenderSwitch.smallElipce.backgroundColor = .clear
             famaleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
         }
@@ -565,9 +568,17 @@ class ProfileVC: BaseVC {
         formatter.dateFormat = "yyyy-MM-dd"
         let brithdayStr = formatter.string(from: birthdayView.datePicker.date)
         
-        guard let phoneNumber = phoneView.textField.text, let email = emailView.textField.text else { return }
+        guard let phoneNumber = phoneView.textField.text,
+              let email = emailView.textField.text else { return }
         
-        ProfileAPI.postUser(surname: surname, name: userName, patronymic: patronymic, phoneNumber: phoneNumber, email: email, brithday: brithdayStr, gender: isMale, agreeNotification: pushView.switchButton.isOn , agreeSms: smsView.switchButton.isOn, agreeCalls: callView.switchButton.isOn, agreeData: mobileDataView.switchButton.isOn,  success: { [weak self] result in
+        ProfileAPI.postUser(surname: surname, name: userName,
+                            patronymic: patronymic, phoneNumber: phoneNumber,
+                            email: email, brithday: brithdayStr, gender: gender,
+                            agreeNotification: pushView.switchButton.isOn,
+                            agreeSms: smsView.switchButton.isOn, agreeCalls: callView.switchButton.isOn,
+                            agreeData: mobileDataView.switchButton.isOn,
+                            additionalPhoneNumber: extraPhoneView.textField.text,
+                            success: { [weak self] result in
             
             self?.addUserAvatar(userId: result["id"].intValue, completion: { [weak self] in
                 self?.activityIndicator.stopAnimating()
