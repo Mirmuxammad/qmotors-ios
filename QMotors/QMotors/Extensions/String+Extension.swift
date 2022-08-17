@@ -18,8 +18,12 @@ extension String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         
-        let date = formatter.date(from: String(str))!
+        let date = formatter.date(from: String(str))
         formatter.dateFormat = "dd.MM.yyyy"
+        
+        guard let date = date else {
+            return ""
+        }
         
         let result = formatter.string(from: date)
         
