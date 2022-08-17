@@ -513,7 +513,7 @@ class CarVC: BaseVC {
             activityIndicator.startAnimating()
             CarAPI.addCar(carModelId: carModelId, year: carYearInt,
                           mileage: carMileageInt, number: carNumber,
-                          vin: vin, lastVisit: Date(),
+                          vin: vin, lastVisit: nil,
                           status: .active, success: { [weak self] result in
                 
                 self?.addCarPhoto(carId: result["id"].intValue, completion: { [weak self] in
