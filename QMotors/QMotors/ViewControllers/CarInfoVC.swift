@@ -26,9 +26,13 @@ class CarInfoVC: BaseVC {
             VINLabel.text = car.vin
             carId = car.id
             carYear = car.year
+            carNumber = car.number
+            print("🔴")
+            print(car.number)
         }
     }
     
+    private var carNumber: String?
     private var carId: Int?
     private var carYear: Int?
     private var carPhotos: [CarPhoto]?
@@ -174,16 +178,12 @@ class CarInfoVC: BaseVC {
         guard let carId = carId else {
             return
         }
-
         CarAPI.getMyCar(id: carId) { [weak self] car in
             self?.car = car
         } failure: { error in
             print(error)
         }
-
     }
-    
-    
     
     private func setupView() {
         carImageSlider.delegate = self
@@ -228,10 +228,11 @@ extension CarInfoVC: UICollectionViewDelegate, UICollectionViewDataSource {
            !carPhotos.isEmpty {
             cell.sliderImage = URL(string: BaseAPI.baseURL + "\(carPhotos[indexPath.item].photo)")
         }
-        if let car = car {
-            cell.carNumberTitle = car.number.getCarNumber()
-            cell.carNumberRegion = car.number.getCarRegionNumber()
+        
+        if let carNumber = carNumber {
+            cell.setupCells(number: carNumber)
         }
+        
         return cell
     }
     

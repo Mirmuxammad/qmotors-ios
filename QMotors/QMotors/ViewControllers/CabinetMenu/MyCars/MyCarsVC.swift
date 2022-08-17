@@ -276,7 +276,12 @@ extension MyCarsVC: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: MyCarsTableViewCell.identifier, for: indexPath) as? MyCarsTableViewCell
         else { return UITableViewCell() }
         cell.selectionStyle = .none
-        cell.setupCell(myCar[indexPath.row])
+        
+        if self.segmentedControl.selectedSegmentIndex == 0 {
+            cell.setupCell(actuallyCars[indexPath.row])
+        } else if self.segmentedControl.selectedSegmentIndex == 1 {
+            cell.setupCell(archiveCars[indexPath.row])
+        }
         
         return cell
     }

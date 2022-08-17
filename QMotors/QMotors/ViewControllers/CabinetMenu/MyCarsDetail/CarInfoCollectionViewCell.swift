@@ -75,4 +75,11 @@ class CarInfoCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    //MARK: -Publiv Funcs
+    
+    func setupCells(number: String) {
+        carNumberTitle = number.getCarNumber()
+        carNumberRegion = number.getCarRegionNumber()
+    }
+    
 }
