@@ -450,6 +450,10 @@ class TechnicalRecordVC: BaseVC {
             OrderAPI.addNewOrder(order: order) { json in
                 print(json)
                 self.dismissLoadingIndicator()
+                DispatchQueue.main.async {
+                    self.router?.back()
+                }
+                
             } failure: { error in
                 let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
