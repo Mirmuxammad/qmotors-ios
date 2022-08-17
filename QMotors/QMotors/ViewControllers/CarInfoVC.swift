@@ -21,7 +21,9 @@ class CarInfoVC: BaseVC {
             }
             carModelLabel.text = car.model
             millageLabel.text = "\(intMileage.formattedWithSeparator) км"
-            lastVisitLabel.text = car.last_visit.getDateString()
+            if let lastVisit = car.last_visit {
+                lastVisitLabel.text = lastVisit.getDateString()
+            }
             VINLabel.text = car.vin
             carId = car.id
             carYear = car.year
