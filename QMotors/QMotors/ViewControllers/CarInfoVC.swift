@@ -349,16 +349,25 @@ extension CarInfoVC {
         alert.addAction(UIAlertAction(title: "Да", style: .default, handler: { action in
         
             guard let carid = self.carId else { return }
-            
-            CarAPI.deleteCar(carId: carid, status: .deleted, success: { [weak self] result in
-                if result["result"] == 1 {
+            guard let car = self.car else {return}
+            CarAPI.editCar(carId: carid, carModelId: car.car_model_id, year: car.year, mileage: Int(car.mileage) ?? 0, number: car.number, vin: car.vin, lastVisit:Date() , status: CarStatus.deleted ) {  [weak self] result in
                     self?.router?.back()
-                } else {
-                    print(result["error"])
-                }
-            }) { [weak self] error in
-                print(error)
+
+            } failure: { [weak self] error in
+                    print(error)
+                self?.router?.back()
+
             }
+
+//            CarAPI.deleteCar(carId: carid, status: .deleted, success: { [weak self] result in
+//                if result["result"] == 1 {
+//                    self?.router?.back()
+//                } else {
+//                    print(result["error"])
+//                }
+//            }) { [weak self] error in
+//                print(error)
+//            }
             
         }))
         alert.addAction(UIAlertAction(title: "Нет", style: .cancel))
