@@ -132,9 +132,11 @@ class MyCarsTableViewCell: UITableViewCell {
             statusLabel.isHidden = true
         case 1:
             statusLabel.text = "ПРОДАН"
+            statusLabel.isHidden = false
             statusLabel.textColor = UIColor.init(hex: "#9CC55A")
         case 2:
             statusLabel.text = "УДАЛЕН"
+            statusLabel.isHidden = false
             statusLabel.textColor = .red
 
         default:
