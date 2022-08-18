@@ -8,7 +8,7 @@
 import Foundation
 
 struct CarOrderResponce: Codable {
-    let result: [CarOrder]
+    let result: [CarOrder]?
     let error: CustomError?
 }
 
@@ -18,8 +18,8 @@ struct CarOrder: Codable {
     let user_id: Int
     let year: Int
     let status: Int
-    let last_visit: String
-    let vin: String
+    let last_visit: String?
+    let vin: String?
     let mileage: String
     let created_at: String
     let updated_at: String
