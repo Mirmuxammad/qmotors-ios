@@ -64,11 +64,13 @@ class CarVC: BaseVC {
                 carNumberField.text = car?.number
                 addCarButton.setupTitle(title: "СОХРАНИТЬ")
                 headingLabel.text = "Редактировать"
+                lastVizit = car?.last_visit ?? "Визита не было"
             }
         }
     }
     var scrollOffset: CGFloat = 0
     var distance: CGFloat = 0
+    var lastVizit: String = ""
     
     
     // MARK: - UI Elements
@@ -497,7 +499,7 @@ class CarVC: BaseVC {
             guard let carYearInt = Int(carYear), let carMileageInt = Int(carMileage) else { return }
             activityIndicator.startAnimating()
             
-            CarAPI.editCar(carId: carId,carModelId: carModelId, year: carYearInt, mileage: carMileageInt, number: carNumber, vin: vin, lastVisit: Date(), status: .active, success: { [weak self] result in
+            CarAPI.editCar(carId: carId,carModelId: carModelId, year: carYearInt, mileage: carMileageInt, number: carNumber, vin: vin, status: .active, success: { [weak self] result in
                 //self?.addCarPhoto(carId: result["id"].intValue, completion: {})
                 self?.activityIndicator.stopAnimating()
                 self?.openEditCarVC = false
@@ -513,7 +515,7 @@ class CarVC: BaseVC {
             activityIndicator.startAnimating()
             CarAPI.addCar(carModelId: carModelId, year: carYearInt,
                           mileage: carMileageInt, number: carNumber,
-                          vin: vin, lastVisit: Date(),
+                          vin: vin,
                           status: .active, success: { [weak self] result in
                 
                 self?.addCarPhoto(carId: result["id"].intValue, completion: { [weak self] in

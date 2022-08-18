@@ -24,6 +24,9 @@ class TechnicalRecordVC: BaseVC {
         }
     }
     
+    private var carModelIdForUpdate: String = ""
+    var myCar: MyCarModel?
+    
     // MARK: - UI Elements
     private let logoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -377,6 +380,23 @@ class TechnicalRecordVC: BaseVC {
         }
     }
     
+    private func editLastVizitCar() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let newDate = dateFormatter.date(from: order.date!)
+        self.showLoadingIndicator()
+        guard let car = myCar else { return }
+        
+        CarAPI.addLastVizitCar(carId: car.car_model_id, lastVisit: newDate!, success: { [weak self] result in
+            self?.router?.back()
+            self?.dismissLoadingIndicator()
+        }) { [weak self] error in
+            print(error)
+            self?.dismissLoadingIndicator()
+        }
+    }
+    
+    
     // MARK: - Private actions
     private func setDropDowns() {
         technicalCenterDropDown.dataSource = technicalCentersData.map({ i in
@@ -417,6 +437,8 @@ class TechnicalRecordVC: BaseVC {
         userCarDropDown.selectionAction = { [weak self] (index: Int, item: String) in
             self?.userCarField.text = item
             guard let id = self?.myCars[index].id else { return }
+            guard let myCar = self?.myCars[index] else { return }
+            self?.myCar = myCar
             self?.order.carId = String(id)
             self?.order.carNumber = self?.myCars[index].number
             self?.userCarDropDown.hide()
@@ -451,7 +473,7 @@ class TechnicalRecordVC: BaseVC {
                 print(json)
                 self.dismissLoadingIndicator()
                 DispatchQueue.main.async {
-                    self.router?.back()
+                    self.editLastVizitCar()
                 }
                 
             } failure: { error in

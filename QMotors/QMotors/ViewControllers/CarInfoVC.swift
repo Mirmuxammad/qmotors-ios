@@ -21,7 +21,11 @@ class CarInfoVC: BaseVC {
             }
             carModelLabel.text = car.model
             millageLabel.text = "\(intMileage.formattedWithSeparator) км"
-            lastVisitLabel.text = car.last_visit.getDateString()
+            if car.last_visit == "" {
+                lastVisitLabel.text = "Визита не было"
+            } else {
+                lastVisitLabel.text = car.last_visit.getDateString()
+            }
             VINLabel.text = car.vin
             carId = car.id
             carYear = car.year
@@ -349,7 +353,7 @@ extension CarInfoVC {
         
             guard let carid = self.carId else { return }
             guard let car = self.car else {return}
-            CarAPI.editCar(carId: carid, carModelId: car.car_model_id, year: car.year, mileage: Int(car.mileage) ?? 0, number: car.number, vin: car.vin, lastVisit:Date() , status: CarStatus.deleted ) {  [weak self] result in
+            CarAPI.editCar(carId: carid, carModelId: car.car_model_id, year: car.year, mileage: Int(car.mileage) ?? 0, number: car.number, vin: car.vin, status: CarStatus.deleted ) {  [weak self] result in
                     self?.router?.back()
 
             } failure: { [weak self] error in

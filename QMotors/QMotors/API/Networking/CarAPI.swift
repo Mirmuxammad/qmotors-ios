@@ -171,10 +171,7 @@ final class CarAPI {
         }
     }
     
-    static func addCar(carModelId: Int, year: Int, mileage: Int, number: String, vin: String, lastVisit: Date, status: CarStatus, success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        let lastVisitStr = formatter.string(from: lastVisit)
+    static func addCar(carModelId: Int, year: Int, mileage: Int, number: String, vin: String, status: CarStatus, success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError) {
         
         let params: Parameters = [
             "car_model_id": carModelId,
@@ -182,7 +179,6 @@ final class CarAPI {
             "mileage": mileage,
             "number": number,
             "vin": vin,
-            "last_visit": lastVisitStr,
             "status": status.rawValue
         ]
         
@@ -200,10 +196,7 @@ final class CarAPI {
         }
     }
     
-    static func editCar(carId: Int, carModelId: Int, year: Int, mileage: Int, number: String, vin: String, lastVisit: Date, status: CarStatus, success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        let lastVisitStr = formatter.string(from: lastVisit)
+    static func editCar(carId: Int, carModelId: Int, year: Int, mileage: Int, number: String, vin: String,status: CarStatus, success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError) {
         
         let params: Parameters = [
             "car_model_id": carModelId,
@@ -211,8 +204,31 @@ final class CarAPI {
             "mileage": mileage,
             "number": number,
             "vin": vin,
-            "last_visit": lastVisitStr,
             "status": status.rawValue
+        ]
+        
+        BaseAPI.authorizedPutRequest(reqMethod: .editCar(carId), parameters: params, success: { data in
+            guard let data = data else { return }
+            let jsonData = JSON(data)
+            let errors = jsonData["errors"]
+            if errors.type == .null {
+                success(jsonData["result"])
+            } else {
+                failure(NetworkError(.other(errors.stringValue)))
+            }
+        }) { error in
+            failure(error)
+        }
+    }
+    
+    static func addLastVizitCar(carId: Int, lastVisit: Date, success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let lastVisitStr = formatter.string(from: lastVisit)
+        
+        let params: Parameters = [
+            "car_model_id": carId,
+            "last_visit": lastVisitStr
         ]
         
         BaseAPI.authorizedPutRequest(reqMethod: .editCar(carId), parameters: params, success: { data in

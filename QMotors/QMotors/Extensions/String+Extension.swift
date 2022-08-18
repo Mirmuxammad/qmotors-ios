@@ -18,7 +18,7 @@ extension String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         
-        let date = formatter.date(from: String(str))!
+        let date = formatter.date(from: String(str)) ?? Date()
         formatter.dateFormat = "dd.MM.yyyy"
         
         let result = formatter.string(from: date)

@@ -105,11 +105,15 @@ class MyCarsTableViewCell: UITableViewCell {
         }
         modelLabel.text = with.model
         mileageLabel.text = with.mileage
-        lastVisitLabel.text = with.last_visit.getFormattedDate()
+        if with.last_visit == "" {
+            lastVisitLabel.text = "Визита не было"
+        } else {
+            lastVisitLabel.text = with.last_visit.getFormattedDate()
+        }
+        
         if let inMillage = Int(with.mileage) {
             mileageLabel.text = "\(inMillage.formattedWithSeparator) км"
         }
-        lastVisitLabel.text = with.last_visit.getDateString()
         carNumberView.numberTitle.text = with.number.getCarNumber()
         carNumberView.regionNumber.text = with.number.getCarRegionNumber()
     }
