@@ -61,6 +61,7 @@
 		84AE273F288D2AFF000870D4 /* CarNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AE273E288D2AFF000870D4 /* CarNumberView.swift */; };
 		84AE2742288D4792000870D4 /* Formatter+Separator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AE2741288D4792000870D4 /* Formatter+Separator.swift */; };
 		84AFF8292887DBD0009207BD /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AFF8282887DBD0009207BD /* CustomError.swift */; };
+		84B2411528AD84A0000A6396 /* MyCarOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B2411428AD84A0000A6396 /* MyCarOrder.swift */; };
 		84D94F57288559D90023AA02 /* RegistrationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D94F56288559D90023AA02 /* RegistrationVC.swift */; };
 		84D94F5928855F0D0023AA02 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D94F5828855F0D0023AA02 /* MainVC.swift */; };
 		84D94F5B2885AD4A0023AA02 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D94F5A2885AD4A0023AA02 /* ActionButton.swift */; };
@@ -171,6 +172,7 @@
 		84AE273E288D2AFF000870D4 /* CarNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarNumberView.swift; sourceTree = "<group>"; };
 		84AE2741288D4792000870D4 /* Formatter+Separator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formatter+Separator.swift"; sourceTree = "<group>"; };
 		84AFF8282887DBD0009207BD /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
+		84B2411428AD84A0000A6396 /* MyCarOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCarOrder.swift; sourceTree = "<group>"; };
 		84D94F56288559D90023AA02 /* RegistrationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVC.swift; sourceTree = "<group>"; };
 		84D94F5828855F0D0023AA02 /* MainVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVC.swift; sourceTree = "<group>"; };
 		84D94F5A2885AD4A0023AA02 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 				4049212728A177AB00257750 /* CarResponse.swift */,
 				E02E316928A2BCA30067CEAB /* OrderTypeResponce.swift */,
 				E02E316B28A2BFAD0067CEAB /* NewOrder.swift */,
+				84B2411428AD84A0000A6396 /* MyCarOrder.swift */,
 				E02E318128A522BD0067CEAB /* CarOrderResponce.swift */,
 			);
 			path = Models;
@@ -745,6 +748,7 @@
 				8456BA6B28815AF200684AF5 /* PhoneCallView.swift in Sources */,
 				84A4AB6B2889CCB900B657F1 /* LogoutButton.swift in Sources */,
 				84D94F5928855F0D0023AA02 /* MainVC.swift in Sources */,
+				84B2411528AD84A0000A6396 /* MyCarOrder.swift in Sources */,
 				E02E317128A3CB990067CEAB /* HistoryCarTableViewCell.swift in Sources */,
 				E02E318028A51C990067CEAB /* DeteilOrderForCarTableViewCell.swift in Sources */,
 				84AE2737288AE772000870D4 /* MyCarsVC.swift in Sources */,

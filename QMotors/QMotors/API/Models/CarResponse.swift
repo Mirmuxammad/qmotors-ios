@@ -19,7 +19,7 @@ struct MyCarModel {
     let user_id: Int
     let year: Int
     let status: Int
-    let last_visit: String
+    let last_visit: String?
     let vin: String
     let mileage: String
     let created_at: String

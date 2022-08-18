@@ -18,8 +18,16 @@ extension String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         
+<<<<<<< HEAD
         let date = formatter.date(from: String(str)) ?? Date()
+=======
+        let date = formatter.date(from: String(str))
+>>>>>>> 4b9dce5e61b9f9e5ea10b7be97dfabe0e3d2237c
         formatter.dateFormat = "dd.MM.yyyy"
+        
+        guard let date = date else {
+            return ""
+        }
         
         let result = formatter.string(from: date)
         

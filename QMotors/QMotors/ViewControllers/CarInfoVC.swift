@@ -21,10 +21,15 @@ class CarInfoVC: BaseVC {
             }
             carModelLabel.text = car.model
             millageLabel.text = "\(intMileage.formattedWithSeparator) км"
+<<<<<<< HEAD
             if car.last_visit == "" {
                 lastVisitLabel.text = "Визита не было"
             } else {
                 lastVisitLabel.text = car.last_visit.getDateString()
+=======
+            if let lastVisit = car.last_visit {
+                lastVisitLabel.text = lastVisit.getDateString()
+>>>>>>> 4b9dce5e61b9f9e5ea10b7be97dfabe0e3d2237c
             }
             VINLabel.text = car.vin
             carId = car.id

@@ -49,6 +49,13 @@ class OrderForCarTableViewCell: UITableViewCell {
         mileageLable.text = "пробег: \(order.mileage ?? "000") км."
     }
     
+    func setupTitlesForEmptyOrder() {
+        setViews()
+        numberOrderLable.text = "Нет истории посещения"
+        centerNameLable.text = ""
+        mileageLable.text = ""
+    }
+    
     private func setViews() {
         backgroundColor = UIColor.init(hex: "#F8F8F8")
         addSubview(numberOrderLable)

@@ -67,8 +67,13 @@ final class OrderAPI {
             let errors = jsonData["errors"]
             if errors.type == .null {
                 let decoder = JSONDecoder()
-                let decod = try! decoder.decode(CarOrderResponce.self, from: data)
-                success(decod)
+                
+                do {
+                    let decod = try decoder.decode(CarOrderResponce.self, from: data)
+                    success(decod)
+                } catch let error {
+                    print(error.localizedDescription)
+                }
             } else {
                 failure(NetworkError(.other(errors.stringValue)))
             }

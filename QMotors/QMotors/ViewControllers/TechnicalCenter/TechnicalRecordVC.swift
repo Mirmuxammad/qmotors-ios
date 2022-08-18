@@ -16,6 +16,7 @@ class TechnicalRecordVC: BaseVC {
     private var myCars = [MyCarModel]()
     private var orderTypes = [OrderType]()
     private var order = NewOrder()
+    private var myCarOrder = MyCarOrder()
     
     
     private var fileURLArray: [URL] = [] {
@@ -443,6 +444,15 @@ class TechnicalRecordVC: BaseVC {
             self?.order.carNumber = self?.myCars[index].number
             self?.userCarDropDown.hide()
             self?.carModelChevronButton.transform = .identity
+            
+            self?.myCarOrder.id = id
+            self?.myCarOrder.carModelId = self?.myCars[index].car_model_id
+            self?.myCarOrder.year = self?.myCars[index].year
+            guard let mileage = Int(self?.myCars[index].mileage ?? "") else { return }
+            self?.myCarOrder.mileage = mileage
+            self?.myCarOrder.vin = self?.myCars[index].vin
+            self?.myCarOrder.number = self?.myCars[index].number
+            self?.myCarOrder.status = CarStatus.active
         }
         
         optionDropDown.selectionAction = { [weak self] (index: Int, item: String) in
@@ -484,6 +494,22 @@ class TechnicalRecordVC: BaseVC {
                 self.dismissLoadingIndicator()
                 self.present(alert, animated: true, completion: nil)
             }
+        
+            guard
+                let id = myCarOrder.id,
+                let carModelId = myCarOrder.carModelId,
+                let year = myCarOrder.year,
+                let milage = myCarOrder.mileage,
+                let number = myCarOrder.number,
+                let vin = myCarOrder.vin,
+                let lastVisit = myCarOrder.lastVisit,
+                let status = myCarOrder.status else { return }
+            
+            CarAPI.editCar(carId: id, carModelId: carModelId, year: year, mileage: milage, number: number, vin: vin, lastVisit: lastVisit, status: status) { result in
+                print("Car last visit succesfully updated")
+            } failure: { error in
+                print(error?.localizedDescription)
+            }
         }
     }
     
@@ -514,6 +540,7 @@ class TechnicalRecordVC: BaseVC {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatter.string(from: picker.date)
         order.date = dateString
+        self.myCarOrder.lastVisit = picker.date
     }
     
     private func reloadCarPhotos() {

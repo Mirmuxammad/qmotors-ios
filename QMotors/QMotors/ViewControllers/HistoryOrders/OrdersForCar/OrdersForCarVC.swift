@@ -115,7 +115,10 @@ extension OrdersForCarVC {
 // MARK: - @objc Methods
 extension OrdersForCarVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        ordersData.count + 1
+        if ordersData.isEmpty {
+           return 2
+        }
+       return ordersData.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -130,15 +133,22 @@ extension OrdersForCarVC: UITableViewDelegate, UITableViewDataSource {
         }
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: OrderForCarTableViewCell.identifier) as? OrderForCarTableViewCell else { return UITableViewCell() }
-        let order = ordersData[indexPath.row - 1]
-        cell.setTitles(order: order)
-        
+        if ordersData.isEmpty {
+            cell.selectionStyle = .none
+            cell.setupTitlesForEmptyOrder()
+        } else {
+            let order = ordersData[indexPath.row - 1]
+            print(order)
+            cell.setTitles(order: order)
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        /*
         let order = ordersData[indexPath.row - 1]
         print(order.status)
+         */
     }
     
 }
