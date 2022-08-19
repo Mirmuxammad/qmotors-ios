@@ -121,7 +121,7 @@ class CabinetVC: BaseVC {
         verticalStackView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview()
-            make.top.equalTo(titleLable.snp.bottom).offset(50)
+            make.top.equalTo(titleLable.snp.bottom).offset(20)
             make.bottom.lessThanOrEqualTo(logoutButton.snp.top)
         }
  
