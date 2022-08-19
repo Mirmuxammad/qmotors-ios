@@ -322,4 +322,24 @@ final class CarAPI {
             failure(error)
         }
     }
+    
+    static func deleteCarPhoto(photoId: Int, success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError) {
+        
+        let params: Parameters = [:]
+        
+        BaseAPI.authorizedDeleteRequest(reqMethod: .deletePhoto(photoId), parameters: params, success:  { data in
+            guard let data = data else { return }
+            let jsonData = JSON(data)
+            let errors = jsonData["errors"]
+            if errors.type == .null {
+                success(jsonData["result"])
+            } else {
+                failure(NetworkError(.other(errors.stringValue)))
+            }
+        }) { error in
+            failure(error)
+        }
+    }
+    
+    
 }

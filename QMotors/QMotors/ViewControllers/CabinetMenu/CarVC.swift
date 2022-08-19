@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import DropDown
+import SDWebImage
 
 class CarVC: BaseVC {
     
@@ -50,11 +51,61 @@ class CarVC: BaseVC {
     
     private let cellIdentifier = "optionsTableCell"
     var openEditCarVC = false
+    
+    var carLoadedPhotos = [CarPhoto]()
     var car: MyCarModel?{
         didSet {
             if openEditCarVC == true {
                 carMarkField.text = car?.mark
                 carModelField.text = car?.model
+                
+                if let carPhotos = car?.user_car_photos {
+                    self.carLoadedPhotos = carPhotos
+                }
+                
+                if self.carLoadedPhotos.count > 2 {
+                    let firstPhoto = carLoadedPhotos[0]
+                    guard let url = URL(string: BaseAPI.baseURL + "\(firstPhoto.photo)") else { return }
+                    firstPhotoView.imageView.sd_setImage(with: url)
+                    firstPhotoView.photoButton.isEnabled = false
+                    firstPhotoView.removePhotoButton.isHidden = false
+                    fileURLArray.insert(url, at: 0)
+                    
+                    let secondPhoto = carLoadedPhotos[1]
+                    guard let url = URL(string: BaseAPI.baseURL + "\(secondPhoto.photo)") else { return }
+                    secondPhotoView.imageView.sd_setImage(with: url)
+                    secondPhotoView.photoButton.isEnabled = false
+                    secondPhotoView.removePhotoButton.isHidden = false
+                    fileURLArray.insert(url, at: 1)
+                    
+                    let thirdPhoto = carLoadedPhotos[2]
+                    guard let url = URL(string: BaseAPI.baseURL + "\(thirdPhoto.photo)") else { return }
+                    thirdPhotoView.imageView.sd_setImage(with: url)
+                    thirdPhotoView.photoButton.isEnabled = false
+                    thirdPhotoView.removePhotoButton.isHidden = false
+                    fileURLArray.insert(url, at: 2)
+                } else if self.carLoadedPhotos.count == 2 {
+                    let firstPhoto = carLoadedPhotos[0]
+                    guard let url = URL(string: BaseAPI.baseURL + "\(firstPhoto.photo)") else { return }
+                    firstPhotoView.imageView.sd_setImage(with: url)
+                    firstPhotoView.photoButton.isEnabled = false
+                    firstPhotoView.removePhotoButton.isHidden = false
+                    fileURLArray.insert(url, at: 0)
+                    
+                    let secondPhoto = carLoadedPhotos[1]
+                    guard let url = URL(string: BaseAPI.baseURL + "\(secondPhoto.photo)") else { return }
+                    secondPhotoView.imageView.sd_setImage(with: url)
+                    secondPhotoView.photoButton.isEnabled = false
+                    secondPhotoView.removePhotoButton.isHidden = false
+                    fileURLArray.insert(url, at: 1)
+                } else if self.carLoadedPhotos.count == 1 {
+                    let firstPhoto = carLoadedPhotos[0]
+                    guard let url = URL(string: BaseAPI.baseURL + "\(firstPhoto.photo)") else { return }
+                    firstPhotoView.imageView.sd_setImage(with: url)
+                    firstPhotoView.photoButton.isEnabled = false
+                    firstPhotoView.removePhotoButton.isHidden = false
+                    fileURLArray.insert(url, at: 0)
+                }
                 
                 carYearField.text = "\(car?.year ?? 0)"
                 mileageField.text = car?.mileage
@@ -474,16 +525,28 @@ class CarVC: BaseVC {
         self.present(alert, animated: true)
     }
     
+    private func deletePhoto(photoId: Int) {
+        CarAPI.deleteCarPhoto(photoId: photoId) { result in
+            print("photo delete success")
+        } failure: { error in
+            print(error?.localizedDescription)
+        }
+
+    }
+    
     @objc private func removePhotoButtonTapped(_ sender: UIButton) {
         print(#function)
         let photoView = sender.superview as! CustomPhotoView
         photoView.photo = UIImage(named: "empty-photo")!
         if photoView == firstPhotoView {
             fileURLArray.remove(at: 0)
+            deletePhoto(photoId: carLoadedPhotos[0].id)
         } else if photoView == secondPhotoView {
             fileURLArray.remove(at: 1)
+            deletePhoto(photoId: carLoadedPhotos[1].id)
         } else if photoView == thirdPhotoView {
             fileURLArray.remove(at: 2)
+            deletePhoto(photoId: carLoadedPhotos[2].id)
         }
         reloadCarPhotos()
 
