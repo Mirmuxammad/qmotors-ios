@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import DropDown
+import SDWebImage
 
 class CarVC: BaseVC {
     
@@ -63,6 +64,7 @@ class CarVC: BaseVC {
                 carId = car?.id
                 carNumberField.text = car?.number
                 carPhotos = car?.user_car_photos
+                loadCarPhotos = car?.user_car_photos
                 fetchCarPhoto()
                 
                 addCarButton.setupTitle(title: "СОХРАНИТЬ")
@@ -73,6 +75,7 @@ class CarVC: BaseVC {
     var scrollOffset: CGFloat = 0
     var distance: CGFloat = 0
     private var carPhotos: [CarPhoto]?
+    private var loadCarPhotos: [CarPhoto]?
     
     
     // MARK: - UI Elements
@@ -448,7 +451,7 @@ class CarVC: BaseVC {
     }
     
     private func fetchCarPhoto() {
-        if let carPhotos = self.carPhotos {
+        if let carPhotos = self.carPhotos, let loadCarPhotos = self.loadCarPhotos {
             for i in carPhotos {
                 if let photo = URL(string: BaseAPI.baseURL + "\(i.photo)") {
                     fileURLArray.append(photo)
@@ -533,6 +536,8 @@ class CarVC: BaseVC {
             activityIndicator.startAnimating()
             
             CarAPI.editCar(carId: carId,carModelId: carModelId, year: carYearInt, mileage: carMileageInt, number: carNumber, vin: vin, lastVisit: Date(), status: .active, success: { [weak self] result in
+                
+                
                 self?.addCarPhoto(carId: result["id"].intValue, completion: { [weak self] in
                     print("🇺🇿")
                     print(self?.fileURLArray)
@@ -627,6 +632,22 @@ class CarVC: BaseVC {
 
     }
     
+    private func newfileURLs() -> [URL] {
+        var fileURls = [URL]()
+        
+        if let carPhotos = self.carPhotos, let loadCarPhotos = self.loadCarPhotos {
+            for i in carPhotos {
+                for x in loadCarPhotos {
+                    if x.photo != i.photo {
+                        if let photo = URL(string: BaseAPI.baseURL + "\(i.photo)") {
+                            fileURls.append(photo)
+                        }
+                    }
+                }
+            }
+        }
+        return fileURls
+    }
     
     private func addCarPhoto(carId: Int, completion: @escaping () -> Void) {
         print(#function)
@@ -634,7 +655,10 @@ class CarVC: BaseVC {
             completion()
             return
         }
-        CarAPI.addCarPhoto(carId: carId, fileURLArray: fileURLArray, success: { [weak self] result in
+        
+        let fileURLs = newfileURLs()
+        
+        CarAPI.addCarPhoto(carId: carId, fileURLArray: fileURLs, success: { [weak self] result in
             self?.reloadCarPhotos()
             self?.fileURLArray = []
             completion()
@@ -656,15 +680,15 @@ class CarVC: BaseVC {
             firstPhotoView.photo = UIImage(data: firstPhotoData)!
             secondPhotoView.photo = UIImage(named: "empty-photo")!
             thirdPhotoView.photo = UIImage(named: "empty-photo")!
-        
+
         } else if fileURLArray.count == 2 {
             let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
             firstPhotoView.photo = UIImage(data: firstPhotoData)!
             let secondPhotoData = try! Data(contentsOf: fileURLArray[1])
             secondPhotoView.photo = UIImage(data: secondPhotoData)!
-            
+
             thirdPhotoView.photo = UIImage(named: "empty-photo")!
-            
+
         } else if fileURLArray.count >= 3 {
             let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
             firstPhotoView.photo = UIImage(data: firstPhotoData)!
@@ -672,8 +696,9 @@ class CarVC: BaseVC {
             secondPhotoView.photo = UIImage(data: secondPhotoData)!
             let thirdPhotoData = try! Data(contentsOf: fileURLArray[2])
             thirdPhotoView.photo = UIImage(data: thirdPhotoData)!
-           
+
         }
+
     }
 
 }

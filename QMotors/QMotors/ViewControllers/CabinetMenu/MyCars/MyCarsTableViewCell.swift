@@ -106,11 +106,9 @@ class MyCarsTableViewCell: UITableViewCell {
         setupConstraints()
         
         if let carPhotos = with.user_car_photos {
-            for carPhoto in carPhotos {
-                let photoUrl = BaseAPI.baseURL + carPhoto.photo
+            let photoUrl = BaseAPI.baseURL + (carPhotos.first?.photo ?? "")
                 print(photoUrl)
                 carImageView.sd_setImage(with: URL(string: photoUrl), placeholderImage: nil)
-            }
         }
         modelLabel.text = with.model
         mileageLabel.text = with.mileage
