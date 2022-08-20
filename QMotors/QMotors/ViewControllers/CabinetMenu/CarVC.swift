@@ -8,7 +8,6 @@
 import UIKit
 import SnapKit
 import DropDown
-import SDWebImage
 
 class CarVC: BaseVC {
     
@@ -51,61 +50,11 @@ class CarVC: BaseVC {
     
     private let cellIdentifier = "optionsTableCell"
     var openEditCarVC = false
-    
-    var carLoadedPhotos = [CarPhoto]()
     var car: MyCarModel?{
         didSet {
             if openEditCarVC == true {
                 carMarkField.text = car?.mark
                 carModelField.text = car?.model
-                
-                if let carPhotos = car?.user_car_photos {
-                    self.carLoadedPhotos = carPhotos
-                }
-                
-                if self.carLoadedPhotos.count > 2 {
-                    let firstPhoto = carLoadedPhotos[0]
-                    guard let url = URL(string: BaseAPI.baseURL + "\(firstPhoto.photo)") else { return }
-                    firstPhotoView.imageView.sd_setImage(with: url)
-                    firstPhotoView.photoButton.isEnabled = false
-                    firstPhotoView.removePhotoButton.isHidden = false
-                    fileURLArray.insert(url, at: 0)
-                    
-                    let secondPhoto = carLoadedPhotos[1]
-                    guard let url = URL(string: BaseAPI.baseURL + "\(secondPhoto.photo)") else { return }
-                    secondPhotoView.imageView.sd_setImage(with: url)
-                    secondPhotoView.photoButton.isEnabled = false
-                    secondPhotoView.removePhotoButton.isHidden = false
-                    fileURLArray.insert(url, at: 1)
-                    
-                    let thirdPhoto = carLoadedPhotos[2]
-                    guard let url = URL(string: BaseAPI.baseURL + "\(thirdPhoto.photo)") else { return }
-                    thirdPhotoView.imageView.sd_setImage(with: url)
-                    thirdPhotoView.photoButton.isEnabled = false
-                    thirdPhotoView.removePhotoButton.isHidden = false
-                    fileURLArray.insert(url, at: 2)
-                } else if self.carLoadedPhotos.count == 2 {
-                    let firstPhoto = carLoadedPhotos[0]
-                    guard let url = URL(string: BaseAPI.baseURL + "\(firstPhoto.photo)") else { return }
-                    firstPhotoView.imageView.sd_setImage(with: url)
-                    firstPhotoView.photoButton.isEnabled = false
-                    firstPhotoView.removePhotoButton.isHidden = false
-                    fileURLArray.insert(url, at: 0)
-                    
-                    let secondPhoto = carLoadedPhotos[1]
-                    guard let url = URL(string: BaseAPI.baseURL + "\(secondPhoto.photo)") else { return }
-                    secondPhotoView.imageView.sd_setImage(with: url)
-                    secondPhotoView.photoButton.isEnabled = false
-                    secondPhotoView.removePhotoButton.isHidden = false
-                    fileURLArray.insert(url, at: 1)
-                } else if self.carLoadedPhotos.count == 1 {
-                    let firstPhoto = carLoadedPhotos[0]
-                    guard let url = URL(string: BaseAPI.baseURL + "\(firstPhoto.photo)") else { return }
-                    firstPhotoView.imageView.sd_setImage(with: url)
-                    firstPhotoView.photoButton.isEnabled = false
-                    firstPhotoView.removePhotoButton.isHidden = false
-                    fileURLArray.insert(url, at: 0)
-                }
                 
                 carYearField.text = "\(car?.year ?? 0)"
                 mileageField.text = car?.mileage
@@ -113,6 +62,9 @@ class CarVC: BaseVC {
                 carModelId = car?.car_model_id
                 carId = car?.id
                 carNumberField.text = car?.number
+                carPhotos = car?.user_car_photos
+                fetchCarPhoto()
+                
                 addCarButton.setupTitle(title: "СОХРАНИТЬ")
                 headingLabel.text = "Редактировать"
             }
@@ -120,6 +72,7 @@ class CarVC: BaseVC {
     }
     var scrollOffset: CGFloat = 0
     var distance: CGFloat = 0
+    private var carPhotos: [CarPhoto]?
     
     
     // MARK: - UI Elements
@@ -315,9 +268,9 @@ class CarVC: BaseVC {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        UserDefaults.standard.set(nil, forKey: "firstPhotoUrl")
-        UserDefaults.standard.set(nil, forKey: "secondPhotoUrl")
-        UserDefaults.standard.set(nil, forKey: "thirdPhotoUrl")
+//        UserDefaults.standard.set(nil, forKey: "firstPhotoUrl")
+//        UserDefaults.standard.set(nil, forKey: "secondPhotoUrl")
+//        UserDefaults.standard.set(nil, forKey: "thirdPhotoUrl")
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -493,6 +446,25 @@ class CarVC: BaseVC {
             completion()
         }
     }
+    
+    private func fetchCarPhoto() {
+        if let carPhotos = self.carPhotos {
+            for i in carPhotos {
+                if let photo = URL(string: BaseAPI.baseURL + "\(i.photo)") {
+                    fileURLArray.append(photo)
+                }
+            }
+        }
+        reloadCarPhotos()
+    }
+    
+    private func deletePhoto(photoId: Int) {
+        CarAPI.deleteCarPhoto(photoId: photoId) { result in
+            print("photo delete success")
+        } failure: { error in
+            print(error?.localizedDescription)
+        }
+    }
 
     @objc private func backButtonDidTap() {
         print("backButtonDidTap")
@@ -525,31 +497,31 @@ class CarVC: BaseVC {
         self.present(alert, animated: true)
     }
     
-    private func deletePhoto(photoId: Int) {
-        CarAPI.deleteCarPhoto(photoId: photoId) { result in
-            print("photo delete success")
-        } failure: { error in
-            print(error?.localizedDescription)
-        }
-
-    }
-    
     @objc private func removePhotoButtonTapped(_ sender: UIButton) {
         print(#function)
         let photoView = sender.superview as! CustomPhotoView
         photoView.photo = UIImage(named: "empty-photo")!
         if photoView == firstPhotoView {
             fileURLArray.remove(at: 0)
-            deletePhoto(photoId: carLoadedPhotos[0].id)
+            deletePhoto(photoId: carPhotos?[0].id ?? 0)
+            carPhotos?.remove(at: 0)
         } else if photoView == secondPhotoView {
             fileURLArray.remove(at: 1)
-            deletePhoto(photoId: carLoadedPhotos[1].id)
+            deletePhoto(photoId: carPhotos?[1].id ?? 0)
+            carPhotos?.remove(at: 1)
+            
         } else if photoView == thirdPhotoView {
             fileURLArray.remove(at: 2)
-            deletePhoto(photoId: carLoadedPhotos[2].id)
+            deletePhoto(photoId: carPhotos?[2].id ?? 0)
+            carPhotos?.remove(at: 2)
         }
+        print("🔴")
+        print(fileURLArray.count)
+        
+        print("✅")
+        print(carPhotos?.count)
+        
         reloadCarPhotos()
-
     }
     
     @objc private func addCarButtonTapped() {
@@ -560,15 +532,27 @@ class CarVC: BaseVC {
             guard let carYearInt = Int(carYear), let carMileageInt = Int(carMileage) else { return }
             activityIndicator.startAnimating()
             
-            CarAPI.editCar(carId: carId,carModelId: carModelId, year: carYearInt, mileage: carMileageInt, number: carNumber, vin: vin, lastVisit: nil, status: .active, success: { [weak self] result in
-                //self?.addCarPhoto(carId: result["id"].intValue, completion: {})
-                self?.addCarPhoto(carId: carId, completion: { [weak self] in
-                    guard let self = self else { return }
-                    [self.firstPhotoView, self.secondPhotoView, self.thirdPhotoView].forEach { $0.photo = UIImage(named: "empty-photo")! }
+            CarAPI.editCar(carId: carId,carModelId: carModelId, year: carYearInt, mileage: carMileageInt, number: carNumber, vin: vin, lastVisit: Date(), status: .active, success: { [weak self] result in
+                self?.addCarPhoto(carId: result["id"].intValue, completion: { [weak self] in
+                    print("🇺🇿")
+                    print(self?.fileURLArray)
+                    self?.activityIndicator.stopAnimating()
+                    print("📍☎️")
+                    print(self?.firstPhotoView.photo)
+                    print(self?.secondPhotoView.photo)
+                    print(self?.thirdPhotoView.photo)
+                    guard let strongSelf = self else { return }
+                    [strongSelf.carMarkField, strongSelf.carModelField,
+                     strongSelf.carYearField, strongSelf.mileageField,
+                     strongSelf.carNumberField, strongSelf.vinField].forEach { $0.text?.removeAll() }
+                    [strongSelf.firstPhotoView, strongSelf.secondPhotoView, strongSelf.thirdPhotoView].forEach { $0.photo = UIImage(named: "empty-photo")! }
+                    self?.openEditCarVC = false
+                    print(#function)
+                    
+                    self?.activityIndicator.stopAnimating()
+                    self?.openEditCarVC = false
+                    self?.router?.back()
                 })
-                self?.activityIndicator.stopAnimating()
-                self?.openEditCarVC = false
-                self?.router?.back()
             }) { [weak self] error in
                 print(error)
                 self?.activityIndicator.stopAnimating()
@@ -661,27 +645,35 @@ class CarVC: BaseVC {
     }
     
     private func reloadCarPhotos() {
+        print("😡")
+        print(fileURLArray)
         if fileURLArray.isEmpty {
             firstPhotoView.photo = UIImage(named: "empty-photo")!
             secondPhotoView.photo = UIImage(named: "empty-photo")!
             thirdPhotoView.photo = UIImage(named: "empty-photo")!
-            return
-        }
-        let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
-        firstPhotoView.photo = UIImage(data: firstPhotoData)!
-        if fileURLArray.count < 2 {
+        } else if fileURLArray.count == 1 {
+            let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
+            firstPhotoView.photo = UIImage(data: firstPhotoData)!
             secondPhotoView.photo = UIImage(named: "empty-photo")!
             thirdPhotoView.photo = UIImage(named: "empty-photo")!
-            return
-        }
-        let secondPhotoData = try! Data(contentsOf: fileURLArray[1])
-        secondPhotoView.photo = UIImage(data: secondPhotoData)!
-        if fileURLArray.count < 3 {
+        
+        } else if fileURLArray.count == 2 {
+            let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
+            firstPhotoView.photo = UIImage(data: firstPhotoData)!
+            let secondPhotoData = try! Data(contentsOf: fileURLArray[1])
+            secondPhotoView.photo = UIImage(data: secondPhotoData)!
+            
             thirdPhotoView.photo = UIImage(named: "empty-photo")!
-            return
+            
+        } else if fileURLArray.count >= 3 {
+            let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
+            firstPhotoView.photo = UIImage(data: firstPhotoData)!
+            let secondPhotoData = try! Data(contentsOf: fileURLArray[1])
+            secondPhotoView.photo = UIImage(data: secondPhotoData)!
+            let thirdPhotoData = try! Data(contentsOf: fileURLArray[2])
+            thirdPhotoView.photo = UIImage(data: thirdPhotoData)!
+           
         }
-        let thirdPhotoData = try! Data(contentsOf: fileURLArray[2])
-        thirdPhotoView.photo = UIImage(data: thirdPhotoData)!
     }
 
 }
@@ -705,13 +697,13 @@ extension CarVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate
             if let data = data, let image = UIImage(data: data) {
                 if self?.firstPhotoView.photo == UIImage(named: "empty-photo") {
                     self?.firstPhotoView.photo = image
-                    UserDefaults.standard.set("\(documentUrl)", forKey: "firstPhotoUrl")
+                    //UserDefaults.standard.set("\(documentUrl)", forKey: "firstPhotoUrl")
                 } else if self?.secondPhotoView.photo == UIImage(named: "empty-photo") {
                     self?.secondPhotoView.photo = image
-                    UserDefaults.standard.set("\(documentUrl)", forKey: "secondPhotoUrl")
+                    //UserDefaults.standard.set("\(documentUrl)", forKey: "secondPhotoUrl")
                 } else if self?.thirdPhotoView.photo == UIImage(named: "empty-photo") {
                     self?.thirdPhotoView.photo = image
-                    UserDefaults.standard.set("\(documentUrl)", forKey: "thirdPhotoUrl")
+                    //UserDefaults.standard.set("\(documentUrl)", forKey: "thirdPhotoUrl")
                 }
             }
         }
