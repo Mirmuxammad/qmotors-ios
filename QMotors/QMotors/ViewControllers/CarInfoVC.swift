@@ -21,15 +21,11 @@ class CarInfoVC: BaseVC {
             }
             carModelLabel.text = car.model
             millageLabel.text = "\(intMileage.formattedWithSeparator) км"
-<<<<<<< HEAD
+
             if car.last_visit == "" {
                 lastVisitLabel.text = "Визита не было"
-            } else {
-                lastVisitLabel.text = car.last_visit.getDateString()
-=======
-            if let lastVisit = car.last_visit {
-                lastVisitLabel.text = lastVisit.getDateString()
->>>>>>> 4b9dce5e61b9f9e5ea10b7be97dfabe0e3d2237c
+            } else if let lastVisit = car.last_visit, lastVisit != "" {
+                lastVisitLabel.text = lastVisit.getFormattedDate()
             }
             VINLabel.text = car.vin
             carId = car.id
@@ -353,33 +349,40 @@ extension CarInfoVC {
     
     @objc private func trashCarButtonDidTap() {
         
-        let alert = UIAlertController(title: "Внимание", message: "Вы уверены, что хотите удалить?", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Да", style: .default, handler: { action in
+        let alert = UIAlertController(title: "Вы уверены?", message: nil, preferredStyle: .actionSheet)
         
+        let deleteAction = UIAlertAction(title: "Удалить", style: .default) { action in
             guard let carid = self.carId else { return }
             guard let car = self.car else {return}
             CarAPI.editCar(carId: carid, carModelId: car.car_model_id, year: car.year, mileage: Int(car.mileage) ?? 0, number: car.number, vin: car.vin, status: CarStatus.deleted ) {  [weak self] result in
                     self?.router?.back()
 
             } failure: { [weak self] error in
-                    print(error)
+                print(error?.localizedDescription)
                 self?.router?.back()
-
             }
-
-//            CarAPI.deleteCar(carId: carid, status: .deleted, success: { [weak self] result in
-//                if result["result"] == 1 {
-//                    self?.router?.back()
-//                } else {
-//                    print(result["error"])
-//                }
-//            }) { [weak self] error in
-//                print(error)
-//            }
-            
-        }))
-        alert.addAction(UIAlertAction(title: "Нет", style: .cancel))
-        self.present(alert, animated: true, completion: nil)
+        }
         
+        let sellAction = UIAlertAction(title: "Продать", style: .default) { action in
+            guard let carid = self.carId else { return }
+            guard let car = self.car else {return}
+            CarAPI.editCar(carId: carid, carModelId: car.car_model_id, year: car.year, mileage: Int(car.mileage) ?? 0, number: car.number, vin: car.vin, lastVisit:Date() , status: CarStatus.sold ) {  [weak self] result in
+                    self?.router?.back()
+
+            } failure: { [weak self] error in
+                print(error?.localizedDescription)
+                self?.router?.back()
+            }
+        }
+        
+        let cancel = UIAlertAction(title: "Отмена", style: .cancel)
+        
+        alert.addAction(deleteAction)
+        alert.addAction(sellAction)
+        alert.addAction(cancel)
+        
+        self.present(alert, animated: true)
     }
+
 }
+

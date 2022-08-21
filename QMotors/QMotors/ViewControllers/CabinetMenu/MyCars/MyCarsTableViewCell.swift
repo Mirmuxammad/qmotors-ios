@@ -46,6 +46,15 @@ class MyCarsTableViewCell: UITableViewCell {
         return label
     }()
     
+    private let statusLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont(name: "Montserrat-SemiBold", size: 14)
+        label.textColor = .red
+        label.textAlignment = .left
+        label.text = "УДАЛЕН"
+        return label
+    }()
+    
     private let mileageTitleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Montserrat-Regular", size: 14)
@@ -97,11 +106,9 @@ class MyCarsTableViewCell: UITableViewCell {
         setupConstraints()
         
         if let carPhotos = with.user_car_photos {
-            for carPhoto in carPhotos {
-                let photoUrl = BaseAPI.baseURL + carPhoto.photo
+            let photoUrl = BaseAPI.baseURL + (carPhotos.first?.photo ?? "")
                 print(photoUrl)
                 carImageView.sd_setImage(with: URL(string: photoUrl), placeholderImage: nil)
-            }
         }
         modelLabel.text = with.model
         mileageLabel.text = with.mileage
@@ -124,6 +131,31 @@ class MyCarsTableViewCell: UITableViewCell {
         }
         carNumberView.numberTitle.text = with.number.getCarNumber()
         carNumberView.regionNumber.text = with.number.getCarRegionNumber()
+        
+        switch with.status {
+        case 0:
+            statusLabel.isHidden = true
+        case 1:
+            statusLabel.text = "ПРОДАН"
+            statusLabel.isHidden = false
+            statusLabel.textColor = UIColor.init(hex: "#9CC55A")
+        case 2:
+            statusLabel.text = "УДАЛЕН"
+            statusLabel.isHidden = false
+            statusLabel.textColor = .red
+
+        default:
+            statusLabel.isHidden = true
+        }
+//        if with.status == 0 {
+//            statusLabel.isHidden = true
+//        } else if with.status == 1 {
+//            statusLabel.text = "ПРОДАН"
+//            statusLabel.textColor = UIColor.init(hex: "#9CC55A")
+//        } else if with.status == 2 {
+//            statusLabel.text = "УДАЛЕН"
+//            statusLabel.textColor = .red
+//        }
     }
     
 }
@@ -138,6 +170,7 @@ extension MyCarsTableViewCell {
         carImageView.addSubview(carNumberView)
         
         containerView.addSubview(modelLabel)
+        containerView.addSubview(statusLabel)
         containerView.addSubview(mileageTitleLabel)
         containerView.addSubview(mileageLabel)
         containerView.addSubview(lastVisitTitleLabel)
@@ -168,6 +201,12 @@ extension MyCarsTableViewCell {
             make.top.equalToSuperview().offset(20)
             make.left.equalTo(carImageView.snp.right).offset(20)
             make.height.equalTo(14)
+        }
+        
+        statusLabel.snp.makeConstraints { make in
+            make.top.equalTo(carImageView.snp.bottom).offset(2)
+            make.height.equalTo(14)
+            make.centerX.equalTo(carImageView)
         }
         
         mileageTitleLabel.snp.makeConstraints { make in

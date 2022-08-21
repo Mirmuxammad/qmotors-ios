@@ -32,6 +32,7 @@ class CustomPhotoView: UIView {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 4
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     

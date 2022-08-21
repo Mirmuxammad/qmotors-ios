@@ -22,6 +22,7 @@ enum RequestMethod {
     case getTechCenterList
     case getMyCars
     case editCar(Int)
+    case deletePhoto(Int)
     case orderTypeList
     case order
     case orderList(Int)
@@ -52,6 +53,8 @@ enum RequestMethod {
             return "car"
         case .editCar(let id):
             return "car/\(id)"
+        case .deletePhoto(let id):
+            return "car/photo/\(id)"
         case .orderTypeList:
             return "order-type/list"
         case .order:
