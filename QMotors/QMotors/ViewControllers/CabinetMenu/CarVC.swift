@@ -504,20 +504,25 @@ class CarVC: BaseVC {
         print(#function)
         let photoView = sender.superview as! CustomPhotoView
         photoView.photo = UIImage(named: "empty-photo")!
+        
         if photoView == firstPhotoView {
             fileURLArray.remove(at: 0)
+            if(carPhotos!.count>0){
             deletePhoto(photoId: carPhotos?[0].id ?? 0)
-            carPhotos?.remove(at: 0)
+                carPhotos?.remove(at: 0)}
         } else if photoView == secondPhotoView {
             fileURLArray.remove(at: 1)
+            if(carPhotos!.count>1){
             deletePhoto(photoId: carPhotos?[1].id ?? 0)
             carPhotos?.remove(at: 1)
+            }
             
         } else if photoView == thirdPhotoView {
             fileURLArray.remove(at: 2)
             //fileLocalArray.remove(at: 2)
+            if(carPhotos!.count>2){
             deletePhoto(photoId: carPhotos?[2].id ?? 0)
-            carPhotos?.remove(at: 2)
+                carPhotos?.remove(at: 2)}
         }
         print("🔴")
         print(fileURLArray.count)
