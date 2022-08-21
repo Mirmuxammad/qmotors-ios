@@ -671,33 +671,51 @@ class CarVC: BaseVC {
     private func reloadCarPhotos() {
         print("😡")
         print(fileURLArray)
-        if fileURLArray.isEmpty {
-            firstPhotoView.photo = UIImage(named: "empty-photo")!
-            secondPhotoView.photo = UIImage(named: "empty-photo")!
-            thirdPhotoView.photo = UIImage(named: "empty-photo")!
-        } else if fileURLArray.count == 1 {
-            let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
-            firstPhotoView.photo = UIImage(data: firstPhotoData)!
-            secondPhotoView.photo = UIImage(named: "empty-photo")!
-            thirdPhotoView.photo = UIImage(named: "empty-photo")!
+        firstPhotoView.photo = UIImage(named: "empty-photo")!
+        secondPhotoView.photo = UIImage(named: "empty-photo")!
+        thirdPhotoView.photo = UIImage(named: "empty-photo")!
 
-        } else if fileURLArray.count == 2 {
-            let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
-            firstPhotoView.photo = UIImage(data: firstPhotoData)!
-            let secondPhotoData = try! Data(contentsOf: fileURLArray[1])
-            secondPhotoView.photo = UIImage(data: secondPhotoData)!
-
-            thirdPhotoView.photo = UIImage(named: "empty-photo")!
-
-        } else if fileURLArray.count >= 3 {
-            let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
-            firstPhotoView.photo = UIImage(data: firstPhotoData)!
-            let secondPhotoData = try! Data(contentsOf: fileURLArray[1])
-            secondPhotoView.photo = UIImage(data: secondPhotoData)!
-            let thirdPhotoData = try! Data(contentsOf: fileURLArray[2])
-            thirdPhotoView.photo = UIImage(data: thirdPhotoData)!
-
-        }
+        if(!fileURLArray.isEmpty){
+        for i in 0 ... fileURLArray.count-1
+        {
+            if(i == 0){firstPhotoView.removePhotoButton.isHidden = false
+                firstPhotoView.imageView.sd_setImage(with: fileURLArray[i])}
+            if(i == 1){
+                secondPhotoView.removePhotoButton.isHidden = false
+                secondPhotoView.imageView.sd_setImage(with: fileURLArray[i])}
+            if(i == 2){
+                thirdPhotoView.removePhotoButton.isHidden = false
+                thirdPhotoView.imageView.sd_setImage(with: fileURLArray[i])}
+        }}
+        
+        
+//        if fileURLArray.isEmpty {
+//            firstPhotoView.photo = UIImage(named: "empty-photo")!
+//            secondPhotoView.photo = UIImage(named: "empty-photo")!
+//            thirdPhotoView.photo = UIImage(named: "empty-photo")!
+//        } else if fileURLArray.count == 1 {
+//            let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
+//            firstPhotoView.photo = UIImage(data: firstPhotoData)!
+//            secondPhotoView.photo = UIImage(named: "empty-photo")!
+//            thirdPhotoView.photo = UIImage(named: "empty-photo")!
+//
+//        } else if fileURLArray.count == 2 {
+//            let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
+//            firstPhotoView.photo = UIImage(data: firstPhotoData)!
+//            let secondPhotoData = try! Data(contentsOf: fileURLArray[1])
+//            secondPhotoView.photo = UIImage(data: secondPhotoData)!
+//
+//            thirdPhotoView.photo = UIImage(named: "empty-photo")!
+//
+//        } else if fileURLArray.count >= 3 {
+//            let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
+//            firstPhotoView.photo = UIImage(data: firstPhotoData)!
+//            let secondPhotoData = try! Data(contentsOf: fileURLArray[1])
+//            secondPhotoView.photo = UIImage(data: secondPhotoData)!
+//            let thirdPhotoData = try! Data(contentsOf: fileURLArray[2])
+//            thirdPhotoView.photo = UIImage(data: thirdPhotoData)!
+//
+//        }
 
     }
 
