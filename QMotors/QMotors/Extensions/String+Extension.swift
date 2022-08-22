@@ -29,6 +29,7 @@ extension String {
         
         return result
     }
+    
     func getDateString() -> String? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -75,5 +76,16 @@ extension String {
         let millage = NSNumber(pointer: self)
         let formatMillage = formatter.string(from: millage) ?? ""
         return formatMillage
+    }
+    
+    func getStringDate() -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let newDate = dateFormatter.date(from: self)
+        if let date = newDate {
+            return date
+        } else {
+            return Date()
+        }
     }
 }

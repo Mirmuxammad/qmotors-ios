@@ -13,7 +13,7 @@ class AddReminderVC: BaseVC {
     
     
     private var myCars = [MyCarModel]()
-    private var reminder = NewReminder()
+    var reminder = NewReminder()
 
     // MARK: - UI Elements
     private let logoImageView: UIImageView = {
@@ -219,7 +219,7 @@ class AddReminderVC: BaseVC {
         dg.enter()
         CarAPI.getMyCars { [weak self] jsonData in
             guard let self = self else { return }
-            self.myCars = jsonData.filter { $0.status == 0 }
+            self.myCars = jsonData
             dg.leave()
         } failure: { error in
             let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
@@ -245,7 +245,7 @@ class AddReminderVC: BaseVC {
     
     @objc private func setDate(picker: UIDatePicker) {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let dateString = dateFormatter.string(from: picker.date)
         reminder.date = dateString
     }
@@ -273,9 +273,8 @@ class AddReminderVC: BaseVC {
         }
     }
     
-    
     @objc private func myRaminderButtonTapped() {
-        print("myRaminderButtonTapped")
+        router?.pushMyRemindersVC(cars: myCars)
     }
 
 }
