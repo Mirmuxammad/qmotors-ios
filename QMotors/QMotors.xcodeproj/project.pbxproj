@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		4006222028A3CC2200E55C04 /* CarInfoNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006221F28A3CC2200E55C04 /* CarInfoNumberView.swift */; };
+		4013070E28B2453D00A8F662 /* AddReminderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4013070D28B2453D00A8F662 /* AddReminderVC.swift */; };
+		4013071028B2465600A8F662 /* NewReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4013070F28B2465600A8F662 /* NewReminder.swift */; };
+		4013071228B246D500A8F662 /* ReminderAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4013071128B246D500A8F662 /* ReminderAPI.swift */; };
+		4013071428B3473C00A8F662 /* MyRemindersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4013071328B3473C00A8F662 /* MyRemindersVC.swift */; };
 		401C746428A1431600CA5DAD /* CarInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C746328A1431600CA5DAD /* CarInfoVC.swift */; };
 		4049212828A177AB00257750 /* CarResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4049212728A177AB00257750 /* CarResponse.swift */; };
 		405E643C28AA772100A07FEC /* GenderSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405E643B28AA772100A07FEC /* GenderSwitch.swift */; };
@@ -118,6 +122,10 @@
 		297813ADA6CD9EA7AE640A7E /* Pods-QMotors.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMotors.release.xcconfig"; path = "Target Support Files/Pods-QMotors/Pods-QMotors.release.xcconfig"; sourceTree = "<group>"; };
 		4006221B28A273B000E55C04 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		4006221F28A3CC2200E55C04 /* CarInfoNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarInfoNumberView.swift; sourceTree = "<group>"; };
+		4013070D28B2453D00A8F662 /* AddReminderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderVC.swift; sourceTree = "<group>"; };
+		4013070F28B2465600A8F662 /* NewReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewReminder.swift; sourceTree = "<group>"; };
+		4013071128B246D500A8F662 /* ReminderAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderAPI.swift; sourceTree = "<group>"; };
+		4013071328B3473C00A8F662 /* MyRemindersVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRemindersVC.swift; sourceTree = "<group>"; };
 		401C746328A1431600CA5DAD /* CarInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarInfoVC.swift; sourceTree = "<group>"; };
 		4049212728A177AB00257750 /* CarResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarResponse.swift; sourceTree = "<group>"; };
 		405E643B28AA772100A07FEC /* GenderSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderSwitch.swift; sourceTree = "<group>"; };
@@ -245,6 +253,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4013070A28B244FD00A8F662 /* Reminder */ = {
+			isa = PBXGroup;
+			children = (
+				4013070D28B2453D00A8F662 /* AddReminderVC.swift */,
+				4013071328B3473C00A8F662 /* MyRemindersVC.swift */,
+			);
+			path = Reminder;
+			sourceTree = "<group>";
+		};
 		7EA2EB5B28A5067900C70910 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -290,6 +307,7 @@
 				E02E316B28A2BFAD0067CEAB /* NewOrder.swift */,
 				84B2411428AD84A0000A6396 /* MyCarOrder.swift */,
 				E02E318128A522BD0067CEAB /* CarOrderResponce.swift */,
+				4013070F28B2465600A8F662 /* NewReminder.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -305,6 +323,7 @@
 				84ACAF3728927D170012508C /* ProfileAPI.swift */,
 				84ACAF3828927D170012508C /* RequestInterceptor.swift */,
 				84AC3B99289B0F7800353231 /* TechCenterAPI.swift */,
+				4013071128B246D500A8F662 /* ReminderAPI.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -414,6 +433,7 @@
 		84DDD28B287ED57B00272C19 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				4013070A28B244FD00A8F662 /* Reminder */,
 				E02E316D28A3C9160067CEAB /* HistoryOrders */,
 				F371A61C289FBD810090472A /* Maintenance */,
 				84ACAF48289284EE0012508C /* TechnicalCenter */,
@@ -732,8 +752,11 @@
 				405E643C28AA772100A07FEC /* GenderSwitch.swift in Sources */,
 				84ACAF4128927D170012508C /* LoginAPI.swift in Sources */,
 				84D94F5B2885AD4A0023AA02 /* ActionButton.swift in Sources */,
+				4013070E28B2453D00A8F662 /* AddReminderVC.swift in Sources */,
+				4013071428B3473C00A8F662 /* MyRemindersVC.swift in Sources */,
 				E02E317B28A514530067CEAB /* OrderForCarTableViewCell.swift in Sources */,
 				7EA2EB5F28A5067900C70910 /* BirthdayPicker.swift in Sources */,
+				4013071228B246D500A8F662 /* ReminderAPI.swift in Sources */,
 				84ACAF502892C6C70012508C /* TechCellSingUpButton.swift in Sources */,
 				E02E318228A522BD0067CEAB /* CarOrderResponce.swift in Sources */,
 				84ACAF352891857F0012508C /* UIViewController+Extension.swift in Sources */,
@@ -768,6 +791,7 @@
 				84ACAF3F28927D170012508C /* BaseAPI.swift in Sources */,
 				84AE273B288BEE75000870D4 /* UISegmentedControl+Extension.swift in Sources */,
 				84AC3B98289B007900353231 /* TechnicalCenter.swift in Sources */,
+				4013071028B2465600A8F662 /* NewReminder.swift in Sources */,
 				84AE273D288BF10E000870D4 /* MyCarsTableViewCell.swift in Sources */,
 				84ACAF4728927DEB0012508C /* CarMarkResponse.swift in Sources */,
 				84A4AB692889C51700B657F1 /* CabinetVC.swift in Sources */,

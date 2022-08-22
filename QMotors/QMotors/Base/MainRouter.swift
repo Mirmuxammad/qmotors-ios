@@ -68,6 +68,11 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
+    func pushAddReminderVC() {
+        let vc = AddReminderVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
     //CabinetMenu
     func pushMyCarsVC() {
         let vc = MyCarsVC()

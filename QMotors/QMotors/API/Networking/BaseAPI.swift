@@ -26,6 +26,7 @@ enum RequestMethod {
     case orderTypeList
     case order
     case orderList(Int)
+    case reminder
     
     var path: String {
         switch self {
@@ -61,6 +62,8 @@ enum RequestMethod {
             return "order"
         case .orderList(let id):
             return "order/history?user_car_id=\(id)"
+        case .reminder:
+            return "reminder"
         }
     }
 }

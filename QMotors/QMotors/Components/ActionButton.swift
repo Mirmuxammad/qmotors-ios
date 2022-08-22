@@ -36,6 +36,7 @@ class ActionButton: UIView {
         layer.cornerRadius = 5
         layer.backgroundColor = UIColor.init(hex: "#D4D4D4").cgColor
         
+        
         setupViews()
         setupConstraints()
     }
@@ -76,6 +77,15 @@ class ActionButton: UIView {
     func isDisabled() {
         layer.backgroundColor = UIColor.init(hex: "#D4D4D4").cgColor
         button.isEnabled = false
+    }
+    
+    func setupRemindersButton() {
+        layer.backgroundColor = UIColor.init(hex: "#FFFFFF").cgColor
+        titleLabel.textColor = .black
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.init(hex: "#000000").cgColor
+        button.layer.cornerRadius = 5
+        button.isEnabled = true
     }
     
     func setupTitle(title: String) {
