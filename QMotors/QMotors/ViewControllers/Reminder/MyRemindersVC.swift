@@ -14,6 +14,7 @@ class MyRemindersVC: BaseVC {
     
     var myCars = [MyCarModel]()
     var reminders = [Reminder]()
+    var reminder: Reminder?
     var car: MyCarModel?
     
     // MARK: - UI Elements
@@ -50,6 +51,7 @@ class MyRemindersVC: BaseVC {
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
         tableView.register(MyRamindersTableViewCell.self, forCellReuseIdentifier: MyRamindersTableViewCell.identifier)
+        tableView.register(MyLastRemindersTableViewCell.self, forCellReuseIdentifier: MyLastRemindersTableViewCell.identifier)
         return tableView
     }()
     
@@ -131,11 +133,20 @@ class MyRemindersVC: BaseVC {
     }
     
     
-    private func showRegisterAlert() {
+    private func showDeleteAlert(index: Int) {
         let alert = UIAlertController(title: "Удалит", message: "Вы уверены что хотите удалить напоминание?", preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "Да", style: .default) { _ in
-            self.deleteReminder()
+        let okAction = UIAlertAction(title: "Удалить", style: .default) { _ in
+            
+            guard let reminder = self.reminders[index].user_car_id else { return }
+            
+            ReminderAPI.deleteReminders(reminderId: reminder) { [weak self] result in
+                self?.tableView.reloadData()
+            } failure: { erron in
+                print(erron)
+            }
+
+            
             self.tableView.reloadData()
         }
         
@@ -175,31 +186,6 @@ class MyRemindersVC: BaseVC {
         }
     }
     
-//    // MARK: - Load Cars
-//
-//    private func loadMyCar(dg: DispatchGroup) {
-//        dg.enter()
-//        CarAPI.getMyCars { [weak self] jsonData in
-//            guard let self = self else { return }
-//            self.myCars = jsonData
-//            dg.leave()
-//            self.dismissLoadingIndicator()
-//        } failure: { error in
-//            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-//            }))
-//            self.present(alert, animated: true, completion: nil)
-//
-//            dg.leave()
-//        }
-//    }
-
-    // MARK: - Delete Raminder
-    
-    private func deleteReminder() {
-        
-    }
-    
     // MARK: - Private actions
     
     @objc private func backButtonDidTap() {
@@ -207,12 +193,12 @@ class MyRemindersVC: BaseVC {
         router?.back()
     }
     
-    @objc private func deleteDidTap() {
-        
+    @objc private func deleteDidTap(_ sender: UIButton) {
+        showDeleteAlert(index: sender.tag)
     }
     
-    @objc private func editDidTap() {
-        
+    @objc private func editDidTap(_ sender: UIButton) {
+        router?.pushEditReminderVC(reminder: NewReminder(user_car_id: reminders[sender.tag].user_car_id, date: reminders[sender.tag].date, text: reminders[sender.tag].text))
     }
 }
 
@@ -224,9 +210,6 @@ extension MyRemindersVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard
-            let cell = tableView.dequeueReusableCell(withIdentifier: MyRamindersTableViewCell.identifier, for: indexPath) as? MyRamindersTableViewCell
-        else { return UITableViewCell() }
         
         for i in myCars {
             if i.id == reminders[indexPath.row].user_car_id {
@@ -240,17 +223,21 @@ extension MyRemindersVC: UITableViewDataSource {
         
         if let date = reminders[indexPath.row].date?.getStringDate() {
             if date >= Date() {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: MyRamindersTableViewCell.identifier, for: indexPath) as? MyRamindersTableViewCell
+                else { return UITableViewCell() }
+                cell.delegate = self
                 cell.setupCell(reminder: reminders[indexPath.row], car: car!)
             } else {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: MyLastRemindersTableViewCell.identifier, for: indexPath) as? MyLastRemindersTableViewCell
+                else { return UITableViewCell() }
                 cell.setupLastCells(reminder: reminders[indexPath.row], car: car!)
+                cell.deleteReminder(target: self, action: #selector(deleteDidTap(_:)), index: indexPath.row)
             }
+            
         }
-        cell.deleteReminder(target: self, action: #selector(deleteDidTap), index: indexPath.row)
-        cell.editRiminder(target: self, action: #selector(editDidTap), index: indexPath.row)
-        
-        return cell
+        return UITableViewCell()
     }
-    
+        
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if let date = reminders[indexPath.row].date?.getStringDate() {
             if date >= Date() {
@@ -269,5 +256,14 @@ extension MyRemindersVC: UITableViewDataSource {
 extension MyRemindersVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("didSelectRowAt - \(indexPath.row)")
+    }
+}
+extension MyRemindersVC: getNumber {
+    func editReminder(reminder: Reminder) {
+        router?.pushEditReminderVC(reminder: NewReminder(user_car_id: reminder.user_car_id, date: reminder.date, text: reminder.text))
+    }
+    
+    func deleteReminder(index: Int) {
+        showDeleteAlert(index: index)
     }
 }

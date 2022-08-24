@@ -76,6 +76,7 @@ class MainRouter: NSObject {
     func pushEditReminderVC(reminder: NewReminder) {
         let vc = AddReminderVC()
         vc.reminder = reminder
+        vc.openEditVC = true
         pushViewController(vc: vc, animated: true)
     }
     

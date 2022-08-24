@@ -1,23 +1,16 @@
 //
-//  MyRamindersTableViewCell.swift
+//  MyLastRemindersTableViewCell.swift
 //  QMotors
 //
-//  Created by MIrmuxammad on 22/08/22.
+//  Created by MIrmuxammad on 24/08/22.
 //
 
 import UIKit
 
-protocol getNumber {
-    func editReminder(reminder: Reminder)
-    func deleteReminder(index: Int)
-}
-
-class MyRamindersTableViewCell: UITableViewCell {
+class MyLastRemindersTableViewCell: UITableViewCell {
 
     
-    static let identifier = "MyRamindersTableViewCell"
-    var reminder: Reminder?
-    var delegate: getNumber?
+    static let identifier = "MyLastRemindersTableViewCell"
     
     // MARK: - UI Elements
 
@@ -64,17 +57,8 @@ class MyRamindersTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let deleteButton: ReminderCellButton = {
-        let button = ReminderCellButton()
-        button.setupAction(target: self, action: #selector(deleteButtonDidTap))
-        return button
-    }()
+    private let deleteButton = ReminderCellButton()
     
-    private let editButton: ReminderCellEditButton = {
-        let button = ReminderCellEditButton()
-        button.setupAction(target: self, action: #selector(editButtonDidTap))
-        return button
-    }()
     
     
     // MARK: - Initializers
@@ -100,7 +84,6 @@ class MyRamindersTableViewCell: UITableViewCell {
         containerView.addSubview(reminderTextLabel)
         containerView.addSubview(reminderTextLabel)
         containerView.addSubview(deleteButton)
-        containerView.addSubview(editButton)
         
     }
     
@@ -138,14 +121,9 @@ class MyRamindersTableViewCell: UITableViewCell {
             make.bottom.equalToSuperview().offset(-16)
         }
         
-        editButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().offset(-24)
-            make.size.equalTo(CGSize(width: 25, height: 25))
-            make.top.equalToSuperview().offset(25)
-        }
         
         deleteButton.snp.makeConstraints { make in
-            make.right.equalTo(editButton.snp.left).offset(-16)
+            make.right.equalToSuperview().offset(-16)
             make.size.equalTo(CGSize(width: 25, height: 25))
             make.top.equalToSuperview().offset(25)
         }
@@ -155,23 +133,16 @@ class MyRamindersTableViewCell: UITableViewCell {
     
     // MARK: - Private actions
     
-    @objc private func deleteButtonDidTap() {
-        delegate?.deleteReminder(index: (reminder?.user_car_id!)!)
-    }
-    
-    @objc private func editButtonDidTap() {
-        delegate?.editReminder(reminder: reminder!)
-    }
     
         
     // MARK: - Public functions
     
     func setupCell(reminder: Reminder, car: MyCarModel) {
-        self.reminder = reminder
         titleLabel.text = car.model
         if let date = reminder.date {
             dateLabel.text = "Напомнит \(date)"
         }
+        
         reminderTextLabel.text = reminder.text
     }
     
@@ -180,6 +151,11 @@ class MyRamindersTableViewCell: UITableViewCell {
         titleLabel.text = car.model
         dateLabel.isHidden = true
         reminderTextLabel.text = reminder.text
+    }
+    
+    func deleteReminder(target: Any, action: Selector, index: Int) {
+        deleteButton.tag = index
+        deleteButton.setupAction(target: target, action: action)
     }
     
 }

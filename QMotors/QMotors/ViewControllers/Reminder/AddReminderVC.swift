@@ -14,6 +14,9 @@ class AddReminderVC: BaseVC {
     
     private var myCars = [MyCarModel]()
     var reminder = NewReminder()
+    var openEditVC = false
+    
+    
 
     // MARK: - UI Elements
     private let logoImageView: UIImageView = {
@@ -133,7 +136,6 @@ class AddReminderVC: BaseVC {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         infoField.delegate = self
     
         datePicker.addTarget(self, action: #selector(setDate(picker:)), for: .valueChanged)
@@ -183,6 +185,7 @@ class AddReminderVC: BaseVC {
     
     // MARK: - Private actions
     private func setDropDowns() {
+        
         userCarDropDown.dataSource = myCars.map({ i in
             i.mark + " " + i.model + " " + i.number
         })
@@ -202,6 +205,7 @@ class AddReminderVC: BaseVC {
             self?.carModelChevronButton.transform = .identity
             
         }
+        
     }
    
     
@@ -215,11 +219,24 @@ class AddReminderVC: BaseVC {
         updateTableViews(dg: dg)
     }
     
+    private func getInfoEdit() {
+        myCars.map { i in
+            if i.id == reminder.user_car_id {
+                userCarField.text = i.model
+                datePicker.date = (reminder.date?.getStringDate())!
+                infoField.text = reminder.text
+            }
+        }
+    }
+    
     private func loadMyCar(dg: DispatchGroup) {
         dg.enter()
         CarAPI.getMyCars { [weak self] jsonData in
             guard let self = self else { return }
             self.myCars = jsonData
+            if self.openEditVC == true {
+                self.getInfoEdit()
+            }
             dg.leave()
         } failure: { error in
             let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)

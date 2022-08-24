@@ -52,4 +52,21 @@ final class ReminderAPI {
         }
     }
     
+    static func deleteReminders(reminderId: Int, success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError) {
+        let params: Parameters = [:]
+        
+        BaseAPI.authorizedDeleteRequest(reqMethod: .deleteReminder(reminderId), parameters: params, success: { data in
+            guard let data = data else { return }
+            let jsonData = JSON(data)
+            let errors = jsonData["errors"]
+            if errors.type == .null {
+                success(jsonData["result"])
+            } else {
+                failure(NetworkError(.other(errors.stringValue)))
+            }
+        }) { error in
+            failure(error)
+        }
+    }
+    
 }
