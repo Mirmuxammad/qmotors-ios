@@ -7,10 +7,16 @@
 
 import UIKit
 
+protocol DeleteReminder {
+    func getDeleteId(index: Int)
+}
+
 class MyLastRemindersTableViewCell: UITableViewCell {
 
     
     static let identifier = "MyLastRemindersTableViewCell"
+    var reminder: Reminder?
+    var delegate: DeleteReminder?
     
     // MARK: - UI Elements
 
@@ -57,7 +63,11 @@ class MyLastRemindersTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let deleteButton = ReminderCellButton()
+    private let deleteButton: ReminderCellButton = {
+        let button = ReminderCellButton()
+        button.setupAction(target: self, action: #selector(deleteButtonDidTap))
+        return button
+    }()
     
     
     
@@ -133,29 +143,31 @@ class MyLastRemindersTableViewCell: UITableViewCell {
     
     // MARK: - Private actions
     
+    @objc private func deleteButtonDidTap() {
+        print("♥️")
+        guard let id = reminder?.id else { return }
+        delegate?.getDeleteId(index: id)
+        print(id)
+    }
     
         
     // MARK: - Public functions
     
     func setupCell(reminder: Reminder, car: MyCarModel) {
+        self.reminder = reminder
         titleLabel.text = car.model
         if let date = reminder.date {
             dateLabel.text = "Напомнит \(date)"
         }
-        
         reminderTextLabel.text = reminder.text
     }
     
     func setupLastCells(reminder: Reminder, car: MyCarModel) {
+        self.reminder = reminder
         containerView.backgroundColor = UIColor.init(hex: "#5A80C0")
         titleLabel.text = car.model
         dateLabel.isHidden = true
         reminderTextLabel.text = reminder.text
-    }
-    
-    func deleteReminder(target: Any, action: Selector, index: Int) {
-        deleteButton.tag = index
-        deleteButton.setupAction(target: target, action: action)
     }
     
 }

@@ -9,9 +9,6 @@ import UIKit
 import SnapKit
 import DropDown
 
-protocol ReloadData {
-    func reloadTableView()
-}
 
 class AddReminderVC: BaseVC {
     
@@ -19,7 +16,6 @@ class AddReminderVC: BaseVC {
     private var myCars = [MyCarModel]()
     var reminder = NewReminder()
     var openEditVC = false
-    var delegate: ReloadData?
     
 
     // MARK: - UI Elements
@@ -61,7 +57,7 @@ class AddReminderVC: BaseVC {
     
     private let sendReminderButton: ActionButton = {
         let button = ActionButton()
-        button.setupTitle(title: "Создать напоминание")
+        button.setupTitle(title: "СОЗДАТЬ НАПОМИНАНИЕ")
         button.setupButton(target: self, action: #selector(addSendButtonTapped))
         button.isEnabled()
         return button
@@ -71,14 +67,14 @@ class AddReminderVC: BaseVC {
         let button = ActionButton()
         button.setupButton(target: self, action: #selector(myRaminderButtonTapped))
         button.setupRemindersButton()
-        button.setupTitle(title: "список всех напоминаний")
+        button.setupTitle(title: "СПИСОК ВСЕХ НАПОМИНАНИЙ")
         return button
     }()
     
     //MARK: - Labels
     private let headingLabel: UILabel = {
         let label = UILabel()
-        label.text = "Записаться"
+        label.text = "Напоминание"
         label.font = UIFont(name: Const.fontSemi, size: 22)
         label.textColor = .black
         label.textAlignment = .left
@@ -91,7 +87,7 @@ class AddReminderVC: BaseVC {
     }()
     
     private let timeMarkLabel: CustomLabel = {
-        let label = CustomLabel(text: "Укажите дату и время", fontWeight: .medium)
+        let label = CustomLabel(text: "Укажите дату и время напоминания", fontWeight: .medium)
         return label
     }()
     
@@ -217,13 +213,12 @@ class AddReminderVC: BaseVC {
     
     
     private func loadInfo() {
-        print("🦊")
         self.showLoadingIndicator()
         let dg = DispatchGroup()
         loadMyCar(dg: dg)
         updateTableViews(dg: dg)
         if openEditVC == true {
-            sendReminderButton.setupTitle(title: "Редактировать")
+            sendReminderButton.setupTitle(title: "РЕДАКТИРОВАТЬ")
         }
     }
     
@@ -284,14 +279,12 @@ class AddReminderVC: BaseVC {
         self.showLoadingIndicator()
         
         if openEditVC == true {
-            print("♥️")
-            print(reminder)
             guard let id = reminder.id else { return }
             ReminderAPI.editReminder(reminderId: id, reminder: reminder) { json in
                 self.dismissLoadingIndicator()
                 DispatchQueue.main.async {
-                    self.delegate?.reloadTableView()
-                    self.router?.back()
+                    NotificationCenter.default.post(name: Notification.Name("reload"), object: nil)
+                    self.router?.pushCabinetVC()
                 }
             } failure: { error in
                 let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
@@ -301,7 +294,7 @@ class AddReminderVC: BaseVC {
                 self.dismissLoadingIndicator()
                 self.present(alert, animated: true, completion: nil)
             }
-
+            
         } else if openEditVC == false {
             ReminderAPI.addNewReminder(reminder: reminder) { json in
                 print(json)
@@ -319,7 +312,6 @@ class AddReminderVC: BaseVC {
             }
         }
         openEditVC = false
-        
     }
     
     @objc private func myRaminderButtonTapped() {

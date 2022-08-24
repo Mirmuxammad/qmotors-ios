@@ -65,7 +65,6 @@ class MyRemindersVC: BaseVC {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -75,6 +74,7 @@ class MyRemindersVC: BaseVC {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        addObserver()
         loadInfo()
     }
     
@@ -146,13 +146,12 @@ class MyRemindersVC: BaseVC {
             guard let index = self.reminder?.id else { return }
             ReminderAPI.deleteReminders(reminderId: index) { [weak self] result in
                 self?.router?.back()
-                self?.loadInfo()
+                
             } failure: { erron in
                 print(erron)
             }
 
-            
-            self.tableView.reloadData()
+            self.loadInfo()
         }
         
         let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
@@ -198,6 +197,13 @@ class MyRemindersVC: BaseVC {
         print("backButtonDidTap")
         router?.back()
     }
+    
+    @objc func reloadButton(notification: NSNotification){
+        print("🎁")
+        reminders = []
+        loadInfo()
+        tableView.reloadData()
+    }
 
 }
 
@@ -229,9 +235,9 @@ extension MyRemindersVC: UITableViewDataSource {
             } else {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: MyLastRemindersTableViewCell.identifier, for: indexPath) as? MyLastRemindersTableViewCell
                 else { return UITableViewCell() }
+                cell.delegate = self
                 cell.setupLastCells(reminder: reminders[indexPath.row], car: car!)
             }
-            
         }
         return UITableViewCell()
     }
@@ -256,20 +262,21 @@ extension MyRemindersVC: UITableViewDelegate {
         print("didSelectRowAt - \(indexPath.row)")
     }
 }
-extension MyRemindersVC: getNumber {
+//MARK: -Reminder Protocols -
+extension MyRemindersVC: getNumber, DeleteReminder {
     func editReminder(reminder: NewReminder) {
-        let vc = AddReminderVC()
-        vc.delegate = self
         router?.pushEditReminderVC(reminder: reminder)
-        
     }
-    
     func deleteReminder(index: Int) {
         showDeleteAlert(index: index)
     }
-}
-extension MyRemindersVC: ReloadData {
-    func reloadTableView() {
-        loadInfo()
+    func getDeleteId(index: Int) {
+        showDeleteAlert(index: index)
     }
 }
+extension MyRemindersVC {
+    func addObserver(){
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadButton(notification: )), name: Notification.Name("reload"), object: nil)
+    }
+}
+
