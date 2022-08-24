@@ -9,13 +9,17 @@ import UIKit
 import SnapKit
 import DropDown
 
+protocol ReloadData {
+    func reloadTableView()
+}
+
 class AddReminderVC: BaseVC {
     
     
     private var myCars = [MyCarModel]()
     var reminder = NewReminder()
     var openEditVC = false
-    
+    var delegate: ReloadData?
     
 
     // MARK: - UI Elements
@@ -213,10 +217,14 @@ class AddReminderVC: BaseVC {
     
     
     private func loadInfo() {
+        print("🦊")
         self.showLoadingIndicator()
         let dg = DispatchGroup()
         loadMyCar(dg: dg)
         updateTableViews(dg: dg)
+        if openEditVC == true {
+            sendReminderButton.setupTitle(title: "Редактировать")
+        }
     }
     
     private func getInfoEdit() {
@@ -274,20 +282,44 @@ class AddReminderVC: BaseVC {
     
     @objc private func addSendButtonTapped() {
         self.showLoadingIndicator()
-        ReminderAPI.addNewReminder(reminder: reminder) { json in
-            print(json)
-            self.dismissLoadingIndicator()
-            DispatchQueue.main.async {
-                self.router?.back()
+        
+        if openEditVC == true {
+            print("♥️")
+            print(reminder)
+            guard let id = reminder.id else { return }
+            ReminderAPI.editReminder(reminderId: id, reminder: reminder) { json in
+                self.dismissLoadingIndicator()
+                DispatchQueue.main.async {
+                    self.delegate?.reloadTableView()
+                    self.router?.back()
+                }
+            } failure: { error in
+                let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                
+                }))
+                self.dismissLoadingIndicator()
+                self.present(alert, animated: true, completion: nil)
             }
-        } failure: { error in
-            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-            
-            }))
-            self.dismissLoadingIndicator()
-            self.present(alert, animated: true, completion: nil)
+
+        } else if openEditVC == false {
+            ReminderAPI.addNewReminder(reminder: reminder) { json in
+                print(json)
+                self.dismissLoadingIndicator()
+                DispatchQueue.main.async {
+                    self.router?.back()
+                }
+            } failure: { error in
+                let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                
+                }))
+                self.dismissLoadingIndicator()
+                self.present(alert, animated: true, completion: nil)
+            }
         }
+        openEditVC = false
+        
     }
     
     @objc private func myRaminderButtonTapped() {

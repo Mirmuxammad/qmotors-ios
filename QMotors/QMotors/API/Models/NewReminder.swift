@@ -8,6 +8,7 @@
 import Foundation
 
 struct NewReminder {
+    var id: Int?
     var user_car_id: Int?
     var date: String?
     var text: String?

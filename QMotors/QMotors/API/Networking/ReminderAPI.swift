@@ -41,7 +41,7 @@ final class ReminderAPI {
             if errors.type == .null {
                 var reminders = [Reminder]()
                 for reminder in jsonData["result"].arrayValue {
-                    reminders.append(Reminder(user_car_id: reminder["user_car_id"].intValue, date: reminder["date"].stringValue, text: reminder["text"].stringValue))
+                    reminders.append(Reminder(id: reminder["id"].intValue, user_car_id: reminder["user_car_id"].intValue, date: reminder["date"].stringValue, text: reminder["text"].stringValue))
                 }
                 success(reminders)
             } else {
@@ -61,6 +61,26 @@ final class ReminderAPI {
             let errors = jsonData["errors"]
             if errors.type == .null {
                 success(jsonData["result"])
+            } else {
+                failure(NetworkError(.other(errors.stringValue)))
+            }
+        }) { error in
+            failure(error)
+        }
+    }
+    
+    static func editReminder(reminderId: Int, reminder: NewReminder, success: @escaping (String) -> Void, failure: @escaping escapeNetworkError) {
+        let params: Parameters = ["user_car_id": reminder.user_car_id,
+                                  "date": reminder.date,
+                                  "text": reminder.text]
+        
+        BaseAPI.authorizedPutRequest(reqMethod: .editReminder(reminderId), parameters: params, success: { data in
+            guard let data = data else { return }
+            let jsonData = JSON(data)
+            let errors = jsonData["errors"]
+            if errors.type == .null {
+                print(jsonData["result"])
+                success("ordertypes")
             } else {
                 failure(NetworkError(.other(errors.stringValue)))
             }

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol getNumber {
-    func editReminder(reminder: Reminder)
+    func editReminder(reminder: NewReminder)
     func deleteReminder(index: Int)
 }
 
@@ -156,11 +156,12 @@ class MyRamindersTableViewCell: UITableViewCell {
     // MARK: - Private actions
     
     @objc private func deleteButtonDidTap() {
-        delegate?.deleteReminder(index: (reminder?.user_car_id!)!)
+        guard let id = reminder?.id else { return }
+        delegate?.deleteReminder(index: id)
     }
     
     @objc private func editButtonDidTap() {
-        delegate?.editReminder(reminder: reminder!)
+        delegate?.editReminder(reminder: NewReminder(id: reminder?.id, user_car_id: reminder?.user_car_id, date: reminder?.date, text: reminder?.text))
     }
     
         
