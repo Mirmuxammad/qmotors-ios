@@ -99,6 +99,11 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
+    func pushBonusVC() {
+        let vc = BonusVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
     func pushTechnicalRecordVC() {
         let vc = TechnicalRecordVC()
         pushViewController(vc: vc, animated: true)

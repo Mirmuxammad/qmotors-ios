@@ -140,6 +140,7 @@ class MainVC: BaseVC {
     
     @objc private func bonusButtonDidTap() {
         print("bonusButtonDidTap")
+        router?.pushBonusVC()
     }
     
     @objc private func technicalСenterButtonDidTap() {

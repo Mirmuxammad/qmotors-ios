@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0470BCDB28B77C2400418BAB /* BonusVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCDA28B77C2400418BAB /* BonusVC.swift */; };
+		0470BCDE28B786E800418BAB /* BonusAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCDD28B786E800418BAB /* BonusAPI.swift */; };
+		0470BCE028B7914200418BAB /* BonusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCDF28B7914200418BAB /* BonusResponse.swift */; };
+		0470BCE228B79C6D00418BAB /* MainBonusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCE128B79C6D00418BAB /* MainBonusTableViewCell.swift */; };
 		4006222028A3CC2200E55C04 /* CarInfoNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006221F28A3CC2200E55C04 /* CarInfoNumberView.swift */; };
 		401C746428A1431600CA5DAD /* CarInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C746328A1431600CA5DAD /* CarInfoVC.swift */; };
 		4049212828A177AB00257750 /* CarResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4049212728A177AB00257750 /* CarResponse.swift */; };
@@ -114,6 +118,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0470BCDA28B77C2400418BAB /* BonusVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonusVC.swift; sourceTree = "<group>"; };
+		0470BCDD28B786E800418BAB /* BonusAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonusAPI.swift; sourceTree = "<group>"; };
+		0470BCDF28B7914200418BAB /* BonusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonusResponse.swift; sourceTree = "<group>"; };
+		0470BCE128B79C6D00418BAB /* MainBonusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBonusTableViewCell.swift; sourceTree = "<group>"; };
 		25EE654A6181C6218A5559D4 /* Pods-QMotors.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMotors.debug.xcconfig"; path = "Target Support Files/Pods-QMotors/Pods-QMotors.debug.xcconfig"; sourceTree = "<group>"; };
 		297813ADA6CD9EA7AE640A7E /* Pods-QMotors.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMotors.release.xcconfig"; path = "Target Support Files/Pods-QMotors/Pods-QMotors.release.xcconfig"; sourceTree = "<group>"; };
 		4006221B28A273B000E55C04 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
@@ -237,6 +245,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0470BCDC28B77C3700418BAB /* Bonus */ = {
+			isa = PBXGroup;
+			children = (
+				0470BCDA28B77C2400418BAB /* BonusVC.swift */,
+				0470BCE128B79C6D00418BAB /* MainBonusTableViewCell.swift */,
+			);
+			path = Bonus;
+			sourceTree = "<group>";
+		};
 		24D20F9C877B5AE98B9D36AB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -286,6 +303,7 @@
 				84AC3B97289B007900353231 /* TechnicalCenter.swift */,
 				F34B850E28A01410006334FD /* UserAutos.swift */,
 				4049212728A177AB00257750 /* CarResponse.swift */,
+				0470BCDF28B7914200418BAB /* BonusResponse.swift */,
 				E02E316928A2BCA30067CEAB /* OrderTypeResponce.swift */,
 				E02E316B28A2BFAD0067CEAB /* NewOrder.swift */,
 				84B2411428AD84A0000A6396 /* MyCarOrder.swift */,
@@ -305,6 +323,7 @@
 				84ACAF3728927D170012508C /* ProfileAPI.swift */,
 				84ACAF3828927D170012508C /* RequestInterceptor.swift */,
 				84AC3B99289B0F7800353231 /* TechCenterAPI.swift */,
+				0470BCDD28B786E800418BAB /* BonusAPI.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -418,6 +437,7 @@
 				F371A61C289FBD810090472A /* Maintenance */,
 				84ACAF48289284EE0012508C /* TechnicalCenter */,
 				84D94F55288557600023AA02 /* Authentication */,
+				0470BCDC28B77C3700418BAB /* Bonus */,
 				84DDD2BC287F390200272C19 /* SideLeftMenu */,
 				84DDD28E287EF04700272C19 /* BaseVC.swift */,
 				84D94F5828855F0D0023AA02 /* MainVC.swift */,
@@ -744,6 +764,7 @@
 				84AFF8292887DBD0009207BD /* CustomError.swift in Sources */,
 				84ACAF3E28927D170012508C /* RequestInterceptor.swift in Sources */,
 				84AC3B96289AAE5300353231 /* String+Extension.swift in Sources */,
+				0470BCDB28B77C2400418BAB /* BonusVC.swift in Sources */,
 				401C746428A1431600CA5DAD /* CarInfoVC.swift in Sources */,
 				8456BA6B28815AF200684AF5 /* PhoneCallView.swift in Sources */,
 				84A4AB6B2889CCB900B657F1 /* LogoutButton.swift in Sources */,
@@ -770,6 +791,7 @@
 				84AC3B98289B007900353231 /* TechnicalCenter.swift in Sources */,
 				84AE273D288BF10E000870D4 /* MyCarsTableViewCell.swift in Sources */,
 				84ACAF4728927DEB0012508C /* CarMarkResponse.swift in Sources */,
+				0470BCDE28B786E800418BAB /* BonusAPI.swift in Sources */,
 				84A4AB692889C51700B657F1 /* CabinetVC.swift in Sources */,
 				E02E316A28A2BCA30067CEAB /* OrderTypeResponce.swift in Sources */,
 				84AE2739288BD45E000870D4 /* SmallBackButton.swift in Sources */,
@@ -787,7 +809,9 @@
 				F34B850D289FD199006334FD /* TechnicalRecordVC.swift in Sources */,
 				84A509AF28A26E3200B30D6E /* ProfileVC.swift in Sources */,
 				84ACAF3C28927D170012508C /* NetworkError.swift in Sources */,
+				0470BCE228B79C6D00418BAB /* MainBonusTableViewCell.swift in Sources */,
 				4006222028A3CC2200E55C04 /* CarInfoNumberView.swift in Sources */,
+				0470BCE028B7914200418BAB /* BonusResponse.swift in Sources */,
 				84DDD2BB287F12FC00272C19 /* UIColor+Extension.swift in Sources */,
 				84AE273F288D2AFF000870D4 /* CarNumberView.swift in Sources */,
 				84ACAF4028927D170012508C /* CarAPI.swift in Sources */,
