@@ -27,6 +27,7 @@ enum RequestMethod {
     case order
     case orderList(Int)
     case bonus
+    case notification
     
     var path: String {
         switch self {
@@ -64,6 +65,8 @@ enum RequestMethod {
             return "order/history?user_car_id=\(id)"
         case .bonus:
             return "bonus"
+        case .notification:
+            return "notification"
         }
     }
 }

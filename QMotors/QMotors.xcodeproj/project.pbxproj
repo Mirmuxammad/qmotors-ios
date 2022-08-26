@@ -10,6 +10,8 @@
 		0427F37F28B7D8500081D649 /* BonusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0427F37E28B7D8500081D649 /* BonusTableViewCell.swift */; };
 		04452A3328B8CA4E008B1911 /* NotificationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04452A3228B8CA4E008B1911 /* NotificationVC.swift */; };
 		04452A3528B8CF6D008B1911 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04452A3428B8CF6D008B1911 /* NotificationTableViewCell.swift */; };
+		044E96B528B8DFDA00A0609F /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044E96B428B8DFDA00A0609F /* Notification.swift */; };
+		044E96B728B8E11700A0609F /* NotificationAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044E96B628B8E11700A0609F /* NotificationAPI.swift */; };
 		0470BCDB28B77C2400418BAB /* BonusVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCDA28B77C2400418BAB /* BonusVC.swift */; };
 		0470BCDE28B786E800418BAB /* BonusAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCDD28B786E800418BAB /* BonusAPI.swift */; };
 		0470BCE028B7914200418BAB /* BonusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCDF28B7914200418BAB /* BonusResponse.swift */; };
@@ -124,6 +126,8 @@
 		0427F37E28B7D8500081D649 /* BonusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonusTableViewCell.swift; sourceTree = "<group>"; };
 		04452A3228B8CA4E008B1911 /* NotificationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationVC.swift; sourceTree = "<group>"; };
 		04452A3428B8CF6D008B1911 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
+		044E96B428B8DFDA00A0609F /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		044E96B628B8E11700A0609F /* NotificationAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAPI.swift; sourceTree = "<group>"; };
 		0470BCDA28B77C2400418BAB /* BonusVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonusVC.swift; sourceTree = "<group>"; };
 		0470BCDD28B786E800418BAB /* BonusAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonusAPI.swift; sourceTree = "<group>"; };
 		0470BCDF28B7914200418BAB /* BonusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonusResponse.swift; sourceTree = "<group>"; };
@@ -320,6 +324,7 @@
 				F34B850E28A01410006334FD /* UserAutos.swift */,
 				4049212728A177AB00257750 /* CarResponse.swift */,
 				0470BCDF28B7914200418BAB /* BonusResponse.swift */,
+				044E96B428B8DFDA00A0609F /* Notification.swift */,
 				E02E316928A2BCA30067CEAB /* OrderTypeResponce.swift */,
 				E02E316B28A2BFAD0067CEAB /* NewOrder.swift */,
 				84B2411428AD84A0000A6396 /* MyCarOrder.swift */,
@@ -340,6 +345,7 @@
 				84ACAF3828927D170012508C /* RequestInterceptor.swift */,
 				84AC3B99289B0F7800353231 /* TechCenterAPI.swift */,
 				0470BCDD28B786E800418BAB /* BonusAPI.swift */,
+				044E96B628B8E11700A0609F /* NotificationAPI.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -802,6 +808,8 @@
 				84ACAF4C28929DE40012508C /* TechnicalCenterTableViewCell.swift in Sources */,
 				848D9AAF28804C6A00C4BC3F /* RouteButton.swift in Sources */,
 				E02E316F28A3C9790067CEAB /* HistoryCarsVC.swift in Sources */,
+				044E96B528B8DFDA00A0609F /* Notification.swift in Sources */,
+				044E96B728B8E11700A0609F /* NotificationAPI.swift in Sources */,
 				84AE2734288AB460000870D4 /* SideMenuTableViewCell.swift in Sources */,
 				F371A61E289FBD8C0090472A /* MaintenanceVC.swift in Sources */,
 				84ACAF3F28927D170012508C /* BaseAPI.swift in Sources */,

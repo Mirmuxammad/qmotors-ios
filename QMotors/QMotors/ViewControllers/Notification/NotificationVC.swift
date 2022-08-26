@@ -11,7 +11,7 @@ class NotificationVC: BaseVC {
     
     // MARK: - Properties
     
-    var notifications = [String]()
+    var notifications = [Notification]()
     
     // MARK: - UI Elements
     
@@ -66,7 +66,7 @@ class NotificationVC: BaseVC {
         
         setupViews()
         setupConstraints()
-//        loadBonuses()
+        loadNotifications()
     }
     
     override func leftMenuButtonDidTap() {
@@ -126,12 +126,11 @@ class NotificationVC: BaseVC {
     
     // MARK: - Load bonuses
     
-    private func loadBonuses() {
+    private func loadNotifications() {
         activityIndicator.startAnimating()
-        BonusAPI.bonusList { [weak self] bonusResponse in
+        NotificationAPI.notificationList { [weak self] notifications in
             guard let self = self else { return }
-//            self.bonuses = bonusResponse.bonuses
-//            self.balance = bonusResponse.balance
+            self.notifications = notifications
             self.tableView.reloadData()
             self.activityIndicator.stopAnimating()
         } failure: { error in
@@ -156,12 +155,13 @@ class NotificationVC: BaseVC {
 extension NotificationVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4//notifications.count
+        return notifications.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationTableViewCell.identifier, for: indexPath) as? NotificationTableViewCell
         else { return UITableViewCell() }
+        cell.setupCell(with: notifications[indexPath.row])
         return cell
     }
     
