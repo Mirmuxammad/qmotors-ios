@@ -562,7 +562,7 @@ class ProfileVC: BaseVC {
             surname = ""
             patronymic = ""
         }
-        guard let userId = user?.id else { return }
+        guard (user?.id) != nil else { return }
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"

@@ -783,7 +783,6 @@ extension CarVC {
     private func setupConstraints() {
         let lOffset = Const.lOffset
         let rOffset = Const.rOffset
-        let height = self.view.snp.bottom
         
         activityIndicator.snp.makeConstraints { make in
             make.center.equalToSuperview()
