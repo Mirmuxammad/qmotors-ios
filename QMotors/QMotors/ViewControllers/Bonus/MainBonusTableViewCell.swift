@@ -37,7 +37,7 @@ class MainBonusTableViewCell: UITableViewCell {
         label.font = UIFont(name: Const.fontBold, size: 70)
         label.textColor = .white
         label.textAlignment = .left
-        label.text = "150"
+        label.text = "0"
         return label
     }()
     
@@ -102,7 +102,7 @@ class MainBonusTableViewCell: UITableViewCell {
         }
         
         circleView.snp.makeConstraints { make in
-            make.width.height.equalTo(580)//(cellWidth * 1.7)
+            make.width.height.equalTo(580)
             make.centerY.equalTo(20)
             make.right.equalToSuperview().offset(-67)
         }
@@ -129,6 +129,12 @@ class MainBonusTableViewCell: UITableViewCell {
             make.left.equalToSuperview().offset(22)
         }
         
+    }
+    
+    //MARK: - Public functions
+    
+    func setupCell(with balance: Int) {
+        balanceLabel.text = String(balance)
     }
 
     

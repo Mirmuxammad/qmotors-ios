@@ -30,7 +30,7 @@ final class BonusAPI {
                                          created_at: bonus["created_at"].stringValue,
                                          updated_at: bonus["created_at"].stringValue))
                 }
-                let balance: String = jsonData["balance"].stringValue
+                let balance: Int = jsonData["result"]["balance"].intValue
                 let response = BonusResponse(bonuses: bonuses, balance: balance, error: nil)
                 success(response)
             } else {

@@ -13,6 +13,7 @@ class BonusVC: BaseVC {
     // MARK: - Properties
     
     var bonuses = [Bonus]()
+    var balance = 0
 
     // MARK: - UI Elements
     
@@ -48,6 +49,7 @@ class BonusVC: BaseVC {
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
         tableView.register(MainBonusTableViewCell.self, forCellReuseIdentifier: MainBonusTableViewCell.identifier)
+        tableView.register(BonusTableViewCell.self, forCellReuseIdentifier: BonusTableViewCell.identifier)
         return tableView
     }()
     
@@ -67,7 +69,7 @@ class BonusVC: BaseVC {
 
         setupViews()
         setupConstraints()
-//        loadBonuses()
+        loadBonuses()
     }
     
     override func leftMenuButtonDidTap() {
@@ -140,12 +142,14 @@ class BonusVC: BaseVC {
         BonusAPI.bonusList { [weak self] bonusResponse in
             guard let self = self else { return }
             self.bonuses = bonusResponse.bonuses
+            self.balance = bonusResponse.balance
             self.tableView.reloadData()
             self.activityIndicator.stopAnimating()
         } failure: { error in
             let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
             }))
+            self.activityIndicator.stopAnimating()
             self.present(alert, animated: true, completion: nil)
         }
     }
@@ -178,18 +182,24 @@ extension BonusVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: MainBonusTableViewCell.identifier, for: indexPath) as? MainBonusTableViewCell
-            else { return UITableViewCell() }
-        
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MainBonusTableViewCell.identifier, for: indexPath) as? MainBonusTableViewCell else { return UITableViewCell() }
+            cell.setupCell(with: balance)
             return cell
         default:
-            let cell = UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: BonusTableViewCell.identifier, for: indexPath) as? BonusTableViewCell
+            else { return UITableViewCell() }
+            cell.setupCell(with: bonuses[indexPath.row])
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 169
+        switch indexPath.section {
+        case 0:
+            return 169
+        default:
+            return 112
+        }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

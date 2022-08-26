@@ -9,7 +9,7 @@ import Foundation
 
 struct BonusResponse {
     let bonuses: [Bonus]
-    let balance: String
+    let balance: Int
     let error: CustomError?
 }
 
