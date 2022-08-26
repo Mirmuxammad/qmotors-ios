@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0427F37F28B7D8500081D649 /* BonusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0427F37E28B7D8500081D649 /* BonusTableViewCell.swift */; };
+		04452A3328B8CA4E008B1911 /* NotificationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04452A3228B8CA4E008B1911 /* NotificationVC.swift */; };
+		04452A3528B8CF6D008B1911 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04452A3428B8CF6D008B1911 /* NotificationTableViewCell.swift */; };
 		0470BCDB28B77C2400418BAB /* BonusVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCDA28B77C2400418BAB /* BonusVC.swift */; };
 		0470BCDE28B786E800418BAB /* BonusAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCDD28B786E800418BAB /* BonusAPI.swift */; };
 		0470BCE028B7914200418BAB /* BonusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCDF28B7914200418BAB /* BonusResponse.swift */; };
@@ -120,6 +122,8 @@
 
 /* Begin PBXFileReference section */
 		0427F37E28B7D8500081D649 /* BonusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonusTableViewCell.swift; sourceTree = "<group>"; };
+		04452A3228B8CA4E008B1911 /* NotificationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationVC.swift; sourceTree = "<group>"; };
+		04452A3428B8CF6D008B1911 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		0470BCDA28B77C2400418BAB /* BonusVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonusVC.swift; sourceTree = "<group>"; };
 		0470BCDD28B786E800418BAB /* BonusAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonusAPI.swift; sourceTree = "<group>"; };
 		0470BCDF28B7914200418BAB /* BonusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonusResponse.swift; sourceTree = "<group>"; };
@@ -247,6 +251,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04452A3128B8CA20008B1911 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				04452A3228B8CA4E008B1911 /* NotificationVC.swift */,
+				04452A3428B8CF6D008B1911 /* NotificationTableViewCell.swift */,
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
 		0470BCDC28B77C3700418BAB /* Bonus */ = {
 			isa = PBXGroup;
 			children = (
@@ -440,6 +453,7 @@
 				F371A61C289FBD810090472A /* Maintenance */,
 				84ACAF48289284EE0012508C /* TechnicalCenter */,
 				84D94F55288557600023AA02 /* Authentication */,
+				04452A3128B8CA20008B1911 /* Notification */,
 				0470BCDC28B77C3700418BAB /* Bonus */,
 				84DDD2BC287F390200272C19 /* SideLeftMenu */,
 				84DDD28E287EF04700272C19 /* BaseVC.swift */,
@@ -807,6 +821,7 @@
 				84DDD292287F0A2E00272C19 /* MainScreenButton.swift in Sources */,
 				84ACAF4A289285320012508C /* TechnicalCenterVC.swift in Sources */,
 				84ACAF4328927D970012508C /* CustomPhotoView.swift in Sources */,
+				04452A3528B8CF6D008B1911 /* NotificationTableViewCell.swift in Sources */,
 				84D94F57288559D90023AA02 /* RegistrationVC.swift in Sources */,
 				84AE2730288AA63E000870D4 /* UserDefaults.swift in Sources */,
 				849836372886EDBC00EF47D0 /* AuthResponse.swift in Sources */,
@@ -819,6 +834,7 @@
 				84DDD2BB287F12FC00272C19 /* UIColor+Extension.swift in Sources */,
 				84AE273F288D2AFF000870D4 /* CarNumberView.swift in Sources */,
 				84ACAF4028927D170012508C /* CarAPI.swift in Sources */,
+				04452A3328B8CA4E008B1911 /* NotificationVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

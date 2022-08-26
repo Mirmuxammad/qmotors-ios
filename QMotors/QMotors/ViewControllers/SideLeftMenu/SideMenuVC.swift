@@ -213,7 +213,7 @@ extension SideMenuVC: UITableViewDelegate, UITableViewDataSource {
                 dismiss(animated: true)
             } else {
                 dismiss(animated: true)
-                //  router
+                router?.pushNotificationVC()
             }
         case 6:
             if rootScreen == .reviews {
