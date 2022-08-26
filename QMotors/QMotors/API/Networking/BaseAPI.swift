@@ -28,6 +28,8 @@ enum RequestMethod {
     case orderList(Int)
     case bonus
     case notification
+    case showReview(Int)
+    case listTechCenters(Int)
     
     var path: String {
         switch self {
@@ -67,6 +69,10 @@ enum RequestMethod {
             return "bonus"
         case .notification:
             return "notification"
+        case .showReview(let id):
+            return "review/\(id)"
+        case .listTechCenters(let id):
+            return "review?tech_center_id=\(id)"
         }
     }
 }

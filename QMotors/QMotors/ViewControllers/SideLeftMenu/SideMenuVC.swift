@@ -15,7 +15,7 @@ enum SideMenu {
     case techCenter
     case stocks
     case notification
-    case reviews
+    case feedBack
     case chat
     case articles
     case FAQ
@@ -216,11 +216,11 @@ extension SideMenuVC: UITableViewDelegate, UITableViewDataSource {
                 router?.pushNotificationVC()
             }
         case 6:
-            if rootScreen == .reviews {
+            if rootScreen == .feedBack {
                 dismiss(animated: true)
             } else {
                 dismiss(animated: true)
-                //  router
+                router?.pushFeedBack()
             }
         case 7:
             if rootScreen == .chat {
