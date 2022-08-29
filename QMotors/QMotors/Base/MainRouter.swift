@@ -19,7 +19,7 @@ enum RootScreen {
     case techCenter
     case stocks
     case notification
-    case reviews
+    case feedBack
     case chat
     case articles
     case FAQ
@@ -41,6 +41,16 @@ class MainRouter: NSObject {
 //        baseVC.router = self
 //        pushViewController(vc: baseVC, animated: true)
 //    }
+    
+    func pushAllFeedBAcks() {
+        let vc = AllFeedBacksViewController()
+        pushViewController(vc: vc, animated: true)
+    }
+    
+    func pushFeedBack() {
+        let vc = FeedBackViewController()
+        pushViewController(vc: vc, animated: true)
+    }
     
     func pushOrdersForCarVC(myCar: MyCarModel) {
         let vc = OrdersForCarVC(myCar: myCar)

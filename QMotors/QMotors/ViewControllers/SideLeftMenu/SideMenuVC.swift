@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import MapKit
 
 enum SideMenu {
     case main
@@ -15,7 +16,7 @@ enum SideMenu {
     case techCenter
     case stocks
     case notification
-    case reviews
+    case feedBack
     case chat
     case articles
     case FAQ
@@ -81,7 +82,6 @@ class SideMenuVC: UIViewController, Routable {
         
         view.backgroundColor = .white
         navigationController?.navigationBar.isHidden = true
-        print(rootScreen)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(SideMenuTableViewCell.self, forCellReuseIdentifier: SideMenuTableViewCell.identifier)
@@ -140,7 +140,44 @@ class SideMenuVC: UIViewController, Routable {
     }
     
     @objc private func locationButtonDidTap() {
-        print("locationButtonDidTap")
+        TechCenterAPI.techCenterList { techCenters in
+            let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            
+            for center in techCenters {
+                let action = UIAlertAction(title: center.title, style: .default) { action in
+                    print(center.latitude, center.longitude)
+                    self.openMap(lat: center.latitude, lng: center.longitude, name: center.address)
+                }
+                alert.addAction(action)
+            }
+            
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+            alert.addAction(cancel)
+            self.present(alert, animated: true)
+            
+        } failure: { error in
+            print(error!.localizedDescription)
+            return
+        }
+
+    }
+    
+    private func openMap(lat: String, lng: String, name: String) {
+        let latitute: CLLocationDegrees =  Double(lat) ?? 0
+        let longitute: CLLocationDegrees =  Double(lng) ?? 0
+
+        let regionDistance: CLLocationDistance = 10000
+        let coordinates = CLLocationCoordinate2DMake(latitute, longitute)
+        let regionSpan = MKCoordinateRegion(center: coordinates, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
+        let options = [
+            MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+            MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
+        ]
+        let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: nil)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = name
+        mapItem.openInMaps(launchOptions: options)
+
     }
     
 }
@@ -185,6 +222,7 @@ extension SideMenuVC: UITableViewDelegate, UITableViewDataSource {
                     router?.pushCabinetVC()
                 }
             } else {
+                dismiss(animated: true)
                 router?.pushRegistrationVC()
             }
         case 2:
@@ -216,12 +254,18 @@ extension SideMenuVC: UITableViewDelegate, UITableViewDataSource {
                 router?.pushNotificationVC()
             }
         case 6:
-            if rootScreen == .reviews {
-                dismiss(animated: true)
+            if UserDefaultsService.sharedInstance.authToken != nil {
+                if rootScreen == .feedBack {
+                    dismiss(animated: true)
+                } else {
+                    dismiss(animated: true)
+                    router?.pushFeedBack()
+                }
             } else {
                 dismiss(animated: true)
-                router?.pushFeedbackVC()
+                router?.pushRegistrationVC()
             }
+            
         case 7:
             if rootScreen == .chat {
                 dismiss(animated: true)
