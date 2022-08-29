@@ -185,6 +185,7 @@ extension SideMenuVC: UITableViewDelegate, UITableViewDataSource {
                     router?.pushCabinetVC()
                 }
             } else {
+                dismiss(animated: true)
                 router?.pushRegistrationVC()
             }
         case 2:
@@ -216,12 +217,18 @@ extension SideMenuVC: UITableViewDelegate, UITableViewDataSource {
                 router?.pushNotificationVC()
             }
         case 6:
-            if rootScreen == .feedBack {
-                dismiss(animated: true)
+            if UserDefaultsService.sharedInstance.authToken != nil {
+                if rootScreen == .feedBack {
+                    dismiss(animated: true)
+                } else {
+                    dismiss(animated: true)
+                    router?.pushFeedBack()
+                }
             } else {
                 dismiss(animated: true)
-                router?.pushFeedBack()
+                router?.pushRegistrationVC()
             }
+            
         case 7:
             if rootScreen == .chat {
                 dismiss(animated: true)
