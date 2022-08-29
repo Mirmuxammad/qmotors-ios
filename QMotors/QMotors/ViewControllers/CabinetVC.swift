@@ -199,6 +199,7 @@ class CabinetVC: BaseVC {
     }
     
     @objc private func bonusButtonDidTap() {
+        router?.pushBonusVC()
         print("bonusButtonDidTap")
     }
     

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Notification {
+struct NotificationLocal {
     let id: Int
     let title: String
     let text: String

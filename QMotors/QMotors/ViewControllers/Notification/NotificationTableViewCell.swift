@@ -128,7 +128,7 @@ class NotificationTableViewCell: UITableViewCell {
     
     //MARK: - Public functions
     
-    func setupCell(with notification: Notification) {
+    func setupCell(with notification: NotificationLocal) {
         descriptionLabel.text = notification.text
         titleLabel.text = notification.title
         dataLabel.text = notification.created_at.getFormattedDate()
