@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import DropDown
 import SDWebImage
+import SwiftMaskText
 
 class CarVC: BaseVC {
     
@@ -175,9 +176,22 @@ class CarVC: BaseVC {
         return label
     }()
     
-    private let carNumberField: CustomTextField = {
-        let field = CustomTextField(placeholder: "Укажите номер автомобиля", keyboardType: .asciiCapable)
-        return field
+    private let carNumberField: SwiftMaskField = {
+        let textField = SwiftMaskField()
+        textField.maskString = "*NNN** NNN"
+        textField.placeholder = "Укажите номер автомобиля"
+        textField.borderStyle = .roundedRect
+        textField.font = UIFont(name: Const.fontReg, size: 16)
+        textField.autocapitalizationType = .allCharacters
+        textField.keyboardType = .default
+        textField.textColor = Const.fieldTextColor
+        textField.backgroundColor = .white
+        textField.layer.cornerRadius = 8
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = Const.fieldBorderColor.cgColor
+        textField.addPadding(padding: .equalSpacing(16))
+        textField.returnKeyType = .next
+        return textField
     }()
     
     private let vinLabel: CustomLabel = {
@@ -611,7 +625,7 @@ class CarVC: BaseVC {
             safeArea.size.height += scrollView.contentOffset.y
             safeArea.size.height -= keyboardSize.height + (UIScreen.main.bounds.height*0.04)
             
-            let activeField: CustomTextField? = [carMarkField, carModelField, carYearField, carNumberField, mileageField,vinField].first { $0.isFirstResponder }
+            let activeField: CustomTextField? = [carMarkField, carModelField, carYearField,  mileageField,vinField].first { $0.isFirstResponder }
             if let activeField = activeField {
                 if activeField == carModelField {
                     distance = activeField.frame.maxY / 1.42
