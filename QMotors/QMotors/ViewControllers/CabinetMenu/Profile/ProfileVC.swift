@@ -248,7 +248,8 @@ class ProfileVC: BaseVC {
         
         scrollView.snp.makeConstraints { make in
             make.top.equalTo(logoImageView.snp.bottom).offset(20)
-            make.left.right.bottom.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.left.equalToSuperview()
             make.bottom.equalToSuperview()
         }
         
@@ -286,7 +287,7 @@ class ProfileVC: BaseVC {
         fullNameView.snp.makeConstraints { make in
             make.top.equalTo(photoView.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
+            make.centerX.equalToSuperview()
             make.height.equalTo(90)
         }
         
@@ -319,21 +320,21 @@ class ProfileVC: BaseVC {
         emailView.snp.makeConstraints { make in
             make.top.equalTo(birthdayView.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
+            make.centerX.equalToSuperview()
             make.height.equalTo(90)
         }
         
         phoneView.snp.makeConstraints { make in
             make.top.equalTo(emailView.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
+            make.centerX.equalToSuperview()
             make.height.equalTo(90)
         }
         
         extraPhoneView.snp.makeConstraints { make in
             make.top.equalTo(phoneView.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
+            make.centerX.equalToSuperview()
             make.height.equalTo(90)
         }
         
