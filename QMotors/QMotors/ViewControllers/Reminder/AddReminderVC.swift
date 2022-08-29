@@ -236,7 +236,7 @@ class AddReminderVC: BaseVC {
         dg.enter()
         CarAPI.getMyCars { [weak self] jsonData in
             guard let self = self else { return }
-            self.myCars = jsonData
+            self.myCars = jsonData.filter { $0.status == 0 }
             if self.openEditVC == true {
                 self.getInfoEdit()
             }
