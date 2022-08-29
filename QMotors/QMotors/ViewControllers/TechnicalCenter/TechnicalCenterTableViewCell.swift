@@ -160,8 +160,7 @@ class TechnicalCenterTableViewCell: UITableViewCell {
     }
     
     func setupNavigationAction(target: Any, action: Selector, index: Int) {
-        navigationButton.tag = index
-        navigationButton.setupAction(target: target, action: action)
+        navigationButton.setupAction(target: target, action: action, tag: index)
     }
     
     func setupSignUpAction(target: Any, action: Selector, index: Int) {

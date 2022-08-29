@@ -183,12 +183,13 @@ class TechnicalCenterVC: BaseVC {
     }
     
     @objc private func navigationButtonDidTap(_ sender: UIButton) {
-        print("navigationButtonDidTap \(technicalCenters[sender.tag].latitude), \(technicalCenters[sender.tag].longitude)")
+        print("navigationButtonDidTap \(technicalCenters[sender.tag].latitude), \(technicalCenters[sender.tag].longitude)", sender.tag)
         
         let latitude = technicalCenters[sender.tag].latitude
         let longitude = technicalCenters[sender.tag].longitude
+        let name = technicalCenters[sender.tag].title
         
-        selectPreferedNaviApp(latitude: latitude, longitude: longitude)
+        selectPreferedNaviApp(latitude: latitude, longitude: longitude, name: name)
     }
     
     @objc private func singUpButtonDidTap(_ sender: UIButton) {
@@ -204,7 +205,7 @@ class TechnicalCenterVC: BaseVC {
     
     // MARK: - Location helper
     
-    private func selectPreferedNaviApp(latitude: String, longitude: String) {
+    private func selectPreferedNaviApp(latitude: String, longitude: String, name: String) {
         let actionSheet = UIAlertController(title: "Построить маршрут", message: "Выберите приложение", preferredStyle: .actionSheet)
         actionSheet.addAction(UIAlertAction(title: "Google Карты", style: .default, handler: { _ in
             guard let url = URL(string: "comgooglemaps://?daddr=\(latitude),\(longitude))&directionsmode=driving&zoom=14&views=traffic") else { return }
@@ -216,10 +217,19 @@ class TechnicalCenterVC: BaseVC {
                 let lat = Double(latitude),
                 let lon = Double(longitude) else { return }
             
-            let coordinate = CLLocationCoordinate2DMake(lat, lon)
-            let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary: nil))
-            mapItem.name = "Destination"
-            mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
+            let regionDistance: CLLocationDistance = 10000
+            let coordinates = CLLocationCoordinate2DMake(lat, lon)
+            let regionSpan = MKCoordinateRegion(center: coordinates, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
+            let options = [
+                MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+                MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
+            ]
+            let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: nil)
+            let mapItem = MKMapItem(placemark: placemark)
+            mapItem.name = name
+            mapItem.openInMaps(launchOptions: options)
+
+
         }))
         
         actionSheet.addAction(UIAlertAction(title: "Yandex Карты", style: .default, handler: { _ in
