@@ -78,6 +78,24 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
+    func pushAddReminderVC() {
+        let vc = AddReminderVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
+    func pushEditReminderVC(reminder: NewReminder) {
+        let vc = AddReminderVC()
+        vc.reminder = reminder
+        vc.openEditVC = true
+        pushViewController(vc: vc, animated: true)
+    }
+    
+    func pushMyRemindersVC(cars: [MyCarModel]) {
+        let vc = MyRemindersVC()
+        vc.myCars = cars
+        pushViewController(vc: vc, animated: true)
+    }
+    
     //CabinetMenu
     func pushMyCarsVC() {
         let vc = MyCarsVC()

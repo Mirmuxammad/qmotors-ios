@@ -16,9 +16,18 @@
 		0470BCDE28B786E800418BAB /* BonusAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCDD28B786E800418BAB /* BonusAPI.swift */; };
 		0470BCE028B7914200418BAB /* BonusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCDF28B7914200418BAB /* BonusResponse.swift */; };
 		0470BCE228B79C6D00418BAB /* MainBonusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCE128B79C6D00418BAB /* MainBonusTableViewCell.swift */; };
+		4003922E28B5F1B1001E174B /* MyLastRemindersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4003922D28B5F1B1001E174B /* MyLastRemindersTableViewCell.swift */; };
 		4006222028A3CC2200E55C04 /* CarInfoNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006221F28A3CC2200E55C04 /* CarInfoNumberView.swift */; };
+		4013070E28B2453D00A8F662 /* AddReminderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4013070D28B2453D00A8F662 /* AddReminderVC.swift */; };
+		4013071028B2465600A8F662 /* NewReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4013070F28B2465600A8F662 /* NewReminder.swift */; };
+		4013071228B246D500A8F662 /* ReminderAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4013071128B246D500A8F662 /* ReminderAPI.swift */; };
+		4013071428B3473C00A8F662 /* MyRemindersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4013071328B3473C00A8F662 /* MyRemindersVC.swift */; };
+		4013071628B349B800A8F662 /* MyRamindersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4013071528B349B800A8F662 /* MyRamindersTableViewCell.swift */; };
+		4013071828B34EF300A8F662 /* ReminderResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4013071728B34EF300A8F662 /* ReminderResponce.swift */; };
 		401C746428A1431600CA5DAD /* CarInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C746328A1431600CA5DAD /* CarInfoVC.swift */; };
 		4049212828A177AB00257750 /* CarResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4049212728A177AB00257750 /* CarResponse.swift */; };
+		405CB81E28B5E51100881004 /* ReminderCellButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405CB81D28B5E51100881004 /* ReminderCellButton.swift */; };
+		405CB82028B5E61200881004 /* ReminderCellEditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405CB81F28B5E61200881004 /* ReminderCellEditButton.swift */; };
 		405E643C28AA772100A07FEC /* GenderSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405E643B28AA772100A07FEC /* GenderSwitch.swift */; };
 		40BA091328A23B8B00990A72 /* DeleteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40BA091228A23B8B00990A72 /* DeleteButton.swift */; };
 		40D9C27728AAB1BB005195B5 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D9C27628AAB1BB005195B5 /* UIImage+Extension.swift */; };
@@ -140,10 +149,19 @@
 		0470BCE128B79C6D00418BAB /* MainBonusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBonusTableViewCell.swift; sourceTree = "<group>"; };
 		25EE654A6181C6218A5559D4 /* Pods-QMotors.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMotors.debug.xcconfig"; path = "Target Support Files/Pods-QMotors/Pods-QMotors.debug.xcconfig"; sourceTree = "<group>"; };
 		297813ADA6CD9EA7AE640A7E /* Pods-QMotors.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMotors.release.xcconfig"; path = "Target Support Files/Pods-QMotors/Pods-QMotors.release.xcconfig"; sourceTree = "<group>"; };
+		4003922D28B5F1B1001E174B /* MyLastRemindersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLastRemindersTableViewCell.swift; sourceTree = "<group>"; };
 		4006221B28A273B000E55C04 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		4006221F28A3CC2200E55C04 /* CarInfoNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarInfoNumberView.swift; sourceTree = "<group>"; };
+		4013070D28B2453D00A8F662 /* AddReminderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderVC.swift; sourceTree = "<group>"; };
+		4013070F28B2465600A8F662 /* NewReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewReminder.swift; sourceTree = "<group>"; };
+		4013071128B246D500A8F662 /* ReminderAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderAPI.swift; sourceTree = "<group>"; };
+		4013071328B3473C00A8F662 /* MyRemindersVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRemindersVC.swift; sourceTree = "<group>"; };
+		4013071528B349B800A8F662 /* MyRamindersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRamindersTableViewCell.swift; sourceTree = "<group>"; };
+		4013071728B34EF300A8F662 /* ReminderResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderResponce.swift; sourceTree = "<group>"; };
 		401C746328A1431600CA5DAD /* CarInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarInfoVC.swift; sourceTree = "<group>"; };
 		4049212728A177AB00257750 /* CarResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarResponse.swift; sourceTree = "<group>"; };
+		405CB81D28B5E51100881004 /* ReminderCellButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCellButton.swift; sourceTree = "<group>"; };
+		405CB81F28B5E61200881004 /* ReminderCellEditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCellEditButton.swift; sourceTree = "<group>"; };
 		405E643B28AA772100A07FEC /* GenderSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderSwitch.swift; sourceTree = "<group>"; };
 		40BA091228A23B8B00990A72 /* DeleteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteButton.swift; sourceTree = "<group>"; };
 		40D9C27628AAB1BB005195B5 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
@@ -294,6 +312,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4013070A28B244FD00A8F662 /* Reminder */ = {
+			isa = PBXGroup;
+			children = (
+				4013070D28B2453D00A8F662 /* AddReminderVC.swift */,
+				4013071328B3473C00A8F662 /* MyRemindersVC.swift */,
+				4013071528B349B800A8F662 /* MyRamindersTableViewCell.swift */,
+				4003922D28B5F1B1001E174B /* MyLastRemindersTableViewCell.swift */,
+			);
+			path = Reminder;
+			sourceTree = "<group>";
+		};
 		7EA2EB5B28A5067900C70910 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -343,6 +372,8 @@
 				E02E318128A522BD0067CEAB /* CarOrderResponce.swift */,
 				E02196AC28B9129000168C23 /* ReviewResponce.swift */,
 				E02196AE28B9187100168C23 /* ListTechCentersResponce.swift */,
+				4013070F28B2465600A8F662 /* NewReminder.swift */,
+				4013071728B34EF300A8F662 /* ReminderResponce.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -361,6 +392,7 @@
 				0470BCDD28B786E800418BAB /* BonusAPI.swift */,
 				044E96B628B8E11700A0609F /* NotificationAPI.swift */,
 				E02196AA28B9118A00168C23 /* ReviewAPI.swift */,
+				4013071128B246D500A8F662 /* ReminderAPI.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -471,6 +503,7 @@
 			isa = PBXGroup;
 			children = (
 				E021969E28B8EC0C00168C23 /* FeedBack */,
+				4013070A28B244FD00A8F662 /* Reminder */,
 				E02E316D28A3C9160067CEAB /* HistoryOrders */,
 				F371A61C289FBD810090472A /* Maintenance */,
 				84ACAF48289284EE0012508C /* TechnicalCenter */,
@@ -508,6 +541,8 @@
 				84ACAF4228927D970012508C /* CustomPhotoView.swift */,
 				84ACAF4D2892B1250012508C /* TechCellNaviButton.swift */,
 				84ACAF4F2892C6C70012508C /* TechCellSingUpButton.swift */,
+				405CB81D28B5E51100881004 /* ReminderCellButton.swift */,
+				405CB81F28B5E61200881004 /* ReminderCellEditButton.swift */,
 				8456BA6C2881652B00684AF5 /* PhoneCall */,
 			);
 			path = Components;
@@ -826,11 +861,15 @@
 				405E643C28AA772100A07FEC /* GenderSwitch.swift in Sources */,
 				84ACAF4128927D170012508C /* LoginAPI.swift in Sources */,
 				84D94F5B2885AD4A0023AA02 /* ActionButton.swift in Sources */,
+				4013070E28B2453D00A8F662 /* AddReminderVC.swift in Sources */,
+				4013071428B3473C00A8F662 /* MyRemindersVC.swift in Sources */,
 				E02E317B28A514530067CEAB /* OrderForCarTableViewCell.swift in Sources */,
 				7EA2EB5F28A5067900C70910 /* BirthdayPicker.swift in Sources */,
 				E02196A928B908D200168C23 /* AllFeedBacksViewController.swift in Sources */,
+				4013071228B246D500A8F662 /* ReminderAPI.swift in Sources */,
 				84ACAF502892C6C70012508C /* TechCellSingUpButton.swift in Sources */,
 				E02E318228A522BD0067CEAB /* CarOrderResponce.swift in Sources */,
+				4013071828B34EF300A8F662 /* ReminderResponce.swift in Sources */,
 				84ACAF352891857F0012508C /* UIViewController+Extension.swift in Sources */,
 				E02E316C28A2BFAD0067CEAB /* NewOrder.swift in Sources */,
 				7EA2EB6028A5067900C70910 /* TitledTextField.swift in Sources */,
@@ -849,9 +888,12 @@
 				E02196AF28B9187100168C23 /* ListTechCentersResponce.swift in Sources */,
 				E02E317128A3CB990067CEAB /* HistoryCarTableViewCell.swift in Sources */,
 				E02E318028A51C990067CEAB /* DeteilOrderForCarTableViewCell.swift in Sources */,
+				4013071628B349B800A8F662 /* MyRamindersTableViewCell.swift in Sources */,
+				405CB82028B5E61200881004 /* ReminderCellEditButton.swift in Sources */,
 				84AE2737288AE772000870D4 /* MyCarsVC.swift in Sources */,
 				E02196A128B8EC7900168C23 /* FeedBackViewController.swift in Sources */,
 				40BA091328A23B8B00990A72 /* DeleteButton.swift in Sources */,
+				4003922E28B5F1B1001E174B /* MyLastRemindersTableViewCell.swift in Sources */,
 				E02E317E28A51AC90067CEAB /* DeteilOrderForCarVC.swift in Sources */,
 				88038F4928A905A5009A0A59 /* CarInfoCollectionViewCell.swift in Sources */,
 				0427F37F28B7D8500081D649 /* BonusTableViewCell.swift in Sources */,
@@ -870,6 +912,7 @@
 				84ACAF3F28927D170012508C /* BaseAPI.swift in Sources */,
 				84AE273B288BEE75000870D4 /* UISegmentedControl+Extension.swift in Sources */,
 				84AC3B98289B007900353231 /* TechnicalCenter.swift in Sources */,
+				4013071028B2465600A8F662 /* NewReminder.swift in Sources */,
 				84AE273D288BF10E000870D4 /* MyCarsTableViewCell.swift in Sources */,
 				84ACAF4728927DEB0012508C /* CarMarkResponse.swift in Sources */,
 				0470BCDE28B786E800418BAB /* BonusAPI.swift in Sources */,
@@ -880,6 +923,7 @@
 				E02196AD28B9129000168C23 /* ReviewResponce.swift in Sources */,
 				F34B850F28A01410006334FD /* UserAutos.swift in Sources */,
 				84A4AB6D2889CFB800B657F1 /* PersonalAreaButton.swift in Sources */,
+				405CB81E28B5E51100881004 /* ReminderCellButton.swift in Sources */,
 				84A509A928A2540500B30D6E /* CabinetBackButton.swift in Sources */,
 				849836312886974800EF47D0 /* BackButton.swift in Sources */,
 				84DDD292287F0A2E00272C19 /* MainScreenButton.swift in Sources */,
