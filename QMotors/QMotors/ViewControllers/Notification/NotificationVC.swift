@@ -11,7 +11,7 @@ class NotificationVC: BaseVC {
     
     // MARK: - Properties
     
-    var notifications = [Notification]()
+    var notifications = [NotificationLocal]()
     
     // MARK: - UI Elements
     

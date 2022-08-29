@@ -190,6 +190,7 @@ class CabinetVC: BaseVC {
     
     @objc private func reminderButtonDidTap() {
         print("reminderButtonDidTap")
+        router?.pushAddReminderVC()
     }
     
     @objc private func profileButtonnDidTap() {
@@ -198,6 +199,7 @@ class CabinetVC: BaseVC {
     }
     
     @objc private func bonusButtonDidTap() {
+        router?.pushBonusVC()
         print("bonusButtonDidTap")
     }
     

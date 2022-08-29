@@ -10,7 +10,7 @@ import Alamofire
 import SwiftyJSON
 
 final class NotificationAPI {
-    static func notificationList(success: @escaping ([Notification]) -> Void, failure: @escaping escapeNetworkError) {
+    static func notificationList(success: @escaping ([NotificationLocal]) -> Void, failure: @escaping escapeNetworkError) {
         let params: Parameters = [:]
         
         BaseAPI.authorizedGetRequest(reqMethod: .notification, parameters: params, success: { data in
@@ -18,9 +18,9 @@ final class NotificationAPI {
             let jsonData = JSON(data)
             let errors = jsonData["errors"]
             if errors.type == .null {
-                var notifications = [Notification]()
+                var notifications = [NotificationLocal]()
                 for notification in jsonData["result"].arrayValue {
-                    notifications.append(Notification(id: notification["id"].intValue,
+                    notifications.append(NotificationLocal(id: notification["id"].intValue,
                                                       title: notification["title"].stringValue,
                                                       text: notification["text"].stringValue,
                                                       user_id: notification["user_id"].intValue,
