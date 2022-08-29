@@ -50,7 +50,7 @@ class MyRamindersTableViewCell: UITableViewCell {
         label.textColor = .white
         label.textAlignment = .left
         label.numberOfLines = 0
-        label.text = "Напомнит 24.01.208 | 16:30"
+        label.text = "Напомним 24.01.208 | 16:30"
         return label
     }()
     
@@ -171,7 +171,7 @@ class MyRamindersTableViewCell: UITableViewCell {
         self.reminder = reminder
         titleLabel.text = car.model
         if let date = reminder.date {
-            dateLabel.text = "Напомнит \(date)"
+            dateLabel.text = "Напомним \(date)"
         }
         reminderTextLabel.text = reminder.text
     }
