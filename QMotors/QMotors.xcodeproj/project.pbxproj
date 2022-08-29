@@ -17,6 +17,7 @@
 		0470BCE028B7914200418BAB /* BonusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCDF28B7914200418BAB /* BonusResponse.swift */; };
 		0470BCE228B79C6D00418BAB /* MainBonusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCE128B79C6D00418BAB /* MainBonusTableViewCell.swift */; };
 		0475848B28BCEDDA00F10B50 /* FeedbackVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0475848A28BCEDDA00F10B50 /* FeedbackVC.swift */; };
+		048DCB7F28BD131F00C68590 /* MyLastRemindersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4003922D28B5F1B1001E174B /* MyLastRemindersTableViewCell.swift */; };
 		4006222028A3CC2200E55C04 /* CarInfoNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006221F28A3CC2200E55C04 /* CarInfoNumberView.swift */; };
 		4013070E28B2453D00A8F662 /* AddReminderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4013070D28B2453D00A8F662 /* AddReminderVC.swift */; };
 		4013071028B2465600A8F662 /* NewReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4013070F28B2465600A8F662 /* NewReminder.swift */; };
@@ -850,6 +851,7 @@
 				84DDD288287ED54600272C19 /* MainRouter.swift in Sources */,
 				84ACAF2B289184B90012508C /* Constants.swift in Sources */,
 				84AC3B9A289B0F7800353231 /* TechCenterAPI.swift in Sources */,
+				048DCB7F28BD131F00C68590 /* MyLastRemindersTableViewCell.swift in Sources */,
 				84DDD28A287ED56200272C19 /* AppCoordinator.swift in Sources */,
 				F371A622289FBDCE0090472A /* MaintenanceOrderVC.swift in Sources */,
 				84ACAF30289185070012508C /* CustomTextField.swift in Sources */,
@@ -903,7 +905,6 @@
 				84AE2737288AE772000870D4 /* MyCarsVC.swift in Sources */,
 				E02196A128B8EC7900168C23 /* FeedBackViewController.swift in Sources */,
 				40BA091328A23B8B00990A72 /* DeleteButton.swift in Sources */,
-				4003922E28B5F1B1001E174B /* MyLastRemindersTableViewCell.swift in Sources */,
 				E02E317E28A51AC90067CEAB /* DeteilOrderForCarVC.swift in Sources */,
 				88038F4928A905A5009A0A59 /* CarInfoCollectionViewCell.swift in Sources */,
 				0427F37F28B7D8500081D649 /* BonusTableViewCell.swift in Sources */,
