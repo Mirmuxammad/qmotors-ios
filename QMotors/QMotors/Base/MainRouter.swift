@@ -104,6 +104,11 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
+    func pushFeedbackVC() {
+        let vc = FeedbackVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
     func pushBonusVC() {
         let vc = BonusVC()
         pushViewController(vc: vc, animated: true)

@@ -220,7 +220,7 @@ extension SideMenuVC: UITableViewDelegate, UITableViewDataSource {
                 dismiss(animated: true)
             } else {
                 dismiss(animated: true)
-                //  router
+                router?.pushFeedbackVC()
             }
         case 7:
             if rootScreen == .chat {
