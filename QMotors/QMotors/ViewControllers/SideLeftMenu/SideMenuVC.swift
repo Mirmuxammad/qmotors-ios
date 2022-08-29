@@ -67,6 +67,7 @@ class SideMenuVC: UIViewController, Routable {
         tableView.separatorStyle = .none
         tableView.bounces = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.horizontalScrollIndicatorInsets = .zero
         return tableView
     }()
     
