@@ -93,7 +93,7 @@ extension FeedBackViewController {
     }
     
     @objc private func openCreateFeedBack() {
-        
+        router?.pushCreateFeedBackVC()
     }
     
     @objc private func openAllFeedBacks() {

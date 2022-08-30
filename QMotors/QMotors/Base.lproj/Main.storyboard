@@ -16,8 +16,19 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0nD-xD-6Wc">
+                                <rect key="frame" x="16" y="94" width="382" height="718"/>
+                            </scrollView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="0nD-xD-6Wc" secondAttribute="trailing" constant="16" id="AXb-R4-Bxb"/>
+                            <constraint firstItem="0nD-xD-6Wc" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="Aoq-NY-U6w"/>
+                            <constraint firstItem="0nD-xD-6Wc" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="50" id="jj9-fM-Z8b"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="0nD-xD-6Wc" secondAttribute="bottom" constant="50" id="pZd-8Z-cl8"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

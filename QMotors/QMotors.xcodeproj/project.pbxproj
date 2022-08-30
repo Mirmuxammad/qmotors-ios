@@ -16,7 +16,7 @@
 		0470BCDE28B786E800418BAB /* BonusAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCDD28B786E800418BAB /* BonusAPI.swift */; };
 		0470BCE028B7914200418BAB /* BonusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCDF28B7914200418BAB /* BonusResponse.swift */; };
 		0470BCE228B79C6D00418BAB /* MainBonusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470BCE128B79C6D00418BAB /* MainBonusTableViewCell.swift */; };
-		0475848B28BCEDDA00F10B50 /* FeedbackVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0475848A28BCEDDA00F10B50 /* FeedbackVC.swift */; };
+		0475848B28BCEDDA00F10B50 /* CreateFeedBackVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0475848A28BCEDDA00F10B50 /* CreateFeedBackVC.swift */; };
 		048DCB7F28BD131F00C68590 /* MyLastRemindersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4003922D28B5F1B1001E174B /* MyLastRemindersTableViewCell.swift */; };
 		4006222028A3CC2200E55C04 /* CarInfoNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006221F28A3CC2200E55C04 /* CarInfoNumberView.swift */; };
 		4013070E28B2453D00A8F662 /* AddReminderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4013070D28B2453D00A8F662 /* AddReminderVC.swift */; };
@@ -148,7 +148,7 @@
 		0470BCDD28B786E800418BAB /* BonusAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonusAPI.swift; sourceTree = "<group>"; };
 		0470BCDF28B7914200418BAB /* BonusResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BonusResponse.swift; sourceTree = "<group>"; };
 		0470BCE128B79C6D00418BAB /* MainBonusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBonusTableViewCell.swift; sourceTree = "<group>"; };
-		0475848A28BCEDDA00F10B50 /* FeedbackVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackVC.swift; sourceTree = "<group>"; };
+		0475848A28BCEDDA00F10B50 /* CreateFeedBackVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFeedBackVC.swift; sourceTree = "<group>"; };
 		25EE654A6181C6218A5559D4 /* Pods-QMotors.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMotors.debug.xcconfig"; path = "Target Support Files/Pods-QMotors/Pods-QMotors.debug.xcconfig"; sourceTree = "<group>"; };
 		297813ADA6CD9EA7AE640A7E /* Pods-QMotors.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMotors.release.xcconfig"; path = "Target Support Files/Pods-QMotors/Pods-QMotors.release.xcconfig"; sourceTree = "<group>"; };
 		4003922D28B5F1B1001E174B /* MyLastRemindersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLastRemindersTableViewCell.swift; sourceTree = "<group>"; };
@@ -304,14 +304,6 @@
 				0427F37E28B7D8500081D649 /* BonusTableViewCell.swift */,
 			);
 			path = Bonus;
-			sourceTree = "<group>";
-		};
-		0475848928BCEC2500F10B50 /* Feedback */ = {
-			isa = PBXGroup;
-			children = (
-				0475848A28BCEDDA00F10B50 /* FeedbackVC.swift */,
-			);
-			path = Feedback;
 			sourceTree = "<group>";
 		};
 		24D20F9C877B5AE98B9D36AB /* Frameworks */ = {
@@ -519,7 +511,6 @@
 				84ACAF48289284EE0012508C /* TechnicalCenter */,
 				84D94F55288557600023AA02 /* Authentication */,
 				04452A3128B8CA20008B1911 /* Notification */,
-				0475848928BCEC2500F10B50 /* Feedback */,
 				0470BCDC28B77C3700418BAB /* Bonus */,
 				84DDD2BC287F390200272C19 /* SideLeftMenu */,
 				84DDD28E287EF04700272C19 /* BaseVC.swift */,
@@ -672,6 +663,7 @@
 		E02196A528B8EC9900168C23 /* CreateFeedBackVC */ = {
 			isa = PBXGroup;
 			children = (
+				0475848A28BCEDDA00F10B50 /* CreateFeedBackVC.swift */,
 			);
 			path = CreateFeedBackVC;
 			sourceTree = "<group>";
@@ -940,7 +932,7 @@
 				84DDD292287F0A2E00272C19 /* MainScreenButton.swift in Sources */,
 				84ACAF4A289285320012508C /* TechnicalCenterVC.swift in Sources */,
 				84ACAF4328927D970012508C /* CustomPhotoView.swift in Sources */,
-				0475848B28BCEDDA00F10B50 /* FeedbackVC.swift in Sources */,
+				0475848B28BCEDDA00F10B50 /* CreateFeedBackVC.swift in Sources */,
 				04452A3528B8CF6D008B1911 /* NotificationTableViewCell.swift in Sources */,
 				84D94F57288559D90023AA02 /* RegistrationVC.swift in Sources */,
 				84AE2730288AA63E000870D4 /* UserDefaults.swift in Sources */,

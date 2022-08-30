@@ -60,7 +60,7 @@ class TechnicalRecordVC: BaseVC {
         return button
     }()
     
-    private let technicalCenterChevronButton: UIButton = {
+    private let carChevronButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "chevron-icon"), for: .normal)
         return button
@@ -278,7 +278,7 @@ class TechnicalRecordVC: BaseVC {
         contentView.addSubview(userCarLabel)
         contentView.addSubview(userCarField)
         contentView.addSubview(userCarButton)
-        technicalCenterField.addSubview(technicalCenterChevronButton)
+        technicalCenterField.addSubview(carChevronButton)
         userCarField.addSubview(carModelChevronButton)
         optionField.addSubview(optionsChevronButton)
         contentView.addSubview(timeMarkLabel)
@@ -432,7 +432,7 @@ class TechnicalRecordVC: BaseVC {
             self?.technicalCenterField.text = item
             self?.order.techCenterId = self?.technicalCentersData[index].id
             self?.technicalCenterDropDown.hide()
-            self?.technicalCenterChevronButton.transform = .identity
+            self?.carChevronButton.transform = .identity
         }
         
         userCarDropDown.selectionAction = { [weak self] (index: Int, item: String) in
@@ -572,7 +572,7 @@ class TechnicalRecordVC: BaseVC {
         switch sender {
         case technicalCenterButton:
             technicalCenterDropDown.show()
-            technicalCenterChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
+            carChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
         case userCarButton:
             userCarDropDown.show()
             carModelChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
@@ -688,7 +688,7 @@ extension TechnicalRecordVC {
             make.edges.equalTo(technicalCenterField)
         }
         
-        technicalCenterChevronButton.snp.makeConstraints { make in
+        carChevronButton.snp.makeConstraints { make in
             make.right.equalToSuperview()
             make.centerY.equalToSuperview()
             make.height.equalTo(54)
