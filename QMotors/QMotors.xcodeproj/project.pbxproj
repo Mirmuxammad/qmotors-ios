@@ -21,6 +21,7 @@
 		405CB82028B5E61200881004 /* ReminderCellEditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405CB81F28B5E61200881004 /* ReminderCellEditButton.swift */; };
 		405E643C28AA772100A07FEC /* GenderSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405E643B28AA772100A07FEC /* GenderSwitch.swift */; };
 		40BA091328A23B8B00990A72 /* DeleteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40BA091228A23B8B00990A72 /* DeleteButton.swift */; };
+		40C8EEA328BE821900DFD003 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C8EEA228BE821900DFD003 /* NotificationService.swift */; };
 		40D9C27728AAB1BB005195B5 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D9C27628AAB1BB005195B5 /* UIImage+Extension.swift */; };
 		7EA2EB5F28A5067900C70910 /* BirthdayPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA2EB5C28A5067900C70910 /* BirthdayPicker.swift */; };
 		7EA2EB6028A5067900C70910 /* TitledTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA2EB5D28A5067900C70910 /* TitledTextField.swift */; };
@@ -140,6 +141,7 @@
 		405CB81F28B5E61200881004 /* ReminderCellEditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCellEditButton.swift; sourceTree = "<group>"; };
 		405E643B28AA772100A07FEC /* GenderSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderSwitch.swift; sourceTree = "<group>"; };
 		40BA091228A23B8B00990A72 /* DeleteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteButton.swift; sourceTree = "<group>"; };
+		40C8EEA228BE821900DFD003 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		40D9C27628AAB1BB005195B5 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		56FD0605EC1AF8C942E96CC2 /* Pods_QMotors.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QMotors.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EA2EB5C28A5067900C70910 /* BirthdayPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BirthdayPicker.swift; sourceTree = "<group>"; };
@@ -365,6 +367,7 @@
 			children = (
 				84AE272F288AA63E000870D4 /* UserDefaults.swift */,
 				84ACAF2A289184B90012508C /* Constants.swift */,
+				40C8EEA228BE821900DFD003 /* NotificationService.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -832,6 +835,7 @@
 				84A509AF28A26E3200B30D6E /* ProfileVC.swift in Sources */,
 				84ACAF3C28927D170012508C /* NetworkError.swift in Sources */,
 				4006222028A3CC2200E55C04 /* CarInfoNumberView.swift in Sources */,
+				40C8EEA328BE821900DFD003 /* NotificationService.swift in Sources */,
 				84DDD2BB287F12FC00272C19 /* UIColor+Extension.swift in Sources */,
 				84AE273F288D2AFF000870D4 /* CarNumberView.swift in Sources */,
 				84ACAF4028927D170012508C /* CarAPI.swift in Sources */,

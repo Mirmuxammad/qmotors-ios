@@ -17,6 +17,9 @@ class AddReminderVC: BaseVC {
     var reminder = NewReminder()
     var openEditVC = false
     
+    var granted = false
+    var testText = ("mainText", "subText")
+    
 
     // MARK: - UI Elements
     private let logoImageView: UIImageView = {
@@ -142,6 +145,9 @@ class AddReminderVC: BaseVC {
         userCarButton.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
         
         setupView()
+        NotificationService.shared.userRequest { (granted) in
+            granted ? print("granted") : print("denied")
+        }
     
     }
     
@@ -236,7 +242,7 @@ class AddReminderVC: BaseVC {
         dg.enter()
         CarAPI.getMyCars { [weak self] jsonData in
             guard let self = self else { return }
-            self.myCars = jsonData
+            self.myCars = jsonData.filter { $0.status == 0 }
             if self.openEditVC == true {
                 self.getInfoEdit()
             }
@@ -312,6 +318,12 @@ class AddReminderVC: BaseVC {
             }
         }
         openEditVC = false
+        guard let text = reminder.text else { return }
+        testText = ("\(text)", "\(text)")
+        guard let reminderDate = reminder.date?.getStringDate() else  { return }
+        NotificationService.shared.showNotification(with: testText, showBody: false, withAction: true,
+                                                        atDate: reminderDate)
+        
     }
     
     @objc private func myRaminderButtonTapped() {
