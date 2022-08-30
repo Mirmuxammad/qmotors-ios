@@ -43,5 +43,18 @@ final class ReviewAPI {
 
     }
     
+    static func rateOrder(orderID: Int, comment: String, rating: Int, success: @escaping () -> Void, failure: @escaping escapeNetworkError) {
+        
+        let parameters: Parameters = ["order_id": orderID,
+                                      "rating": rating,
+                                      "comment": comment]
+        
+        BaseAPI.authorizedPostRequest(reqMethod: .review, parameters: parameters) { data in
+            guard let _ = data else { return }
+            success()
+        } failure: { error in
+            failure(error)
+        }
+    }
     
 }

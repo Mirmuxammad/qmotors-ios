@@ -25,6 +25,7 @@ class AllFeedBacksViewController: BaseVC {
     
     private let backButton: SmallBackButton = {
         let button = SmallBackButton()
+        button.setupAction(target: self, action: #selector(backButtonDidTap))
         return button
     }()
     

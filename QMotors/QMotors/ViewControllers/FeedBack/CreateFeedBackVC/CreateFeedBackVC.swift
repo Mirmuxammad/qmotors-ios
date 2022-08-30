@@ -13,6 +13,9 @@ class CreateFeedBackVC: BaseVC {
     // MARK: - Properties
     
     private var selectedRating = 0
+    private var myCars: [MyCarModel] = []
+    private var myOrders: [Order] = []
+    private var orderID: Int?
 
     // MARK: - UI Elements
     
@@ -236,6 +239,9 @@ class CreateFeedBackVC: BaseVC {
         
         carButton.addTarget(self, action: #selector(openDropDown), for: .touchUpInside)
         orderButton.addTarget(self, action: #selector(orderOpenDropDown), for: .touchUpInside)
+        sendButton.addTarget(self, action: #selector(sendButtonDidTap), for: .touchUpInside)
+        
+        loadCars()
     }
     
     override func leftMenuButtonDidTap() {
@@ -424,6 +430,27 @@ class CreateFeedBackVC: BaseVC {
         router?.back()
     }
     
+    @objc private func sendButtonDidTap() {
+        guard let id = orderID, let text = textView.text else {
+            let alert = UIAlertController(title: "Заполните все поля", message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        
+        if text == "" || selectedRating == 0 {
+            let alert = UIAlertController(title: "Заполните все поля", message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            rateOrder(text: text, rating: selectedRating, id: id)
+        }
+    }
+    
     @objc private func openDropDown() {
             carDropDown.show()
             carChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
@@ -448,11 +475,122 @@ class CreateFeedBackVC: BaseVC {
         }
     }
     
+    private func rateOrder(text: String, rating: Int, id: Int) {
+        
+        ReviewAPI.rateOrder(orderID: id, comment: text, rating: rating) {
+            let alert = UIAlertController(title: "Благодарим вас за оставленный отзыв!", message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                self.router?.back()
+            }))
+//            self.dismissLoadingIndicator()
+            self.present(alert, animated: true, completion: nil)
+        } failure: { error in
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+
+        
+    }
+    
     private func getStarImage(starNumber: Int, forRating rating: Int) -> UIImage {
         if rating >= starNumber {
             return UIImage(named: "star.fill")!
         } else {
             return UIImage(named: "star.empty")!
+        }
+    }
+    
+    private func loadCars() {
+        CarAPI.getMyCars { cars in
+            self.myCars = cars
+            self.setCarDropDowns()
+            self.carField.text = cars.first?.model
+            self.loadOrders(id: cars.first?.id ?? 0)
+        } failure: { error in
+//            print(error.debugDescription)
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+//            self.dismissLoadingIndicator()
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    private func loadOrders(id: Int) {
+        OrderAPI.orderList(userCarId: id) { responce in
+            self.myOrders = []
+            if let carOrder = responce.result?.first {
+                self.myOrders = carOrder.orders
+                if carOrder.orders.isEmpty {
+                    let alert = UIAlertController(title: "Не найдены наряды", message: nil, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                    
+                    }))
+        //            self.dismissLoadingIndicator()
+                    self.present(alert, animated: true, completion: nil)
+                    self.setOrderDropDowns()
+                } else {
+                    self.setOrderDropDowns()
+                }
+            } else {
+                let alert = UIAlertController(title: "Не найдены наряды", message: nil, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                
+                }))
+    //            self.dismissLoadingIndicator()
+                self.present(alert, animated: true, completion: nil)
+                self.setOrderDropDowns()
+                self.orderChevronButton.transform = .identity
+            }
+        } failure: { error in
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+//            self.dismissLoadingIndicator()
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    private func setCarDropDowns() {
+        carDropDown.dataSource = myCars.map({ i in
+            i.model
+        })
+        carDropDown.anchorView = carButton
+        carDropDown.direction = .bottom
+        carDropDown.bottomOffset = CGPoint(x: 0, y:carButton.frame.height + 10)
+        carDropDown.width = carButton.frame.width
+        carDropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            self?.carField.text = item
+            self?.carDropDown.hide()
+            self?.carChevronButton.transform = .identity
+//            self?.showLoadingIndicator()
+            self?.myOrders = []
+            self?.orderField.text = nil
+            self?.loadOrders(id: self?.myCars[index].id ?? 0)
+            self?.orderID = nil
+        }
+    }
+    
+    private func setOrderDropDowns() {
+        orderDropDown.dataSource = myOrders.map({ i in
+            i.order_number + " от " + i.date.prefix(10)
+        })
+        orderDropDown.anchorView = orderButton
+        orderDropDown.direction = .bottom
+        orderDropDown.bottomOffset = CGPoint(x: 0, y: orderButton.frame.height + 10)
+        orderDropDown.width = orderButton.frame.width
+        orderDropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            self?.orderField.text = item
+            self?.orderID = self?.myOrders[index].id
+            self?.orderDropDown.hide()
+            self?.orderChevronButton.transform = .identity
+//            self?.showLoadingIndicator()
+//            self?.loadOrders(id: self?.myCars[index].id ?? 0)
         }
     }
 

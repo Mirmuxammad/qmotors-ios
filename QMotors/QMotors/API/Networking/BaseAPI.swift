@@ -28,6 +28,7 @@ enum RequestMethod {
     case orderList(Int)
     case bonus
     case notification
+    case review
     case showReview(Int)
     case listTechCenters(Int)
     case reminder
@@ -73,6 +74,8 @@ enum RequestMethod {
             return "bonus"
         case .notification:
             return "notification"
+        case .review:
+            return "review"
         case .showReview(let id):
             return "review/\(id)"
         case .listTechCenters(let id):
