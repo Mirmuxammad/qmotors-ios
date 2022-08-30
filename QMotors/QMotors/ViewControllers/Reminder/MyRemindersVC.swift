@@ -143,17 +143,15 @@ class MyRemindersVC: BaseVC {
                     self.reminder = i
                 }
             }
+            self.showLoadingIndicator()
             guard let index = self.reminder?.id else { return }
             ReminderAPI.deleteReminders(reminderId: index) { [weak self] result in
-                self?.router?.back()
-                
+                self?.loadInfo()
+                self?.dismissLoadingIndicator()
             } failure: { erron in
                 print(erron)
             }
-
-            self.loadInfo()
         }
-        
         let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
         
         alert.addAction(okAction)
@@ -166,17 +164,14 @@ class MyRemindersVC: BaseVC {
     
     private func loadInfo() {
         self.showLoadingIndicator()
-        let dg = DispatchGroup()
-//        loadMyCar(dg: dg)
         loadReminders()
-        tableView.reloadData()
     }
+    
     
     // MARK: - Load Reminders
     
     private func loadReminders() {
         activityIndicator.startAnimating()
-        reminders = []
         ReminderAPI.remindersList { [weak self] jsonData in
             self?.reminders = jsonData
             self?.tableView.reloadData()
@@ -199,7 +194,6 @@ class MyRemindersVC: BaseVC {
     }
     
     @objc func reloadButton(notification: NSNotification){
-        print("🎁")
         reminders = []
         loadInfo()
         tableView.reloadData()
@@ -211,7 +205,9 @@ class MyRemindersVC: BaseVC {
 extension MyRemindersVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        reminders.count
+        print("🦊")
+        print(reminders.count)
+        return reminders.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -232,11 +228,15 @@ extension MyRemindersVC: UITableViewDataSource {
                 else { return UITableViewCell() }
                 cell.delegate = self
                 cell.setupCell(reminder: reminders[indexPath.row], car: car!)
-            } else {
+                return cell
+            } else if date <= Date(){
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: MyLastRemindersTableViewCell.identifier, for: indexPath) as? MyLastRemindersTableViewCell
                 else { return UITableViewCell() }
                 cell.delegate = self
-                cell.setupLastCells(reminder: reminders[indexPath.row], car: car!)
+                if let car = car {
+                    cell.setupLastCells(reminder: reminders[indexPath.row], car: car)
+                }
+                return cell
             }
         }
         return UITableViewCell()
