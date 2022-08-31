@@ -130,6 +130,12 @@
 		E02E317E28A51AC90067CEAB /* DeteilOrderForCarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02E317D28A51AC90067CEAB /* DeteilOrderForCarVC.swift */; };
 		E02E318028A51C990067CEAB /* DeteilOrderForCarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02E317F28A51C990067CEAB /* DeteilOrderForCarTableViewCell.swift */; };
 		E02E318228A522BD0067CEAB /* CarOrderResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02E318128A522BD0067CEAB /* CarOrderResponce.swift */; };
+		E08B3CE628BF690A00140D22 /* ArticlesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08B3CE528BF690A00140D22 /* ArticlesViewController.swift */; };
+		E08B3CE828BF692B00140D22 /* ArticlesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08B3CE728BF692B00140D22 /* ArticlesTableViewCell.swift */; };
+		E08B3CEA28BF722600140D22 /* ArticlesResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08B3CE928BF722600140D22 /* ArticlesResponce.swift */; };
+		E08B3CEC28BF72B200140D22 /* ArticleAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08B3CEB28BF72B200140D22 /* ArticleAPI.swift */; };
+		E08B3CEE28BF7CA800140D22 /* ArticleDeteilViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08B3CED28BF7CA800140D22 /* ArticleDeteilViewController.swift */; };
+		E08B3CF028BF885300140D22 /* NSAttributedString + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08B3CEF28BF885300140D22 /* NSAttributedString + Extension.swift */; };
 		E0CCAE56E74A9C8AB951C365 /* Pods_QMotors.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FD0605EC1AF8C942E96CC2 /* Pods_QMotors.framework */; };
 		F34B850D289FD199006334FD /* TechnicalRecordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34B850C289FD198006334FD /* TechnicalRecordVC.swift */; };
 		F34B850F28A01410006334FD /* UserAutos.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34B850E28A01410006334FD /* UserAutos.swift */; };
@@ -268,6 +274,12 @@
 		E02E317D28A51AC90067CEAB /* DeteilOrderForCarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeteilOrderForCarVC.swift; sourceTree = "<group>"; };
 		E02E317F28A51C990067CEAB /* DeteilOrderForCarTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeteilOrderForCarTableViewCell.swift; sourceTree = "<group>"; };
 		E02E318128A522BD0067CEAB /* CarOrderResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarOrderResponce.swift; sourceTree = "<group>"; };
+		E08B3CE528BF690A00140D22 /* ArticlesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesViewController.swift; sourceTree = "<group>"; };
+		E08B3CE728BF692B00140D22 /* ArticlesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesTableViewCell.swift; sourceTree = "<group>"; };
+		E08B3CE928BF722600140D22 /* ArticlesResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesResponce.swift; sourceTree = "<group>"; };
+		E08B3CEB28BF72B200140D22 /* ArticleAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleAPI.swift; sourceTree = "<group>"; };
+		E08B3CED28BF7CA800140D22 /* ArticleDeteilViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDeteilViewController.swift; sourceTree = "<group>"; };
+		E08B3CEF28BF885300140D22 /* NSAttributedString + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString + Extension.swift"; sourceTree = "<group>"; };
 		F34B850C289FD198006334FD /* TechnicalRecordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechnicalRecordVC.swift; sourceTree = "<group>"; };
 		F34B850E28A01410006334FD /* UserAutos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAutos.swift; sourceTree = "<group>"; };
 		F371A61D289FBD8C0090472A /* MaintenanceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceVC.swift; sourceTree = "<group>"; };
@@ -376,6 +388,7 @@
 				E02196AE28B9187100168C23 /* ListTechCentersResponce.swift */,
 				4013070F28B2465600A8F662 /* NewReminder.swift */,
 				4013071728B34EF300A8F662 /* ReminderResponce.swift */,
+				E08B3CE928BF722600140D22 /* ArticlesResponce.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -395,6 +408,7 @@
 				044E96B628B8E11700A0609F /* NotificationAPI.swift */,
 				E02196AA28B9118A00168C23 /* ReviewAPI.swift */,
 				4013071128B246D500A8F662 /* ReminderAPI.swift */,
+				E08B3CEB28BF72B200140D22 /* ArticleAPI.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -504,6 +518,7 @@
 		84DDD28B287ED57B00272C19 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E08B3CE328BF68CB00140D22 /* Articles */,
 				E021969E28B8EC0C00168C23 /* FeedBack */,
 				4013070A28B244FD00A8F662 /* Reminder */,
 				E02E316D28A3C9160067CEAB /* HistoryOrders */,
@@ -594,6 +609,7 @@
 				84AC3B95289AAE5300353231 /* String+Extension.swift */,
 				4006221B28A273B000E55C04 /* Date+Extension.swift */,
 				40D9C27628AAB1BB005195B5 /* UIImage+Extension.swift */,
+				E08B3CEF28BF885300140D22 /* NSAttributedString + Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -695,6 +711,24 @@
 				E02E317F28A51C990067CEAB /* DeteilOrderForCarTableViewCell.swift */,
 			);
 			path = DeteilOrderForCar;
+			sourceTree = "<group>";
+		};
+		E08B3CE328BF68CB00140D22 /* Articles */ = {
+			isa = PBXGroup;
+			children = (
+				E08B3CE428BF68ED00140D22 /* ArticleDeteil */,
+				E08B3CE528BF690A00140D22 /* ArticlesViewController.swift */,
+				E08B3CE728BF692B00140D22 /* ArticlesTableViewCell.swift */,
+			);
+			path = Articles;
+			sourceTree = "<group>";
+		};
+		E08B3CE428BF68ED00140D22 /* ArticleDeteil */ = {
+			isa = PBXGroup;
+			children = (
+				E08B3CED28BF7CA800140D22 /* ArticleDeteilViewController.swift */,
+			);
+			path = ArticleDeteil;
 			sourceTree = "<group>";
 		};
 		F371A61C289FBD810090472A /* Maintenance */ = {
@@ -853,6 +887,7 @@
 				8456BA6E2881659E00684AF5 /* PhoneCallButton.swift in Sources */,
 				E02196AB28B9118A00168C23 /* ReviewAPI.swift in Sources */,
 				84DDD273287ED3A100272C19 /* AppDelegate.swift in Sources */,
+				E08B3CEA28BF722600140D22 /* ArticlesResponce.swift in Sources */,
 				84ACAF4E2892B1250012508C /* TechCellNaviButton.swift in Sources */,
 				8498365028872B6A00EF47D0 /* SmsResponse.swift in Sources */,
 				E02E317928A414710067CEAB /* OrdersForCarVC.swift in Sources */,
@@ -861,6 +896,7 @@
 				84DDD275287ED3A100272C19 /* SceneDelegate.swift in Sources */,
 				E02E316828A2BB060067CEAB /* OrderAPI.swift in Sources */,
 				84DDD2BE287F393300272C19 /* SideMenuVC.swift in Sources */,
+				E08B3CE628BF690A00140D22 /* ArticlesViewController.swift in Sources */,
 				84ACAF31289185070012508C /* CustomLabel.swift in Sources */,
 				405E643C28AA772100A07FEC /* GenderSwitch.swift in Sources */,
 				84ACAF4128927D170012508C /* LoginAPI.swift in Sources */,
@@ -871,6 +907,7 @@
 				7EA2EB5F28A5067900C70910 /* BirthdayPicker.swift in Sources */,
 				E02196A928B908D200168C23 /* AllFeedBacksViewController.swift in Sources */,
 				4013071228B246D500A8F662 /* ReminderAPI.swift in Sources */,
+				E08B3CF028BF885300140D22 /* NSAttributedString + Extension.swift in Sources */,
 				84ACAF502892C6C70012508C /* TechCellSingUpButton.swift in Sources */,
 				E02E318228A522BD0067CEAB /* CarOrderResponce.swift in Sources */,
 				4013071828B34EF300A8F662 /* ReminderResponce.swift in Sources */,
@@ -886,6 +923,7 @@
 				0470BCDB28B77C2400418BAB /* BonusVC.swift in Sources */,
 				401C746428A1431600CA5DAD /* CarInfoVC.swift in Sources */,
 				8456BA6B28815AF200684AF5 /* PhoneCallView.swift in Sources */,
+				E08B3CE828BF692B00140D22 /* ArticlesTableViewCell.swift in Sources */,
 				84A4AB6B2889CCB900B657F1 /* LogoutButton.swift in Sources */,
 				84D94F5928855F0D0023AA02 /* MainVC.swift in Sources */,
 				84B2411528AD84A0000A6396 /* MyCarOrder.swift in Sources */,
@@ -919,6 +957,7 @@
 				84AE273D288BF10E000870D4 /* MyCarsTableViewCell.swift in Sources */,
 				84ACAF4728927DEB0012508C /* CarMarkResponse.swift in Sources */,
 				0470BCDE28B786E800418BAB /* BonusAPI.swift in Sources */,
+				E08B3CEE28BF7CA800140D22 /* ArticleDeteilViewController.swift in Sources */,
 				84A4AB692889C51700B657F1 /* CabinetVC.swift in Sources */,
 				E02E316A28A2BCA30067CEAB /* OrderTypeResponce.swift in Sources */,
 				84AE2739288BD45E000870D4 /* SmallBackButton.swift in Sources */,
@@ -926,6 +965,7 @@
 				E02196AD28B9129000168C23 /* ReviewResponce.swift in Sources */,
 				F34B850F28A01410006334FD /* UserAutos.swift in Sources */,
 				84A4AB6D2889CFB800B657F1 /* PersonalAreaButton.swift in Sources */,
+				E08B3CEC28BF72B200140D22 /* ArticleAPI.swift in Sources */,
 				405CB81E28B5E51100881004 /* ReminderCellButton.swift in Sources */,
 				84A509A928A2540500B30D6E /* CabinetBackButton.swift in Sources */,
 				849836312886974800EF47D0 /* BackButton.swift in Sources */,
