@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import StoreKit
 
 class FeedBackViewController: BaseVC {
     
@@ -102,6 +103,21 @@ extension FeedBackViewController {
     
     @objc private func openRateApp() {
         print("открыть приложение в сторе")
+        rateApp()
+    }
+    
+    private func rateApp() {
+        if #available(iOS 10.3, *) {
+            SKStoreReviewController.requestReview()
+
+        } else if let url = URL(string: "https://apps.apple.com/ru/app/quality-motors/id1600050001") {
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        }
     }
     
     
