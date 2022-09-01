@@ -10,7 +10,11 @@ import UIKit
 
 class MaintenanceView: UIView {
     
-//    private let scrollView: UIScrollView = UIScrollView()
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.backgroundColor = .white
+        return scrollView
+    }()
     
     // MARK: - UI Elements
     private let logoImageView: UIImageView = {
@@ -20,11 +24,11 @@ class MaintenanceView: UIView {
     }()
 
     // MARK: - Views
-    private let backgroundView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        return view
-    }()
+//    private let scrollView: UIView = {
+//        let view = UIView()
+//        view.backgroundColor = .white
+//        return view
+//    }()
     
     private let introductionView: UIView = {
        let view = UIView()
@@ -107,7 +111,23 @@ class MaintenanceView: UIView {
     }()
     
     //MARK: - TableView
-    let tableView: UITableView = {
+    let salonTableView: UITableView = {
+        let table = UITableView()
+        table.isScrollEnabled = false
+        table.register(MaintenanceTableViewCell.self, forCellReuseIdentifier: MaintenanceTableViewCell.identifier)
+        table.register(MaintenanceDetailCell.self, forCellReuseIdentifier: MaintenanceDetailCell.identifier)
+        table.translatesAutoresizingMaskIntoConstraints = false
+        return table
+    }()
+    let hoodTableView: UITableView = {
+        let table = UITableView()
+        table.isScrollEnabled = false
+        table.register(MaintenanceTableViewCell.self, forCellReuseIdentifier: MaintenanceTableViewCell.identifier)
+        table.register(MaintenanceDetailCell.self, forCellReuseIdentifier: MaintenanceDetailCell.identifier)
+        table.translatesAutoresizingMaskIntoConstraints = false
+        return table
+    }()
+    let chassisTableView: UITableView = {
         let table = UITableView()
         table.isScrollEnabled = false
         table.register(MaintenanceTableViewCell.self, forCellReuseIdentifier: MaintenanceTableViewCell.identifier)
@@ -130,27 +150,31 @@ class MaintenanceView: UIView {
     
     
     private func setupViews() {
-//        addSubview(scrollView)
+        addSubview(scrollView)
         addSubview(logoImageView)
-        addSubview(backgroundView)
-        backgroundView.addSubview(backButton)
-        backgroundView.addSubview(titleLable)
-        backgroundView.addSubview(secondTitleLabel)
-        backgroundView.addSubview(introductionView)
-        backgroundView.addSubview(tableView)
-        backgroundView.addSubview(orderButton)
-        backgroundView.addSubview(informationLabel)
+//        scrollView.addSubview(backgroundView)
+        scrollView.addSubview(backButton)
+        scrollView.addSubview(titleLable)
+        scrollView.addSubview(secondTitleLabel)
+        scrollView.addSubview(introductionView)
+        scrollView.addSubview(salonTableView)
+        scrollView.addSubview(hoodTableView)
+        scrollView.addSubview(chassisTableView)
+        scrollView.addSubview(orderButton)
+        scrollView.addSubview(informationLabel)
+        introductionView.addSubview(colorImage)
         colorImage.addSubview(intdroductionLabel)
         colorImage.addSubview(intdroductionBottomLabel)
-        introductionView.addSubview(colorImage)
     }
     
     private func setupConstraints() {
         
-//        scrollView.snp.makeConstraints { make in
-//            make.top.equalTo(logoImageView.snp.bottom).offset(20)
-//            make.left.right.bottom.equalToSuperview()
-//        }
+        
+        
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(logoImageView.snp.bottom).offset(20)
+            make.left.right.bottom.equalToSuperview()
+        }
         
         logoImageView.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 55, height: 55))
@@ -158,17 +182,11 @@ class MaintenanceView: UIView {
             make.top.equalTo(self.safeAreaLayoutGuide)
         }
         
-        backgroundView.snp.makeConstraints { make in
-            make.top.equalTo(logoImageView.snp.bottom).offset(20)
-            make.left.right.bottom.equalToSuperview()
-        }
-        
         backButton.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 100, height: 23))
             make.left.equalToSuperview().offset(20)
             make.top.equalToSuperview().offset(40)
         }
-        
         
         titleLable.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
@@ -183,7 +201,6 @@ class MaintenanceView: UIView {
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
             make.top.equalTo(titleLable.snp.bottom).offset(20)
-        
         }
         
         secondTitleLabel.snp.makeConstraints { make in
@@ -203,13 +220,23 @@ class MaintenanceView: UIView {
             make.right.equalTo(introductionView).offset(-20)
         }
         
-        tableView.snp.makeConstraints { make in
+        salonTableView.snp.makeConstraints { make in
             make.top.equalTo(secondTitleLabel.snp.bottom).offset(5)
+            make.right.left.equalToSuperview()
+        }
+        
+        hoodTableView.snp.makeConstraints { make in
+            make.top.equalTo(salonTableView.snp.bottom)
+            make.right.left.equalToSuperview()
+        }
+        
+        chassisTableView.snp.makeConstraints { make in
+            make.top.equalTo(hoodTableView.snp.bottom).offset(5)
             make.right.left.equalToSuperview()
         }
 
         orderButton.snp.makeConstraints { make in
-            make.top.equalTo(tableView.snp.bottom).offset(28)
+            make.top.equalTo(chassisTableView.snp.bottom).offset(28)
             make.height.equalTo(55)
             make.left.equalToSuperview().offset(10)
             make.right.equalToSuperview().offset(-10)
@@ -219,7 +246,7 @@ class MaintenanceView: UIView {
             make.top.equalTo(orderButton.snp.bottom).offset(12)
             make.left.equalToSuperview().offset(15)
             make.right.equalToSuperview().offset(-15)
-            make.bottom.equalTo(self.safeAreaLayoutGuide)
+            make.bottom.equalToSuperview()
         }
     }
 }

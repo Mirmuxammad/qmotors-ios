@@ -34,12 +34,6 @@ class MaintenanceTableViewCell: UITableViewCell {
         return image
     }()
     
-    private var bottomView: UIView = UIView() {
-        didSet{
-            bottomView.isHidden
-        }
-    }
-    
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -59,7 +53,6 @@ class MaintenanceTableViewCell: UITableViewCell {
         backgroundViewCell.addSubview(itemCellLabel)
         backgroundViewCell.addSubview(itemCellImage)
         backgroundViewCell.addSubview(cellArrow)
-        addSubview(bottomView)
     }
     
     private func setupConstraints() {
