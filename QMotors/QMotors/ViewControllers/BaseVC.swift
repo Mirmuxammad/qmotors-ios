@@ -176,6 +176,8 @@ class BaseVC: UIViewController, Routable {
     
     @objc private func chatsButtonDidTap() {
         print("chatsButtonDidTap")
+        let vc = ChatVC()
+        self.present(vc, animated: true, completion: nil)
     }
     
     @objc private func phoneCallButtonDidTap() {
