@@ -12,7 +12,7 @@ import Alamofire
 class MaintenanceVC: BaseVC {
     
     let list = ["САЛОН, ЭЛЕКТРИКА", "ПОДКОПОТНОЕ ПРОСТРАНСТВО", "ХОДОВАЯ(ПОДВЕСТКИ)"]
-    let icons = ["mail.fill", "gearshape", "car.fill"]
+    let icons = ["car.lights", "car.hood", "car.chassis"]
     
     private var baseView: MaintenanceView = MaintenanceView()
     
