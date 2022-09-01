@@ -109,6 +109,7 @@ class MaintenanceView: UIView {
     //MARK: - TableView
     let tableView: UITableView = {
         let table = UITableView()
+        table.isScrollEnabled = false
         table.register(MaintenanceTableViewCell.self, forCellReuseIdentifier: MaintenanceTableViewCell.identifier)
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
@@ -203,8 +204,7 @@ class MaintenanceView: UIView {
         
         tableView.snp.makeConstraints { make in
             make.top.equalTo(secondTitleLabel.snp.bottom).offset(5)
-            make.right.equalToSuperview()
-            make.left.equalToSuperview().offset(-20)
+            make.right.left.equalToSuperview()
         }
 
         orderButton.snp.makeConstraints { make in
