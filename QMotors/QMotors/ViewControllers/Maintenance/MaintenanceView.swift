@@ -111,6 +111,7 @@ class MaintenanceView: UIView {
         let table = UITableView()
         table.isScrollEnabled = false
         table.register(MaintenanceTableViewCell.self, forCellReuseIdentifier: MaintenanceTableViewCell.identifier)
+        table.register(MaintenanceDetailCell.self, forCellReuseIdentifier: MaintenanceDetailCell.identifier)
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()

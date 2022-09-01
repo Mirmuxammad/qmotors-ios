@@ -25,11 +25,7 @@ class MaintenanceTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let itemCellImage: UIImageView = {
-        let image = UIImageView()
-        
-        return image
-    }()
+    private let itemCellImage: UIImageView = UIImageView()
     
     private let cellArrow: UIImageView = {
         let image = UIImageView()
@@ -37,6 +33,12 @@ class MaintenanceTableViewCell: UITableViewCell {
         image.tintColor = .black
         return image
     }()
+    
+    private var bottomView: UIView = UIView() {
+        didSet{
+            bottomView.isHidden
+        }
+    }
     
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -57,11 +59,13 @@ class MaintenanceTableViewCell: UITableViewCell {
         backgroundViewCell.addSubview(itemCellLabel)
         backgroundViewCell.addSubview(itemCellImage)
         backgroundViewCell.addSubview(cellArrow)
+        addSubview(bottomView)
     }
     
     private func setupConstraints() {
         backgroundViewCell.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.left.right.equalToSuperview()
+            make.height.equalTo(76)
         }
         
         itemCellImage.snp.makeConstraints { make in
