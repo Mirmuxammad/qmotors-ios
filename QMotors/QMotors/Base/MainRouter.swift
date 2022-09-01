@@ -42,6 +42,11 @@ class MainRouter: NSObject {
 //        pushViewController(vc: baseVC, animated: true)
 //    }
     
+    func pushHelpVC() {
+        let vc = HelpVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
     func pushAllFeedBAcks() {
         let vc = AllFeedBacksViewController()
         pushViewController(vc: vc, animated: true)
