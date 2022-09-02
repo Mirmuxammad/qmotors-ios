@@ -254,6 +254,9 @@ class RegistrationVC: BaseVC {
         requestCodeButton.isHidden = false
         timerLabel.isHidden = false
         
+        if !(timer?.isValid ?? false) {
+        createTimer()
+        }
         codeButton.setupTitle(title: "РЕГИСТРАЦИЯ")
         codeButtonTitle = "РЕГИСТРАЦИЯ"
     }
