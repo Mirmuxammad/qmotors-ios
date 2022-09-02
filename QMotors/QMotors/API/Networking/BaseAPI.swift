@@ -25,6 +25,7 @@ enum RequestMethod {
     case deletePhoto(Int)
     case orderTypeList
     case order
+    case orderPhoto(Int)
     case orderList(Int)
     case bonus
     case notification
@@ -69,6 +70,8 @@ enum RequestMethod {
             return "order-type/list"
         case .order:
             return "order"
+        case .orderPhoto(let id):
+            return "order/\(id)/photo"
         case .orderList(let id):
             return "order/history?user_car_id=\(id)"
         case .bonus:

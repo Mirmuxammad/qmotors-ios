@@ -21,7 +21,7 @@ class OrderRecordVC: BaseVC {
     
     private var fileURLArray: [URL] = [] {
         didSet {
-            print(fileURLArray)
+//            print(fileURLArray)
         }
     }
     
@@ -406,28 +406,11 @@ class OrderRecordVC: BaseVC {
         }
     }
     
-    private func addDiagnosticVizitCar() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let newDate = dateFormatter.date(from: order.date!)
-        guard let car = myCar else { return }
-        
-        var descriptionOfOrder = ""
-        if let infoDescription = infoField.text {
-            descriptionOfOrder = infoDescription
-        }
-        guard let orderTypeId = order.orderTypeId else { return }
-        guard let techCenterId = order.techCenterId else { return }
-        let guarantee = guaranteeSwitch.isOn
+    private func addPhotoToOrder() {
         
         
-        CarAPI.addDiagnosticVizitCar(carId: car.id, carNumber: car.number, techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, lastVisit: newDate!, freeDiagnostics: false, guarantee: guarantee, success: { [weak self] result in
-            self?.router?.back()
-            self?.dismissLoadingIndicator()
-        }) { [weak self] error in
-            print(error?.message ?? "")
-            self?.dismissLoadingIndicator()
-        }
+        self.router?.back()
+        self.dismissLoadingIndicator()
     }
     
     
@@ -511,24 +494,40 @@ class OrderRecordVC: BaseVC {
             present(alert, animated: true)
         } else {
             self.showLoadingIndicator()
-            print(order)
-
-            OrderAPI.addNewOrder(order: order) { json in
-                print("order")
-                self.dismissLoadingIndicator()
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let newDate = dateFormatter.date(from: order.date!)
+            guard let car = myCar else { return }
+            
+            var descriptionOfOrder = ""
+            if let infoDescription = infoField.text {
+                descriptionOfOrder = infoDescription
+            }
+            guard let orderTypeId = order.orderTypeId else { return }
+            guard let techCenterId = order.techCenterId else { return }
+            let guarantee = guaranteeSwitch.isOn
+            
+            
+            OrderAPI.addDiagnosticOrder(carId: car.id, carNumber: car.number, techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, lastVisit: newDate!, freeDiagnostics: false, guarantee: guarantee, success: { [weak self] result in
+                
                 DispatchQueue.main.async {
-                    self.addDiagnosticVizitCar()
+                    self?.addPhotoToOrder()
                 }
                 
-            } failure: { error in
+                self?.dismissLoadingIndicator()
+                
+            }) { [weak self] error in
+                print(error?.message ?? "")
                 let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
                 
                 }))
-                self.dismissLoadingIndicator()
-                self.present(alert, animated: true, completion: nil)
+                self?.dismissLoadingIndicator()
+                self?.present(alert, animated: true, completion: nil)
             }
         
+            // не понимаю для чего эта часть
             guard
                 let id = myCarOrder.id,
                 let carModelId = myCarOrder.carModelId,
@@ -542,7 +541,7 @@ class OrderRecordVC: BaseVC {
             CarAPI.editCar(carId: id, carModelId: carModelId, year: year, mileage: milage, number: number, vin: vin, lastVisit: lastVisit, status: status) { result in
                 print("Car last visit succesfully updated")
             } failure: { error in
-                print(error?.localizedDescription)
+                print(error?.localizedDescription ?? "")
             }
         }
     }
@@ -647,7 +646,7 @@ extension OrderRecordVC: UITextFieldDelegate {
             
             fileURLArray.append(documentUrl)
             
-            print(documentUrl)
+//            print(documentUrl)
             
             dismiss(animated: true) { [weak self] in
                 if let data = data, let image = UIImage(data: data) {
