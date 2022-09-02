@@ -122,6 +122,13 @@ class OrderRecordVC: BaseVC {
         return label
     }()
     
+    private let guaranteeInfoLabel: CustomLabel = {
+        let label = CustomLabel(text: "Имеется ли у вас гарантия", fontWeight: .medium)
+        return label
+    }()
+    
+    private let guaranteeSwitch: UISwitch = UISwitch()
+    
     private let imgLabel: UILabel = {
         let label = UILabel()
         label.text = "Добавить фото"
@@ -139,7 +146,7 @@ class OrderRecordVC: BaseVC {
     }()
     
     private let userCarField: CustomTextField = {
-        let field = CustomTextField(placeholder: "Из спика ваших автомобилей")
+        let field = CustomTextField(placeholder: "Из спиcка ваших автомобилей")
         return field
     }()
     
@@ -289,6 +296,8 @@ class OrderRecordVC: BaseVC {
         contentView.addSubview(optionButon)
         contentView.addSubview(infoLabel)
         contentView.addSubview(infoField)
+        contentView.addSubview(guaranteeInfoLabel)
+        contentView.addSubview(guaranteeSwitch)
         contentView.addSubview(imgLabel)
         contentView.addSubview(photosStackView)
         photosStackView.addArrangedSubview(firstPhotoView)
@@ -385,14 +394,38 @@ class OrderRecordVC: BaseVC {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let newDate = dateFormatter.date(from: order.date!)
-        self.showLoadingIndicator()
+//        self.showLoadingIndicator()
         guard let car = myCar else { return }
         
         CarAPI.addLastVizitCar(carId: car.car_model_id, lastVisit: newDate!, success: { [weak self] result in
             self?.router?.back()
             self?.dismissLoadingIndicator()
         }) { [weak self] error in
-            print(error)
+            print(error?.message ?? "")
+            self?.dismissLoadingIndicator()
+        }
+    }
+    
+    private func addDiagnosticVizitCar() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let newDate = dateFormatter.date(from: order.date!)
+        guard let car = myCar else { return }
+        
+        var descriptionOfOrder = ""
+        if let infoDescription = infoField.text {
+            descriptionOfOrder = infoDescription
+        }
+        guard let orderTypeId = order.orderTypeId else { return }
+        guard let techCenterId = order.techCenterId else { return }
+        let guarantee = guaranteeSwitch.isOn
+        
+        
+        CarAPI.addDiagnosticVizitCar(carId: car.id, carNumber: car.number, techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, lastVisit: newDate!, freeDiagnostics: false, guarantee: guarantee, success: { [weak self] result in
+            self?.router?.back()
+            self?.dismissLoadingIndicator()
+        }) { [weak self] error in
+            print(error?.message ?? "")
             self?.dismissLoadingIndicator()
         }
     }
@@ -458,6 +491,7 @@ class OrderRecordVC: BaseVC {
         optionDropDown.selectionAction = { [weak self] (index: Int, item: String) in
             self?.optionField.text = item
             self?.order.orderTypeId = self?.orderTypes[index].id
+            
             self?.optionDropDown.hide()
             self?.optionsChevronButton.transform = .identity
         }
@@ -480,10 +514,10 @@ class OrderRecordVC: BaseVC {
             print(order)
 
             OrderAPI.addNewOrder(order: order) { json in
-                print(json)
+                print("order")
                 self.dismissLoadingIndicator()
                 DispatchQueue.main.async {
-                    self.editLastVizitCar()
+                    self.addDiagnosticVizitCar()
                 }
                 
             } failure: { error in
@@ -768,8 +802,20 @@ extension OrderRecordVC {
             make.right.equalToSuperview().offset(rOffset)
         }
         
+        guaranteeInfoLabel.snp.makeConstraints { make in
+            make.top.equalTo(infoField.snp.bottom).offset(10)
+            make.height.equalTo(54)
+            make.left.equalToSuperview().offset(lOffset)
+            make.right.equalToSuperview().offset(rOffset)
+        }
+        
+        guaranteeSwitch.snp.makeConstraints { make in
+            make.top.equalTo(guaranteeInfoLabel.snp.bottom).offset(10)
+            make.left.equalToSuperview().offset(lOffset)
+        }
+        
         imgLabel.snp.makeConstraints { make in
-            make.top.equalTo(infoField.snp.bottom).offset(28)
+            make.top.equalTo(guaranteeSwitch.snp.bottom).offset(28)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }

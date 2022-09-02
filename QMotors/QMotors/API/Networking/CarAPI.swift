@@ -332,6 +332,50 @@ final class CarAPI {
         }
     }
     
+    static func addDiagnosticVizitCar(carId: Int, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, lastVisit: Date, freeDiagnostics: Bool, guarantee: Bool, success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let lastVisitStr = formatter.string(from: lastVisit)
+        
+        let params: Parameters = [
+            "order_type_id": orderTypeId,
+            "tech_center_id": techCenterId,
+            "description": description,
+            "date": lastVisitStr,
+            "guarantee": guarantee,
+            "free_diagnstics": freeDiagnostics,
+            "user_car_id": carId,
+            "number": carNumber
+        ]
+        
+        BaseAPI.authorizedPostRequest(reqMethod: .order, parameters: params, success: { data in
+            guard let data = data else { return }
+            let jsonData = JSON(data)
+            let errors = jsonData["errors"]
+            if errors.type == .null {
+                success(jsonData["result"])
+                print("запрос ушел")
+            } else {
+                failure(NetworkError(.other(errors.stringValue)))
+            }
+        }) { error in
+            failure(error)
+        }
+        
+//        BaseAPI.authorizedPutRequest(reqMethod: .editCar(carId), parameters: params, success: { data in
+//            guard let data = data else { return }
+//            let jsonData = JSON(data)
+//            let errors = jsonData["errors"]
+//            if errors.type == .null {
+//                success(jsonData["result"])
+//            } else {
+//                failure(NetworkError(.other(errors.stringValue)))
+//            }
+//        }) { error in
+//            failure(error)
+//        }
+    }
+    
     static func addCarPhoto(carId: Int, fileURLArray: [URL], success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError) {
         BaseAPI.authorizedMultipartPostRequest(carId: carId, fieldName: "photo", fileURLArray: fileURLArray, success: { data in
             guard let data = data else { return }
