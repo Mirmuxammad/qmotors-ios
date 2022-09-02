@@ -34,7 +34,7 @@ final class OrderAPI {
         }
     }
     
-    static func addDiagnosticOrder(carId: Int, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, lastVisit: Date, freeDiagnostics: Bool, guarantee: Bool, success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError) {
+    static func addDiagnosticOrder(carId: Int, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, lastVisit: Date, freeDiagnostics: Bool, guarantee: Bool, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         let lastVisitStr = formatter.string(from: lastVisit)
@@ -52,14 +52,10 @@ final class OrderAPI {
         
         BaseAPI.authorizedPostRequest(reqMethod: .order, parameters: params, success: { data in
             guard let data = data else { return }
-            let jsonData = JSON(data)
-            let errors = jsonData["errors"]
-            if errors.type == .null {
-                success(jsonData["result"])
-                print("запрос ушел")
-            } else {
-                failure(NetworkError(.other(errors.stringValue)))
-            }
+            let decoder = JSONDecoder()
+            let result = try? decoder.decode(OrderResponse.self, from: data)
+            guard let response = result else { return }
+                success(response)
         }) { error in
             failure(error)
         }
@@ -80,6 +76,31 @@ final class OrderAPI {
             let errors = jsonData["errors"]
             if errors.type == .null {
                 print(jsonData["result"])
+                success("ordertypes")
+            } else {
+                failure(NetworkError(.other(errors.stringValue)))
+            }
+        }) { error in
+            failure(error)
+        }
+    }
+    
+    static func addPhotoToOrder(orderId: Int, photo: UIImage, success: @escaping(String) -> Void, failure: @escaping escapeNetworkError) {
+        
+        guard let data = photo.jpegData(compressionQuality: 0.5) else { return }
+        let encodedImage = data.base64EncodedString()
+        
+        let params: Parameters = [
+            "photo" : encodedImage
+        ]
+        
+        BaseAPI.authorizedPostRequest(reqMethod: .orderPhoto(orderId), parameters: params, success: {data in
+            guard let data = data else { return }
+            let jsonData = JSON(data)
+            let errors = jsonData["errors"]
+            if errors.type == .null {
+                print(jsonData["result"])
+                print("картинка ушла")
                 success("ordertypes")
             } else {
                 failure(NetworkError(.other(errors.stringValue)))

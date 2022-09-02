@@ -406,7 +406,7 @@ class OrderRecordVC: BaseVC {
         }
     }
     
-    private func addPhotoToOrder() {
+    private func addPhotoToOrder(orderId: Int) {
         
         
         self.router?.back()
@@ -510,9 +510,9 @@ class OrderRecordVC: BaseVC {
             
             
             OrderAPI.addDiagnosticOrder(carId: car.id, carNumber: car.number, techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, lastVisit: newDate!, freeDiagnostics: false, guarantee: guarantee, success: { [weak self] result in
-                
+                guard let orderId = result.result.id else { return }
                 DispatchQueue.main.async {
-                    self?.addPhotoToOrder()
+                    self?.addPhotoToOrder(orderId: orderId)
                 }
                 
                 self?.dismissLoadingIndicator()
