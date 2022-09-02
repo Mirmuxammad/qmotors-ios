@@ -61,44 +61,14 @@ final class OrderAPI {
         }
     }
     
-    static func addNewOrder(order: NewOrder, success: @escaping (String) -> Void, failure: @escaping escapeNetworkError) {
-        let params: Parameters = ["user_car_id": order.carId,
-                                  "number": order.carNumber,
-                                  "order_type_id": order.orderTypeId,
-                                  "tech_center_id": order.techCenterId,
-                                  "guarantee": order.guarantee,
-                                  "date": order.date,
-                                  "description": order.description]
-        
-        BaseAPI.authorizedPostRequest(reqMethod: .order, parameters: params, success: { data in
+    static func addPhotoToOrder(orderId: Int, fileURLArray: [URL], success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError) {
+        BaseAPI.authorizedMultipartPostRequestForOrder(orderId: orderId, fieldName: "photo", fileURLArray: fileURLArray, success: { data in
             guard let data = data else { return }
             let jsonData = JSON(data)
             let errors = jsonData["errors"]
             if errors.type == .null {
-                print(jsonData["result"])
-                success("ordertypes")
-            } else {
-                failure(NetworkError(.other(errors.stringValue)))
-            }
-        }) { error in
-            failure(error)
-        }
-    }
-    
-    static func addPhotoToOrder(orderId: Int, photo: UIImage, success: @escaping(String) -> Void, failure: @escaping escapeNetworkError) {
-        
-        let params: Parameters = [
-            "photo" : photo
-        ]
-        
-        BaseAPI.authorizedPostRequest(reqMethod: .orderPhoto(orderId), parameters: params, success: {data in
-            guard let data = data else { return }
-            let jsonData = JSON(data)
-            let errors = jsonData["errors"]
-            if errors.type == .null {
-                print(jsonData["result"])
-                print("картинка ушла")
-                success("ordertypes")
+                print("Photo goes")
+                success(jsonData["result"])
             } else {
                 failure(NetworkError(.other(errors.stringValue)))
             }

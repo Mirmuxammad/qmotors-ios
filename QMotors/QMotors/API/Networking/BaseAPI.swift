@@ -239,6 +239,10 @@ final class BaseAPI {
     static func authorizedMultipartPostRequest(carId: Int, fieldName: String, fileURLArray: [URL], success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
         request(reqMethod: .addCarPhoto(carId), fieldName: fieldName, fileURLArray: fileURLArray, success: success, failure: failure)
     }
+    // загрузка фото для авторизованных пользователей для сервиса
+    static func authorizedMultipartPostRequestForOrder(orderId: Int, fieldName: String, fileURLArray: [URL], success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
+        request(reqMethod: .orderPhoto(orderId), fieldName: fieldName, fileURLArray: fileURLArray, success: success, failure: failure)
+    }
     // загрузка фото пользовотеля
     static func authorizedMultipartPostUserAvatarRequest(userId: Int, fieldName: String, fileURL: URL, success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
         userAvatarRequest(reqMethod: .postProfile, fieldName: fieldName, fileURL: fileURL, success: success, failure: failure)
