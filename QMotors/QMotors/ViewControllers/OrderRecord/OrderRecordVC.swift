@@ -17,11 +17,12 @@ class OrderRecordVC: BaseVC {
     private var orderTypes = [OrderType]()
     private var order = NewOrder()
     private var myCarOrder = MyCarOrder()
+    private var imagesPhoto = [UIImage]()
     
     
     private var fileURLArray: [URL] = [] {
         didSet {
-//            print(fileURLArray)
+            print(fileURLArray.count)
         }
     }
     
@@ -408,7 +409,16 @@ class OrderRecordVC: BaseVC {
     
     private func addPhotoToOrder(orderId: Int) {
         
-        
+        if fileURLArray.count >= 1 {
+            for index in 1 ... fileURLArray.count {
+                OrderAPI.addPhotoToOrder(orderId: orderId, photo: imagesPhoto[index - 1]) { data in
+                    print("photo goes")
+                } failure: { error in
+                    print(error.debugDescription)
+                }
+            }
+        }
+       
         self.router?.back()
         self.dismissLoadingIndicator()
     }
@@ -560,10 +570,13 @@ class OrderRecordVC: BaseVC {
         photoView.photo = UIImage(named: "empty-photo")!
         if photoView == firstPhotoView {
             fileURLArray.remove(at: 0)
+            imagesPhoto.remove(at: 0)
         } else if photoView == secondPhotoView {
             fileURLArray.remove(at: 1)
+            imagesPhoto.remove(at: 1)
         } else if photoView == thirdPhotoView {
             fileURLArray.remove(at: 2)
+            imagesPhoto.remove(at: 2)
         }
         reloadCarPhotos()
     }
@@ -637,7 +650,7 @@ extension OrderRecordVC: UITextFieldDelegate {
         
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             guard let image = info[.editedImage] as? UIImage else { return }
-            
+            imagesPhoto.append(image)
             let data = image.jpegData(compressionQuality: 0.8)
             let documentUrl = getDocumentsDirectory()
                 .appendingPathComponent(UUID().uuidString)

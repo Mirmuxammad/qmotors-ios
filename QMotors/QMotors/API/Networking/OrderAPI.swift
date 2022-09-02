@@ -87,11 +87,8 @@ final class OrderAPI {
     
     static func addPhotoToOrder(orderId: Int, photo: UIImage, success: @escaping(String) -> Void, failure: @escaping escapeNetworkError) {
         
-        guard let data = photo.jpegData(compressionQuality: 0.5) else { return }
-        let encodedImage = data.base64EncodedString()
-        
         let params: Parameters = [
-            "photo" : encodedImage
+            "photo" : photo
         ]
         
         BaseAPI.authorizedPostRequest(reqMethod: .orderPhoto(orderId), parameters: params, success: {data in
