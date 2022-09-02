@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import DropDown
 
-class TechnicalRecordVC: BaseVC {
+class OrderRecordVC: BaseVC {
         
     private let cellIdentifier = "optionsTableCell"
     private var technicalCentersData = [TechnicalCenter]()
@@ -586,7 +586,7 @@ class TechnicalRecordVC: BaseVC {
     
 }
 //MARK: -  UITextFieldDalegate
-extension TechnicalRecordVC: UITextFieldDelegate {
+extension OrderRecordVC: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
@@ -600,7 +600,7 @@ extension TechnicalRecordVC: UITextFieldDelegate {
 }
 
     // MARK: - UIImagePickerControllerDelegate
-    extension TechnicalRecordVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    extension OrderRecordVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             guard let image = info[.editedImage] as? UIImage else { return }
@@ -633,7 +633,7 @@ extension TechnicalRecordVC: UITextFieldDelegate {
     }
 
 // MARK: - Constraints
-extension TechnicalRecordVC {
+extension OrderRecordVC {
     
     private func setupContraints() {
         let lOffset = Const.lOffset

@@ -148,12 +148,12 @@ class MainRouter: NSObject {
     }
     
     func pushTechnicalRecordVC() {
-        let vc = TechnicalRecordVC()
+        let vc = OrderRecordVC()
         pushViewController(vc: vc, animated: true)
     }
     
     func pushTechnicalRecordVCWhithID(id: Int) {
-        let vc = TechnicalRecordVC(techCenterId: id)
+        let vc = OrderRecordVC(techCenterId: id)
         pushViewController(vc: vc, animated: true)
     }
     

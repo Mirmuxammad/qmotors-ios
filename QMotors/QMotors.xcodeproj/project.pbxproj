@@ -137,7 +137,7 @@
 		E869A75F28C1026B00B961F4 /* HelpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E869A75E28C1026B00B961F4 /* HelpController.swift */; };
 		E869A76128C107A100B961F4 /* HelpAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E869A76028C107A100B961F4 /* HelpAPI.swift */; };
 		E869A76328C1089900B961F4 /* HelpResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = E869A76228C1089900B961F4 /* HelpResponce.swift */; };
-		F34B850D289FD199006334FD /* TechnicalRecordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34B850C289FD198006334FD /* TechnicalRecordVC.swift */; };
+		F34B850D289FD199006334FD /* OrderRecordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34B850C289FD198006334FD /* OrderRecordVC.swift */; };
 		F34B850F28A01410006334FD /* UserAutos.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34B850E28A01410006334FD /* UserAutos.swift */; };
 		F371A61E289FBD8C0090472A /* MaintenanceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371A61D289FBD8C0090472A /* MaintenanceVC.swift */; };
 		F371A620289FBDB40090472A /* MaintenanceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371A61F289FBDB40090472A /* MaintenanceTableViewCell.swift */; };
@@ -280,7 +280,7 @@
 		E869A75E28C1026B00B961F4 /* HelpController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpController.swift; sourceTree = "<group>"; };
 		E869A76028C107A100B961F4 /* HelpAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpAPI.swift; sourceTree = "<group>"; };
 		E869A76228C1089900B961F4 /* HelpResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpResponce.swift; sourceTree = "<group>"; };
-		F34B850C289FD198006334FD /* TechnicalRecordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechnicalRecordVC.swift; sourceTree = "<group>"; };
+		F34B850C289FD198006334FD /* OrderRecordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderRecordVC.swift; sourceTree = "<group>"; };
 		F34B850E28A01410006334FD /* UserAutos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAutos.swift; sourceTree = "<group>"; };
 		F371A61D289FBD8C0090472A /* MaintenanceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceVC.swift; sourceTree = "<group>"; };
 		F371A61F289FBDB40090472A /* MaintenanceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceTableViewCell.swift; sourceTree = "<group>"; };
@@ -462,7 +462,6 @@
 			children = (
 				84ACAF49289285320012508C /* TechnicalCenterVC.swift */,
 				84ACAF4B28929DE40012508C /* TechnicalCenterTableViewCell.swift */,
-				F34B850C289FD198006334FD /* TechnicalRecordVC.swift */,
 			);
 			path = TechnicalCenter;
 			sourceTree = "<group>";
@@ -554,6 +553,7 @@
 		84DDD28B287ED57B00272C19 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E8D8D22F28C1E6BC00791750 /* OrderRecord */,
 				E869A75D28C1021300B961F4 /* Help */,
 				406B189328BFE9E300112178 /* Bonus */,
 				406B188E28BFE9DA00112178 /* Notification */,
@@ -719,6 +719,14 @@
 				E869A75E28C1026B00B961F4 /* HelpController.swift */,
 			);
 			path = Help;
+			sourceTree = "<group>";
+		};
+		E8D8D22F28C1E6BC00791750 /* OrderRecord */ = {
+			isa = PBXGroup;
+			children = (
+				F34B850C289FD198006334FD /* OrderRecordVC.swift */,
+			);
+			path = OrderRecord;
 			sourceTree = "<group>";
 		};
 		F371A61C289FBD810090472A /* Maintenance */ = {
@@ -969,7 +977,7 @@
 				84AE2730288AA63E000870D4 /* UserDefaults.swift in Sources */,
 				849836372886EDBC00EF47D0 /* AuthResponse.swift in Sources */,
 				406B18C028BFEB9C00112178 /* LoginAPI.swift in Sources */,
-				F34B850D289FD199006334FD /* TechnicalRecordVC.swift in Sources */,
+				F34B850D289FD199006334FD /* OrderRecordVC.swift in Sources */,
 				84A509AF28A26E3200B30D6E /* ProfileVC.swift in Sources */,
 				406B18D328BFEBEF00112178 /* BonusResponse.swift in Sources */,
 				406B189828BFE9E300112178 /* MainBonusTableViewCell.swift in Sources */,
