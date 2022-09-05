@@ -142,7 +142,6 @@
 		E08B3CF028BF885300140D22 /* NSAttributedString + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08B3CEF28BF885300140D22 /* NSAttributedString + Extension.swift */; };
 		E0CCAE56E74A9C8AB951C365 /* Pods_QMotors.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FD0605EC1AF8C942E96CC2 /* Pods_QMotors.framework */; };
 		E0DAD63228C5FECF00D09135 /* TechnicalRecordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DAD63128C5FECF00D09135 /* TechnicalRecordVC.swift */; };
-		E0DAD63428C5FEEF00D09135 /* ArticleAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DAD63328C5FEEF00D09135 /* ArticleAPI.swift */; };
 		E0DAD63628C5FF9100D09135 /* OrderRecordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DAD63528C5FF9100D09135 /* OrderRecordVC.swift */; };
 		E869A75928C0E33500B961F4 /* MaintenanceDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E869A75828C0E33500B961F4 /* MaintenanceDetailCell.swift */; };
 		E869A75F28C1026B00B961F4 /* HelpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E869A75E28C1026B00B961F4 /* HelpController.swift */; };
@@ -294,7 +293,6 @@
 		E08B3CED28BF7CA800140D22 /* ArticleDeteilViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDeteilViewController.swift; sourceTree = "<group>"; };
 		E08B3CEF28BF885300140D22 /* NSAttributedString + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString + Extension.swift"; sourceTree = "<group>"; };
 		E0DAD63128C5FECF00D09135 /* TechnicalRecordVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TechnicalRecordVC.swift; sourceTree = "<group>"; };
-		E0DAD63328C5FEEF00D09135 /* ArticleAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArticleAPI.swift; path = "../../../../../../Desktop/Новая папка/ArticleAPI.swift"; sourceTree = "<group>"; };
 		E0DAD63528C5FF9100D09135 /* OrderRecordVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderRecordVC.swift; sourceTree = "<group>"; };
 		E869A75628C0B9E800B961F4 /* MaintenanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceView.swift; sourceTree = "<group>"; };
 		E869A75828C0E33500B961F4 /* MaintenanceDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceDetailCell.swift; sourceTree = "<group>"; };
@@ -418,7 +416,6 @@
 				406B18BE28BFEB9C00112178 /* ReminderAPI.swift */,
 				406B18BF28BFEB9C00112178 /* NetworkError.swift */,
 				E869A76028C107A100B961F4 /* HelpAPI.swift */,
-				E0DAD63328C5FEEF00D09135 /* ArticleAPI.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -998,7 +995,6 @@
 				E02E318028A51C990067CEAB /* DeteilOrderForCarTableViewCell.swift in Sources */,
 				406B18CB28BFEB9C00112178 /* NetworkError.swift in Sources */,
 				048E657928C0D11100A5A6DA /* ChatTableViewCell.swift in Sources */,
-				E0DAD63428C5FEEF00D09135 /* ArticleAPI.swift in Sources */,
 				4013071628B349B800A8F662 /* MyRamindersTableViewCell.swift in Sources */,
 				405CB82028B5E61200881004 /* ReminderCellEditButton.swift in Sources */,
 				84AE2737288AE772000870D4 /* MyCarsVC.swift in Sources */,
