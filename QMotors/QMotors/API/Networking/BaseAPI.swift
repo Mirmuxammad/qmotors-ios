@@ -37,6 +37,8 @@ enum RequestMethod {
     case deleteReminder(Int)
     case editReminder(Int)
     case faq
+    case articles
+    case articleDeteil(Int)
     
     var path: String {
         switch self {
@@ -94,6 +96,10 @@ enum RequestMethod {
             return "reminder/\(id)"
         case .faq:
             return "help"
+        case .articles:
+            return "article"
+        case .articleDeteil(let id):
+            return "article/\(id)"
         }
     
     }
