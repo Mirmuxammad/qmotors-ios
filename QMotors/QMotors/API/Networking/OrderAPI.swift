@@ -34,16 +34,13 @@ final class OrderAPI {
         }
     }
     
-    static func addDiagnosticOrder(carId: Int, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, lastVisit: Date, freeDiagnostics: Bool, guarantee: Bool, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        let lastVisitStr = formatter.string(from: lastVisit)
+    static func addDiagnosticOrder(carId: String, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, lastVisit: String, freeDiagnostics: Bool, guarantee: Bool, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
         
         let params: Parameters = [
             "order_type_id": orderTypeId,
             "tech_center_id": techCenterId,
             "description": description,
-            "date": lastVisitStr,
+            "date": lastVisit,
             "guarantee": guarantee,
             "free_diagnstics": freeDiagnostics,
             "user_car_id": carId,
