@@ -536,6 +536,9 @@ class OrderRecordVC: BaseVC {
             } failure: { error in
                 print(error?.localizedDescription ?? "")
             }
+            
+            self.dismissLoadingIndicator()
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
