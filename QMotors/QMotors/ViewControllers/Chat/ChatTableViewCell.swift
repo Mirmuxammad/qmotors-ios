@@ -32,6 +32,25 @@ class ChatTableViewCell: UITableViewCell {
         return label
     }()
     
+    private let chatStack: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .leading
+        stackView.distribution = .fill
+        stackView.spacing = 10
+        return stackView
+    }()
+    
+    private let attachmentButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("  photo.jpg", for: .normal)
+        button.setImage(UIImage(named: "attach"), for: .normal)
+        button.tintColor = .white
+        button.titleLabel?.textAlignment = .left
+        button.isHidden = false
+        return button
+    }()
+    
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: Const.fontReg, size: 12)
@@ -59,7 +78,9 @@ class ChatTableViewCell: UITableViewCell {
     private func setupViews() {
         contentView.addSubview(containerView)
         contentView.addSubview(dateLabel)
-        containerView.addSubview(chatLabel)
+        containerView.addSubview(chatStack)
+        chatStack.addArrangedSubview(chatLabel)
+        chatStack.addArrangedSubview(attachmentButton)
     }
     
     private func setupConstraints() {
@@ -78,11 +99,15 @@ class ChatTableViewCell: UITableViewCell {
             make.height.equalTo(22)
         }
         
-        chatLabel.snp.makeConstraints { make in
+        chatStack.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(18)
             make.bottom.equalToSuperview().offset(-18)
             make.left.equalToSuperview().offset(18)
             make.right.equalToSuperview().offset(-18)
+        }
+        
+        attachmentButton.snp.makeConstraints { make in
+            make.height.equalTo(20)
         }
         
     }
