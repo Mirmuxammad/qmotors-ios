@@ -86,7 +86,10 @@ extension OrdersForCarVC {
     private func loadOrders() {
         OrderAPI.orderList(userCarId: myCar.id) { responce in
             let carOrders = responce.result
-            guard let carOrderArray = carOrders else { return }
+            guard let carOrderArray = carOrders else {
+                self.dismissLoadingIndicator()
+                return
+            }
             guard let carOrder = carOrderArray.last else {
                 self.dismissLoadingIndicator()
                 return }
@@ -101,6 +104,8 @@ extension OrdersForCarVC {
             self.dismissLoadingIndicator()
             self.present(alert, animated: true, completion: nil)
         }
+        
+        self.dismissLoadingIndicator()
 
     }
 }
