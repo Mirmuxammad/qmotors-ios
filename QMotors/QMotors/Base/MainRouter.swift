@@ -42,6 +42,11 @@ class MainRouter: NSObject {
 //        pushViewController(vc: baseVC, animated: true)
 //    }
     
+    func pushHelpVC() {
+        let vc = HelpVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
     func pushAllFeedBAcks() {
         let vc = AllFeedBacksViewController()
         pushViewController(vc: vc, animated: true)
@@ -143,12 +148,12 @@ class MainRouter: NSObject {
     }
     
     func pushTechnicalRecordVC() {
-        let vc = TechnicalRecordVC()
+        let vc = OrderRecordVC()
         pushViewController(vc: vc, animated: true)
     }
     
     func pushTechnicalRecordVCWhithID(id: Int) {
-        let vc = TechnicalRecordVC(techCenterId: id)
+        let vc = OrderRecordVC(techCenterId: id)
         pushViewController(vc: vc, animated: true)
     }
     

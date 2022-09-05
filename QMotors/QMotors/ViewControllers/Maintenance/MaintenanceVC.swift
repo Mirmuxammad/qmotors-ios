@@ -6,221 +6,51 @@
 //
 
 import UIKit
-import SnapKit
 import Alamofire
+
+class CarInspectionService {
+    let type: String
+    let icon: String
+    let detailsForInsp: [String]
+    var isOpened: Bool = false
+    
+    init(type: String, icon: String, detailsForInsp: [String], isOpened: Bool = false) {
+        self.type = type
+        self.icon = icon
+        self.detailsForInsp = detailsForInsp
+        self.isOpened = isOpened
+    }
+}
 
 class MaintenanceVC: BaseVC {
     
-    let list = ["САЛОН, ЭЛЕКТРИКА", "ПОДКОПОТНОЕ ПРОСТРАНСТВО", "ХОДОВАЯ(ПОДВЕСТКИ)"]
-    let icons = ["mail.fill", "gearshape", "car.fill"]
+    private var baseView: MaintenanceView = MaintenanceView()
+    private var services = [CarInspectionService]()
     
-    // MARK: - UI Elements
-    private let logoImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "small_logo")
-        return imageView
-    }()
-    // MARK: - Views
-    private let backgroundView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        return view
-    }()
-    
-    private let introductionView: UIView = {
-       let view = UIView()
-        view.frame.size = CGSize(width: 343, height: 150)
-        view.backgroundColor = UIColor.init(hex: "#9CC55A")
-        return view
-    }()
-    
-    private let colorImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "promo_background_button")
-        imageView.frame.size = CGSize(width: 570, height: 150)
-        return imageView
-    }()
-    
-
-    
-    // MARK: - Buttons
-    private let backButton: SmallBackButton = {
-        let button = SmallBackButton()
-        button.setupAction(target: self, action: #selector(backButtonDidTap))
-        return button
-    }()
-    
-    private let orderButton: ActionButton = {
-        let button = ActionButton()
-        button.setupButton(target: self, action: #selector(getOrder))
-        button.setupTitle(title: "ЗАПИСАТЬСЯ")
-        button.backgroundColor = UIColor(hex: "#9CC55A")
-        button.frame.size = CGSize(width: 341, height: 55)
-        button.isEnabled()
-        return button
-    }()
-    
-    // MARK: - Labels
-    private let titleLable: UILabel = {
-        let label = UILabel()
-        label.text = "Бесплатная диагностика"
-        label.font = UIFont(name: "Montserrat-SemiBold", size: 22)
-        label.textColor = .black
-        label.textAlignment = .left
-        return label
-    }()
-    
-    private let secondTitleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Перечень услуг бесплатной диагностики"
-        label.font = UIFont(name: "Montserrat-SemiBold", size: 22)
-        label.textColor = .black
-        label.textAlignment = .left
-        label.numberOfLines = 2
-        return label
-    }()
-    
-    private let intdroductionLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Здравствуйте!"
-        label.font = UIFont(name: "Montserrat-SemiBold", size: 24)
-        label.textColor = .white
-        label.textAlignment = .left
-        return label
-    }()
-    
-    
-    private let intdroductionBottomLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Мы рады предложить вам список услуг, на которые вы можете записаться совершенно бесплатно"
-        label.font = UIFont(name: "Montserrat-Semibold", size: 16)
-        label.textColor = .white
-        label.textAlignment = .left
-        label.numberOfLines = 4
-        return label
-    }()
-    
-    private let informationLabel: UILabel = {
-       let label = UILabel()
-        label.text = "Для записи нужно авторизоваться"
-        label.font = UIFont(name: "Montserrat", size: 14)
-        label.textColor = .gray
-        label.textAlignment = .center
-        return label
-    }()
-    
-    //MARK: - TableView
-    private let tableView: UITableView = {
-        let table = UITableView()
-        table.register(MaintenanceTableViewCell.self, forCellReuseIdentifier: MaintenanceTableViewCell.identifier)
-        table.translatesAutoresizingMaskIntoConstraints = false
-        return table
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.dataSource = self
-        tableView.delegate = self
+        baseView.salonTableView.dataSource = self
+        baseView.salonTableView.delegate = self
         
-        setupViews()
-        setupConstraints()
+        baseView.hoodTableView.dataSource = self
+        baseView.hoodTableView.delegate = self
+        
+        baseView.chassisTableView.dataSource = self
+        baseView.chassisTableView.delegate = self
+        
+        services = [CarInspectionService(type: "САЛОН, ЭЛЕКТРИКА", icon: "car.lights", detailsForInsp: ["1 re re","2 buz buz","3","4"]), CarInspectionService(type: "ПОДКОПОТНОЕ ПРОСТРАНСТВО", icon: "car.hood", detailsForInsp: ["1","2","3","4"]),CarInspectionService(type: "ХОДОВАЯ(ПОДВЕСТКИ)", icon: "car.chassis", detailsForInsp: ["1","2","3","4"])]
+        
+        baseView.backButton.setupAction(target: self, action: #selector(backButtonDidTap))
+        baseView.orderButton.setupButton(target: self, action: #selector(getOrder))
     }
     
-    private let carModelChevronButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "chevron-icon"), for: .normal)
-        return button
-    }()
-    
-    //MARK: - ViewSettings
-    
-    private func setupViews() {
-        view.addSubview(logoImageView)
-        view.addSubview(backgroundView)
-        backgroundView.addSubview(backButton)
-        backgroundView.addSubview(titleLable)
-        backgroundView.addSubview(secondTitleLabel)
-        backgroundView.addSubview(introductionView)
-        backgroundView.addSubview(tableView)
-        backgroundView.addSubview(orderButton)
-        backgroundView.addSubview(informationLabel)
-        colorImage.addSubview(intdroductionLabel)
-        colorImage.addSubview(intdroductionBottomLabel)
-        introductionView.addSubview(colorImage)
+    override func viewWillLayoutSubviews() {
+        baseView.frame = view.bounds
+        view.addSubview(baseView)
+        baseView.configuration()
     }
     
-    private func setupConstraints() {
-        logoImageView.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: 55, height: 55))
-            make.centerX.equalToSuperview()
-            make.top.equalTo(self.view.safeAreaLayoutGuide)
-        }
-        
-        backgroundView.snp.makeConstraints { make in
-            make.top.equalTo(logoImageView.snp.bottom).offset(20)
-            make.left.right.bottom.equalToSuperview()
-        }
-        
-        backButton.snp.makeConstraints { make in
-            make.size.equalTo(CGSize(width: 100, height: 23))
-            make.left.equalToSuperview().offset(20)
-            make.top.equalToSuperview().offset(40)
-        }
-        
-        
-        titleLable.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
-            make.top.equalTo(backButton.snp.bottom).offset(20)
-            make.height.equalTo(22)
-        }
-        
-        introductionView.snp.makeConstraints { make in
-            make.width.equalTo(343)
-            make.height.equalTo(150)
-            make.left.equalToSuperview().offset(16)
-            make.right.equalToSuperview().offset(-16)
-            make.top.equalTo(titleLable.snp.bottom).offset(20)
-        
-        }
-        
-        secondTitleLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
-            make.top.equalTo(introductionView.snp.bottom).offset(30)
-        }
-        
-        intdroductionLabel.snp.makeConstraints { make in
-            make.left.equalTo(introductionView).offset(20)
-            make.top.equalTo(introductionView).offset(20)
-        }
-        
-        intdroductionBottomLabel.snp.makeConstraints { make in
-            make.top.equalTo(intdroductionLabel.snp.bottom).offset(20)
-            make.left.equalTo(introductionView).offset(20)
-            make.right.equalTo(introductionView).offset(-20)
-        }
-        
-        tableView.snp.makeConstraints { make in
-            make.top.equalTo(secondTitleLabel.snp.bottom).offset(5)
-            make.right.equalTo(view)
-            make.left.equalTo(view).offset(-20)
-        }
-
-        orderButton.snp.makeConstraints { make in
-            make.top.equalTo(tableView.snp.bottom).offset(28)
-            make.height.equalTo(55)
-            make.left.equalToSuperview().offset(10)
-            make.right.equalToSuperview().offset(-10)
-        }
-        
-        informationLabel.snp.makeConstraints { make in
-            make.top.equalTo(orderButton.snp.bottom).offset(12)
-            make.left.equalTo(view).offset(15)
-            make.right.equalTo(view).offset(-15)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
-        }
-    }
     // MARK: - Private actions
     @objc private func backButtonDidTap() {
         print("backButtonDidTap")
@@ -237,25 +67,127 @@ class MaintenanceVC: BaseVC {
 extension MaintenanceVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        list.count
+        if tableView == baseView.salonTableView {
+            let sectionInsp = services[0]
+            if sectionInsp.isOpened {
+                baseView.salonTableView.snp.remakeConstraints { make in
+                    make.height.equalTo(75 + section * 50)
+                }
+                return sectionInsp.detailsForInsp.count + 1
+            } else {
+                baseView.salonTableView.snp.remakeConstraints { make in
+                    make.height.equalTo(75)
+                }
+                return 1
+            }
+        } else if tableView == baseView.hoodTableView {
+            let sectionInsp = services[1]
+            if sectionInsp.isOpened {
+                baseView.hoodTableView.snp.remakeConstraints { make in
+                    make.height.equalTo(75 + section * 50)
+                }
+                return sectionInsp.detailsForInsp.count + 1
+            } else {
+                baseView.hoodTableView.snp.remakeConstraints { make in
+                    make.height.equalTo(75)
+                }
+                return 1
+            }
+        } else if tableView == baseView.chassisTableView {
+            let sectionInsp = services[2]
+            if sectionInsp.isOpened {
+                baseView.chassisTableView.snp.remakeConstraints { make in
+                    make.height.equalTo(75 + section * 50)
+                }
+                return sectionInsp.detailsForInsp.count + 1
+            } else {
+                baseView.chassisTableView.snp.remakeConstraints { make in
+                    make.height.equalTo(75)
+                }
+                return 1
+            }
+        } else {
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = (tableView.dequeueReusableCell(withIdentifier: MaintenanceTableViewCell.identifier, for: indexPath) as? MaintenanceTableViewCell) else { return UITableViewCell() }
-        let name = list[indexPath.row]
-        cell.cellListConfigure(name: name)
-        
-        
-        return cell
+        if tableView == baseView.salonTableView {
+            if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: MaintenanceTableViewCell.identifier, for: indexPath) as! MaintenanceTableViewCell
+            let service = services[0]
+            cell.cellConfig(cellName: service.type, cellImage: service.icon)
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: MaintenanceDetailCell.identifier, for: indexPath) as! MaintenanceDetailCell
+                let serviceName = services[0].detailsForInsp[indexPath.row - 1]
+                print("Hello")
+                cell.config(serviceName: serviceName)
+                return cell
+            }
+        } else if tableView == baseView.hoodTableView {
+            if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: MaintenanceTableViewCell.identifier, for: indexPath) as! MaintenanceTableViewCell
+            let service = services[1]
+            cell.cellConfig(cellName: service.type, cellImage: service.icon)
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: MaintenanceDetailCell.identifier, for: indexPath) as! MaintenanceDetailCell
+                let serviceName = services[1].detailsForInsp[indexPath.row - 1]
+                cell.config(serviceName: serviceName)
+                return cell
+            }
+        } else {
+            if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: MaintenanceTableViewCell.identifier, for: indexPath) as! MaintenanceTableViewCell
+            let service = services[2]
+            cell.cellConfig(cellName: service.type, cellImage: service.icon)
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: MaintenanceDetailCell.identifier, for: indexPath) as! MaintenanceDetailCell
+                let serviceName = services[2].detailsForInsp[indexPath.row - 1]
+                cell.config(serviceName: serviceName)
+                return cell
+            }
+        }
         
     }
     
+     
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        70
+        if indexPath.row == 0 {
+            return 76
+        } else {
+            return 50
+        }
     }
 
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print("didSelectRowAt - \(indexPath.row)")
-//    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("taped")
+        if tableView == baseView.salonTableView {
+            services[0].isOpened = !services[0].isOpened
+            tableView.reloadData()
+            let height = services[0].isOpened ? (services[0].detailsForInsp.count * 50) : 0
+            baseView.salonTableView.snp.remakeConstraints { make in
+                make.height.equalTo(76 + height)
+            }
+        } else if tableView == baseView.hoodTableView {
+            services[1].isOpened = !services[1].isOpened
+            tableView.reloadData()
+            let height = services[1].isOpened ? (services[1].detailsForInsp.count * 50) : 0
+            baseView.hoodTableView.snp.remakeConstraints { make in
+                make.height.equalTo(76 + height)
+            }
+        } else if tableView == baseView.chassisTableView {
+            services[2].isOpened = !services[2].isOpened
+            tableView.reloadData()
+            let height = services[2].isOpened ? (services[2].detailsForInsp.count * 50) : 0
+            baseView.chassisTableView.snp.remakeConstraints { make in
+                make.height.equalTo(76 + height)
+            }
+        }
+        
+    }
     
 }

@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import DropDown
 
-class TechnicalRecordVC: BaseVC {
+class OrderRecordVC: BaseVC {
         
     private let cellIdentifier = "optionsTableCell"
     private var technicalCentersData = [TechnicalCenter]()
@@ -21,7 +21,7 @@ class TechnicalRecordVC: BaseVC {
     
     private var fileURLArray: [URL] = [] {
         didSet {
-            print(fileURLArray)
+            print(fileURLArray.count)
         }
     }
     
@@ -122,6 +122,13 @@ class TechnicalRecordVC: BaseVC {
         return label
     }()
     
+    private let guaranteeInfoLabel: CustomLabel = {
+        let label = CustomLabel(text: "Имеется ли у вас гарантия", fontWeight: .medium)
+        return label
+    }()
+    
+    private let guaranteeSwitch: UISwitch = UISwitch()
+    
     private let imgLabel: UILabel = {
         let label = UILabel()
         label.text = "Добавить фото"
@@ -139,7 +146,7 @@ class TechnicalRecordVC: BaseVC {
     }()
     
     private let userCarField: CustomTextField = {
-        let field = CustomTextField(placeholder: "Из спика ваших автомобилей")
+        let field = CustomTextField(placeholder: "Из спиcка ваших автомобилей")
         return field
     }()
     
@@ -289,6 +296,8 @@ class TechnicalRecordVC: BaseVC {
         contentView.addSubview(optionButon)
         contentView.addSubview(infoLabel)
         contentView.addSubview(infoField)
+        contentView.addSubview(guaranteeInfoLabel)
+        contentView.addSubview(guaranteeSwitch)
         contentView.addSubview(imgLabel)
         contentView.addSubview(photosStackView)
         photosStackView.addArrangedSubview(firstPhotoView)
@@ -381,19 +390,15 @@ class TechnicalRecordVC: BaseVC {
         }
     }
     
-    private func editLastVizitCar() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let newDate = dateFormatter.date(from: order.date!)
-        self.showLoadingIndicator()
-        guard let car = myCar else { return }
+    private func addPhotoToOrder(orderId: Int) {
         
-        CarAPI.addLastVizitCar(carId: car.car_model_id, lastVisit: newDate!, success: { [weak self] result in
+        OrderAPI.addPhotoToOrder(orderId: orderId, fileURLArray: fileURLArray, success: { [weak self] result in
+            self?.fileURLArray = []
             self?.router?.back()
             self?.dismissLoadingIndicator()
-        }) { [weak self] error in
-            print(error)
-            self?.dismissLoadingIndicator()
+        }) { error in
+            self.dismissLoadingIndicator()
+            print(error.debugDescription)
         }
     }
     
@@ -458,6 +463,7 @@ class TechnicalRecordVC: BaseVC {
         optionDropDown.selectionAction = { [weak self] (index: Int, item: String) in
             self?.optionField.text = item
             self?.order.orderTypeId = self?.orderTypes[index].id
+            
             self?.optionDropDown.hide()
             self?.optionsChevronButton.transform = .identity
         }
@@ -477,24 +483,40 @@ class TechnicalRecordVC: BaseVC {
             present(alert, animated: true)
         } else {
             self.showLoadingIndicator()
-            print(order)
-
-            OrderAPI.addNewOrder(order: order) { json in
-                print(json)
-                self.dismissLoadingIndicator()
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let newDate = dateFormatter.date(from: order.date!)
+            guard let car = myCar else { return }
+            
+            var descriptionOfOrder = ""
+            if let infoDescription = infoField.text {
+                descriptionOfOrder = infoDescription
+            }
+            guard let orderTypeId = order.orderTypeId else { return }
+            guard let techCenterId = order.techCenterId else { return }
+            let guarantee = guaranteeSwitch.isOn
+            
+            
+            OrderAPI.addDiagnosticOrder(carId: car.id, carNumber: car.number, techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, lastVisit: newDate!, freeDiagnostics: false, guarantee: guarantee, success: { [weak self] result in
+                guard let orderId = result.result.id else { return }
                 DispatchQueue.main.async {
-                    self.editLastVizitCar()
+                    self?.addPhotoToOrder(orderId: orderId)
                 }
                 
-            } failure: { error in
+                self?.dismissLoadingIndicator()
+                
+            }) { [weak self] error in
+                print(error?.message ?? "")
                 let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
                 
                 }))
-                self.dismissLoadingIndicator()
-                self.present(alert, animated: true, completion: nil)
+                self?.dismissLoadingIndicator()
+                self?.present(alert, animated: true, completion: nil)
             }
         
+            // не понимаю для чего эта часть
             guard
                 let id = myCarOrder.id,
                 let carModelId = myCarOrder.carModelId,
@@ -508,7 +530,7 @@ class TechnicalRecordVC: BaseVC {
             CarAPI.editCar(carId: id, carModelId: carModelId, year: year, mileage: milage, number: number, vin: vin, lastVisit: lastVisit, status: status) { result in
                 print("Car last visit succesfully updated")
             } failure: { error in
-                print(error?.localizedDescription)
+                print(error?.localizedDescription ?? "")
             }
         }
     }
@@ -586,7 +608,7 @@ class TechnicalRecordVC: BaseVC {
     
 }
 //MARK: -  UITextFieldDalegate
-extension TechnicalRecordVC: UITextFieldDelegate {
+extension OrderRecordVC: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
@@ -600,11 +622,10 @@ extension TechnicalRecordVC: UITextFieldDelegate {
 }
 
     // MARK: - UIImagePickerControllerDelegate
-    extension TechnicalRecordVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    extension OrderRecordVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             guard let image = info[.editedImage] as? UIImage else { return }
-            
             let data = image.jpegData(compressionQuality: 0.8)
             let documentUrl = getDocumentsDirectory()
                 .appendingPathComponent(UUID().uuidString)
@@ -613,7 +634,6 @@ extension TechnicalRecordVC: UITextFieldDelegate {
             
             fileURLArray.append(documentUrl)
             
-            print(documentUrl)
             
             dismiss(animated: true) { [weak self] in
                 if let data = data, let image = UIImage(data: data) {
@@ -633,7 +653,7 @@ extension TechnicalRecordVC: UITextFieldDelegate {
     }
 
 // MARK: - Constraints
-extension TechnicalRecordVC {
+extension OrderRecordVC {
     
     private func setupContraints() {
         let lOffset = Const.lOffset
@@ -768,8 +788,20 @@ extension TechnicalRecordVC {
             make.right.equalToSuperview().offset(rOffset)
         }
         
+        guaranteeInfoLabel.snp.makeConstraints { make in
+            make.top.equalTo(infoField.snp.bottom).offset(10)
+            make.height.equalTo(54)
+            make.left.equalToSuperview().offset(lOffset)
+            make.right.equalToSuperview().offset(rOffset)
+        }
+        
+        guaranteeSwitch.snp.makeConstraints { make in
+            make.top.equalTo(guaranteeInfoLabel.snp.bottom).offset(10)
+            make.left.equalToSuperview().offset(lOffset)
+        }
+        
         imgLabel.snp.makeConstraints { make in
-            make.top.equalTo(infoField.snp.bottom).offset(28)
+            make.top.equalTo(guaranteeSwitch.snp.bottom).offset(28)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }

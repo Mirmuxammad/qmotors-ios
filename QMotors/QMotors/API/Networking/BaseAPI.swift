@@ -25,6 +25,7 @@ enum RequestMethod {
     case deletePhoto(Int)
     case orderTypeList
     case order
+    case orderPhoto(Int)
     case orderList(Int)
     case bonus
     case notification
@@ -35,6 +36,7 @@ enum RequestMethod {
     case getReminder
     case deleteReminder(Int)
     case editReminder(Int)
+    case faq
     
     var path: String {
         switch self {
@@ -68,6 +70,8 @@ enum RequestMethod {
             return "order-type/list"
         case .order:
             return "order"
+        case .orderPhoto(let id):
+            return "order/\(id)/photo"
         case .orderList(let id):
             return "order/history?user_car_id=\(id)"
         case .bonus:
@@ -88,6 +92,8 @@ enum RequestMethod {
             return "reminder/\(id)"
         case .editReminder(let id):
             return "reminder/\(id)"
+        case .faq:
+            return "help"
         }
     
     }
@@ -232,6 +238,10 @@ final class BaseAPI {
     // загрузка фото для авторизованных запросов
     static func authorizedMultipartPostRequest(carId: Int, fieldName: String, fileURLArray: [URL], success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
         request(reqMethod: .addCarPhoto(carId), fieldName: fieldName, fileURLArray: fileURLArray, success: success, failure: failure)
+    }
+    // загрузка фото для авторизованных пользователей для сервиса
+    static func authorizedMultipartPostRequestForOrder(orderId: Int, fieldName: String, fileURLArray: [URL], success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
+        request(reqMethod: .orderPhoto(orderId), fieldName: fieldName, fileURLArray: fileURLArray, success: success, failure: failure)
     }
     // загрузка фото пользовотеля
     static func authorizedMultipartPostUserAvatarRequest(userId: Int, fieldName: String, fileURL: URL, success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
