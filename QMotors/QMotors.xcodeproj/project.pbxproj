@@ -11,6 +11,7 @@
 		048E657528C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657428C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift */; };
 		048E657728C0C02B00A5A6DA /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657628C0C02B00A5A6DA /* UIView+Extension.swift */; };
 		048E657928C0D11100A5A6DA /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657828C0D11000A5A6DA /* ChatTableViewCell.swift */; };
+		04C95BE028C5E8230085E1E0 /* MaintenanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E869A75628C0B9E800B961F4 /* MaintenanceView.swift */; };
 		4003922E28B5F1B1001E174B /* MyLastRemindersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4003922D28B5F1B1001E174B /* MyLastRemindersTableViewCell.swift */; };
 		4006222028A3CC2200E55C04 /* CarInfoNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006221F28A3CC2200E55C04 /* CarInfoNumberView.swift */; };
 		4013070E28B2453D00A8F662 /* AddReminderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4013070D28B2453D00A8F662 /* AddReminderVC.swift */; };
@@ -136,7 +137,6 @@
 		E02E318028A51C990067CEAB /* DeteilOrderForCarTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02E317F28A51C990067CEAB /* DeteilOrderForCarTableViewCell.swift */; };
 		E02E318228A522BD0067CEAB /* CarOrderResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = E02E318128A522BD0067CEAB /* CarOrderResponce.swift */; };
 		E0CCAE56E74A9C8AB951C365 /* Pods_QMotors.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FD0605EC1AF8C942E96CC2 /* Pods_QMotors.framework */; };
-		E869A75728C0B9E800B961F4 /* MaintenanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E869A75628C0B9E800B961F4 /* MaintenanceView.swift */; };
 		E869A75928C0E33500B961F4 /* MaintenanceDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E869A75828C0E33500B961F4 /* MaintenanceDetailCell.swift */; };
 		E869A75F28C1026B00B961F4 /* HelpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E869A75E28C1026B00B961F4 /* HelpController.swift */; };
 		E869A76128C107A100B961F4 /* HelpAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E869A76028C107A100B961F4 /* HelpAPI.swift */; };
@@ -901,6 +901,7 @@
 				84ACAF30289185070012508C /* CustomTextField.swift in Sources */,
 				84ACAF2D289184F80012508C /* CustomDropdown.swift in Sources */,
 				4049212828A177AB00257750 /* CarResponse.swift in Sources */,
+				04C95BE028C5E8230085E1E0 /* MaintenanceView.swift in Sources */,
 				048E657528C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift in Sources */,
 				7EA2EB6128A5067900C70910 /* SwitchView.swift in Sources */,
 				8456BA6E2881659E00684AF5 /* PhoneCallButton.swift in Sources */,
