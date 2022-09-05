@@ -88,6 +88,11 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
+    func pushQRCodeVC() {
+        let vc = QRCodeVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
     func pushCabinetVC() {
         let vc = CabinetVC()
         pushViewController(vc: vc, animated: true)

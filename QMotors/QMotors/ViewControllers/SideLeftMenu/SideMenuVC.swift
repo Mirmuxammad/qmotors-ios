@@ -293,7 +293,7 @@ extension SideMenuVC: UITableViewDelegate, UITableViewDataSource {
                 dismiss(animated: true)
             } else {
                 dismiss(animated: true)
-              //  router
+                router?.pushQRCodeVC()
             }
         case 11:
             if rootScreen == .freeDiagnost {

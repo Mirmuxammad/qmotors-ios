@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		040D610E28C62CE400B772F4 /* QRCodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D610D28C62CE400B772F4 /* QRCodeVC.swift */; };
 		048E657328C0A87300A5A6DA /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657228C0A87300A5A6DA /* ChatVC.swift */; };
 		048E657528C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657428C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift */; };
 		048E657928C0D11100A5A6DA /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657828C0D11000A5A6DA /* ChatTableViewCell.swift */; };
@@ -155,6 +156,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		040D610D28C62CE400B772F4 /* QRCodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeVC.swift; sourceTree = "<group>"; };
 		048E657228C0A87300A5A6DA /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		048E657428C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSupportTableViewCell.swift; sourceTree = "<group>"; };
 		048E657828C0D11000A5A6DA /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
@@ -319,6 +321,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		040D610C28C62CC000B772F4 /* QRCode */ = {
+			isa = PBXGroup;
+			children = (
+				040D610D28C62CE400B772F4 /* QRCodeVC.swift */,
+			);
+			path = QRCode;
+			sourceTree = "<group>";
+		};
 		048E657128C0A85700A5A6DA /* Chat */ = {
 			isa = PBXGroup;
 			children = (
@@ -588,6 +598,7 @@
 			children = (
 				E8D8D22F28C1E6BC00791750 /* OrderRecord */,
 				E869A75D28C1021300B961F4 /* Help */,
+				040D610C28C62CC000B772F4 /* QRCode */,
 				406B189328BFE9E300112178 /* Bonus */,
 				406B188E28BFE9DA00112178 /* Notification */,
 				406B188228BFE99F00112178 /* FeedBack */,
@@ -960,6 +971,7 @@
 				84ACAF4628927DEB0012508C /* CarModelResponse.swift in Sources */,
 				84DDD275287ED3A100272C19 /* SceneDelegate.swift in Sources */,
 				E869A76328C1089900B961F4 /* HelpResponce.swift in Sources */,
+				040D610E28C62CE400B772F4 /* QRCodeVC.swift in Sources */,
 				406B18C228BFEB9C00112178 /* RequestInterceptor.swift in Sources */,
 				84DDD2BE287F393300272C19 /* SideMenuVC.swift in Sources */,
 				E08B3CE628BF690A00140D22 /* ArticlesViewController.swift in Sources */,
