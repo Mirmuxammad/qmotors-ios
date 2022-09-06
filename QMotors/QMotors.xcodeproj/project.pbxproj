@@ -12,6 +12,12 @@
 		048E657528C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657428C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift */; };
 		048E657928C0D11100A5A6DA /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657828C0D11000A5A6DA /* ChatTableViewCell.swift */; };
 		04C95BE028C5E8230085E1E0 /* MaintenanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E869A75628C0B9E800B961F4 /* MaintenanceView.swift */; };
+		4001C70C28C7246D004D25A9 /* StockVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4001C70B28C7246D004D25A9 /* StockVC.swift */; };
+		4001C70E28C725F7004D25A9 /* StockTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4001C70D28C725F7004D25A9 /* StockTableViewCell.swift */; };
+		4001C71028C734A9004D25A9 /* StockResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4001C70F28C734A9004D25A9 /* StockResponce.swift */; };
+		4001C71228C7355F004D25A9 /* StockAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4001C71128C7355F004D25A9 /* StockAPI.swift */; };
+		4001C71428C74A5D004D25A9 /* StockInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4001C71328C74A5D004D25A9 /* StockInfoVC.swift */; };
+		4001C71628C752F2004D25A9 /* AddStockVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4001C71528C752F2004D25A9 /* AddStockVC.swift */; };
 		4003922E28B5F1B1001E174B /* MyLastRemindersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4003922D28B5F1B1001E174B /* MyLastRemindersTableViewCell.swift */; };
 		4006222028A3CC2200E55C04 /* CarInfoNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006221F28A3CC2200E55C04 /* CarInfoNumberView.swift */; };
 		4013070E28B2453D00A8F662 /* AddReminderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4013070D28B2453D00A8F662 /* AddReminderVC.swift */; };
@@ -162,6 +168,12 @@
 		048E657828C0D11000A5A6DA /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 		25EE654A6181C6218A5559D4 /* Pods-QMotors.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMotors.debug.xcconfig"; path = "Target Support Files/Pods-QMotors/Pods-QMotors.debug.xcconfig"; sourceTree = "<group>"; };
 		297813ADA6CD9EA7AE640A7E /* Pods-QMotors.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QMotors.release.xcconfig"; path = "Target Support Files/Pods-QMotors/Pods-QMotors.release.xcconfig"; sourceTree = "<group>"; };
+		4001C70B28C7246D004D25A9 /* StockVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockVC.swift; sourceTree = "<group>"; };
+		4001C70D28C725F7004D25A9 /* StockTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockTableViewCell.swift; sourceTree = "<group>"; };
+		4001C70F28C734A9004D25A9 /* StockResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockResponce.swift; sourceTree = "<group>"; };
+		4001C71128C7355F004D25A9 /* StockAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockAPI.swift; sourceTree = "<group>"; };
+		4001C71328C74A5D004D25A9 /* StockInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockInfoVC.swift; sourceTree = "<group>"; };
+		4001C71528C752F2004D25A9 /* AddStockVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStockVC.swift; sourceTree = "<group>"; };
 		4003922D28B5F1B1001E174B /* MyLastRemindersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLastRemindersTableViewCell.swift; sourceTree = "<group>"; };
 		4006221B28A273B000E55C04 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		4006221F28A3CC2200E55C04 /* CarInfoNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarInfoNumberView.swift; sourceTree = "<group>"; };
@@ -347,6 +359,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4001C70A28C7242C004D25A9 /* Stock */ = {
+			isa = PBXGroup;
+			children = (
+				4001C70B28C7246D004D25A9 /* StockVC.swift */,
+				4001C70D28C725F7004D25A9 /* StockTableViewCell.swift */,
+				4001C71328C74A5D004D25A9 /* StockInfoVC.swift */,
+				4001C71528C752F2004D25A9 /* AddStockVC.swift */,
+			);
+			path = Stock;
+			sourceTree = "<group>";
+		};
 		4013070A28B244FD00A8F662 /* Reminder */ = {
 			isa = PBXGroup;
 			children = (
@@ -429,6 +452,7 @@
 				406B18BF28BFEB9C00112178 /* NetworkError.swift */,
 				E869A76028C107A100B961F4 /* HelpAPI.swift */,
 				E0DAD63B28C6054500D09135 /* ArticleAPI.swift */,
+				4001C71128C7355F004D25A9 /* StockAPI.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -486,6 +510,7 @@
 				4013071728B34EF300A8F662 /* ReminderResponce.swift */,
 				E869A76228C1089900B961F4 /* HelpResponce.swift */,
 				E08B3CE928BF722600140D22 /* ArticlesResponce.swift */,
+				4001C70F28C734A9004D25A9 /* StockResponce.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -596,6 +621,7 @@
 		84DDD28B287ED57B00272C19 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				4001C70A28C7242C004D25A9 /* Stock */,
 				E8D8D22F28C1E6BC00791750 /* OrderRecord */,
 				E869A75D28C1021300B961F4 /* Help */,
 				040D610C28C62CC000B772F4 /* QRCode */,
@@ -1008,6 +1034,7 @@
 				84B2411528AD84A0000A6396 /* MyCarOrder.swift in Sources */,
 				E02E317128A3CB990067CEAB /* HistoryCarTableViewCell.swift in Sources */,
 				E02E318028A51C990067CEAB /* DeteilOrderForCarTableViewCell.swift in Sources */,
+				4001C71628C752F2004D25A9 /* AddStockVC.swift in Sources */,
 				406B18CB28BFEB9C00112178 /* NetworkError.swift in Sources */,
 				048E657928C0D11100A5A6DA /* ChatTableViewCell.swift in Sources */,
 				E0DAD63C28C6054500D09135 /* ArticleAPI.swift in Sources */,
@@ -1018,6 +1045,7 @@
 				4003922E28B5F1B1001E174B /* MyLastRemindersTableViewCell.swift in Sources */,
 				406B18D228BFEBEF00112178 /* ListTechCentersResponce.swift in Sources */,
 				E02E317E28A51AC90067CEAB /* DeteilOrderForCarVC.swift in Sources */,
+				4001C71228C7355F004D25A9 /* StockAPI.swift in Sources */,
 				406B18C528BFEB9C00112178 /* TechCenterAPI.swift in Sources */,
 				88038F4928A905A5009A0A59 /* CarInfoCollectionViewCell.swift in Sources */,
 				84DDD28F287EF04700272C19 /* BaseVC.swift in Sources */,
@@ -1034,6 +1062,7 @@
 				F371A61E289FBD8C0090472A /* MaintenanceVC.swift in Sources */,
 				84AE273B288BEE75000870D4 /* UISegmentedControl+Extension.swift in Sources */,
 				84AC3B98289B007900353231 /* TechnicalCenter.swift in Sources */,
+				4001C71028C734A9004D25A9 /* StockResponce.swift in Sources */,
 				4013071028B2465600A8F662 /* NewReminder.swift in Sources */,
 				84AE273D288BF10E000870D4 /* MyCarsTableViewCell.swift in Sources */,
 				84ACAF4728927DEB0012508C /* CarMarkResponse.swift in Sources */,
@@ -1058,6 +1087,8 @@
 				84ACAF4328927D970012508C /* CustomPhotoView.swift in Sources */,
 				84D94F57288559D90023AA02 /* RegistrationVC.swift in Sources */,
 				406B18C428BFEB9C00112178 /* NotificationAPI.swift in Sources */,
+				4001C70C28C7246D004D25A9 /* StockVC.swift in Sources */,
+				4001C70E28C725F7004D25A9 /* StockTableViewCell.swift in Sources */,
 				E0DAD63628C5FF9100D09135 /* OrderRecordVC.swift in Sources */,
 				84AE2730288AA63E000870D4 /* UserDefaults.swift in Sources */,
 				849836372886EDBC00EF47D0 /* AuthResponse.swift in Sources */,
@@ -1065,6 +1096,7 @@
 				84A509AF28A26E3200B30D6E /* ProfileVC.swift in Sources */,
 				406B18D328BFEBEF00112178 /* BonusResponse.swift in Sources */,
 				406B189828BFE9E300112178 /* MainBonusTableViewCell.swift in Sources */,
+				4001C71428C74A5D004D25A9 /* StockInfoVC.swift in Sources */,
 				4006222028A3CC2200E55C04 /* CarInfoNumberView.swift in Sources */,
 				40C8EEA328BE821900DFD003 /* NotificationService.swift in Sources */,
 				84DDD2BB287F12FC00272C19 /* UIColor+Extension.swift in Sources */,
