@@ -9,9 +9,9 @@ import UIKit
 import Alamofire
 
 class CarInspectionService {
-    let type: String
+    var type: String
     let icon: String
-    let detailsForInsp: [String]
+    var detailsForInsp: [String]
     var isOpened: Bool = false
     
     init(type: String, icon: String, detailsForInsp: [String], isOpened: Bool = false) {
@@ -59,10 +59,11 @@ class MaintenanceVC: BaseVC {
         salonTableView.dataSource = self
         salonTableView.delegate = self
 
-        services = [CarInspectionService(type: "САЛОН, ЭЛЕКТРИКА", icon: "car.lights", detailsForInsp: ["1 re re","2 buz buz","3","4"]), CarInspectionService(type: "ПОДКОПОТНОЕ ПРОСТРАНСТВО", icon: "car.hood", detailsForInsp: ["1","2","3","4"]),CarInspectionService(type: "ХОДОВАЯ(ПОДВЕСТКИ)", icon: "car.chassis", detailsForInsp: ["1","2","3","4"])]
+        services = [CarInspectionService(type: "САЛОН, ЭЛЕКТРИКА", icon: "car.lights", detailsForInsp: ["1","2","3","4"]), CarInspectionService(type: "ПОДКОПОТНОЕ ПРОСТРАНСТВО", icon: "car.hood", detailsForInsp: ["1","2","3","4"]),CarInspectionService(type: "ХОДОВАЯ(ПОДВЕСТКИ)", icon: "car.chassis", detailsForInsp: ["1","2","3","4"])]
         
         setupViews()
         setupConstraints()
+        loadDiagnostics()
         
         salonTableView.sectionHeaderHeight = UITableView.automaticDimension
         salonTableView.estimatedSectionHeaderHeight = 350
@@ -81,6 +82,28 @@ class MaintenanceVC: BaseVC {
     override func leftMenuButtonDidTap() {
         sideMenuVC.rootScreen = .techCenter
         super.leftMenuButtonDidTap()
+    }
+    
+    private func loadDiagnostics() {
+        FreeDiagnosticAPI.freeDiagnosticList { [weak self] diagnosticsList in
+            guard let request = diagnosticsList.result?.first else { return }
+            for index in 0 ... (request.count - 1) {
+                let objects = request[index].types
+                self?.services[index].type = request[index].name
+                self?.services[index].detailsForInsp = []
+                for object in objects {
+                    self?.services[index].detailsForInsp.append(object.name)
+                }
+                self?.salonTableView.reloadData()
+            }
+        } failure: { error in
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            }))
+//            self.activityIndicator.stopAnimating()
+            self.present(alert, animated: true, completion: nil)
+        }
+
     }
 }
 
@@ -161,8 +184,10 @@ extension MaintenanceVC: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
         services[indexPath.section].isOpened = !services[indexPath.section].isOpened
         tableView.reloadData()
+        }
     }
     
 }

@@ -148,6 +148,8 @@
 		E869A76128C107A100B961F4 /* HelpAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E869A76028C107A100B961F4 /* HelpAPI.swift */; };
 		E869A76328C1089900B961F4 /* HelpResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = E869A76228C1089900B961F4 /* HelpResponce.swift */; };
 		E87D0A9628C7D0660085075F /* MaintenanceFooterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87D0A9528C7D0660085075F /* MaintenanceFooterCell.swift */; };
+		E87D0A9828C7D9630085075F /* FreeDiagnosticResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87D0A9728C7D9630085075F /* FreeDiagnosticResponce.swift */; };
+		E87D0A9A28C7DA020085075F /* FreeDiagnosticAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87D0A9928C7DA020085075F /* FreeDiagnosticAPI.swift */; };
 		E8FE134D28C6930100401A7F /* MaintenanceHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8FE134C28C6930100401A7F /* MaintenanceHeaderView.swift */; };
 		F34B850F28A01410006334FD /* UserAutos.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34B850E28A01410006334FD /* UserAutos.swift */; };
 		F371A61E289FBD8C0090472A /* MaintenanceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371A61D289FBD8C0090472A /* MaintenanceVC.swift */; };
@@ -302,6 +304,8 @@
 		E869A76028C107A100B961F4 /* HelpAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpAPI.swift; sourceTree = "<group>"; };
 		E869A76228C1089900B961F4 /* HelpResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpResponce.swift; sourceTree = "<group>"; };
 		E87D0A9528C7D0660085075F /* MaintenanceFooterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceFooterCell.swift; sourceTree = "<group>"; };
+		E87D0A9728C7D9630085075F /* FreeDiagnosticResponce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeDiagnosticResponce.swift; sourceTree = "<group>"; };
+		E87D0A9928C7DA020085075F /* FreeDiagnosticAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeDiagnosticAPI.swift; sourceTree = "<group>"; };
 		E8FE134C28C6930100401A7F /* MaintenanceHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceHeaderView.swift; sourceTree = "<group>"; };
 		F34B850E28A01410006334FD /* UserAutos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAutos.swift; sourceTree = "<group>"; };
 		F371A61D289FBD8C0090472A /* MaintenanceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceVC.swift; sourceTree = "<group>"; };
@@ -421,6 +425,7 @@
 				406B18BF28BFEB9C00112178 /* NetworkError.swift */,
 				E869A76028C107A100B961F4 /* HelpAPI.swift */,
 				E0DAD63B28C6054500D09135 /* ArticleAPI.swift */,
+				E87D0A9928C7DA020085075F /* FreeDiagnosticAPI.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -478,6 +483,7 @@
 				4013071728B34EF300A8F662 /* ReminderResponce.swift */,
 				E869A76228C1089900B961F4 /* HelpResponce.swift */,
 				E08B3CE928BF722600140D22 /* ArticlesResponce.swift */,
+				E87D0A9728C7D9630085075F /* FreeDiagnosticResponce.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1005,6 +1011,7 @@
 				E08B3CE828BF692B00140D22 /* ArticlesTableViewCell.swift in Sources */,
 				84A4AB6B2889CCB900B657F1 /* LogoutButton.swift in Sources */,
 				84D94F5928855F0D0023AA02 /* MainVC.swift in Sources */,
+				E87D0A9828C7D9630085075F /* FreeDiagnosticResponce.swift in Sources */,
 				84B2411528AD84A0000A6396 /* MyCarOrder.swift in Sources */,
 				E02E317128A3CB990067CEAB /* HistoryCarTableViewCell.swift in Sources */,
 				E02E318028A51C990067CEAB /* DeteilOrderForCarTableViewCell.swift in Sources */,
@@ -1067,6 +1074,7 @@
 				406B189828BFE9E300112178 /* MainBonusTableViewCell.swift in Sources */,
 				4006222028A3CC2200E55C04 /* CarInfoNumberView.swift in Sources */,
 				40C8EEA328BE821900DFD003 /* NotificationService.swift in Sources */,
+				E87D0A9A28C7DA020085075F /* FreeDiagnosticAPI.swift in Sources */,
 				84DDD2BB287F12FC00272C19 /* UIColor+Extension.swift in Sources */,
 				406B18D028BFEBEF00112178 /* NotificationLocal.swift in Sources */,
 				406B18C828BFEB9C00112178 /* ReviewAPI.swift in Sources */,

@@ -39,6 +39,7 @@ enum RequestMethod {
     case faq
     case articles
     case articleDeteil(Int)
+    case freeDiagnosticList
     
     var path: String {
         switch self {
@@ -100,6 +101,8 @@ enum RequestMethod {
             return "article"
         case .articleDeteil(let id):
             return "article/\(id)"
+        case .freeDiagnosticList:
+            return "free-diagnostic"
         }
     
     }
