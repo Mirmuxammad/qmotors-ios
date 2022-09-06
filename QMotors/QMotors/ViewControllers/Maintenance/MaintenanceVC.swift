@@ -59,14 +59,11 @@ class MaintenanceVC: BaseVC {
         salonTableView.dataSource = self
         salonTableView.delegate = self
 
-//        salonTableView.register(MaintenanceHeaderView.self, forCellReuseIdentifier: MaintenanceHeaderView.identifier)
         services = [CarInspectionService(type: "САЛОН, ЭЛЕКТРИКА", icon: "car.lights", detailsForInsp: ["1 re re","2 buz buz","3","4"]), CarInspectionService(type: "ПОДКОПОТНОЕ ПРОСТРАНСТВО", icon: "car.hood", detailsForInsp: ["1","2","3","4"]),CarInspectionService(type: "ХОДОВАЯ(ПОДВЕСТКИ)", icon: "car.chassis", detailsForInsp: ["1","2","3","4"])]
         
         setupViews()
         setupConstraints()
         
-//        backButton.setupAction(target: self, action: #selector(backButtonDidTap))
-//        orderButton.setupButton(target: self, action: #selector(getOrder))
         salonTableView.sectionHeaderHeight = UITableView.automaticDimension
         salonTableView.estimatedSectionHeaderHeight = 350
     }
@@ -93,8 +90,8 @@ extension MaintenanceVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
-            let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: MaintenanceHeaderView.identifier)
-            
+            let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: MaintenanceHeaderView.identifier) as! MaintenanceHeaderView
+            cell.backButton.setupAction(target: self, action: #selector(backButtonDidTap))
             return cell
         } else {
             return nil
@@ -110,8 +107,8 @@ extension MaintenanceVC: UITableViewDataSource, UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == 2 {
-            let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: MaintenanceFooterCell.identifier)
-            
+            let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: MaintenanceFooterCell.identifier) as! MaintenanceFooterCell
+            cell.orderButton.setupButton(target: self, action: #selector(getOrder))
             return cell
         } else {
             return nil

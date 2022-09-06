@@ -20,10 +20,6 @@ class MaintenanceFooterCell: UITableViewHeaderFooterView {
         return button
     }()
     
-    
-    
-    
-    
     private let informationLabel: UILabel = {
         let label = UILabel()
         label.text = "Для записи нужно авторизоваться"
@@ -38,6 +34,12 @@ class MaintenanceFooterCell: UITableViewHeaderFooterView {
 
         setupViews()
         setupConstraints()
+        
+        if UserDefaultsService.sharedInstance.authToken != nil {
+            informationLabel.isHidden = true
+        } else {
+            informationLabel.isHidden = false
+        }
     }
 
     required init?(coder: NSCoder) {
