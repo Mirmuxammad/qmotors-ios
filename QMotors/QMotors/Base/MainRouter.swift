@@ -127,6 +127,11 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
+    func pushChatVC() {
+        let vc = ChatVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
     func pushProfileVC() {
         let vc = ProfileVC()
         pushViewController(vc: vc, animated: true)

@@ -9,14 +9,21 @@ import UIKit
 import IQKeyboardManagerSwift
 import UniformTypeIdentifiers
 
-class ChatVC: UIViewController {
+class ChatVC: UIViewController, Routable {
     
     // MARK: - Proporties
     
+    var router: MainRouter?
     private let supportedTypes: [UTType] = [.jpeg, .png, .video, .avi]
     private var filePath: URL?
     
     // MARK: - UI Elements
+    
+    private let backButton: SmallBackButton = {
+        let button = SmallBackButton()
+        button.setupAction(target: self, action: #selector(backButtonDidTap))
+        return button
+    }()
     
     private let tableView: UITableView = {
         let tableView = UITableView()
@@ -90,6 +97,7 @@ class ChatVC: UIViewController {
     // MARK: - Private functions
     
     private func setupViews() {
+        view.addSubview(backButton)
         view.addSubview(tableView)
         view.addSubview(textContainer)
         textContainer.addSubview(attachButton)
@@ -101,6 +109,12 @@ class ChatVC: UIViewController {
     
     private func setupConstraints() {
         
+        backButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(20)
+            make.left.equalToSuperview().offset(Const.lOffset)
+            make.size.equalTo(CGSize(width: 100, height: 23))
+        }
+        
         textContainer.snp.makeConstraints { make in
             make.height.equalTo(55)
             make.right.left.equalToSuperview()
@@ -110,7 +124,7 @@ class ChatVC: UIViewController {
         tableView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(Const.lOffset)
             make.right.equalToSuperview().offset(Const.rOffset)
-            make.top.equalToSuperview()
+            make.top.equalTo(backButton.snp.bottom).offset(10)
             make.bottom.equalTo(textContainer.snp.top)
         }
         
@@ -146,6 +160,10 @@ class ChatVC: UIViewController {
     @objc private func attachButtonDidTap() {
         print("attachButtonDidTap")
         openDocumentPicker()
+    }
+    
+    @objc private func backButtonDidTap() {
+        router?.back()
     }
     
     @objc private func sendButtonDidTap() {
