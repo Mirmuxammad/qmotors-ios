@@ -59,6 +59,11 @@ class ChatSupportTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setupCell(with message: Message) {
+        chatLabel.text = message.message
+        dateLabel.text = message.created_at
+    }
+    
         
     // MARK: - Private functions
     

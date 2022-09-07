@@ -39,6 +39,9 @@ enum RequestMethod {
     case faq
     case articles
     case articleDeteil(Int)
+    case messages
+    case sendMessage(String)
+    case sendOnlyMessage
     
     var path: String {
         switch self {
@@ -100,6 +103,12 @@ enum RequestMethod {
             return "article"
         case .articleDeteil(let id):
             return "article/\(id)"
+        case .messages:
+            return "chat/messages"
+        case .sendMessage(let message):
+            return "chat?message=\(message)"
+        case .sendOnlyMessage:
+            return "chat"
         }
     
     }
@@ -186,6 +195,41 @@ final class BaseAPI {
         }
     }
     
+    fileprivate static func requestChatFile(reqMethod: RequestMethod,
+                                    fieldName: String,
+                                    fileURLArray: [URL],
+                                    success: @escaping (Data?) -> Void,
+                                    failure: @escaping (NetworkError?) -> Void) {
+        var headers = BaseAPI().headers
+        
+        guard let token = UserDefaultsService.sharedInstance.authToken else {
+            failure(NetworkError(.other("Токен не найден!")))
+            return
+        }
+        headers.add(.authorization(bearerToken: token))
+        
+        for fileURL in fileURLArray {
+            if let fileData = try? Data(contentsOf: fileURL) {
+                authorizedSession.upload(multipartFormData: { multiPart in
+                    multiPart.append(fileData,
+                                     withName: fieldName,
+                                     fileName: fileURL.lastPathComponent,
+                                     mimeType: fileURL.mimeType())
+                    
+                    
+                }, to: BaseAPI.baseAPIURL + reqMethod.path, method: .post, headers: headers).response { response in
+                    debugPrint(response)
+                    if let data = response.data {
+                        success(data)
+                    } else {
+                        failure(NetworkError(.server, code: response.response?.statusCode))
+                    }
+                }
+            }
+            
+        }
+    }
+    
     fileprivate static func userAvatarRequest(reqMethod: RequestMethod,
                                     fieldName: String,
                                     fileURL: URL,
@@ -252,6 +296,20 @@ final class BaseAPI {
     // загрузка фото пользовотеля
     static func authorizedMultipartPostUserAvatarRequest(userId: Int, fieldName: String, fileURL: URL, success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
         userAvatarRequest(reqMethod: .postProfile, fieldName: fieldName, fileURL: fileURL, success: success, failure: failure)
+    }
+    
+    // загрузка файла для чат
+    static func authorizedMultipartPostRequestChatFile(fileType: FileType, message: String, fileUrlArray: [URL], success: @escaping (Data?) -> Void, failure: @escaping escapeNetworkError) {
+        switch fileType {
+        case .file:
+            requestChatFile(reqMethod: .sendMessage(message), fieldName: "file", fileURLArray: fileUrlArray, success: success, failure: failure)
+        case .video:
+            requestChatFile(reqMethod: .sendMessage(message), fieldName: "video", fileURLArray: fileUrlArray, success: success, failure: failure)
+        case .photo:
+            requestChatFile(reqMethod: .sendMessage(message), fieldName: "photo", fileURLArray: fileUrlArray, success: success, failure: failure)
+        case .none:
+            requestChatFile(reqMethod: .sendMessage(message), fieldName: "", fileURLArray: fileUrlArray, success: success, failure: failure)
+        }
     }
     
     // MARK: - PUT Requests

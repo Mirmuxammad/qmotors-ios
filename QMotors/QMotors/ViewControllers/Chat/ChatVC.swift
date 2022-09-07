@@ -14,8 +14,9 @@ class ChatVC: UIViewController, Routable {
     // MARK: - Proporties
     
     var router: MainRouter?
-    private let supportedTypes: [UTType] = [.jpeg, .png, .video, .avi]
-    private var filePath: URL?
+    private var messages = [Message]()
+    private let supportedTypes: [UTType] = [.jpeg, .png, .video, .avi, .pdf, .mpeg]
+    private var fileURL: URL?
     
     // MARK: - UI Elements
     
@@ -76,6 +77,12 @@ class ChatVC: UIViewController, Routable {
         return textField
     }()
     
+    private let activityIndicator: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView()
+        view.style = .large
+        return view
+    }()
+    
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -94,6 +101,12 @@ class ChatVC: UIViewController, Routable {
         IQKeyboardManager.shared.toolbarDoneBarButtonItemText = "Отправить"
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        loadMessages()
+    }
+    
     // MARK: - Private functions
     
     private func setupViews() {
@@ -104,7 +117,7 @@ class ChatVC: UIViewController, Routable {
         textContainer.addSubview(textField)
         view.addSubview(attachmentFileLabel)
         view.addSubview(removeAttachmentButton)
-        
+        view.addSubview(activityIndicator)
     }
     
     private func setupConstraints() {
@@ -153,6 +166,10 @@ class ChatVC: UIViewController, Routable {
             make.width.height.equalTo(20)
         }
         
+        activityIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        
     }
     
     // MARK: - Private actions
@@ -164,6 +181,7 @@ class ChatVC: UIViewController, Routable {
     
     @objc private func backButtonDidTap() {
         router?.back()
+        IQKeyboardManager.shared.toolbarDoneBarButtonItemText = "Done"
     }
     
     @objc private func sendButtonDidTap() {
@@ -172,18 +190,105 @@ class ChatVC: UIViewController, Routable {
     }
     
     @objc private func removeAttachTapped() {
-        filePath = nil
+        fileURL = nil
         attachmentFileLabel.isHidden = true
         attachmentFileLabel.text = nil
         removeAttachmentButton.isHidden = true
     }
     
     private func sendComment() {
-        print(textField.text!)
+        sendMessage(message: textField.text!)
         textField.text = nil
         attachmentFileLabel.isHidden = true
         attachmentFileLabel.text = nil
         removeAttachmentButton.isHidden = true
+    }
+    
+    // MARK: - API Methods
+    
+    private func loadMessages() {
+        activityIndicator.startAnimating()
+        ChatAPI.getMessages { messages in
+            
+            self.messages = messages
+            self.tableView.reloadData()
+            self.activityIndicator.stopAnimating()
+            
+        } failure: { error in
+            self.activityIndicator.stopAnimating()
+            if let error = error {
+                print(error.localizedDescription)
+                //alert
+            }
+        }
+
+    }
+    
+    private func sendMessage(message: String) {
+        activityIndicator.startAnimating()
+        
+        guard let fileURL = fileURL else {
+            if message != "" {
+                ChatAPI.sendOnly(message: message) { data in
+                    print(data["result"])
+                    self.loadMessages()
+                } failure: { error in
+                    print(error?.localizedDescription)
+                    self.activityIndicator.stopAnimating()
+                    //alert
+                }
+            }
+            activityIndicator.stopAnimating()
+            return
+        }
+        
+        let fileExtension = fileURL.pathExtension
+        
+        if fileExtension == "jpg" || fileExtension == "jpeg" || fileExtension == "png" {
+            
+            ChatAPI.sendMessage(fileType: .photo, message: message, fileUrlArray: [fileURL]) { data in
+                
+                print(data["result"])
+                self.loadMessages()
+                self.activityIndicator.stopAnimating()
+                
+            } failure: { error in
+                print(error?.localizedDescription)
+                self.activityIndicator.stopAnimating()
+                //alert
+            }
+            
+        } else if fileExtension == "avi" || fileExtension == "mp4" || fileExtension == "mpeg" {
+            
+            ChatAPI.sendMessage(fileType: .video, message: message, fileUrlArray: [fileURL]) { data in
+                
+                print(data["result"])
+                self.loadMessages()
+                self.activityIndicator.stopAnimating()
+                
+            } failure: { error in
+                print(error?.localizedDescription)
+                self.activityIndicator.stopAnimating()
+                //alert
+            }
+            
+        } else {
+            
+            ChatAPI.sendMessage(fileType: .file, message: message, fileUrlArray: [fileURL]) { data in
+                
+                print(data["result"])
+                self.loadMessages()
+                self.activityIndicator.stopAnimating()
+                
+            } failure: { error in
+                print(error?.localizedDescription)
+                self.activityIndicator.stopAnimating()
+                //alert
+            }
+            
+        }
+        activityIndicator.stopAnimating()
+        
     }
     
 }
@@ -192,17 +297,18 @@ class ChatVC: UIViewController, Routable {
 extension ChatVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row % 2 == 0 {
+        let message = messages[indexPath.row]
+        if message.admin_user_id != nil {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ChatSupportTableViewCell.identifier, for: indexPath) as? ChatSupportTableViewCell else { return UITableViewCell() }
-            
+            cell.setupCell(with: message)
             return cell
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ChatTableViewCell.identifier, for: indexPath) as? ChatTableViewCell else { return UITableViewCell() }
-            
+            cell.setupCell(with: message)
             return cell
         }
     }
@@ -229,7 +335,7 @@ extension ChatVC: UIDocumentPickerDelegate {
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let filepathurl = urls.first else { return }
-        filePath = filepathurl
+        fileURL = filepathurl
         let fileName = filepathurl.lastPathComponent
         attachmentFileLabel.text = fileName
         attachmentFileLabel.isHidden = false
@@ -239,8 +345,8 @@ extension ChatVC: UIDocumentPickerDelegate {
     
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         print(#function)
-        attachmentFileLabel.isHidden = false
-        attachmentFileLabel.text = "selectedFileName.jpg"
-        removeAttachmentButton.isHidden = false
+//        attachmentFileLabel.isHidden = false
+//        attachmentFileLabel.text = "selectedFileName.jpg"
+//        removeAttachmentButton.isHidden = false
     }
 }

@@ -47,7 +47,7 @@ class ChatTableViewCell: UITableViewCell {
         button.setImage(UIImage(named: "attach"), for: .normal)
         button.tintColor = .white
         button.titleLabel?.textAlignment = .left
-        button.isHidden = false
+        button.isHidden = true
         return button
     }()
     
@@ -70,6 +70,27 @@ class ChatTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupCell(with message: Message) {
+        chatLabel.text = message.message
+        dateLabel.text = message.created_at.getFormattedDate() + " | " + message.created_at.prefix(16).suffix(5)
+         // fix to dynamic checking whether file exists or not
+
+        switch message.filetype {
+            
+        case .file:
+            attachmentButton.isHidden = false
+            attachmentButton.setTitle(" file", for: .normal)
+        case .video:
+            attachmentButton.isHidden = false
+            attachmentButton.setTitle(" video", for: .normal)
+        case .photo:
+            attachmentButton.isHidden = false
+            attachmentButton.setTitle(" photo", for: .normal)
+        case .none:
+            attachmentButton.isHidden = true
+        }
     }
     
         

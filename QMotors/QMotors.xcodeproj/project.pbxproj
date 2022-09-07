@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0408969C28C749F60065A93F /* ChatAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408969B28C749F60065A93F /* ChatAPI.swift */; };
+		0408969E28C759C40065A93F /* MessagesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408969D28C759C40065A93F /* MessagesResponse.swift */; };
 		040D610E28C62CE400B772F4 /* QRCodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D610D28C62CE400B772F4 /* QRCodeVC.swift */; };
+		0479D20D28C8535F0003A912 /* MimeType + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0479D20C28C8535F0003A912 /* MimeType + Extension.swift */; };
 		048E657328C0A87300A5A6DA /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657228C0A87300A5A6DA /* ChatVC.swift */; };
 		048E657528C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657428C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift */; };
 		048E657928C0D11100A5A6DA /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657828C0D11000A5A6DA /* ChatTableViewCell.swift */; };
@@ -156,7 +159,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0408969B28C749F60065A93F /* ChatAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAPI.swift; sourceTree = "<group>"; };
+		0408969D28C759C40065A93F /* MessagesResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesResponse.swift; sourceTree = "<group>"; };
 		040D610D28C62CE400B772F4 /* QRCodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeVC.swift; sourceTree = "<group>"; };
+		0479D20C28C8535F0003A912 /* MimeType + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MimeType + Extension.swift"; sourceTree = "<group>"; };
 		048E657228C0A87300A5A6DA /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		048E657428C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSupportTableViewCell.swift; sourceTree = "<group>"; };
 		048E657828C0D11000A5A6DA /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
@@ -429,6 +435,7 @@
 				406B18BF28BFEB9C00112178 /* NetworkError.swift */,
 				E869A76028C107A100B961F4 /* HelpAPI.swift */,
 				E0DAD63B28C6054500D09135 /* ArticleAPI.swift */,
+				0408969B28C749F60065A93F /* ChatAPI.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -486,6 +493,7 @@
 				4013071728B34EF300A8F662 /* ReminderResponce.swift */,
 				E869A76228C1089900B961F4 /* HelpResponce.swift */,
 				E08B3CE928BF722600140D22 /* ArticlesResponce.swift */,
+				0408969D28C759C40065A93F /* MessagesResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -692,6 +700,7 @@
 				4006221B28A273B000E55C04 /* Date+Extension.swift */,
 				40D9C27628AAB1BB005195B5 /* UIImage+Extension.swift */,
 				E08B3CEF28BF885300140D22 /* NSAttributedString + Extension.swift */,
+				0479D20C28C8535F0003A912 /* MimeType + Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -959,6 +968,7 @@
 				048E657528C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift in Sources */,
 				7EA2EB6128A5067900C70910 /* SwitchView.swift in Sources */,
 				8456BA6E2881659E00684AF5 /* PhoneCallButton.swift in Sources */,
+				0408969C28C749F60065A93F /* ChatAPI.swift in Sources */,
 				84DDD273287ED3A100272C19 /* AppDelegate.swift in Sources */,
 				E08B3CEA28BF722600140D22 /* ArticlesResponce.swift in Sources */,
 				84ACAF4E2892B1250012508C /* TechCellNaviButton.swift in Sources */,
@@ -979,6 +989,7 @@
 				405E643C28AA772100A07FEC /* GenderSwitch.swift in Sources */,
 				406B188D28BFE99F00112178 /* AllFeedBacksViewController.swift in Sources */,
 				406B18CA28BFEB9C00112178 /* ReminderAPI.swift in Sources */,
+				0479D20D28C8535F0003A912 /* MimeType + Extension.swift in Sources */,
 				84D94F5B2885AD4A0023AA02 /* ActionButton.swift in Sources */,
 				E869A75F28C1026B00B961F4 /* HelpController.swift in Sources */,
 				4013070E28B2453D00A8F662 /* AddReminderVC.swift in Sources */,
@@ -994,6 +1005,7 @@
 				84ACAF352891857F0012508C /* UIViewController+Extension.swift in Sources */,
 				E02E316C28A2BFAD0067CEAB /* NewOrder.swift in Sources */,
 				7EA2EB6028A5067900C70910 /* TitledTextField.swift in Sources */,
+				0408969E28C759C40065A93F /* MessagesResponse.swift in Sources */,
 				848D9AB1288054FF00C4BC3F /* SideMenuButton.swift in Sources */,
 				84AE2742288D4792000870D4 /* Formatter+Separator.swift in Sources */,
 				84AFF8292887DBD0009207BD /* CustomError.swift in Sources */,
