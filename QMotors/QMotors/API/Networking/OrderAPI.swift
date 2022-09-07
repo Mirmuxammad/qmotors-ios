@@ -34,7 +34,7 @@ final class OrderAPI {
         }
     }
     
-    static func addDiagnosticOrder(carId: String, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, lastVisit: String, freeDiagnostics: Bool, guarantee: Bool, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
+    static func addDiagnosticOrder(carId: String, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, lastVisit: String, freeDiagnostics: Bool, guarantee: Bool, stockID: Int, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
         
         let params: Parameters = [
             "order_type_id": orderTypeId,
@@ -44,7 +44,8 @@ final class OrderAPI {
             "guarantee": guarantee,
             "free_diagnstics": freeDiagnostics,
             "user_car_id": carId,
-            "number": carNumber
+            "number": carNumber,
+            "stock_id": stockID
         ]
         
         BaseAPI.authorizedPostRequest(reqMethod: .order, parameters: params, success: { data in
@@ -97,4 +98,6 @@ final class OrderAPI {
             failure(error)
         }
     }
+    
+    
 }

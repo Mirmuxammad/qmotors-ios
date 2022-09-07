@@ -177,6 +177,23 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
+    func pushStockVC() {
+        let vc = StockVC()
+        pushViewController(vc: vc, animated: true)
+    }
+    
+    func pushStockInfoVC(stock: Stock) {
+        let vc = StockInfoVC()
+        vc.stock = stock
+        pushViewController(vc: vc, animated: true)
+    }
+    
+    func pushAddStockVC(stock: Stock) {
+        let vc = AddStockVC()
+        vc.stock = stock
+        pushViewController(vc: vc, animated: true)
+    }
+    
     func pushTechnicalRecordVCWhithID(id: Int) {
         let vc = OrderRecordVC(techCenterId: id)
         pushViewController(vc: vc, animated: true)

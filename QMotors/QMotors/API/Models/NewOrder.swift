@@ -13,7 +13,7 @@ struct OrderResponse: Codable {
 }
 
 struct OrderNet: Codable {
-    let orderTypeID, techCenterID: Int?
+    let orderTypeID, techCenterID, stockID: Int?
         let resultDescription: String?
         let date: String?
         let guarantee: Bool?
@@ -24,6 +24,7 @@ struct OrderNet: Codable {
         enum CodingKeys: String, CodingKey {
             case orderTypeID = "order_type_id"
             case techCenterID = "tech_center_id"
+            case stockID = "stock_id"
             case resultDescription = "description"
             case date, guarantee
             case userCarID = "user_car_id"
@@ -42,4 +43,5 @@ struct NewOrder {
     var guarantee: Bool?
     var date: String?
     var description: String?
+    var stockID: Int?
 }

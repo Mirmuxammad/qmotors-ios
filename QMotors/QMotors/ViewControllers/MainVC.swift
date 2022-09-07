@@ -131,6 +131,7 @@ class MainVC: BaseVC {
     
     @objc private func promoButtonDidTap() {
         print("promoButtonDidTap")
+        router?.pushStockVC()
     }
     
     @objc private func maintenanceRecordButtonDidTap() {

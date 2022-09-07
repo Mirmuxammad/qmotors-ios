@@ -502,7 +502,7 @@ class OrderRecordVC: BaseVC {
             let lastVisitStr = formatter.string(from: newDate ?? Date())
             
             
-            OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, lastVisit: lastVisitStr, freeDiagnostics: false, guarantee: guarantee, success: { [weak self] result in
+            OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, lastVisit: lastVisitStr, freeDiagnostics: false, guarantee: guarantee, stockID: order.stockID ?? 0, success: { [weak self] result in
                 guard let orderId = result.result.id else { return }
                 DispatchQueue.main.async {
                     self?.addPhotoToOrder(orderId: orderId)

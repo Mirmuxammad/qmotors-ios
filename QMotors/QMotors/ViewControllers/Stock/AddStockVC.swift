@@ -1,15 +1,15 @@
 //
-//  TechnicalRecordVC.swift
+//  AddStockVC.swift
 //  QMotors
 //
-//  Created by Temur Juraev on 07.08.2022.
+//  Created by MIrmuxammad on 06/09/22.
 //
 
 import UIKit
 import SnapKit
 import DropDown
 
-class TechnicalRecordVC: BaseVC {
+class AddStockVC: BaseVC {
         
     private let cellIdentifier = "optionsTableCell"
     private var technicalCentersData = [TechnicalCenter]()
@@ -21,12 +21,22 @@ class TechnicalRecordVC: BaseVC {
     
     private var fileURLArray: [URL] = [] {
         didSet {
-            print(fileURLArray)
+            print(fileURLArray.count)
         }
     }
     
     private var carModelIdForUpdate: String = ""
     var myCar: MyCarModel?
+    var stock: Stock? {
+        didSet {
+            stockField.text = stock?.title
+            stockButton.isUserInteractionEnabled = false
+            stockChevronButton.isUserInteractionEnabled = false
+            stockDropDown.isUserInteractionEnabled = false
+            order.stockID = stock?.id
+        }
+    }
+    var stocks: [Stock] = [Stock]()
     
     // MARK: - UI Elements
     private let logoImageView: UIImageView = {
@@ -72,7 +82,8 @@ class TechnicalRecordVC: BaseVC {
         return button
     }()
     
-    private let optionsChevronButton: UIButton = {
+    
+    private let stockChevronButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "chevron-icon"), for: .normal)
         return button
@@ -90,15 +101,20 @@ class TechnicalRecordVC: BaseVC {
     //MARK: - Labels
     private let headingLabel: UILabel = {
         let label = UILabel()
-        label.text = "Записаться"
+        label.text = "Запись по акции"
         label.font = UIFont(name: Const.fontSemi, size: 22)
         label.textColor = .black
         label.textAlignment = .left
         return label
     }()
     
+    private let stockLable: CustomLabel = {
+        let label = CustomLabel(text: "Ваша акция", fontWeight: .medium)
+        return label
+    }()
+    
     private let technicalCenterLable: CustomLabel = {
-        let label = CustomLabel(text: "Технический центр", fontWeight: .medium)
+        let label = CustomLabel(text: "Выберите тех. сервис", fontWeight: .medium)
         return label
     }()
     
@@ -111,14 +127,10 @@ class TechnicalRecordVC: BaseVC {
         let label = CustomLabel(text: "Укажите дату и время", fontWeight: .medium)
         return label
     }()
-    
-    private let optionLabel: CustomLabel = {
-        let label = CustomLabel(text: "Что будем делать?", fontWeight: .medium)
-        return label
-    }()
+   
     
     private let infoLabel: CustomLabel = {
-        let label = CustomLabel(text: "Опишите вашу проблему", fontWeight: .medium)
+        let label = CustomLabel(text: "Ваш комментарий", fontWeight: .medium)
         return label
     }()
     
@@ -133,13 +145,18 @@ class TechnicalRecordVC: BaseVC {
     
     
     //MARK: - TextFields
+    private let stockField: CustomTextField = {
+        let field = CustomTextField(placeholder: "")
+        return field
+    }()
+    
     private let technicalCenterField: CustomTextField = {
         let field = CustomTextField(placeholder: "Выберите из списка")
         return field
     }()
     
     private let userCarField: CustomTextField = {
-        let field = CustomTextField(placeholder: "Из спика ваших автомобилей")
+        let field = CustomTextField(placeholder: "Из спиcка ваших автомобилей")
         return field
     }()
     
@@ -147,11 +164,7 @@ class TechnicalRecordVC: BaseVC {
        let textField = UITextField()
         return textField
     }()
-    
-    private let optionField: CustomTextField = {
-        let field = CustomTextField(placeholder: "Выберите из списка")
-        return field
-    }()
+   
     
     private let infoField: CustomTextField = {
         let field = CustomTextField(placeholder: "Ваше сообщение")
@@ -159,11 +172,19 @@ class TechnicalRecordVC: BaseVC {
     }()
     
     //MARK: - Buttons for TextFields
+    private let stockButton: UIButton = UIButton()
     private let technicalCenterButton: UIButton = UIButton()
     private let userCarButton: UIButton = UIButton()
-    private let optionButon: UIButton = UIButton()
     
     //MARK: - DropDowns
+    private let stockDropDown: DropDown = {
+        let dropDown = DropDown()
+        dropDown.layer.borderWidth = 1
+        dropDown.layer.borderColor = UIColor(hex: "B6B6B6").cgColor
+        dropDown.layer.cornerRadius = 8
+        return dropDown
+    }()
+    
     private let technicalCenterDropDown: DropDown = {
         let dropDown = DropDown()
         dropDown.layer.borderWidth = 1
@@ -179,14 +200,7 @@ class TechnicalRecordVC: BaseVC {
         dropDown.layer.cornerRadius = 8
         return dropDown
     }()
-    
-    private let optionDropDown: DropDown = {
-        let dropDown = DropDown()
-        dropDown.layer.borderWidth = 1
-        dropDown.layer.borderColor = UIColor(hex: "B6B6B6").cgColor
-        dropDown.layer.cornerRadius = 8
-        return dropDown
-    }()
+   
     
     //MARK: -  StackView
     private let photosStackView: UIStackView = {
@@ -237,10 +251,9 @@ class TechnicalRecordVC: BaseVC {
         infoField.delegate = self
     
         datePicker.addTarget(self, action: #selector(setDate(picker:)), for: .valueChanged)
+        stockButton.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
         technicalCenterButton.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
         userCarButton.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
-        optionButon.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
-        order.guarantee = false
         setupView()
     }
     
@@ -256,13 +269,13 @@ class TechnicalRecordVC: BaseVC {
     
     
     private func setupView() {
+        stockField.inputView = UIView()
         technicalCenterField.inputView = UIView()
         userCarField.inputView = UIView()
-        optionField.inputView = UIView()
         
+        stockField.delegate = self
         technicalCenterField.delegate = self
         userCarField.delegate = self
-        optionField.delegate = self
         
         view.addSubview(logoImageView)
         view.addSubview(backgroundView)
@@ -272,6 +285,9 @@ class TechnicalRecordVC: BaseVC {
         
         contentView.addSubview(backButton)
         contentView.addSubview(headingLabel)
+        contentView.addSubview(stockLable)
+        contentView.addSubview(stockField)
+        contentView.addSubview(stockButton)
         contentView.addSubview(technicalCenterLable)
         contentView.addSubview(technicalCenterField)
         contentView.addSubview(technicalCenterButton)
@@ -280,13 +296,10 @@ class TechnicalRecordVC: BaseVC {
         contentView.addSubview(userCarButton)
         technicalCenterField.addSubview(carChevronButton)
         userCarField.addSubview(carModelChevronButton)
-        optionField.addSubview(optionsChevronButton)
+        stockField.addSubview(stockChevronButton)
         contentView.addSubview(timeMarkLabel)
         contentView.addSubview(dateTF)
         contentView.addSubview(datePicker)
-        contentView.addSubview(optionLabel)
-        contentView.addSubview(optionField)
-        contentView.addSubview(optionButon)
         contentView.addSubview(infoLabel)
         contentView.addSubview(infoField)
         contentView.addSubview(imgLabel)
@@ -315,6 +328,7 @@ class TechnicalRecordVC: BaseVC {
         loadOrderTypes(dg: dg)
         loadMyCar(dg: dg)
         loadTechCenters(dg: dg)
+        loadStockTypes(dg: dg)
         updateTableViews(dg: dg)
     }
     
@@ -335,6 +349,18 @@ class TechnicalRecordVC: BaseVC {
         
     }
     
+    private func loadStockTypes(dg: DispatchGroup) {
+        StockAPI.stockList { [weak self] jsonData in
+            guard let self = self else { return }
+            self.stocks = jsonData
+        } failure: { error in
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
     
     private func loadOrderTypes(dg: DispatchGroup) {
         dg.enter()
@@ -381,25 +407,25 @@ class TechnicalRecordVC: BaseVC {
         }
     }
     
-    private func editLastVizitCar() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let newDate = dateFormatter.date(from: order.date!)
-        self.showLoadingIndicator()
-        guard let car = myCar else { return }
+    private func addPhotoToOrder(orderId: Int) {
         
-        CarAPI.addLastVizitCar(carId: car.car_model_id, lastVisit: newDate!, success: { [weak self] result in
+        OrderAPI.addPhotoToOrder(orderId: orderId, fileURLArray: fileURLArray, success: { [weak self] result in
+            self?.fileURLArray = []
             self?.router?.back()
             self?.dismissLoadingIndicator()
-        }) { [weak self] error in
-            print(error)
-            self?.dismissLoadingIndicator()
+        }) { error in
+            self.dismissLoadingIndicator()
+            print(error.debugDescription)
         }
     }
     
     
     // MARK: - Private actions
     private func setDropDowns() {
+        stockDropDown.dataSource = stocks.map({ i in
+            i.title ?? ""
+        })
+        
         technicalCenterDropDown.dataSource = technicalCentersData.map({ i in
             i.title
         })
@@ -407,26 +433,29 @@ class TechnicalRecordVC: BaseVC {
             i.mark + " " + i.model + " " + i.number
         })
         
-        optionDropDown.dataSource = orderTypes.map({ i in
-            i.name
-        })
         
+        stockDropDown.anchorView = stockButton
         technicalCenterDropDown.anchorView = technicalCenterButton
         userCarDropDown.anchorView = userCarButton
-        optionDropDown.anchorView = optionButon
         
+        stockDropDown.direction = .bottom
         technicalCenterDropDown.direction = .bottom
         userCarDropDown.direction = .bottom
-        optionDropDown.direction = .bottom
         
+        stockDropDown.bottomOffset = CGPoint(x: 0, y:technicalCenterButton.frame.height + 10)
         technicalCenterDropDown.bottomOffset = CGPoint(x: 0, y:technicalCenterButton.frame.height + 10)
         userCarDropDown.bottomOffset = CGPoint(x: 0, y:userCarButton.frame.height + 10)
-        optionDropDown.bottomOffset = CGPoint(x: 0, y:optionButon.frame.height + 10)
         
+        stockDropDown.width = stockButton.frame.width
         technicalCenterDropDown.width = technicalCenterButton.frame.width
         userCarDropDown.width = userCarButton.frame.width
-        optionDropDown.width = optionButon.frame.width
         
+        stockDropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            self?.stockField.text = item
+            self?.order.stockID = self?.stocks[index].id
+            self?.stockDropDown.hide()
+            self?.stockChevronButton.transform = .identity
+        }
         
         technicalCenterDropDown.selectionAction = { [weak self] (index: Int, item: String) in
             self?.technicalCenterField.text = item
@@ -454,14 +483,7 @@ class TechnicalRecordVC: BaseVC {
             self?.myCarOrder.number = self?.myCars[index].number
             self?.myCarOrder.status = CarStatus.active
         }
-        
-        optionDropDown.selectionAction = { [weak self] (index: Int, item: String) in
-            self?.optionField.text = item
-            self?.order.orderTypeId = self?.orderTypes[index].id
-            self?.optionDropDown.hide()
-            self?.optionsChevronButton.transform = .identity
-        }
-        
+        order.orderTypeId = orderTypes.last?.id
     }
     
     @objc private func backButtonDidTap() {
@@ -477,22 +499,41 @@ class TechnicalRecordVC: BaseVC {
             present(alert, animated: true)
         } else {
             self.showLoadingIndicator()
-            print(order)
-
-            OrderAPI.addDiagnosticOrder(carId: order.carId ?? "" , carNumber: order.carNumber ?? "", techCenterId: order.techCenterId ?? 0, orderTypeId: order.orderTypeId ?? 0, description: order.description ?? "", lastVisit: order.date ?? "", freeDiagnostics: false, guarantee: order.guarantee ?? false, stockID: order.stockID ?? 0, success: { order in
-                self.dismissLoadingIndicator()
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let newDate = dateFormatter.date(from: order.date!)
+            guard let car = myCar else { return }
+            
+            var descriptionOfOrder = ""
+            if let infoDescription = infoField.text {
+                descriptionOfOrder = infoDescription
+            }
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            let lastVisitStr = formatter.string(from: newDate ?? Date())
+            
+            
+            
+            OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: order.techCenterId ?? 0, orderTypeId: order.orderTypeId ?? 0, description: descriptionOfOrder, lastVisit: lastVisitStr, freeDiagnostics: false, guarantee: false, stockID: order.stockID ?? 0, success: { [weak self] result in
+                guard let orderId = result.result.id else { return }
                 DispatchQueue.main.async {
-                    self.editLastVizitCar()
+                    self?.addPhotoToOrder(orderId: orderId)
                 }
-            }, failure: { error in
+                self?.dismissLoadingIndicator()
+
+            }) { [weak self] error in
+                print(error?.message ?? "")
                 let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                
+
                 }))
-                self.dismissLoadingIndicator()
-                self.present(alert, animated: true, completion: nil)
-            })
+                self?.dismissLoadingIndicator()
+                self?.present(alert, animated: true, completion: nil)
+            }
         
+            // не понимаю для чего эта часть
             guard
                 let id = myCarOrder.id,
                 let carModelId = myCarOrder.carModelId,
@@ -506,8 +547,11 @@ class TechnicalRecordVC: BaseVC {
             CarAPI.editCar(carId: id, carModelId: carModelId, year: year, mileage: milage, number: number, vin: vin, lastVisit: lastVisit, status: status) { result in
                 print("Car last visit succesfully updated")
             } failure: { error in
-                print(error?.localizedDescription)
+                print(error?.localizedDescription ?? "")
             }
+            
+            self.dismissLoadingIndicator()
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -568,15 +612,15 @@ class TechnicalRecordVC: BaseVC {
     @objc private func openDropDown(_ sender: UIButton) {
         
         switch sender {
+        case stockButton:
+            stockDropDown.show()
+            stockChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
         case technicalCenterButton:
             technicalCenterDropDown.show()
             carChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
         case userCarButton:
             userCarDropDown.show()
             carModelChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
-        case optionButon:
-            optionDropDown.show()
-            optionsChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
         default:
             print(111)
         }
@@ -584,7 +628,7 @@ class TechnicalRecordVC: BaseVC {
     
 }
 //MARK: -  UITextFieldDalegate
-extension TechnicalRecordVC: UITextFieldDelegate {
+extension AddStockVC: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
@@ -593,16 +637,15 @@ extension TechnicalRecordVC: UITextFieldDelegate {
             return true
         }
         
-        return textField != userCarField || textField != optionField
+        return textField != userCarField
     }
 }
 
     // MARK: - UIImagePickerControllerDelegate
-    extension TechnicalRecordVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    extension AddStockVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             guard let image = info[.editedImage] as? UIImage else { return }
-            
             let data = image.jpegData(compressionQuality: 0.8)
             let documentUrl = getDocumentsDirectory()
                 .appendingPathComponent(UUID().uuidString)
@@ -611,7 +654,6 @@ extension TechnicalRecordVC: UITextFieldDelegate {
             
             fileURLArray.append(documentUrl)
             
-            print(documentUrl)
             
             dismiss(animated: true) { [weak self] in
                 if let data = data, let image = UIImage(data: data) {
@@ -631,7 +673,7 @@ extension TechnicalRecordVC: UITextFieldDelegate {
     }
 
 // MARK: - Constraints
-extension TechnicalRecordVC {
+extension AddStockVC {
     
     private func setupContraints() {
         let lOffset = Const.lOffset
@@ -669,22 +711,23 @@ extension TechnicalRecordVC {
             make.right.equalToSuperview().offset(rOffset)
         }
         
-        technicalCenterLable.snp.makeConstraints { make in
+        stockLable.snp.makeConstraints { make in
             make.top.equalTo(headingLabel.snp.bottom).offset(24)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
         
-        technicalCenterField.snp.makeConstraints { make in
-            make.top.equalTo(technicalCenterLable.snp.bottom).offset(14)
+        stockField.snp.makeConstraints { make in
+            make.top.equalTo(stockLable.snp.bottom).offset(14)
             make.height.equalTo(54)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
         
-        technicalCenterButton.snp.makeConstraints { make in
-            make.edges.equalTo(technicalCenterField)
+        stockButton.snp.makeConstraints { make in
+            make.edges.equalTo(stockField)
         }
+        
         
         carChevronButton.snp.makeConstraints { make in
             make.right.equalToSuperview()
@@ -694,7 +737,7 @@ extension TechnicalRecordVC {
         }
         
         userCarLabel.snp.makeConstraints { make in
-            make.top.equalTo(technicalCenterField.snp.bottom).offset(24)
+            make.top.equalTo(stockField.snp.bottom).offset(24)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
@@ -717,6 +760,13 @@ extension TechnicalRecordVC {
             make.width.equalTo(54)
         }
         
+        stockChevronButton.snp.makeConstraints { make in
+            make.right.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.height.equalTo(54)
+            make.width.equalTo(54)
+        }
+        
         timeMarkLabel.snp.makeConstraints { make in
             make.top.equalTo(userCarField.snp.bottom).offset(12)
             make.left.equalToSuperview().offset(lOffset)
@@ -727,33 +777,27 @@ extension TechnicalRecordVC {
             make.top.equalTo(timeMarkLabel.snp.bottom).offset(14)
             make.left.equalToSuperview().offset(lOffset)
         }
-        optionLabel.snp.makeConstraints { make in
-            make.top.equalTo(datePicker.snp.bottom).offset(10)
+        
+        technicalCenterLable.snp.makeConstraints { make in
+            make.top.equalTo(datePicker.snp.bottom).offset(24)
+            make.left.equalToSuperview().offset(lOffset)
+            make.right.equalToSuperview().offset(rOffset)
+        }
+        
+        technicalCenterField.snp.makeConstraints { make in
+            make.top.equalTo(technicalCenterLable.snp.bottom).offset(14)
             make.height.equalTo(54)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
         
-        optionField.snp.makeConstraints { make in
-            make.top.equalTo(optionLabel.snp.bottom).offset(10)
-            make.height.equalTo(54)
-            make.left.equalToSuperview().offset(lOffset)
-            make.right.equalToSuperview().offset(rOffset)
+        technicalCenterButton.snp.makeConstraints { make in
+            make.edges.equalTo(technicalCenterField)
         }
         
-        optionButon.snp.makeConstraints { make in
-            make.edges.equalTo(optionField)
-        }
-        
-        optionsChevronButton.snp.makeConstraints { make in
-            make.right.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.height.equalTo(54)
-            make.width.equalTo(54)
-        }
         
         infoLabel.snp.makeConstraints { make in
-            make.top.equalTo(optionField.snp.bottom).offset(10)
+            make.top.equalTo(technicalCenterField.snp.bottom).offset(10)
             make.height.equalTo(54)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
@@ -797,3 +841,4 @@ extension TechnicalRecordVC {
         }
     }
 }
+
