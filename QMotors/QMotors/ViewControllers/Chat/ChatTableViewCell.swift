@@ -112,7 +112,7 @@ class ChatTableViewCell: UITableViewCell {
             return
         }
 
-        delegate?.openFileDidTap(fileType: currentFileType, filePath: currentFileURL)
+        delegate?.openFileDidTap(fileType: currentFileType, filePath: currentFileURL, btn: attachmentButton)
     }
     
         
@@ -159,5 +159,5 @@ class ChatTableViewCell: UITableViewCell {
 
 // MARK: Protocol OpeningFileDelegate
 protocol OpeningFileDelegate {
-    func openFileDidTap(fileType: FileType, filePath: String)
+    func openFileDidTap(fileType: FileType, filePath: String, btn: UIButton)
 }

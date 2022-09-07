@@ -12,6 +12,8 @@ protocol Routable: UIViewController {
     var router: MainRouter? { get set }
 }
 
+var isOpenedChat = false
+
 enum RootScreen {
     case main
     case personalAccount
@@ -129,7 +131,10 @@ class MainRouter: NSObject {
     
     func pushChatVC() {
         let vc = ChatVC()
-        pushViewController(vc: vc, animated: true)
+        if !isOpenedChat {
+            pushViewController(vc: vc, animated: true)
+            isOpenedChat = true
+        }
     }
     
     func pushProfileVC() {

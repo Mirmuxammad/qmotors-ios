@@ -11,11 +11,10 @@ import UniformTypeIdentifiers
 import AVKit
 import AVFoundation
 
-class ChatVC: UIViewController, Routable {
+class ChatVC: BaseVC {
     
     // MARK: - Proporties
     
-    var router: MainRouter?
     private var messages = [Message]()
     private let supportedTypes: [UTType] = [.jpeg, .png, .video, .avi, .pdf, .mpeg]
     private var fileURL: URL?
@@ -26,6 +25,27 @@ class ChatVC: UIViewController, Routable {
         let button = SmallBackButton()
         button.setupAction(target: self, action: #selector(backButtonDidTap))
         return button
+    }()
+    
+    private let backgroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }()
+    
+    private let logoImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "small_logo")
+        return imageView
+    }()
+    
+    private let titleLable: UILabel = {
+        let label = UILabel()
+        label.text = "Чат"
+        label.font = UIFont(name: "Montserrat-SemiBold", size: 22)
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
     }()
     
     private let tableView: UITableView = {
@@ -109,25 +129,51 @@ class ChatVC: UIViewController, Routable {
         loadMessages()
     }
     
+    override func leftMenuButtonDidTap() {
+        sideMenuVC.rootScreen = .techCenter
+        super.leftMenuButtonDidTap()
+    }
+    
     // MARK: - Private functions
     
     private func setupViews() {
-        view.addSubview(backButton)
-        view.addSubview(tableView)
-        view.addSubview(textContainer)
+        view.addSubview(logoImageView)
+        view.addSubview(backgroundView)
+        backgroundView.addSubview(backButton)
+        backgroundView.addSubview(titleLable)
+        backgroundView.addSubview(tableView)
+        backgroundView.addSubview(textContainer)
         textContainer.addSubview(attachButton)
         textContainer.addSubview(textField)
-        view.addSubview(attachmentFileLabel)
-        view.addSubview(removeAttachmentButton)
-        view.addSubview(activityIndicator)
+        backgroundView.addSubview(attachmentFileLabel)
+        backgroundView.addSubview(removeAttachmentButton)
+        backgroundView.addSubview(activityIndicator)
     }
     
     private func setupConstraints() {
         
+        logoImageView.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 55, height: 55))
+            make.centerX.equalToSuperview()
+            make.top.equalTo(self.view.safeAreaLayoutGuide)
+        }
+        
+        backgroundView.snp.makeConstraints { make in
+            make.top.equalTo(logoImageView.snp.bottom).offset(20)
+            make.left.right.bottom.equalToSuperview()
+        }
+        
         backButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
-            make.left.equalToSuperview().offset(Const.lOffset)
             make.size.equalTo(CGSize(width: 100, height: 23))
+            make.left.equalToSuperview().offset(20)
+            make.top.equalToSuperview().offset(40)
+        }
+        
+        titleLable.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.top.equalTo(backButton.snp.bottom).offset(20)
+            make.height.equalTo(24)
         }
         
         textContainer.snp.makeConstraints { make in
@@ -139,7 +185,7 @@ class ChatVC: UIViewController, Routable {
         tableView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(Const.lOffset)
             make.right.equalToSuperview().offset(Const.rOffset)
-            make.top.equalTo(backButton.snp.bottom).offset(10)
+            make.top.equalTo(titleLable.snp.bottom).offset(10)
             make.bottom.equalTo(textContainer.snp.top)
         }
         
@@ -184,6 +230,7 @@ class ChatVC: UIViewController, Routable {
     @objc private func backButtonDidTap() {
         router?.back()
         IQKeyboardManager.shared.toolbarDoneBarButtonItemText = "Done"
+        isOpenedChat = false
     }
     
     @objc private func sendButtonDidTap() {
@@ -357,11 +404,13 @@ extension ChatVC: UIDocumentPickerDelegate {
 // MARK: - OpeningFileDelegate
 extension ChatVC: OpeningFileDelegate {
     
-    func openFileDidTap(fileType: FileType, filePath: String) {
+    func openFileDidTap(fileType: FileType, filePath: String, btn: UIButton) {
         
         switch fileType {
         case .file:
-            return //implement sharing file or save
+            if let fileURL = URL(string: BaseAPI.baseURL + filePath) {
+                shareFile(url: fileURL, btn: btn)
+            }
         case .video:
             if let fileURL = URL(string: BaseAPI.baseURL + filePath) {
                 playVideo(url: fileURL)
@@ -375,12 +424,25 @@ extension ChatVC: OpeningFileDelegate {
     }
     
     func playVideo(url: URL) {
-            let player = AVPlayer(url: url)
-            
-            let vc = AVPlayerViewController()
-            vc.player = player
-            
-            self.present(vc, animated: true) { vc.player?.play() }
+        let player = AVPlayer(url: url)
+        
+        let vc = AVPlayerViewController()
+        vc.player = player
+        
+        self.present(vc, animated: true) { vc.player?.play() }
+    }
+    
+    func shareFile(url: URL, btn: UIButton) {
+        let objectsToShare = [url] as [Any]
+        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+        if #available(iOS 15.4, *) {
+            activityVC.excludedActivityTypes = [UIActivity.ActivityType.airDrop, UIActivity.ActivityType.sharePlay, UIActivity.ActivityType.openInIBooks, UIActivity.ActivityType.copyToPasteboard, UIActivity.ActivityType.markupAsPDF]
+        } else {
+            // Fallback on earlier versions
         }
+        
+        activityVC.popoverPresentationController?.sourceView = btn
+        self.present(activityVC, animated: true, completion: nil)
+    }
     
 }

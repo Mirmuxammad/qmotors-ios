@@ -22,12 +22,12 @@ struct Message: Codable {
     let file: String?
     
     var filetype: FileType {
-        if let _ = video {
-            return FileType.video
+        if let _ = file {
+            return FileType.file
         } else if let _ = photo {
             return FileType.photo
-        } else if let _ = file {
-            return FileType.file
+        } else if let _ = video {
+            return FileType.video
         } else {
             return FileType.none
         }
