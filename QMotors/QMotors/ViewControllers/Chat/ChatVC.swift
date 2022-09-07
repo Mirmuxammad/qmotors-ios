@@ -10,6 +10,7 @@ import IQKeyboardManagerSwift
 import UniformTypeIdentifiers
 import AVKit
 import AVFoundation
+import ImageSlideshow
 
 class ChatVC: BaseVC {
     
@@ -103,6 +104,14 @@ class ChatVC: BaseVC {
         let view = UIActivityIndicatorView()
         view.style = .large
         return view
+    }()
+    
+    private var slideshow: ImageSlideshow = {
+        let slideshow = ImageSlideshow()
+        slideshow.pageIndicatorPosition = .init(horizontal: .center, vertical: .under)
+        slideshow.contentScaleMode = UIViewContentMode.scaleAspectFill
+        slideshow.activityIndicator = DefaultActivityIndicator()
+        return slideshow
     }()
     
     // MARK: - Lifecycle
@@ -416,14 +425,16 @@ extension ChatVC: OpeningFileDelegate {
                 playVideo(url: fileURL)
             }
         case .photo:
-            return //implement opening photo
+            if let fileURL = URL(string: BaseAPI.baseURL + filePath) {
+                openImage(url: fileURL)
+            }
         case .none:
             break
         }
         
     }
     
-    func playVideo(url: URL) {
+    private func playVideo(url: URL) {
         let player = AVPlayer(url: url)
         
         let vc = AVPlayerViewController()
@@ -432,7 +443,7 @@ extension ChatVC: OpeningFileDelegate {
         self.present(vc, animated: true) { vc.player?.play() }
     }
     
-    func shareFile(url: URL, btn: UIButton) {
+    private func shareFile(url: URL, btn: UIButton) {
         let objectsToShare = [url] as [Any]
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         if #available(iOS 15.4, *) {
@@ -445,4 +456,9 @@ extension ChatVC: OpeningFileDelegate {
         self.present(activityVC, animated: true, completion: nil)
     }
     
+    private func openImage(url: URL) {
+        let imageSource: [SDWebImageSource] = [SDWebImageSource(url: url)]
+        slideshow.setImageInputs(imageSource)
+        slideshow.presentFullScreenController(from: self, completion: nil)
+    }
 }

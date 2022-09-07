@@ -14,5 +14,6 @@ target 'QMotors' do
   pod 'MBProgressHUD', '~> 1.2.0'
   pod 'IQKeyboardManagerSwift'
   pod 'DropDown'
+  pod "ImageSlideshow/SDWebImage"
 
 end
