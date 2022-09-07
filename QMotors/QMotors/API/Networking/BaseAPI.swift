@@ -42,6 +42,7 @@ enum RequestMethod {
     case messages
     case sendMessage(String)
     case sendOnlyMessage
+    case freeDiagnosticList
     
     var path: String {
         switch self {
@@ -109,6 +110,8 @@ enum RequestMethod {
             return "chat?message=\(message)"
         case .sendOnlyMessage:
             return "chat"
+        case .freeDiagnosticList:
+            return "free-diagnostic"
         }
     
     }
