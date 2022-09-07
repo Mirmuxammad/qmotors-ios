@@ -8,6 +8,8 @@
 import UIKit
 import IQKeyboardManagerSwift
 import UniformTypeIdentifiers
+import AVKit
+import AVFoundation
 
 class ChatVC: UIViewController, Routable {
     
@@ -309,6 +311,7 @@ extension ChatVC: UITableViewDelegate, UITableViewDataSource {
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ChatTableViewCell.identifier, for: indexPath) as? ChatTableViewCell else { return UITableViewCell() }
             cell.setupCell(with: message)
+            cell.delegate = self
             return cell
         }
     }
@@ -349,4 +352,35 @@ extension ChatVC: UIDocumentPickerDelegate {
 //        attachmentFileLabel.text = "selectedFileName.jpg"
 //        removeAttachmentButton.isHidden = false
     }
+}
+
+// MARK: - OpeningFileDelegate
+extension ChatVC: OpeningFileDelegate {
+    
+    func openFileDidTap(fileType: FileType, filePath: String) {
+        
+        switch fileType {
+        case .file:
+            return //implement sharing file or save
+        case .video:
+            if let fileURL = URL(string: BaseAPI.baseURL + filePath) {
+                playVideo(url: fileURL)
+            }
+        case .photo:
+            return //implement opening photo
+        case .none:
+            break
+        }
+        
+    }
+    
+    func playVideo(url: URL) {
+            let player = AVPlayer(url: url)
+            
+            let vc = AVPlayerViewController()
+            vc.player = player
+            
+            self.present(vc, animated: true) { vc.player?.play() }
+        }
+    
 }

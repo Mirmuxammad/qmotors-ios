@@ -12,6 +12,9 @@ class ChatTableViewCell: UITableViewCell {
     // MARK: - Properties
     
     static let identifier = "ChatTableViewCell"
+    var delegate: OpeningFileDelegate?
+    private var currentFileType = FileType.none
+    private var currentFileURL: String?
     
     // MARK: - UI Elements
 
@@ -48,6 +51,7 @@ class ChatTableViewCell: UITableViewCell {
         button.tintColor = .white
         button.titleLabel?.textAlignment = .left
         button.isHidden = true
+        button.addTarget(self, action: #selector(openFileButtonDidTap), for: .touchUpInside)
         return button
     }()
     
@@ -81,16 +85,34 @@ class ChatTableViewCell: UITableViewCell {
             
         case .file:
             attachmentButton.isHidden = false
-            attachmentButton.setTitle(" file", for: .normal)
+            attachmentButton.setTitle("  file", for: .normal)
+            currentFileURL = message.file
+            currentFileType = .file
         case .video:
             attachmentButton.isHidden = false
-            attachmentButton.setTitle(" video", for: .normal)
+            attachmentButton.setTitle("  video", for: .normal)
+            currentFileURL = message.video
+            currentFileType = .video
         case .photo:
             attachmentButton.isHidden = false
-            attachmentButton.setTitle(" photo", for: .normal)
+            attachmentButton.setTitle("  photo", for: .normal)
+            currentFileURL = message.photo
+            currentFileType = .photo
         case .none:
             attachmentButton.isHidden = true
+            currentFileType = .none
+            currentFileURL = nil
         }
+    }
+    
+    // MARK: - Private Action
+    
+    @objc func openFileButtonDidTap() {
+        guard let currentFileURL = currentFileURL, currentFileType != .none else {
+            return
+        }
+
+        delegate?.openFileDidTap(fileType: currentFileType, filePath: currentFileURL)
     }
     
         
@@ -133,4 +155,9 @@ class ChatTableViewCell: UITableViewCell {
         
     }
 
+}
+
+// MARK: Protocol OpeningFileDelegate
+protocol OpeningFileDelegate {
+    func openFileDidTap(fileType: FileType, filePath: String)
 }
