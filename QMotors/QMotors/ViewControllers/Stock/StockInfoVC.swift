@@ -15,8 +15,11 @@ class StockInfoVC: BaseVC {
         didSet {
             stockTitle.text = stock?.title
             if stock?.location == nil {
-                locationTitleLabel.text = "Неизвестно"
+                locationTitleLabel.isHidden = true
+                locationImageView.isHidden = true
             } else {
+                locationTitleLabel.isHidden = false
+                locationImageView.isHidden = false
                 locationTitleLabel.text = stock?.location
             }
             stockTextLabel.text = stock?.description
@@ -161,13 +164,19 @@ class StockInfoVC: BaseVC {
             make.left.equalTo(locationImageView.snp.right).offset(16)
             make.height.equalTo(14)
         }
-        
-        stockTextLabel.snp.makeConstraints { make in
-            make.top.equalTo(locationImageView.snp.bottom).offset(16)
-            make.left.equalToSuperview().offset(24)
-            make.right.equalToSuperview().offset(-24)
+        if stock?.location == nil {
+            stockTextLabel.snp.makeConstraints { make in
+                make.top.equalTo(contentView.snp.bottom).offset(16)
+                make.left.equalToSuperview().offset(24)
+                make.right.equalToSuperview().offset(-24)
+            }
+        } else {
+            stockTextLabel.snp.makeConstraints { make in
+                make.top.equalTo(locationImageView.snp.bottom).offset(16)
+                make.left.equalToSuperview().offset(24)
+                make.right.equalToSuperview().offset(-24)
+            }
         }
-        
         sendStockButton.snp.makeConstraints { make in
             make.top.equalTo(stockTextLabel.snp.bottom).offset(16)
             make.height.equalTo(54)

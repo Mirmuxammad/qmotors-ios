@@ -29,7 +29,11 @@ class AddStockVC: BaseVC {
     var myCar: MyCarModel?
     var stock: Stock? {
         didSet {
-            stockField.placeholder = stock?.title
+            stockField.text = stock?.title
+            stockButton.isUserInteractionEnabled = false
+            stockChevronButton.isUserInteractionEnabled = false
+            stockDropDown.isUserInteractionEnabled = false
+            order.stockID = stock?.id
         }
     }
     var stocks: [Stock] = [Stock]()
@@ -479,7 +483,7 @@ class AddStockVC: BaseVC {
             self?.myCarOrder.number = self?.myCars[index].number
             self?.myCarOrder.status = CarStatus.active
         }
-        
+        order.orderTypeId = orderTypes.last?.id
     }
     
     @objc private func backButtonDidTap() {
@@ -518,12 +522,12 @@ class AddStockVC: BaseVC {
                     self?.addPhotoToOrder(orderId: orderId)
                 }
                 self?.dismissLoadingIndicator()
-                
+
             }) { [weak self] error in
                 print(error?.message ?? "")
                 let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                
+
                 }))
                 self?.dismissLoadingIndicator()
                 self?.present(alert, animated: true, completion: nil)

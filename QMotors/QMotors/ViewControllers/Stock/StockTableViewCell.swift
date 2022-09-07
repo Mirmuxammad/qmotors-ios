@@ -25,6 +25,7 @@ class StockTableViewCell: UITableViewCell {
         label.font = UIFont(name: Const.fontBold, size: 22)
         label.textColor = .white
         label.textAlignment = .left
+        label.numberOfLines = 0
         label.text = "Подробности акции, здесь краткое описание ации"
         return label
     }()
@@ -93,7 +94,6 @@ class StockTableViewCell: UITableViewCell {
             make.top.equalToSuperview().offset(24)
             make.left.equalToSuperview().offset(24)
             make.right.equalToSuperview().offset(-24)
-            make.height.equalTo(24)
         }
         
         locationImageView.snp.makeConstraints { make in
@@ -109,7 +109,7 @@ class StockTableViewCell: UITableViewCell {
         }
         
         stockTextLabel.snp.makeConstraints { make in
-            make.top.equalTo(locationImageView.snp.bottom).offset(10)
+            make.top.equalTo(locationImageView.snp.bottom).offset(21)
             make.left.equalToSuperview().offset(24)
             make.right.equalToSuperview().offset(-24)
             make.bottom.equalToSuperview().offset(-16)
@@ -121,9 +121,21 @@ class StockTableViewCell: UITableViewCell {
     func setupCell(stock: Stock) {
         titleLabel.text = stock.title
         if stock.location == nil {
-            locationTitleLabel.text = "Неизвестно"
+            locationTitleLabel.isHidden = true
+            locationImageView.isHidden = true
+            stockTextLabel.snp.makeConstraints { make in
+                make.top.equalTo(titleLabel.snp.bottom).offset(21)
+            }
         } else {
+            locationTitleLabel.isHidden = false
+            locationImageView.isHidden = false
             locationTitleLabel.text = stock.location
+            stockTextLabel.snp.makeConstraints { make in
+                make.top.equalTo(locationImageView.snp.bottom).offset(24)
+                make.left.equalToSuperview().offset(24)
+                make.right.equalToSuperview().offset(-24)
+                make.bottom.equalToSuperview().offset(-16)
+            }
         }
         stockTextLabel.text = stock.subtitle
     }
