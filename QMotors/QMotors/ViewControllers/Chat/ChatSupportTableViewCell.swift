@@ -61,7 +61,7 @@ class ChatSupportTableViewCell: UITableViewCell {
     
     func setupCell(with message: Message) {
         chatLabel.text = message.message
-        dateLabel.text = message.created_at
+        dateLabel.text = message.created_at.getFormattedDate() + " | " + message.created_at.prefix(16).suffix(5)
     }
     
         

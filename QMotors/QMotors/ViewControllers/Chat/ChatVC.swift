@@ -299,7 +299,7 @@ class ChatVC: BaseVC {
                     print(data["result"])
                     self.loadMessages()
                 } failure: { error in
-                    print(error?.localizedDescription)
+                    self.showAlert(with: error?.localizedDescription ?? "Ошибка", buttonTitle: "Ок")
                     self.activityIndicator.stopAnimating()
                     //alert
                 }
@@ -319,7 +319,7 @@ class ChatVC: BaseVC {
                 self.activityIndicator.stopAnimating()
                 
             } failure: { error in
-                print(error?.localizedDescription)
+                self.showAlert(with: error?.localizedDescription ?? "Ошибка", buttonTitle: "Ок")
                 self.activityIndicator.stopAnimating()
                 //alert
             }
@@ -333,7 +333,7 @@ class ChatVC: BaseVC {
                 self.activityIndicator.stopAnimating()
                 
             } failure: { error in
-                print(error?.localizedDescription)
+                self.showAlert(with: error?.localizedDescription ?? "Ошибка", buttonTitle: "Ок")
                 self.activityIndicator.stopAnimating()
                 //alert
             }
@@ -347,7 +347,7 @@ class ChatVC: BaseVC {
                 self.activityIndicator.stopAnimating()
                 
             } failure: { error in
-                print(error?.localizedDescription)
+                self.showAlert(with: error?.localizedDescription ?? "Ошибка", buttonTitle: "Ок")
                 self.activityIndicator.stopAnimating()
                 //alert
             }

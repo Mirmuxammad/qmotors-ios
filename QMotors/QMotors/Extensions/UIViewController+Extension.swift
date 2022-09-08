@@ -39,4 +39,13 @@ extension UIViewController {
             MBProgressHUD.hide(for: self.navigationController?.view ?? self.view, animated: true)
         }
     }
+    
+    func showAlert(with message: String, buttonTitle: String) {
+        let alertVC = UIAlertController(title: message, message: nil, preferredStyle: .alert)
+        let ok = UIAlertAction(title: buttonTitle, style: .default) { _ in
+            //
+        }
+        alertVC.addAction(ok)
+        present(alertVC, animated: true)
+    }
 }
