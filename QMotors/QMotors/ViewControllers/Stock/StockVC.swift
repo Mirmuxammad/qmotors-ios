@@ -155,9 +155,15 @@ extension StockVC: UITableViewDataSource {
         return cell
     }
     
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        200
-//    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if stocks[indexPath.row].location == nil && stocks[indexPath.row].title?.count ?? 0 <= 18 {
+            return 125
+        } else if stocks[indexPath.row].location == nil && stocks[indexPath.row].title?.count ?? 0 >= 18 {
+            return 135
+        } else {
+            return 185
+        }
+    }
     
 }
 // MARK: - UITableViewDelegate

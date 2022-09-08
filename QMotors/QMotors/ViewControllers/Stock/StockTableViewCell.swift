@@ -97,9 +97,10 @@ class StockTableViewCell: UITableViewCell {
         }
         
         locationImageView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(16)
             make.size.equalTo(CGSize(width: 32, height: 32))
             make.left.equalToSuperview().offset(24)
-            make.top.equalTo(titleLabel.snp.bottom).offset(24)
+            make.bottom.equalTo(stockTextLabel.snp.top).offset(-16)
         }
         
         locationTitleLabel.snp.makeConstraints { make in
@@ -109,10 +110,10 @@ class StockTableViewCell: UITableViewCell {
         }
         
         stockTextLabel.snp.makeConstraints { make in
-            make.top.equalTo(locationImageView.snp.bottom).offset(21)
             make.left.equalToSuperview().offset(24)
             make.right.equalToSuperview().offset(-24)
             make.bottom.equalToSuperview().offset(-16)
+            make.height.equalTo(15)
         }
     }
         
@@ -124,17 +125,15 @@ class StockTableViewCell: UITableViewCell {
             locationTitleLabel.isHidden = true
             locationImageView.isHidden = true
             stockTextLabel.snp.makeConstraints { make in
-                make.top.equalTo(titleLabel.snp.bottom).offset(21)
+                make.top.equalTo(titleLabel.snp.bottom).offset(15)
             }
         } else {
             locationTitleLabel.isHidden = false
             locationImageView.isHidden = false
             locationTitleLabel.text = stock.location
-            stockTextLabel.snp.makeConstraints { make in
-                make.top.equalTo(locationImageView.snp.bottom).offset(24)
-                make.left.equalToSuperview().offset(24)
-                make.right.equalToSuperview().offset(-24)
-                make.bottom.equalToSuperview().offset(-16)
+            titleLabel.snp.makeConstraints { make in
+                make.height.equalTo(50)
+                make.bottom.equalTo(locationImageView.snp.top).offset(-10)
             }
         }
         stockTextLabel.text = stock.subtitle
