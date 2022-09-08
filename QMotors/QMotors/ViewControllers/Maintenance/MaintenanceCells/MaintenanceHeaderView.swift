@@ -14,6 +14,7 @@ class MaintenanceHeaderView: UITableViewHeaderFooterView {
     private let introductionView: UIView = {
         let view = UIView()
         view.frame.size = CGSize(width: 343, height: 150)
+        view.layer.cornerRadius = 10
         view.backgroundColor = UIColor.init(hex: "#9CC55A")
         return view
     }()
@@ -21,7 +22,6 @@ class MaintenanceHeaderView: UITableViewHeaderFooterView {
     private let colorImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "promo_background_button")
-        imageView.frame.size = CGSize(width: 570, height: 150)
         return imageView
     }()
     
@@ -34,6 +34,7 @@ class MaintenanceHeaderView: UITableViewHeaderFooterView {
     private let titleLable: UILabel = {
         let label = UILabel()
         label.text = "Бесплатная диагностика"
+        label.numberOfLines = 0
         label.font = UIFont(name: "Montserrat-SemiBold", size: 22)
         label.textColor = .black
         label.textAlignment = .left
@@ -61,7 +62,7 @@ class MaintenanceHeaderView: UITableViewHeaderFooterView {
     
     private let intdroductionBottomLabel: UILabel = {
         let label = UILabel()
-        label.text = "Мы рады предложить вам список услуг,\n на которые вы можете записаться совершенно бесплатно"
+        label.text = "Мы рады предложить вам список услуг, на которые вы можете записаться совершенно бесплатно"
         label.font = UIFont(name: "Montserrat-Semibold", size: 16)
         label.textColor = .white
         label.textAlignment = .left
@@ -102,15 +103,15 @@ class MaintenanceHeaderView: UITableViewHeaderFooterView {
         }
         
         titleLable.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
+            make.left.equalToSuperview().offset(14)
+            make.right.equalToSuperview().offset(-14)
             make.top.equalTo(backButton.snp.bottom).offset(20)
             make.height.equalTo(22)
         }
         
         introductionView.snp.makeConstraints { make in
-            make.width.equalTo(343)
-            make.height.equalTo(150)
+//            make.width.equalTo(343)
+//            make.height.equalTo(150)
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
             make.top.equalTo(titleLable.snp.bottom).offset(20)
@@ -123,15 +124,20 @@ class MaintenanceHeaderView: UITableViewHeaderFooterView {
         }
         
         intdroductionLabel.snp.makeConstraints { make in
-            make.left.equalTo(introductionView).offset(20)
+            make.left.equalTo(introductionView).offset(23)
+            make.right.equalToSuperview().offset(-14)
             make.top.equalTo(introductionView).offset(20)
         }
         
         intdroductionBottomLabel.snp.makeConstraints { make in
-            make.top.equalTo(intdroductionLabel.snp.bottom).offset(20)
-            make.left.equalTo(introductionView).offset(20)
-            make.right.equalTo(introductionView).offset(-20)
-            make.bottom.equalToSuperview().offset(-5)
+            make.top.equalTo(intdroductionLabel.snp.bottom).offset(15)
+            make.left.equalTo(introductionView).offset(22)
+            make.right.equalTo(introductionView).offset(-14)
+            make.bottom.equalToSuperview().offset(-19)
+        }
+        
+        colorImage.snp.makeConstraints { make in
+            make.left.top.bottom.equalToSuperview()
         }
     }
 }
