@@ -502,13 +502,14 @@ class OrderRecordVC: BaseVC {
             let visiteDate = formatter.string(from: newDate ?? Date())
             
             
-            OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, dateVisit: visiteDate, freeDiagnostics: false, guarantee: guarantee, stockID: order.stockID ?? 0, success: { [weak self] result in
+            OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, dateVisit: visiteDate, freeDiagnostics: false, guarantee: guarantee,success: { result in
+                print("Hello")
                 guard let orderId = result.result.id else { return }
                 DispatchQueue.main.async {
-                    self?.addPhotoToOrder(orderId: orderId)
+                    self.addPhotoToOrder(orderId: orderId)
                 }
                 
-                self?.dismissLoadingIndicator()
+                self.dismissLoadingIndicator()
                 
             }) { [weak self] error in
                 print(error?.message ?? "")
@@ -530,7 +531,7 @@ class OrderRecordVC: BaseVC {
                 let vin = myCarOrder.vin,
                 let lastVisit = myCarOrder.lastVisit,
                 let status = myCarOrder.status else { return }
-            
+            print("edit car")
             CarAPI.editCar(carId: id, carModelId: carModelId, year: year, mileage: milage, number: number, vin: vin, lastVisit: lastVisit, status: status) { result in
                 print("Car last visit succesfully updated")
                 self.showAlert(with: "Успешно", buttonTitle: "Ок")

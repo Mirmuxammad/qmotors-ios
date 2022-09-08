@@ -34,7 +34,7 @@ final class OrderAPI {
         }
     }
     
-    static func addDiagnosticOrder(carId: String, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, dateVisit: String, freeDiagnostics: Bool, guarantee: Bool, stockID: Int, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
+    static func addDiagnosticOrderWithStock(carId: String, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, dateVisit: String, freeDiagnostics: Bool, guarantee: Bool, stockID: Int, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
         
         let params: Parameters = [
             "order_type_id": orderTypeId,
@@ -54,10 +54,32 @@ final class OrderAPI {
             let result = try? decoder.decode(OrderResponse.self, from: data)
             guard let response = result else { return }
                 success(response)
-            print("1")
         }) { error in
             failure(error)
-            print("2")
+        }
+    }
+    
+    static func addDiagnosticOrder(carId: String, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, dateVisit: String, freeDiagnostics: Bool, guarantee: Bool, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
+        
+        let params: Parameters = [
+            "order_type_id": orderTypeId,
+            "tech_center_id": techCenterId,
+            "description": description,
+            "date": dateVisit,
+            "guarantee": guarantee,
+            "free_diagnstics": freeDiagnostics,
+            "user_car_id": carId,
+            "number": carNumber
+        ]
+        
+        BaseAPI.authorizedPostRequest(reqMethod: .order, parameters: params, success: { data in
+            guard let data = data else { return }
+            let decoder = JSONDecoder()
+            let result = try? decoder.decode(OrderResponse.self, from: data)
+            guard let response = result else { return }
+                success(response)
+        }) { error in
+            failure(error)
         }
     }
     

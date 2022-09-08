@@ -11,6 +11,7 @@ import DropDown
 
 class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
     
+    private var technicalCentersData = [TechnicalCenter]()
     private var myCars = [MyCarModel]()
     private var order = NewOrder()
     private var myCarOrder = MyCarOrder()
@@ -70,18 +71,44 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
         return label
     }()
     
-    private let secondTitleLable: UILabel = {
+    private let thirdTitleLable: UILabel = {
         let label = UILabel()
-        label.text = "Ваш автомобиль"
+        label.text = "Укажите дату и время"
         label.font = UIFont(name: "Montserrat-SemiBold", size: 16)
         label.textColor = .black
         label.textAlignment = .left
         return label
     }()
     
-    private let thirdTitleLable: UILabel = {
+    private let technicalCenterLable: CustomLabel = {
+        let label = CustomLabel(text: "Технический центр", fontWeight: .medium)
+        return label
+    }()
+    
+    private let technicalCenterField: CustomTextField = {
+        let field = CustomTextField(placeholder: "Выберите из списка")
+        return field
+    }()
+    
+    private let technicalCenterButton: UIButton = UIButton()
+    
+    private let technicalCenterDropDown: DropDown = {
+        let dropDown = DropDown()
+        dropDown.layer.borderWidth = 1
+        dropDown.layer.borderColor = UIColor(hex: "B6B6B6").cgColor
+        dropDown.layer.cornerRadius = 8
+        return dropDown
+    }()
+    
+    private let technicalChevronButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "chevron-icon"), for: .normal)
+        return button
+    }()
+    
+    private let secondTitleLable: UILabel = {
         let label = UILabel()
-        label.text = "Укажите дату и время"
+        label.text = "Ваш автомобиль"
         label.font = UIFont(name: "Montserrat-SemiBold", size: 16)
         label.textColor = .black
         label.textAlignment = .left
@@ -116,7 +143,8 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
         
         
         datePicker.addTarget(self, action: #selector(setDate(picker:)), for: .valueChanged)
-        userCarButton.addTarget(self, action: #selector(openDropDown), for: .touchUpInside)
+        technicalCenterButton.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
+        userCarButton.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
         sendOrderButton.setupButton(target: self, action: #selector(addSendButtonTapped))
     }
     
@@ -136,10 +164,19 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
         self.myCarOrder.lastVisit = picker.date
     }
     
-    @objc private func openDropDown() {
-        userCarDropDown.show()
-        carModelChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
+    @objc private func openDropDown(_ sender: UIButton) {
+        switch sender {
+        case technicalCenterButton:
+            technicalCenterDropDown.show()
+            technicalChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
+        case userCarButton:
+            userCarDropDown.show()
+            carModelChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
+        default:
+            print(111)
+        }
     }
+    
     
     @objc private func backButtonDidTap() {
         print("backButtonDidTap")
@@ -150,7 +187,25 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
         self.showLoadingIndicator()
         let dg = DispatchGroup()
         loadMyCar(dg: dg)
+        loadTechCenters(dg: dg)
         updateTableViews(dg: dg)
+    }
+    
+    private func loadTechCenters(dg: DispatchGroup) {
+        dg.enter()
+        TechCenterAPI.techCenterList { [weak self] jsonData in
+            guard let self = self else { return }
+            self.technicalCentersData = jsonData
+            dg.leave()
+        } failure: { error in
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+            self.present(alert, animated: true, completion: nil)
+            dg.leave()
+        }
+        
     }
     
     private func loadMyCar(dg: DispatchGroup) {
@@ -191,32 +246,25 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
             
             let orderDescroption = "Запись на бесплатную диагностику, через приложение"
             print("Tapped on button")
-            OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: order.techCenterId ?? 1, orderTypeId: order.orderTypeId ?? 1, description: orderDescroption, dateVisit: lastVisitStr, freeDiagnostics: true, guarantee: false, stockID: order.stockID ?? 0, success: { [weak self] result in
-                print("Запрос прошел но не обработался")
-                if let orderId = result.result.id {
-                    print(orderId)
-                    
-                    self?.dismissLoadingIndicator()
-                } else {
-                    let alert = UIAlertController(title: "Ошибка", message: "Возникла ошибка попробуйте еще раз" , preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                        
-                    }))
-                    print("Запрос прошел и завис")
-                    self?.dismissLoadingIndicator()
-                    self?.present(alert, animated: true, completion: nil)
-                }
-
-                
-            }) { [weak self] error in
-                print("Запрос не прошел и не обработался")
+            
+            
+            OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: order.techCenterId ?? 1, orderTypeId: 5, description: orderDescroption, dateVisit: lastVisitStr, freeDiagnostics: true, guarantee: false) { result in
+                self.dismissLoadingIndicator()
+                self.router?.back()
+               
+            } failure: { error in
                 print(error?.message ?? "")
                 let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                    
+                    DispatchQueue.main.async {
+                        print("Hello")
+                    }
+                    DispatchQueue.global().async {
+                        print("byu")
+                    }
                 }))
-                self?.dismissLoadingIndicator()
-                self?.present(alert, animated: true, completion: nil)
+                self.dismissLoadingIndicator()
+                self.present(alert, animated: true, completion: nil)
             }
         }
         
@@ -231,13 +279,31 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
     }
     
     private func setDropDowns() {
+        technicalCenterDropDown.dataSource = technicalCentersData.map({ i in
+            i.title
+        })
         userCarDropDown.dataSource = myCars.map({ i in
             i.mark + " " + i.model + " " + i.number
         })
+        
+        technicalCenterDropDown.anchorView = technicalCenterButton
         userCarDropDown.anchorView = userCarButton
+        
+        technicalCenterDropDown.direction = .bottom
         userCarDropDown.direction = .bottom
+        
+        technicalCenterDropDown.bottomOffset = CGPoint(x: 0, y:technicalCenterButton.frame.height + 10)
         userCarDropDown.bottomOffset = CGPoint(x: 0, y:userCarButton.frame.height + 10)
+        
+        technicalCenterDropDown.width = technicalCenterButton.frame.width
         userCarDropDown.width = userCarButton.frame.width
+        
+        technicalCenterDropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            self?.technicalCenterField.text = item
+            self?.order.techCenterId = self?.technicalCentersData[index].id
+            self?.technicalCenterDropDown.hide()
+            self?.technicalChevronButton.transform = .identity
+        }
         
         userCarDropDown.selectionAction = { [weak self] (index: Int, item: String) in
             self?.userCarField.text = item
@@ -262,13 +328,22 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
     
     private func setupView() {
         userCarField.inputView = UIView()
+        technicalCenterField.inputView = UIView()
+        
+        technicalCenterField.delegate = self
         userCarField.delegate = self
+        
         view.addSubview(logoImageView)
         view.addSubview(backgroundView)
         backgroundView.addSubview(backButton)
         backgroundView.addSubview(titleLable)
+        backgroundView.addSubview(technicalCenterLable)
         backgroundView.addSubview(secondTitleLable)
         backgroundView.addSubview(thirdTitleLable)
+        
+        backgroundView.addSubview(technicalCenterField)
+        backgroundView.addSubview(technicalCenterButton)
+        technicalCenterField.addSubview(technicalChevronButton)
         
         backgroundView.addSubview(userCarField)
         backgroundView.addSubview(userCarButton)
@@ -308,10 +383,35 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
             make.top.equalTo(backButton.snp.bottom).offset(20)
         }
         
-        secondTitleLable.snp.makeConstraints { make in
+        technicalCenterLable.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
             make.top.equalTo(titleLable.snp.bottom).offset(20)
+            make.height.equalTo(22)
+        }
+        
+        technicalCenterField.snp.makeConstraints { make in
+            make.top.equalTo(technicalCenterLable.snp.bottom).offset(14)
+            make.height.equalTo(54)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+        }
+        
+        technicalCenterButton.snp.makeConstraints { make in
+            make.edges.equalTo(technicalCenterField)
+        }
+        
+        technicalChevronButton.snp.makeConstraints { make in
+            make.right.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.height.equalTo(54)
+            make.width.equalTo(54)
+        }
+        
+        secondTitleLable.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.top.equalTo(technicalCenterField.snp.bottom).offset(24)
             make.height.equalTo(22)
         }
         
