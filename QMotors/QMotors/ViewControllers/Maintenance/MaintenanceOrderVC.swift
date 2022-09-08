@@ -231,7 +231,16 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
             let alert = UIAlertController(title: "Ошибка", message: "Выберите дату записи на ТО", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             present(alert, animated: true)
+        } else if order.techCenterId == nil {
+            let alert = UIAlertController(title: "Ошибка", message: "Выберите технический центр", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        } else if myCar == nil {
+            let alert = UIAlertController(title: "Ошибка", message: "Выберите автомобиль", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
         } else {
+        
             self.showLoadingIndicator()
             
             let dateFormatter = DateFormatter()
@@ -246,26 +255,26 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
             
             let orderDescroption = "Запись на бесплатную диагностику, через приложение"
             print("Tapped on button")
-            
-            
+
             OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: order.techCenterId ?? 1, orderTypeId: 5, description: orderDescroption, dateVisit: lastVisitStr, freeDiagnostics: true, guarantee: false) { result in
-                self.dismissLoadingIndicator()
-                self.router?.back()
-               
+
+
             } failure: { error in
                 print(error?.message ?? "")
                 let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                    DispatchQueue.main.async {
-                        print("Hello")
-                    }
-                    DispatchQueue.global().async {
-                        print("byu")
-                    }
+                    
                 }))
                 self.dismissLoadingIndicator()
                 self.present(alert, animated: true, completion: nil)
             }
+            
+            self.dismissLoadingIndicator()
+            let alert = UIAlertController(title: "Успех", message: "Вы записаны на бесплатную диагностику", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                self.router?.back()
+            }))
+            present(alert, animated: true)
         }
         
     }
