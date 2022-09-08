@@ -76,7 +76,11 @@ class MaintenanceVC: BaseVC {
     }
     @objc private func getOrder() {
         print(#function)
-        router?.pushMaintenanceOrderVC()
+        if UserDefaultsService.sharedInstance.authToken != nil {
+            router?.pushMaintenanceOrderVC()
+        } else {
+            router?.pushRegistrationVC()
+        }
     }
     
     override func leftMenuButtonDidTap() {
