@@ -533,6 +533,7 @@ class OrderRecordVC: BaseVC {
             
             CarAPI.editCar(carId: id, carModelId: carModelId, year: year, mileage: milage, number: number, vin: vin, lastVisit: lastVisit, status: status) { result in
                 print("Car last visit succesfully updated")
+                self.showAlert(with: "Успешно", buttonTitle: "Ок")
             } failure: { error in
                 self.showAlert(with: error?.localizedDescription ?? "Ошибка", buttonTitle: "Ок")
             }
