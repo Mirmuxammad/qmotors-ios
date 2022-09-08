@@ -52,7 +52,6 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
     
     private let sendOrderButton: ActionButton = {
         let button = ActionButton()
-        button.setupButton(target: self, action: #selector(sendOrder))
         button.setupTitle(title: "ОТПРАВИТЬ ЗАЯВКУ")
         button.backgroundColor = UIColor(hex: "#9CC55A")
         button.frame.size = CGSize(width: 341, height: 55)
@@ -115,7 +114,10 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
         setupView()
         setupConstraints()
         
+        
+        datePicker.addTarget(self, action: #selector(setDate(picker:)), for: .valueChanged)
         userCarButton.addTarget(self, action: #selector(openDropDown), for: .touchUpInside)
+        sendOrderButton.setupButton(target: self, action: #selector(addSendButtonTapped))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -126,6 +128,14 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
     
     // MARK: - Private actions
     
+    @objc private func setDate(picker: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: picker.date)
+        order.date = dateString
+        self.myCarOrder.lastVisit = picker.date
+    }
+    
     @objc private func openDropDown() {
         userCarDropDown.show()
         carModelChevronButton.transform = CGAffineTransform(rotationAngle: .pi)
@@ -134,10 +144,6 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
     @objc private func backButtonDidTap() {
         print("backButtonDidTap")
         router?.back()
-    }
-    
-    @objc private func sendOrder() {
-        print(#function)
     }
     
     private func loadInfo() {
@@ -162,6 +168,60 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
             dg.leave()
         }
     }
+    
+    
+    @objc private func addSendButtonTapped() {
+        
+        if order.date == nil {
+            let alert = UIAlertController(title: "Ошибка", message: "Выберите дату записи на ТО", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+        } else {
+            self.showLoadingIndicator()
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            let newDate = dateFormatter.date(from: order.date!)
+            guard let car = myCar else { return }
+            
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            let lastVisitStr = formatter.string(from: newDate ?? Date())
+            
+            let orderDescroption = "Запись на бесплатную диагностику, через приложение"
+            print("Tapped on button")
+            OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: order.techCenterId ?? 1, orderTypeId: order.orderTypeId ?? 1, description: orderDescroption, dateVisit: lastVisitStr, freeDiagnostics: true, guarantee: false, stockID: order.stockID ?? 0, success: { [weak self] result in
+                print("Запрос прошел но не обработался")
+                if let orderId = result.result.id {
+                    print(orderId)
+                    
+                    self?.dismissLoadingIndicator()
+                } else {
+                    let alert = UIAlertController(title: "Ошибка", message: "Возникла ошибка попробуйте еще раз" , preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                        
+                    }))
+                    print("Запрос прошел и завис")
+                    self?.dismissLoadingIndicator()
+                    self?.present(alert, animated: true, completion: nil)
+                }
+
+                
+            }) { [weak self] error in
+                print("Запрос не прошел и не обработался")
+                print(error?.message ?? "")
+                let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                    
+                }))
+                self?.dismissLoadingIndicator()
+                self?.present(alert, animated: true, completion: nil)
+            }
+        }
+        
+    }
+    
     
     private func updateTableViews(dg: DispatchGroup) {
         dg.notify(queue: .main) {

@@ -516,7 +516,7 @@ class AddStockVC: BaseVC {
             
             
             
-            OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: order.techCenterId ?? 0, orderTypeId: order.orderTypeId ?? 0, description: descriptionOfOrder, lastVisit: lastVisitStr, freeDiagnostics: false, guarantee: false, stockID: order.stockID ?? 0, success: { [weak self] result in
+            OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: order.techCenterId ?? 0, orderTypeId: order.orderTypeId ?? 0, description: descriptionOfOrder, dateVisit: lastVisitStr, freeDiagnostics: false, guarantee: false, stockID: order.stockID ?? 0, success: { [weak self] result in
                 guard let orderId = result.result.id else { return }
                 DispatchQueue.main.async {
                     self?.addPhotoToOrder(orderId: orderId)

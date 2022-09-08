@@ -34,13 +34,13 @@ final class OrderAPI {
         }
     }
     
-    static func addDiagnosticOrder(carId: String, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, lastVisit: String, freeDiagnostics: Bool, guarantee: Bool, stockID: Int, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
+    static func addDiagnosticOrder(carId: String, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, dateVisit: String, freeDiagnostics: Bool, guarantee: Bool, stockID: Int, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
         
         let params: Parameters = [
             "order_type_id": orderTypeId,
             "tech_center_id": techCenterId,
             "description": description,
-            "date": lastVisit,
+            "date": dateVisit,
             "guarantee": guarantee,
             "free_diagnstics": freeDiagnostics,
             "user_car_id": carId,
@@ -54,8 +54,10 @@ final class OrderAPI {
             let result = try? decoder.decode(OrderResponse.self, from: data)
             guard let response = result else { return }
                 success(response)
+            print("1")
         }) { error in
             failure(error)
+            print("2")
         }
     }
     
