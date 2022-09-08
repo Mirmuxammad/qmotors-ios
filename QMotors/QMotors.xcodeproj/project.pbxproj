@@ -9,12 +9,12 @@
 /* Begin PBXBuildFile section */
 		0408969C28C749F60065A93F /* ChatAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408969B28C749F60065A93F /* ChatAPI.swift */; };
 		0408969E28C759C40065A93F /* MessagesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408969D28C759C40065A93F /* MessagesResponse.swift */; };
+		040CD5ED28CA2179002513BF /* UITableView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040CD5EC28CA2179002513BF /* UITableView + Extension.swift */; };
 		040D610E28C62CE400B772F4 /* QRCodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D610D28C62CE400B772F4 /* QRCodeVC.swift */; };
 		0479D20D28C8535F0003A912 /* MimeType + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0479D20C28C8535F0003A912 /* MimeType + Extension.swift */; };
 		048E657328C0A87300A5A6DA /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657228C0A87300A5A6DA /* ChatVC.swift */; };
 		048E657528C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657428C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift */; };
 		048E657928C0D11100A5A6DA /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657828C0D11000A5A6DA /* ChatTableViewCell.swift */; };
-		04C95BE028C5E8230085E1E0 /* MaintenanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E869A75628C0B9E800B961F4 /* MaintenanceView.swift */; };
 		4001C70C28C7246D004D25A9 /* StockVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4001C70B28C7246D004D25A9 /* StockVC.swift */; };
 		4001C70E28C725F7004D25A9 /* StockTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4001C70D28C725F7004D25A9 /* StockTableViewCell.swift */; };
 		4001C71028C734A9004D25A9 /* StockResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4001C70F28C734A9004D25A9 /* StockResponce.swift */; };
@@ -171,6 +171,7 @@
 /* Begin PBXFileReference section */
 		0408969B28C749F60065A93F /* ChatAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAPI.swift; sourceTree = "<group>"; };
 		0408969D28C759C40065A93F /* MessagesResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesResponse.swift; sourceTree = "<group>"; };
+		040CD5EC28CA2179002513BF /* UITableView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView + Extension.swift"; sourceTree = "<group>"; };
 		040D610D28C62CE400B772F4 /* QRCodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeVC.swift; sourceTree = "<group>"; };
 		0479D20C28C8535F0003A912 /* MimeType + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MimeType + Extension.swift"; sourceTree = "<group>"; };
 		048E657228C0A87300A5A6DA /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
@@ -736,6 +737,7 @@
 				40D9C27628AAB1BB005195B5 /* UIImage+Extension.swift */,
 				E08B3CEF28BF885300140D22 /* NSAttributedString + Extension.swift */,
 				0479D20C28C8535F0003A912 /* MimeType + Extension.swift */,
+				040CD5EC28CA2179002513BF /* UITableView + Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1099,6 +1101,7 @@
 				84AE273D288BF10E000870D4 /* MyCarsTableViewCell.swift in Sources */,
 				84ACAF4728927DEB0012508C /* CarMarkResponse.swift in Sources */,
 				406B18C128BFEB9C00112178 /* BonusAPI.swift in Sources */,
+				040CD5ED28CA2179002513BF /* UITableView + Extension.swift in Sources */,
 				406B18C928BFEB9C00112178 /* CarAPI.swift in Sources */,
 				E08B3CEE28BF7CA800140D22 /* ArticleDeteilViewController.swift in Sources */,
 				84A4AB692889C51700B657F1 /* CabinetVC.swift in Sources */,

@@ -19,6 +19,7 @@ class ChatVC: BaseVC {
     private var messages = [Message]()
     private let supportedTypes: [UTType] = [.jpeg, .png, .video, .avi, .pdf, .mpeg]
     private var fileURL: URL?
+    private var timer: Timer?
     
     // MARK: - UI Elements
     
@@ -134,13 +135,18 @@ class ChatVC: BaseVC {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         loadMessages()
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: 300, target: self, selector: #selector(loadAgain), userInfo: nil, repeats: true)
     }
     
     override func leftMenuButtonDidTap() {
         sideMenuVC.rootScreen = .techCenter
         super.leftMenuButtonDidTap()
+    }
+    
+    @objc private func loadAgain() {
+        loadMessages()
     }
     
     // MARK: - Private functions
@@ -240,6 +246,7 @@ class ChatVC: BaseVC {
         router?.back()
         IQKeyboardManager.shared.toolbarDoneBarButtonItemText = "Done"
         isOpenedChat = false
+        timer?.invalidate()
     }
     
     @objc private func sendButtonDidTap() {
@@ -270,6 +277,7 @@ class ChatVC: BaseVC {
             
             self.messages = messages
             self.tableView.reloadData()
+            self.tableView.scrollToBottom(isAnimated: false)
             self.activityIndicator.stopAnimating()
             
         } failure: { error in
