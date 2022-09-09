@@ -137,7 +137,7 @@ class ChatVC: BaseVC {
         super.viewWillAppear(animated)
         loadMessages()
         timer?.invalidate()
-        timer = Timer.scheduledTimer(timeInterval: 300, target: self, selector: #selector(loadAgain), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(loadAgain), userInfo: nil, repeats: true)
     }
     
     override func leftMenuButtonDidTap() {
