@@ -11,6 +11,8 @@
 		0408969E28C759C40065A93F /* MessagesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0408969D28C759C40065A93F /* MessagesResponse.swift */; };
 		040CD5ED28CA2179002513BF /* UITableView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040CD5EC28CA2179002513BF /* UITableView + Extension.swift */; };
 		040D610E28C62CE400B772F4 /* QRCodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D610D28C62CE400B772F4 /* QRCodeVC.swift */; };
+		040F3F9628CF4590005B62F8 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 040F3F9528CF4590005B62F8 /* FirebaseMessaging */; };
+		040F3F9928CF46B6005B62F8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 040F3F9828CF46B6005B62F8 /* GoogleService-Info.plist */; };
 		0479D20D28C8535F0003A912 /* MimeType + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0479D20C28C8535F0003A912 /* MimeType + Extension.swift */; };
 		048E657328C0A87300A5A6DA /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657228C0A87300A5A6DA /* ChatVC.swift */; };
 		048E657528C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657428C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift */; };
@@ -172,6 +174,8 @@
 		0408969D28C759C40065A93F /* MessagesResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesResponse.swift; sourceTree = "<group>"; };
 		040CD5EC28CA2179002513BF /* UITableView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView + Extension.swift"; sourceTree = "<group>"; };
 		040D610D28C62CE400B772F4 /* QRCodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeVC.swift; sourceTree = "<group>"; };
+		040F3F9728CF4640005B62F8 /* QMotors.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QMotors.entitlements; sourceTree = "<group>"; };
+		040F3F9828CF46B6005B62F8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0479D20C28C8535F0003A912 /* MimeType + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MimeType + Extension.swift"; sourceTree = "<group>"; };
 		048E657228C0A87300A5A6DA /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		048E657428C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSupportTableViewCell.swift; sourceTree = "<group>"; };
@@ -338,6 +342,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				040F3F9628CF4590005B62F8 /* FirebaseMessaging in Frameworks */,
 				E0CCAE56E74A9C8AB951C365 /* Pods_QMotors.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -608,6 +613,7 @@
 		84DDD271287ED3A100272C19 /* QMotors */ = {
 			isa = PBXGroup;
 			children = (
+				040F3F9728CF4640005B62F8 /* QMotors.entitlements */,
 				84AE272E288AA62E000870D4 /* Utils */,
 				849836322886DEC500EF47D0 /* API */,
 				84DDD2B9287F12DA00272C19 /* Extensions */,
@@ -619,6 +625,7 @@
 				84DDD278287ED3A100272C19 /* Main.storyboard */,
 				84DDD27D287ED3A200272C19 /* LaunchScreen.storyboard */,
 				84DDD280287ED3A200272C19 /* Info.plist */,
+				040F3F9828CF46B6005B62F8 /* GoogleService-Info.plist */,
 			);
 			path = QMotors;
 			sourceTree = "<group>";
@@ -884,6 +891,9 @@
 			dependencies = (
 			);
 			name = QMotors;
+			packageProductDependencies = (
+				040F3F9528CF4590005B62F8 /* FirebaseMessaging */,
+			);
 			productName = QMotors;
 			productReference = 84DDD26F287ED3A100272C19 /* QMotors.app */;
 			productType = "com.apple.product-type.application";
@@ -912,6 +922,9 @@
 				Base,
 			);
 			mainGroup = 84DDD266287ED3A000272C19;
+			packageReferences = (
+				040F3F9428CF4590005B62F8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 84DDD270287ED3A100272C19 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -945,6 +958,7 @@
 				84DDD2A9287F0AE800272C19 /* Montserrat-ExtraLightItalic.ttf in Resources */,
 				84DDD2AF287F0AE800272C19 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
 				84DDD2B3287F0AE800272C19 /* Montserrat-ExtraLight.ttf in Resources */,
+				040F3F9928CF46B6005B62F8 /* GoogleService-Info.plist in Resources */,
 				84DDD2AE287F0AE800272C19 /* Montserrat-Bold.ttf in Resources */,
 				84DDD2AC287F0AE800272C19 /* Montserrat-LightItalic.ttf in Resources */,
 			);
@@ -1280,10 +1294,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = QMotors/QMotors.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2NJA6A6R83;
+				DEVELOPMENT_TEAM = 9W6JC38Q8B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = QMotors/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Разрешить доступ к камере для возможности фотографировать авто";
@@ -1316,6 +1331,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = QMotors/QMotors.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1368,6 +1384,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		040F3F9428CF4590005B62F8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		040F3F9528CF4590005B62F8 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 040F3F9428CF4590005B62F8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 84DDD267287ED3A000272C19 /* Project object */;
 }

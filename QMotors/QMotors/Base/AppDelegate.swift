@@ -7,6 +7,8 @@
 
 import UIKit
 import IQKeyboardManagerSwift
+import Firebase
+import FirebaseMessaging
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,6 +25,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         appCoordinator?.didFinishLaunchingWithOptions(application, didFinishLaunchingWithOptions: launchOptions)
         IQKeyboardManager.shared.enable = true
+        
+        FirebaseApp.configure()
+        FirebaseConfiguration.shared.setLoggerLevel(.min)
+        UNUserNotificationCenter.current().delegate = self
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+        UNUserNotificationCenter.current().requestAuthorization(
+          options: authOptions) { _, _ in }
+        application.registerForRemoteNotifications()
+        Messaging.messaging().delegate = self
+        
         return true
     }
 
@@ -46,3 +58,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+//MARK: - Handling Push Notifications
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([[.banner, .sound]])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        completionHandler()
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Messaging.messaging().apnsToken = deviceToken
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print(error.localizedDescription, "- Registering Device Token Error")
+    }
+    
+}
+
+extension AppDelegate: MessagingDelegate {
+    
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        let tokenDict = ["token": fcmToken ?? ""]
+        NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: tokenDict)
+    }
+    
+}
