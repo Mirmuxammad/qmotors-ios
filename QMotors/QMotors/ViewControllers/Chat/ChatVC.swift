@@ -275,6 +275,11 @@ class ChatVC: BaseVC {
     private func sendComment() {
         sendMessage(message: textView.text!)
         textView.text = nil
+        textContainer.snp.remakeConstraints { make in
+            make.height.equalTo(55)
+            make.right.left.equalToSuperview()
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-1)
+        }
         attachmentFileLabel.isHidden = true
         attachmentFileLabel.text = nil
         removeAttachmentButton.isHidden = true
