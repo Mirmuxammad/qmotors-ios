@@ -102,6 +102,14 @@ class ChatVC: BaseVC {
         return textField
     }()
     
+    private let textView: UITextView = {
+        let textView = UITextView()
+        textView.text = "Ваш текст"
+        textView.textColor = UIColor.lightGray
+        textView.font = UIFont(name: Const.fontMed, size: 18)
+        return textView
+    }()
+    
     private let activityIndicator: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView()
         view.style = .large
@@ -123,10 +131,11 @@ class ChatVC: BaseVC {
         self.view.backgroundColor = .white
         setupViews()
         setupConstraints()
+        setupHideKeyboardOnTapView()
         
         tableView.delegate = self
         tableView.dataSource = self
-        textField.delegate = self
+        textView.delegate = self
         
         attachButton.addTarget(self, action: #selector(attachButtonDidTap), for: .touchUpInside)
         removeAttachmentButton.addTarget(self, action: #selector(removeAttachTapped), for: .touchUpInside)
@@ -160,7 +169,7 @@ class ChatVC: BaseVC {
         backgroundView.addSubview(tableView)
         backgroundView.addSubview(textContainer)
         textContainer.addSubview(attachButton)
-        textContainer.addSubview(textField)
+        textContainer.addSubview(textView)
         backgroundView.addSubview(attachmentFileLabel)
         backgroundView.addSubview(removeAttachmentButton)
         backgroundView.addSubview(activityIndicator)
@@ -211,15 +220,16 @@ class ChatVC: BaseVC {
             make.right.equalToSuperview().offset(-20)
         }
         
-        textField.snp.makeConstraints { make in
+        textView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
-            make.top.bottom.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.top.equalToSuperview().offset(5)
             make.right.equalTo(attachButton.snp.left).offset(-2)
         }
         
         attachmentFileLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(10)
-            make.bottom.equalTo(textField.snp.top)
+            make.bottom.equalTo(textView.snp.top)
             make.height.equalTo(40)
             make.width.equalToSuperview().multipliedBy(0.5)
         }
@@ -263,8 +273,8 @@ class ChatVC: BaseVC {
     }
     
     private func sendComment() {
-        sendMessage(message: textField.text!)
-        textField.text = nil
+        sendMessage(message: textView.text!)
+        textView.text = nil
         attachmentFileLabel.isHidden = true
         attachmentFileLabel.text = nil
         removeAttachmentButton.isHidden = true
@@ -303,6 +313,7 @@ class ChatVC: BaseVC {
             if message != "" {
                 ChatAPI.sendOnly(message: message) { data in
                     print(data["result"])
+                    self.isOpenedFirstTime = true
                     self.loadMessages()
                 } failure: { error in
                     self.showAlert(with: error?.localizedDescription ?? "Ошибка", buttonTitle: "Ок")
@@ -321,6 +332,7 @@ class ChatVC: BaseVC {
             ChatAPI.sendMessage(fileType: .photo, message: message, fileUrlArray: [fileURL]) { data in
                 
                 print(data["result"])
+                self.isOpenedFirstTime = true
                 self.loadMessages()
                 self.activityIndicator.stopAnimating()
                 
@@ -335,6 +347,7 @@ class ChatVC: BaseVC {
             ChatAPI.sendMessage(fileType: .video, message: message, fileUrlArray: [fileURL]) { data in
                 
                 print(data["result"])
+                self.isOpenedFirstTime = true
                 self.loadMessages()
                 self.activityIndicator.stopAnimating()
                 
@@ -349,6 +362,7 @@ class ChatVC: BaseVC {
             ChatAPI.sendMessage(fileType: .file, message: message, fileUrlArray: [fileURL]) { data in
                 
                 print(data["result"])
+                self.isOpenedFirstTime = true
                 self.loadMessages()
                 self.activityIndicator.stopAnimating()
                 
@@ -394,6 +408,36 @@ extension ChatVC: UITextFieldDelegate {
         let invocation = IQInvocation(self, #selector(sendButtonDidTap))
         textField.keyboardToolbar.doneBarButton.invocation = invocation
     }
+}
+
+extension ChatVC: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray {
+            textView.text = nil
+            textView.textColor = UIColor.black
+        }
+        
+        let invocation = IQInvocation(self, #selector(sendButtonDidTap))
+        textView.keyboardToolbar.doneBarButton.invocation = invocation
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty || textView.text == nil {
+            textView.text = "Ваш текст"
+            textView.textColor = UIColor.lightGray
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        textContainer.snp.remakeConstraints { make in
+            make.height.equalTo(textView.contentSize.height + 17)
+            make.right.left.equalToSuperview()
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-1)
+        }
+        
+//        self.view.layoutIfNeeded()
+    }
+    
 }
 
 // MARK: - UIDocumentPickerDelegate Methods
