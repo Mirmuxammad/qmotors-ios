@@ -42,7 +42,7 @@ class SideMenuVC: UIViewController, Routable {
          NSLocalizedString("ЧАТ", comment: ""),
          NSLocalizedString("СТАТЬИ", comment: ""),
          NSLocalizedString("ПОМОЩЬ", comment: ""),
-         NSLocalizedString("ШТРИХ-КОД", comment: ""),
+         //NSLocalizedString("ШТРИХ-КОД", comment: ""),
          NSLocalizedString("БЕСПЛАТНАЯ ДИАГНОСТИКА", comment: "")]
     
     
