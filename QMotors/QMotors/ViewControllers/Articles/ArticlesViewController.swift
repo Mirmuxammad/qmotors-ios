@@ -98,6 +98,7 @@ extension ArticlesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: ArticlesTableViewCell.identifier) as! ArticlesTableViewCell
+        cell.selectionStyle = .none
         let article = articles[indexPath.row]
         let photoUrl = BaseAPI.baseURL + article.preview
         let url = URL(string: photoUrl)
