@@ -57,6 +57,7 @@ class PhoneCallView: UIView {
         
         setupViews()
         setupConstraints()
+        requestCallButton.isHidden = true
     }
     
     required init?(coder: NSCoder) {
