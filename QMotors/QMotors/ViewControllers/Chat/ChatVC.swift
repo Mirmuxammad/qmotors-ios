@@ -20,6 +20,7 @@ class ChatVC: BaseVC {
     private let supportedTypes: [UTType] = [.jpeg, .png, .video, .avi, .pdf, .mpeg]
     private var fileURL: URL?
     private var timer: Timer?
+    private var isOpenedFirstTime = true
     
     // MARK: - UI Elements
     
@@ -272,13 +273,18 @@ class ChatVC: BaseVC {
     // MARK: - API Methods
     
     private func loadMessages() {
-        activityIndicator.startAnimating()
+        if isOpenedFirstTime {
+            activityIndicator.startAnimating()
+        }
         ChatAPI.getMessages { messages in
             
             self.messages = messages
             self.tableView.reloadData()
-            self.tableView.scrollToBottom(isAnimated: false)
+            if self.isOpenedFirstTime {
+                self.tableView.scrollToBottom(isAnimated: false)
+            }
             self.activityIndicator.stopAnimating()
+            self.isOpenedFirstTime = false
             
         } failure: { error in
             self.activityIndicator.stopAnimating()
@@ -286,8 +292,8 @@ class ChatVC: BaseVC {
                 print(error.localizedDescription)
                 //alert
             }
+            self.isOpenedFirstTime = false
         }
-
     }
     
     private func sendMessage(message: String) {
