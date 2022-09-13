@@ -21,6 +21,7 @@ class ChatVC: BaseVC {
     private var fileURL: URL?
     private var timer: Timer?
     private var isOpenedFirstTime = true
+    private var messagesCount = 0
     
     // MARK: - UI Elements
     
@@ -295,6 +296,12 @@ class ChatVC: BaseVC {
             
             self.messages = messages
             self.tableView.reloadData()
+            
+            if self.messagesCount != messages.count {
+                self.tableView.scrollToBottom(isAnimated: false)
+            }
+            
+            self.messagesCount = messages.count
             if self.isOpenedFirstTime {
                 self.tableView.scrollToBottom(isAnimated: false)
             }
