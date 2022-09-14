@@ -127,7 +127,11 @@ class OrderRecordVC: BaseVC {
         return label
     }()
     
-    private let guaranteeSwitch: UISwitch = UISwitch()
+    private let guaranteeSwitch: UISwitch = {
+        let button = UISwitch()
+        button.onTintColor = UIColor.init(hex: "#9CC55A")
+        return button
+    }()
     
     private let imgLabel: UILabel = {
         let label = UILabel()
