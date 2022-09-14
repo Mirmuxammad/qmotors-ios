@@ -22,9 +22,13 @@ final class ChatAPI {
             let errors = jsonData["errors"]
             if errors.type == .null {
                 let decoder = JSONDecoder()
-                let result = try! decoder.decode(MessagesResponse.self, from: data)
-                guard let messages = result.result else { return }
-                success(messages)
+                do {
+                    let result = try decoder.decode(MessagesResponse.self, from: data)
+                    guard let messages = result.result else { return }
+                    success(messages)
+                } catch {
+                    print(error.localizedDescription)
+                }
             } else {
                 failure(NetworkError(.other(errors.stringValue)))
             }

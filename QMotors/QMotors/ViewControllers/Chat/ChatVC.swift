@@ -98,14 +98,12 @@ class ChatVC: BaseVC {
     
     private let textField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Ваш текст"
         textField.font = UIFont(name: Const.fontMed, size: 18)
         return textField
     }()
     
     private let textView: UITextView = {
         let textView = UITextView()
-        textView.text = "Ваш текст"
         textView.textColor = UIColor.lightGray
         textView.font = UIFont(name: Const.fontMed, size: 18)
         return textView
@@ -435,7 +433,6 @@ extension ChatVC: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty || textView.text == nil {
-            textView.text = "Ваш текст"
             textView.textColor = UIColor.lightGray
         }
     }
