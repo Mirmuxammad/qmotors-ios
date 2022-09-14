@@ -60,6 +60,7 @@
 		406B18D128BFEBEF00112178 /* ReviewResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 406B18CD28BFEBEF00112178 /* ReviewResponce.swift */; };
 		406B18D228BFEBEF00112178 /* ListTechCentersResponce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 406B18CE28BFEBEF00112178 /* ListTechCentersResponce.swift */; };
 		406B18D328BFEBEF00112178 /* BonusResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 406B18CF28BFEBEF00112178 /* BonusResponse.swift */; };
+		40AE957228D2139A00D8E204 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AE957128D2139A00D8E204 /* SectionHeader.swift */; };
 		40BA091328A23B8B00990A72 /* DeleteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40BA091228A23B8B00990A72 /* DeleteButton.swift */; };
 		40C8EEA328BE821900DFD003 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C8EEA228BE821900DFD003 /* NotificationService.swift */; };
 		40D9C27728AAB1BB005195B5 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D9C27628AAB1BB005195B5 /* UIImage+Extension.swift */; };
@@ -226,6 +227,7 @@
 		406B18CD28BFEBEF00112178 /* ReviewResponce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReviewResponce.swift; sourceTree = "<group>"; };
 		406B18CE28BFEBEF00112178 /* ListTechCentersResponce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTechCentersResponce.swift; sourceTree = "<group>"; };
 		406B18CF28BFEBEF00112178 /* BonusResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BonusResponse.swift; sourceTree = "<group>"; };
+		40AE957128D2139A00D8E204 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		40BA091228A23B8B00990A72 /* DeleteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteButton.swift; sourceTree = "<group>"; };
 		40C8EEA228BE821900DFD003 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		40D9C27628AAB1BB005195B5 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
@@ -691,6 +693,7 @@
 				84ACAF4F2892C6C70012508C /* TechCellSingUpButton.swift */,
 				405CB81D28B5E51100881004 /* ReminderCellButton.swift */,
 				405CB81F28B5E61200881004 /* ReminderCellEditButton.swift */,
+				40AE957128D2139A00D8E204 /* SectionHeader.swift */,
 				8456BA6C2881652B00684AF5 /* PhoneCall */,
 			);
 			path = Components;
@@ -1144,6 +1147,7 @@
 				4001C71428C74A5D004D25A9 /* StockInfoVC.swift in Sources */,
 				4006222028A3CC2200E55C04 /* CarInfoNumberView.swift in Sources */,
 				40C8EEA328BE821900DFD003 /* NotificationService.swift in Sources */,
+				40AE957228D2139A00D8E204 /* SectionHeader.swift in Sources */,
 				E87D0A9A28C7DA020085075F /* FreeDiagnosticAPI.swift in Sources */,
 				84DDD2BB287F12FC00272C19 /* UIColor+Extension.swift in Sources */,
 				406B18D028BFEBEF00112178 /* NotificationLocal.swift in Sources */,
