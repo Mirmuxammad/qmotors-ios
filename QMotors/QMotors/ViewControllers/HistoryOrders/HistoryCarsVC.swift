@@ -39,19 +39,20 @@ class HistoryCarsVC: BaseVC {
         return label
     }()
     
-    private let subTitleLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Выберите автомобиль для просмотра\nистории"
-        lable.font = UIFont(name: "Montserrat-Regular", size: 16)
-        lable.textColor = UIColor(red: 0.242, green: 0.242, blue: 0.242, alpha: 1)
-        lable.textAlignment = .left
-        lable.numberOfLines = 2
-        return lable
-    }()
+//    private let subTitleLable: UILabel = {
+//        let lable = UILabel()
+//        lable.text = "Выберите автомобиль для просмотра\nистории"
+//        lable.font = UIFont(name: "Montserrat-Regular", size: 16)
+//        lable.textColor = UIColor(red: 0.242, green: 0.242, blue: 0.242, alpha: 1)
+//        lable.textAlignment = .left
+//        lable.numberOfLines = 2
+//        return lable
+//    }()
     
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.separatorStyle = .none
+        tableView.register(MyCustomHeaderForHistory.self, forHeaderFooterViewReuseIdentifier: "SectionHeader")
         tableView.register(MyCarsTableViewCell.self, forCellReuseIdentifier: MyCarsTableViewCell.identifier)
         return tableView
     }()
@@ -142,6 +143,14 @@ extension HistoryCarsVC: UITableViewDelegate, UITableViewDataSource {
         router?.pushOrdersForCarVC(myCar: car)
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+       let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SectionHeader") as! MyCustomHeaderForHistory
+        view.snp.makeConstraints { make in
+            make.height.equalTo(35)
+        }
+       return view
+    }
+    
 }
 
 // MARK: - Layout Subviews
@@ -151,7 +160,7 @@ extension HistoryCarsVC {
         view.addSubview(backgroundView)
         backgroundView.addSubview(backButton)
         backgroundView.addSubview(titleLable)
-        backgroundView.addSubview(subTitleLable)
+        //backgroundView.addSubview(subTitleLable)
         backgroundView.addSubview(tableView)
     }
     
@@ -177,16 +186,16 @@ extension HistoryCarsVC {
             make.left.equalToSuperview().offset(16)
             make.top.equalTo(backButton.snp.bottom).offset(20)
         }
-        subTitleLable.snp.makeConstraints { make in
-            make.top.equalTo(titleLable.snp.bottom).offset(16)
-            make.left.equalToSuperview().offset(16)
-            make.right.equalToSuperview().offset(-16)
-        }
+//        subTitleLable.snp.makeConstraints { make in
+//            make.top.equalTo(titleLable.snp.bottom).offset(16)
+//            make.left.equalToSuperview().offset(16)
+//            make.right.equalToSuperview().offset(-16)
+//        }
         
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(subTitleLable.snp.bottom).offset(20)
-            make.left.equalToSuperview().offset(16)
-            make.right.equalToSuperview().offset(-16)
+            make.top.equalTo(titleLable.snp.bottom).offset(20)
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
             make.bottom.equalToSuperview()
         }
     }
