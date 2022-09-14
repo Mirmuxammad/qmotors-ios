@@ -113,7 +113,7 @@ class CabinetVC: BaseVC {
         titleLable.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
-            make.top.equalToSuperview().offset(40)
+            make.top.equalToSuperview().offset(20)
             make.height.equalTo(22)
         }
         
