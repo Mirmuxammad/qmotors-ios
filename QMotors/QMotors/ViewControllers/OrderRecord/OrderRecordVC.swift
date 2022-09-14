@@ -695,7 +695,7 @@ extension OrderRecordVC {
         backButton.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 100, height: 23))
             make.left.equalToSuperview().offset(20)
-            make.top.equalToSuperview().offset(40)
+            make.top.equalToSuperview().offset(20)
         }
         
         headingLabel.snp.makeConstraints { make in
