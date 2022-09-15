@@ -214,7 +214,7 @@ class ChatVC: BaseVC {
         }
         
         attachButton.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-10)
             make.height.width.equalTo(30)
             make.right.equalToSuperview().offset(-20)
         }
@@ -438,13 +438,16 @@ extension ChatVC: UITextViewDelegate {
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        textContainer.snp.remakeConstraints { make in
-            make.height.equalTo(textView.contentSize.height + 17)
-            make.right.left.equalToSuperview()
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-1)
-        }
-        
-//        self.view.layoutIfNeeded()
+            textContainer.snp.remakeConstraints { make in
+                if textView.contentSize.height >= 104 {
+                    make.height.equalTo(121)
+                } else if textView.contentSize.height < 104 {
+                    make.height.equalTo(textView.contentSize.height + 17)
+                }
+                make.right.left.equalToSuperview()
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-1)
+            }
+        //        self.view.layoutIfNeeded()
     }
     
 }
