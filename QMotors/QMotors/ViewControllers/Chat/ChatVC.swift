@@ -96,12 +96,6 @@ class ChatVC: BaseVC {
         return button
     }()
     
-    private let textField: UITextField = {
-        let textField = UITextField()
-        textField.font = UIFont(name: Const.fontMed, size: 18)
-        return textField
-    }()
-    
     private let textView: UITextView = {
         let textView = UITextView()
         textView.textColor = UIColor.lightGray
@@ -260,7 +254,7 @@ class ChatVC: BaseVC {
     }
     
     @objc private func sendButtonDidTap() {
-        textField.resignFirstResponder()
+        textView.resignFirstResponder()
         sendComment()
     }
     
@@ -320,7 +314,7 @@ class ChatVC: BaseVC {
         activityIndicator.startAnimating()
         
         guard let fileURL = fileURL else {
-            if message != "" {
+            if !Set("\n").isSuperset(of: message) {
                 ChatAPI.sendOnly(message: message) { data in
                     print(data["result"])
                     self.isOpenedFirstTime = true
@@ -412,14 +406,7 @@ extension ChatVC: UITableViewDelegate, UITableViewDataSource {
     
 }
 
-// MARK: - UITextFieldDelegate Methods
-extension ChatVC: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        let invocation = IQInvocation(self, #selector(sendButtonDidTap))
-        textField.keyboardToolbar.doneBarButton.invocation = invocation
-    }
-}
-
+// MARK: - UITextViewDelegate Methods
 extension ChatVC: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == UIColor.lightGray {
