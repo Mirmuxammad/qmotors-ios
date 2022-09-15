@@ -13,7 +13,7 @@ struct MessagesResponse: Codable {
 }
 
 struct Message: Codable {
-    let message: String
+    let message: String?
     let created_at: String
     let admin_user_id: Int?
     let user_id: Int?

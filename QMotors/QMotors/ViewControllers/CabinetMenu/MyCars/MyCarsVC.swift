@@ -45,21 +45,21 @@ class MyCarsVC: BaseVC {
         return control
     }()
 
-    private let titleLable: UILabel = {
-        let label = UILabel()
-        label.text = "Мои автомобили"
-        label.font = UIFont(name: "Montserrat-SemiBold", size: 22)
-        label.textColor = .black
-        label.textAlignment = .left
-        return label
-    }()
+//    private let titleLable: UILabel = {
+//        let label = UILabel()
+//        label.text = "Мои автомобили"
+//        label.font = UIFont(name: "Montserrat-SemiBold", size: 22)
+//        label.textColor = .black
+//        label.textAlignment = .left
+//        return label
+//    }()
     
     private let tableView: UITableView = {
         let tableView = UITableView()
 //        tableView.backgroundColor = .gray
         tableView.separatorStyle = .none
         tableView.allowsSelection = true
-        
+        tableView.register(MyCustomHeader.self, forHeaderFooterViewReuseIdentifier: "SectionHeader")
         tableView.register(MyCarsTableViewCell.self, forCellReuseIdentifier: MyCarsTableViewCell.identifier)
         return tableView
     }()
@@ -106,11 +106,9 @@ class MyCarsVC: BaseVC {
         
         backgroundView.addSubview(backButton)
         backgroundView.addSubview(segmentedControl)
-        backgroundView.addSubview(titleLable)
         backgroundView.addSubview(tableView)
-        
-        
         backgroundView.addSubview(addCarButton)
+        
 
     }
 
@@ -130,7 +128,7 @@ class MyCarsVC: BaseVC {
         backButton.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 100, height: 23))
             make.left.equalToSuperview().offset(20)
-            make.top.equalToSuperview().offset(40)
+            make.top.equalToSuperview().offset(20)
         }
         
         segmentedControl.snp.makeConstraints { make in
@@ -140,25 +138,25 @@ class MyCarsVC: BaseVC {
             make.top.equalTo(backButton.snp.bottom).offset(15)
         }
         
-        titleLable.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
-            make.top.equalTo(segmentedControl.snp.bottom).offset(20)
-            make.height.equalTo(22)
-        }
+//        titleLable.snp.makeConstraints { make in
+//            make.left.equalToSuperview().offset(20)
+//            make.right.equalToSuperview().offset(-20)
+//            make.top.equalTo(segmentedControl.snp.bottom).offset(20)
+//            make.height.equalTo(22)
+//        }
         
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(titleLable.snp.bottom).offset(20)
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
-            make.bottom.equalTo(addCarButton.snp.top).offset(-20)
+            make.top.equalTo(segmentedControl.snp.bottom).offset(20)
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
         
         addCarButton.snp.makeConstraints { make in
             make.height.equalTo(55)
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
-            make.bottom.equalToSuperview().offset(-40)
+            make.left.equalTo(tableView.snp.left).offset(20)
+            make.right.equalTo(tableView.snp.right).offset(-20)
+            make.bottom.equalTo(tableView.snp.bottom).offset(-40)
         }
         
     }
@@ -175,10 +173,10 @@ class MyCarsVC: BaseVC {
         addCarButton.isHidden = true
         
         tableView.snp.remakeConstraints { make in
-            make.top.equalTo(titleLable.snp.bottom).offset(20)
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
-            make.bottom.equalToSuperview().offset(-40)
+            make.top.equalTo(segmentedControl.snp.bottom).offset(20)
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
         
         
@@ -188,17 +186,17 @@ class MyCarsVC: BaseVC {
         addCarButton.isHidden = false
         
         tableView.snp.remakeConstraints { make in
-            make.top.equalTo(titleLable.snp.bottom).offset(20)
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
-            make.bottom.equalTo(addCarButton.snp.top).offset(-20)
+            make.top.equalTo(segmentedControl.snp.bottom).offset(20)
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
         
         addCarButton.snp.remakeConstraints { make in
             make.height.equalTo(55)
-            make.left.equalToSuperview().offset(20)
-            make.right.equalToSuperview().offset(-20)
-            make.bottom.equalToSuperview().offset(-40)
+            make.left.equalTo(tableView.snp.left).offset(20)
+            make.right.equalTo(tableView.snp.right).offset(-20)
+            make.bottom.equalTo(tableView.snp.bottom).offset(-40)
         }
         
     }
@@ -286,7 +284,13 @@ extension MyCarsVC: UITableViewDataSource {
         return 160
     }
     
-    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+       let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SectionHeader") as! MyCustomHeader
+        view.snp.makeConstraints { make in
+            make.height.equalTo(35)
+        }
+       return view
+    }
     
 }
 

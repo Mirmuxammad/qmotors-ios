@@ -98,14 +98,12 @@ class ChatVC: BaseVC {
     
     private let textField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Ваш текст"
         textField.font = UIFont(name: Const.fontMed, size: 18)
         return textField
     }()
     
     private let textView: UITextView = {
         let textView = UITextView()
-        textView.text = "Ваш текст"
         textView.textColor = UIColor.lightGray
         textView.font = UIFont(name: Const.fontMed, size: 18)
         return textView
@@ -192,7 +190,7 @@ class ChatVC: BaseVC {
         backButton.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 100, height: 23))
             make.left.equalToSuperview().offset(20)
-            make.top.equalToSuperview().offset(40)
+            make.top.equalToSuperview().offset(20)
         }
         
         titleLable.snp.makeConstraints { make in
@@ -216,7 +214,7 @@ class ChatVC: BaseVC {
         }
         
         attachButton.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-10)
             make.height.width.equalTo(30)
             make.right.equalToSuperview().offset(-20)
         }
@@ -435,19 +433,21 @@ extension ChatVC: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty || textView.text == nil {
-            textView.text = "Ваш текст"
             textView.textColor = UIColor.lightGray
         }
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        textContainer.snp.remakeConstraints { make in
-            make.height.equalTo(textView.contentSize.height + 17)
-            make.right.left.equalToSuperview()
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-1)
-        }
-        
-//        self.view.layoutIfNeeded()
+            textContainer.snp.remakeConstraints { make in
+                if textView.contentSize.height >= 104 {
+                    make.height.equalTo(121)
+                } else if textView.contentSize.height < 104 {
+                    make.height.equalTo(textView.contentSize.height + 17)
+                }
+                make.right.left.equalToSuperview()
+                make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-1)
+            }
+        //        self.view.layoutIfNeeded()
     }
     
 }

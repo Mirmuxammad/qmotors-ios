@@ -173,7 +173,8 @@ extension MyCarsTableViewCell {
     private func setupConstraints() {
         
         containerView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview()
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
             make.top.equalToSuperview().offset(10)
             make.bottom.equalToSuperview().offset(-10)
         }

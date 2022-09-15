@@ -127,7 +127,11 @@ class OrderRecordVC: BaseVC {
         return label
     }()
     
-    private let guaranteeSwitch: UISwitch = UISwitch()
+    private let guaranteeSwitch: UISwitch = {
+        let button = UISwitch()
+        button.onTintColor = UIColor.init(hex: "#9CC55A")
+        return button
+    }()
     
     private let imgLabel: UILabel = {
         let label = UILabel()
@@ -691,7 +695,7 @@ extension OrderRecordVC {
         backButton.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 100, height: 23))
             make.left.equalToSuperview().offset(20)
-            make.top.equalToSuperview().offset(40)
+            make.top.equalToSuperview().offset(20)
         }
         
         headingLabel.snp.makeConstraints { make in
