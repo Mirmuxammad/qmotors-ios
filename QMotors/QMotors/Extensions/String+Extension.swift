@@ -17,10 +17,12 @@ extension String {
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
         
 
         let date = formatter.date(from: String(str))
         formatter.dateFormat = "dd.MM.yyyy"
+        formatter.timeZone = TimeZone(abbreviation: "UTC+3")
         
         guard let date = date else {
             return ""
@@ -29,6 +31,25 @@ extension String {
         let result = formatter.string(from: date)
         
         return result
+    }
+    
+    func getFormattedDateForChat() -> String {        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        
+        let string = String(self.prefix(16).suffix(5))
+        let a = formatter.date(from: string)
+        
+        if let aa = a {
+            let datttt = DateFormatter()
+            datttt.dateFormat = "HH:mm"
+            datttt.timeZone = TimeZone(abbreviation: "UTC+3")
+            let b = datttt.string(from: aa)
+            return self.getFormattedDate() + " | " + b
+        } else {
+            return ""
+        }
     }
     
     func getDateString() -> String? {

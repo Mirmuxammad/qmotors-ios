@@ -78,9 +78,9 @@ class ChatTableViewCell: UITableViewCell {
     
     func setupCell(with message: Message) {
         chatLabel.text = message.message
-        dateLabel.text = message.created_at.getFormattedDate() + " | " + message.created_at.prefix(16).suffix(5)
+        dateLabel.text = message.created_at.getFormattedDateForChat()//getFormattedDate() + " | " + message.created_at.prefix(16).suffix(5)
+               
          // fix to dynamic checking whether file exists or not
-
         switch message.filetype {
             
         case .file:
