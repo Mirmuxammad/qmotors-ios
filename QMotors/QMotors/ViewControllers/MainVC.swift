@@ -134,9 +134,13 @@ class MainVC: BaseVC {
         router?.pushStockVC()
     }
     
-    @objc private func maintenanceRecordButtonDidTap() {
-        print("maintenanceRecordButtonDidTap")
-        router?.pushTechnicalRecordVC()
+    @objc private func maintenanceRecordButtonDidTap() {        
+        if UserDefaultsService.sharedInstance.authToken != nil {
+            router?.pushTechnicalRecordVC()
+        } else {
+            router?.pushRegistrationVC()
+        }
+        
     }
     
     @objc private func bonusButtonDidTap() {
@@ -150,8 +154,6 @@ class MainVC: BaseVC {
     }
     
     @objc private func personalAreaButtonDidTap() {
-        print("personalAreaButtonDidTap")
-//        router?.pushRegistrationVC()
         if UserDefaultsService.sharedInstance.authToken != nil {
             router?.pushCabinetVC()
         } else {
