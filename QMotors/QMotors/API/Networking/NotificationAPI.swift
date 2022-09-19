@@ -36,4 +36,16 @@ final class NotificationAPI {
             failure(error)
         }
     }
+    
+    static func setDeviceToken(token: String) {
+        
+        let params: Parameters = ["token": token]
+        
+        BaseAPI.authorizedPutRequest(reqMethod: .deviceToken, parameters: params) { data in
+            print(data.debugDescription)
+        } failure: { error in
+            print(error.debugDescription)
+        }
+
+    }
 }

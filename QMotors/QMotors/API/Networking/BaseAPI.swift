@@ -44,6 +44,7 @@ enum RequestMethod {
     case sendOnlyMessage
     case freeDiagnosticList
     case stockList
+    case deviceToken
     
     var path: String {
         switch self {
@@ -115,6 +116,8 @@ enum RequestMethod {
             return "free-diagnostic"
         case .stockList:
             return "stock"
+        case .deviceToken:
+            return "notification/device-token"
         }
     
     }
