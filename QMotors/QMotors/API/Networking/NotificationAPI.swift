@@ -41,7 +41,7 @@ final class NotificationAPI {
         
         let params: Parameters = ["token": token]
         
-        BaseAPI.authorizedPutRequest(reqMethod: .deviceToken, parameters: params) { data in
+        BaseAPI.authorizedPostRequest(reqMethod: .deviceToken, parameters: params) { data in
             print(data.debugDescription)
         } failure: { error in
             print(error.debugDescription)
