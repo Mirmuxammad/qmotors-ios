@@ -501,16 +501,23 @@ extension ChatVC: OpeningFileDelegate {
     }
     
     private func shareFile(url: URL, btn: UIView) {
-        let objectsToShare = [url] as [Any]
-        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-        if #available(iOS 15.4, *) {
-            activityVC.excludedActivityTypes = [UIActivity.ActivityType.airDrop, UIActivity.ActivityType.sharePlay, UIActivity.ActivityType.openInIBooks, UIActivity.ActivityType.copyToPasteboard, UIActivity.ActivityType.markupAsPDF]
+        
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         } else {
-            // Fallback on earlier versions
+            UIApplication.shared.openURL(url)
         }
         
-        activityVC.popoverPresentationController?.sourceView = btn
-        self.present(activityVC, animated: true, completion: nil)
+//        let objectsToShare = [url] as [Any]
+//        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+//        if #available(iOS 15.4, *) {
+//            activityVC.excludedActivityTypes = [UIActivity.ActivityType.airDrop, UIActivity.ActivityType.sharePlay,   UIActivity.ActivityType.openInIBooks, UIActivity.ActivityType.copyToPasteboard, UIActivity.ActivityType.markupAsPDF]
+//        } else {
+//            // Fallback on earlier versions
+//        }
+//
+//        activityVC.popoverPresentationController?.sourceView = btn
+//        self.present(activityVC, animated: true, completion: nil)
     }
     
     private func openImage(url: URL) {
