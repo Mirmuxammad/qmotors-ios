@@ -290,12 +290,16 @@ class ChatVC: BaseVC {
             self.tableView.reloadData()
             
             if self.messagesCount != messages.count {
-                self.tableView.scrollToBottom(isAnimated: false)
+                if self.messages.count != 0 {
+                    self.tableView.scrollToBottom(isAnimated: false)
+                }
             }
             
             self.messagesCount = messages.count
             if self.isOpenedFirstTime {
-                self.tableView.scrollToBottom(isAnimated: false)
+                if self.messages.count != 0 {
+                    self.tableView.scrollToBottom(isAnimated: false)
+                }
             }
             self.activityIndicator.stopAnimating()
             self.isOpenedFirstTime = false
