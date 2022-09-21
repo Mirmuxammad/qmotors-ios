@@ -38,7 +38,7 @@ class ChatTableViewCell: UITableViewCell {
     private let chatStack: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.alignment = .leading
+        stackView.alignment = .fill
         stackView.distribution = .fill
         stackView.spacing = 10
         return stackView
@@ -57,6 +57,12 @@ class ChatTableViewCell: UITableViewCell {
     
     private let imagePreview: ChatPhotoView = {
         let view = ChatPhotoView()
+        view.isHidden = true
+        return view
+    }()
+    
+    private let videoPreview: ChatVideoPreview = {
+        let view = ChatVideoPreview()
         view.isHidden = true
         return view
     }()
@@ -92,17 +98,21 @@ class ChatTableViewCell: UITableViewCell {
         case .file:
             attachmentButton.isHidden = false
             imagePreview.isHidden = true
+            videoPreview.isHidden = true
             attachmentButton.setTitle("  file", for: .normal)
             currentFileURL = message.file
             currentFileType = .file
         case .video:
-            attachmentButton.isHidden = false
+            attachmentButton.isHidden = true
+            videoPreview.isHidden = false
             imagePreview.isHidden = true
-            attachmentButton.setTitle("  video", for: .normal)
+            videoPreview.configureView(target: self, selector: #selector(openFileButtonDidTap))
+//            attachmentButton.setTitle("  video", for: .normal)
             currentFileURL = message.video
             currentFileType = .video
         case .photo:
             attachmentButton.isHidden = true
+            videoPreview.isHidden = true
             imagePreview.isHidden = false
             imagePreview.configureView(target: self, selector: #selector(openFileButtonDidTap), image: message.photo ?? "")
 //            attachmentButton.setTitle("  photo", for: .normal)
@@ -110,6 +120,7 @@ class ChatTableViewCell: UITableViewCell {
             currentFileType = .photo
         case .none:
             attachmentButton.isHidden = true
+            videoPreview.isHidden = true
             imagePreview.isHidden = true
             currentFileType = .none
             currentFileURL = nil
@@ -136,6 +147,7 @@ class ChatTableViewCell: UITableViewCell {
         chatStack.addArrangedSubview(chatLabel)
         chatStack.addArrangedSubview(attachmentButton)
         chatStack.addArrangedSubview(imagePreview)
+        chatStack.addArrangedSubview(videoPreview)
     }
     
     private func setupConstraints() {
@@ -166,6 +178,10 @@ class ChatTableViewCell: UITableViewCell {
         }
         
         imagePreview.snp.makeConstraints { make in
+            make.height.equalTo(150)
+        }
+        
+        videoPreview.snp.makeConstraints { make in
             make.height.equalTo(150)
         }
         

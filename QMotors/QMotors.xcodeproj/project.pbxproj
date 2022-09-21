@@ -14,6 +14,7 @@
 		040F3F9628CF4590005B62F8 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 040F3F9528CF4590005B62F8 /* FirebaseMessaging */; };
 		040F3F9928CF46B6005B62F8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 040F3F9828CF46B6005B62F8 /* GoogleService-Info.plist */; };
 		0422FF8728DB2C6200D4D27A /* ChatPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0422FF8628DB2C6200D4D27A /* ChatPhotoView.swift */; };
+		0422FF8928DB376F00D4D27A /* ChatVideoPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0422FF8828DB376F00D4D27A /* ChatVideoPreview.swift */; };
 		0479D20D28C8535F0003A912 /* MimeType + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0479D20C28C8535F0003A912 /* MimeType + Extension.swift */; };
 		048E657328C0A87300A5A6DA /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657228C0A87300A5A6DA /* ChatVC.swift */; };
 		048E657528C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657428C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift */; };
@@ -179,6 +180,7 @@
 		040F3F9728CF4640005B62F8 /* QMotors.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QMotors.entitlements; sourceTree = "<group>"; };
 		040F3F9828CF46B6005B62F8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0422FF8628DB2C6200D4D27A /* ChatPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatPhotoView.swift; sourceTree = "<group>"; };
+		0422FF8828DB376F00D4D27A /* ChatVideoPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVideoPreview.swift; sourceTree = "<group>"; };
 		0479D20C28C8535F0003A912 /* MimeType + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MimeType + Extension.swift"; sourceTree = "<group>"; };
 		048E657228C0A87300A5A6DA /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		048E657428C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSupportTableViewCell.swift; sourceTree = "<group>"; };
@@ -369,6 +371,7 @@
 				048E657428C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift */,
 				048E657828C0D11000A5A6DA /* ChatTableViewCell.swift */,
 				0422FF8628DB2C6200D4D27A /* ChatPhotoView.swift */,
+				0422FF8828DB376F00D4D27A /* ChatVideoPreview.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -1034,6 +1037,7 @@
 				E08B3CEA28BF722600140D22 /* ArticlesResponce.swift in Sources */,
 				84ACAF4E2892B1250012508C /* TechCellNaviButton.swift in Sources */,
 				8498365028872B6A00EF47D0 /* SmsResponse.swift in Sources */,
+				0422FF8928DB376F00D4D27A /* ChatVideoPreview.swift in Sources */,
 				048E657328C0A87300A5A6DA /* ChatVC.swift in Sources */,
 				E8FE134D28C6930100401A7F /* MaintenanceHeaderView.swift in Sources */,
 				E02E317928A414710067CEAB /* OrdersForCarVC.swift in Sources */,
