@@ -276,7 +276,12 @@ extension SideMenuVC: UITableViewDelegate, UITableViewDataSource {
                 dismiss(animated: true)
             } else {
                 dismiss(animated: true)
-                router?.pushChatVC()
+                
+                if UserDefaultsService.sharedInstance.authToken != nil {
+                    router?.pushChatVC()
+                } else {
+                    router?.pushRegistrationVC()
+                }
             }
         case 8:
             if rootScreen == .articles {

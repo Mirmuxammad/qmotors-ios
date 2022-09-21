@@ -176,7 +176,12 @@ class BaseVC: UIViewController, Routable {
     
     @objc private func chatsButtonDidTap() {
         print("chatsButtonDidTap")
-        router?.pushChatVC()
+
+        if UserDefaultsService.sharedInstance.authToken != nil {
+            router?.pushChatVC()
+        } else {
+            router?.pushRegistrationVC()
+        }
     }
     
     @objc private func phoneCallButtonDidTap() {
