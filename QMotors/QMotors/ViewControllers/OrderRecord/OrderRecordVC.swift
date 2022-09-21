@@ -539,13 +539,14 @@ class OrderRecordVC: BaseVC {
             print("edit car")
             CarAPI.editCar(carId: id, carModelId: carModelId, year: year, mileage: milage, number: number, vin: vin, lastVisit: lastVisit, status: status) { result in
                 print("Car last visit succesfully updated")
-                self.showAlert(with: "Успешно", buttonTitle: "Ок")
+//                self.showAlert(with: "Успешно", buttonTitle: "Ок")
+                self.router?.pushOrdersForCarVC(myCar: car)
             } failure: { error in
                 self.showAlert(with: error?.localizedDescription ?? "Ошибка", buttonTitle: "Ок")
+                self.navigationController?.popViewController(animated: true)
             }
             
             self.dismissLoadingIndicator()
-            self.navigationController?.popViewController(animated: true)
         }
     }
     
