@@ -13,6 +13,7 @@
 		040D610E28C62CE400B772F4 /* QRCodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040D610D28C62CE400B772F4 /* QRCodeVC.swift */; };
 		040F3F9628CF4590005B62F8 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 040F3F9528CF4590005B62F8 /* FirebaseMessaging */; };
 		040F3F9928CF46B6005B62F8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 040F3F9828CF46B6005B62F8 /* GoogleService-Info.plist */; };
+		0422FF8728DB2C6200D4D27A /* ChatPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0422FF8628DB2C6200D4D27A /* ChatPhotoView.swift */; };
 		0479D20D28C8535F0003A912 /* MimeType + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0479D20C28C8535F0003A912 /* MimeType + Extension.swift */; };
 		048E657328C0A87300A5A6DA /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657228C0A87300A5A6DA /* ChatVC.swift */; };
 		048E657528C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048E657428C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift */; };
@@ -177,6 +178,7 @@
 		040D610D28C62CE400B772F4 /* QRCodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeVC.swift; sourceTree = "<group>"; };
 		040F3F9728CF4640005B62F8 /* QMotors.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = QMotors.entitlements; sourceTree = "<group>"; };
 		040F3F9828CF46B6005B62F8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0422FF8628DB2C6200D4D27A /* ChatPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatPhotoView.swift; sourceTree = "<group>"; };
 		0479D20C28C8535F0003A912 /* MimeType + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MimeType + Extension.swift"; sourceTree = "<group>"; };
 		048E657228C0A87300A5A6DA /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		048E657428C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSupportTableViewCell.swift; sourceTree = "<group>"; };
@@ -366,6 +368,7 @@
 				048E657228C0A87300A5A6DA /* ChatVC.swift */,
 				048E657428C0BB7E00A5A6DA /* ChatSupportTableViewCell.swift */,
 				048E657828C0D11000A5A6DA /* ChatTableViewCell.swift */,
+				0422FF8628DB2C6200D4D27A /* ChatPhotoView.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -1133,6 +1136,7 @@
 				84DDD292287F0A2E00272C19 /* MainScreenButton.swift in Sources */,
 				84ACAF4A289285320012508C /* TechnicalCenterVC.swift in Sources */,
 				84ACAF4328927D970012508C /* CustomPhotoView.swift in Sources */,
+				0422FF8728DB2C6200D4D27A /* ChatPhotoView.swift in Sources */,
 				84D94F57288559D90023AA02 /* RegistrationVC.swift in Sources */,
 				406B18C428BFEB9C00112178 /* NotificationAPI.swift in Sources */,
 				4001C70C28C7246D004D25A9 /* StockVC.swift in Sources */,

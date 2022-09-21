@@ -470,7 +470,7 @@ extension ChatVC: UIDocumentPickerDelegate {
 // MARK: - OpeningFileDelegate
 extension ChatVC: OpeningFileDelegate {
     
-    func openFileDidTap(fileType: FileType, filePath: String, btn: UIButton) {
+    func openFileDidTap(fileType: FileType, filePath: String, btn: UIView) {
         
         switch fileType {
         case .file:
@@ -500,7 +500,7 @@ extension ChatVC: OpeningFileDelegate {
         self.present(vc, animated: true) { vc.player?.play() }
     }
     
-    private func shareFile(url: URL, btn: UIButton) {
+    private func shareFile(url: URL, btn: UIView) {
         let objectsToShare = [url] as [Any]
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         if #available(iOS 15.4, *) {

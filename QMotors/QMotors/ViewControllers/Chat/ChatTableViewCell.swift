@@ -55,6 +55,12 @@ class ChatTableViewCell: UITableViewCell {
         return button
     }()
     
+    private let imagePreview: ChatPhotoView = {
+        let view = ChatPhotoView()
+        view.isHidden = true
+        return view
+    }()
+    
     private let dateLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: Const.fontReg, size: 12)
@@ -85,21 +91,26 @@ class ChatTableViewCell: UITableViewCell {
             
         case .file:
             attachmentButton.isHidden = false
+            imagePreview.isHidden = true
             attachmentButton.setTitle("  file", for: .normal)
             currentFileURL = message.file
             currentFileType = .file
         case .video:
             attachmentButton.isHidden = false
+            imagePreview.isHidden = true
             attachmentButton.setTitle("  video", for: .normal)
             currentFileURL = message.video
             currentFileType = .video
         case .photo:
-            attachmentButton.isHidden = false
-            attachmentButton.setTitle("  photo", for: .normal)
+            attachmentButton.isHidden = true
+            imagePreview.isHidden = false
+            imagePreview.configureView(target: self, selector: #selector(openFileButtonDidTap), image: message.photo ?? "")
+//            attachmentButton.setTitle("  photo", for: .normal)
             currentFileURL = message.photo
             currentFileType = .photo
         case .none:
             attachmentButton.isHidden = true
+            imagePreview.isHidden = true
             currentFileType = .none
             currentFileURL = nil
         }
@@ -124,6 +135,7 @@ class ChatTableViewCell: UITableViewCell {
         containerView.addSubview(chatStack)
         chatStack.addArrangedSubview(chatLabel)
         chatStack.addArrangedSubview(attachmentButton)
+        chatStack.addArrangedSubview(imagePreview)
     }
     
     private func setupConstraints() {
@@ -153,11 +165,15 @@ class ChatTableViewCell: UITableViewCell {
             make.height.equalTo(20)
         }
         
+        imagePreview.snp.makeConstraints { make in
+            make.height.equalTo(150)
+        }
+        
     }
 
 }
 
 // MARK: Protocol OpeningFileDelegate
 protocol OpeningFileDelegate {
-    func openFileDidTap(fileType: FileType, filePath: String, btn: UIButton)
+    func openFileDidTap(fileType: FileType, filePath: String, btn: UIView)
 }
