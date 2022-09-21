@@ -38,6 +38,7 @@ class AddReminderVC: BaseVC {
         let picker = UIDatePicker()
         let localeID = Locale.preferredLanguages.first
         picker.locale = Locale(identifier: localeID!)
+        picker.minimumDate = Date()
         return picker
     }()
     
