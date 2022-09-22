@@ -222,7 +222,7 @@ class ProfileVC: BaseVC {
         
         scrollView.addSubview(emailView)
         scrollView.addSubview(phoneView)
-        scrollView.addSubview(extraPhoneView)
+//        scrollView.addSubview(extraPhoneView)
         scrollView.addSubview(servicesLable)
         scrollView.addSubview(pushView)
         scrollView.addSubview(smsView)
@@ -331,15 +331,15 @@ class ProfileVC: BaseVC {
             make.height.equalTo(90)
         }
         
-        extraPhoneView.snp.makeConstraints { make in
-            make.top.equalTo(phoneView.snp.bottom).offset(20)
-            make.left.equalToSuperview().offset(20)
-            make.centerX.equalToSuperview()
-            make.height.equalTo(90)
-        }
+//        extraPhoneView.snp.makeConstraints { make in
+//            make.top.equalTo(phoneView.snp.bottom).offset(20)
+//            make.left.equalToSuperview().offset(20)
+//            make.centerX.equalToSuperview()
+//            make.height.equalTo(90)
+//        }
         
         servicesLable.snp.makeConstraints { make in
-            make.top.equalTo(extraPhoneView.snp.bottom).offset(20)
+            make.top.equalTo(phoneView.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
             make.height.equalTo(20)
