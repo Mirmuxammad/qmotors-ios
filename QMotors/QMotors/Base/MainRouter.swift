@@ -74,6 +74,12 @@ class MainRouter: NSObject {
         pushViewController(vc: vc, animated: true)
     }
     
+    func pushOrdersForCarVC(myCar: MyCarModel, openAfterRecord: Bool) {
+        let vc = OrdersForCarVC(myCar: myCar)
+        vc.openedAfterRecordOrder = true
+        pushViewController(vc: vc, animated: true)
+    }
+    
     func pushHistoryCarsVC() {
         let vc = HistoryCarsVC()
         pushViewController(vc: vc, animated: true)

@@ -11,8 +11,9 @@ import SnapKit
 
 class OrdersForCarVC: BaseVC {
     
-    private var myCar: MyCarModel
+    var openedAfterRecordOrder = false
     
+    private var myCar: MyCarModel
     private var ordersData = [Order]()
     
     // MARK: - UI Elements
@@ -112,7 +113,13 @@ extension OrdersForCarVC {
 @objc extension OrdersForCarVC {
     private func backButtonDidTap() {
         print("backButtonDidTap")
-        router?.back()
+        
+        if openedAfterRecordOrder {
+            router?.back()
+            router?.back()
+        } else {
+            router?.back()
+        }
     }
 }
 
