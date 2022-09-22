@@ -120,34 +120,46 @@ extension OrdersForCarVC {
 
 // MARK: - @objc Methods
 extension OrdersForCarVC: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if ordersData.isEmpty {
-           return 2
+        if section == 0 {
+            return 1
+        } else {
+            if ordersData.isEmpty {
+               return 1
+            } else {
+                return ordersData.count
+            }
         }
-       return ordersData.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.row == 0 {
+        if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MyCarsTableViewCell.identifier) as? MyCarsTableViewCell else { return UITableViewCell() }
             
             cell.setupCell(myCar)
             cell.backgroundColor = UIColor.init(hex: "#F8F8F8")
             
             return cell
+        } else if indexPath.section == 1 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: OrderForCarTableViewCell.identifier) as? OrderForCarTableViewCell else { return UITableViewCell() }
+            if ordersData.isEmpty {
+                cell.selectionStyle = .none
+                cell.setupTitlesForEmptyOrder()
+            } else {
+                let order = ordersData[indexPath.row]
+                cell.visitHisory(order: order)
+            }
+            return cell
         }
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: OrderForCarTableViewCell.identifier) as? OrderForCarTableViewCell else { return UITableViewCell() }
-        if ordersData.isEmpty {
-            cell.selectionStyle = .none
-            cell.setupTitlesForEmptyOrder()
-        } else {
-            let order = ordersData[indexPath.row - 1]
-            print(order)
-            cell.setTitles(order: order)
-        }
-        return cell
+        return UITableViewCell()
+       
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

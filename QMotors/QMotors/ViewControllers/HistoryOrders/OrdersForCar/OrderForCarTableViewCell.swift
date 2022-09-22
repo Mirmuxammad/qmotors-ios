@@ -49,6 +49,15 @@ class OrderForCarTableViewCell: UITableViewCell {
         mileageLable.text = "пробег: \(order.mileage ?? "000") км."
     }
     
+    func visitHisory(order: Order) {
+        setViews()
+        numberOrderLable.text = order.description ?? "" + " " + order.created_at.getFormattedDate()
+        let centerId = order.tech_center_id
+        let centerName = UserDefaultsService.sharedInstance.centras?[centerId - 1] ?? "Центр"
+        centerNameLable.text = "Тех.центр “\(centerName)”"
+        mileageLable.text = "пробег: \(order.mileage ?? "000") км."
+    }
+    
     func setupTitlesForEmptyOrder() {
         setViews()
         numberOrderLable.text = "Нет истории посещения"
