@@ -523,7 +523,7 @@ class CreateFeedBackVC: BaseVC {
     private func loadOrders(id: Int) {
         OrderAPI.orderList(userCarId: id) { responce in
             self.myOrders = []
-            if let carOrder = responce.result?.first {
+            if let carOrder = responce.result.first {
                 self.myOrders = carOrder.orders
                 if carOrder.orders.isEmpty {
                     let alert = UIAlertController(title: "Не найдены наряды", message: nil, preferredStyle: .alert)
@@ -578,7 +578,7 @@ class CreateFeedBackVC: BaseVC {
     
     private func setOrderDropDowns() {
         orderDropDown.dataSource = myOrders.map({ i in
-            i.order_number + " от " + i.date.prefix(10)
+            i.order_number ?? "" + " от " + i.date.prefix(10)
         })
         orderDropDown.anchorView = orderButton
         orderDropDown.direction = .bottom

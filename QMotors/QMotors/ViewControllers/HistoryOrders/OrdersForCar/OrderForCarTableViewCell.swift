@@ -42,7 +42,7 @@ class OrderForCarTableViewCell: UITableViewCell {
     
     func setTitles(order: Order) {
         setViews()
-        numberOrderLable.text = order.order_number + " от " + order.created_at.getFormattedDate()
+        numberOrderLable.text = order.order_number ?? "" + " от " + order.created_at.getFormattedDate()
         let centerId = order.tech_center_id
         let centerName = UserDefaultsService.sharedInstance.centras?[centerId - 1] ?? "Центр"
         centerNameLable.text = "Тех.центр “\(centerName)”"

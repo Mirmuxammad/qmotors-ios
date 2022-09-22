@@ -54,6 +54,7 @@ class OrdersForCarVC: BaseVC {
     
     init(myCar: MyCarModel) {
         self.myCar = myCar
+        print(myCar.id, "✅")
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -71,7 +72,7 @@ class OrdersForCarVC: BaseVC {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.showLoadingIndicator()
+//        self.showLoadingIndicator()
         loadOrders()
     }
     
@@ -86,25 +87,22 @@ extension OrdersForCarVC {
     private func loadOrders() {
         OrderAPI.orderList(userCarId: myCar.id) { responce in
             let carOrders = responce.result
-            guard let carOrderArray = carOrders else {
+            guard let carOrder = carOrders.last else {
                 self.dismissLoadingIndicator()
                 return
             }
-            guard let carOrder = carOrderArray.last else {
-                self.dismissLoadingIndicator()
-                return }
             self.ordersData = carOrder.orders
             self.tableView.reloadData()
             self.dismissLoadingIndicator()
         } failure: { error in
             let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-            
+
             }))
             self.dismissLoadingIndicator()
             self.present(alert, animated: true, completion: nil)
         }
-        
+
         self.dismissLoadingIndicator()
 
     }
