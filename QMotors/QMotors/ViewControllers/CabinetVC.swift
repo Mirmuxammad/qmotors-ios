@@ -167,6 +167,7 @@ class CabinetVC: BaseVC {
             UserDefaultsService.sharedInstance.removeAuthToken()
 //            self?.router?.back()
             self?.router?.pushMainVC()
+            isOpenedChat = false
         }
         
         let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
