@@ -57,6 +57,7 @@ class OrderForCarTableViewCell: UITableViewCell {
     }
     
     private func setViews() {
+        self.selectionStyle = .none
         backgroundColor = UIColor.init(hex: "#F8F8F8")
         addSubview(numberOrderLable)
         addSubview(centerNameLable)
