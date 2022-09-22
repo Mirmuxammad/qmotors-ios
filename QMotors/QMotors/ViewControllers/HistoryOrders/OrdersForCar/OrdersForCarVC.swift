@@ -91,7 +91,7 @@ extension OrdersForCarVC {
                 self.dismissLoadingIndicator()
                 return
             }
-            self.ordersData = carOrder.orders
+            self.ordersData = carOrder.orders.reversed()
             self.tableView.reloadData()
             self.dismissLoadingIndicator()
         } failure: { error in
