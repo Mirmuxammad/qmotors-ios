@@ -165,7 +165,8 @@ class CabinetVC: BaseVC {
         
         let okAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
             UserDefaultsService.sharedInstance.removeAuthToken()
-            self?.router?.back()
+//            self?.router?.back()
+            self?.router?.pushMainVC()
         }
         
         let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
