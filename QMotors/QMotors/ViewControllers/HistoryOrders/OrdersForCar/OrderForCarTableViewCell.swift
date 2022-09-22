@@ -36,7 +36,7 @@ class OrderForCarTableViewCell: UITableViewCell {
     private let mileageLable: UILabel = {
         let lable = UILabel()
          lable.font = UIFont(name: "Montserrat-Regular", size: 14)
-         lable.text = "пробег: 000 000 км."
+         lable.text = "пробег: не указан"//000 000 км."
          return lable
      }()
     
@@ -46,7 +46,12 @@ class OrderForCarTableViewCell: UITableViewCell {
         let centerId = order.tech_center_id
         let centerName = UserDefaultsService.sharedInstance.centras?[centerId - 1] ?? "Центр"
         centerNameLable.text = "Тех.центр “\(centerName)”"
-        mileageLable.text = "пробег: \(order.mileage ?? "000") км."
+        let mileage = order.mileage
+        if mileage == "0" || mileage == "00" || mileage == "000" || mileage == nil {
+            mileageLable.text = "пробег: не указан"
+        } else {
+            mileageLable.text = "пробег: \(order.mileage!) км."
+        }
     }
     
     func visitHisory(order: Order) {
@@ -55,7 +60,12 @@ class OrderForCarTableViewCell: UITableViewCell {
         let centerId = order.tech_center_id
         let centerName = UserDefaultsService.sharedInstance.centras?[centerId - 1] ?? "Центр"
         centerNameLable.text = "Тех.центр “\(centerName)”"
-        mileageLable.text = "пробег: \(order.mileage ?? "000") км."
+        let mileage = order.mileage
+        if mileage == "0" || mileage == "00" || mileage == "000" || mileage == nil {
+            mileageLable.text = "пробег: не указан"
+        } else {
+            mileageLable.text = "пробег: \(order.mileage!) км."
+        }
     }
     
     func setupTitlesForEmptyOrder() {
