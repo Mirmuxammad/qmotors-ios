@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class StockVC: BaseVC {
 
@@ -169,6 +170,12 @@ extension StockVC: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension StockVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        router?.pushStockInfoVC(stock: stocks[indexPath.row])
+        
+        if UserDefaultsService.sharedInstance.authToken != nil {
+            router?.pushStockInfoVC(stock: stocks[indexPath.row])
+        } else {
+            router?.pushRegistrationVC()
+        }
+        
     }
 }
