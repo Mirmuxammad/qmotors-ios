@@ -256,7 +256,11 @@ extension SideMenuVC: UITableViewDelegate, UITableViewDataSource {
                 dismiss(animated: true)
             } else {
                 dismiss(animated: true)
-                router?.pushNotificationVC()
+                if UserDefaultsService.sharedInstance.authToken != nil {
+                    router?.pushNotificationVC()
+                } else {
+                    router?.pushRegistrationVC()
+                }
             }
         case 6:
             if UserDefaultsService.sharedInstance.authToken != nil {
