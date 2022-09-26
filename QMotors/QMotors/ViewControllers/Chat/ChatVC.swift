@@ -25,6 +25,8 @@ class ChatVC: BaseVC {
     
     // MARK: - UI Elements
     
+    private let picker = UIImagePickerController()
+    
     private let backButton: SmallBackButton = {
         let button = SmallBackButton()
         button.setupAction(target: self, action: #selector(backButtonDidTap))
@@ -243,7 +245,8 @@ class ChatVC: BaseVC {
     
     @objc private func attachButtonDidTap() {
         print("attachButtonDidTap")
-        openDocumentPicker()
+//        openDocumentPicker()
+        selectAttachmentType()
     }
     
     @objc private func backButtonDidTap() {
@@ -528,5 +531,65 @@ extension ChatVC: OpeningFileDelegate {
         let imageSource: [SDWebImageSource] = [SDWebImageSource(url: url)]
         slideshow.setImageInputs(imageSource)
         slideshow.presentFullScreenController(from: self, completion: nil)
+    }
+}
+
+// MARK: - ActionSheet, Selecting attachment type
+extension ChatVC {
+    func selectAttachmentType() {
+        let alertSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let camera = UIAlertAction(title: "Камера", style: .default) { _ in
+            //open camera
+            self.openCamera()
+        }
+        
+        let gallery = UIAlertAction(title: "Галерея", style: .default) { _ in
+            //open gallery
+            self.openLibrary()
+        }
+        
+        let files = UIAlertAction(title: "Файлы", style: .default) { _ in
+            //open files
+            self.openDocumentPicker()
+        }
+        
+        let cancel = UIAlertAction(title: "Отмена", style: .cancel)
+        
+        alertSheet.addAction(camera)
+        alertSheet.addAction(gallery)
+        alertSheet.addAction(files)
+        alertSheet.addAction(cancel)
+        
+        present(alertSheet, animated: true)
+    }
+}
+
+extension ChatVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func openLibrary() {
+        picker.sourceType = .photoLibrary
+        picker.allowsEditing = true
+        picker.delegate = self
+        present(picker, animated:true, completion:nil)
+    }
+    
+    func openCamera() {
+        picker.sourceType = .camera
+        picker.allowsEditing = true
+        picker.delegate = self
+        present(picker, animated:true, completion:nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let imageURL = info[UIImagePickerController.InfoKey.imageURL] as? URL {
+            dismiss(animated:true , completion:nil)
+            fileURL = imageURL
+            let fileName = imageURL.lastPathComponent
+            attachmentFileLabel.text = fileName
+            attachmentFileLabel.isHidden = false
+            removeAttachmentButton.isHidden = false
+            print(fileName)
+        }
     }
 }
