@@ -7,6 +7,7 @@
 
 import UIKit
 import DropDown
+import SnapKit
 
 class CreateFeedBackVC: BaseVC {
     
@@ -57,7 +58,7 @@ class CreateFeedBackVC: BaseVC {
     
     private let starLabel: UILabel = {
         let label = UILabel()
-        label.text = "Поставьте оцентку"
+        label.text = "Поставьте оценку"
         label.font = UIFont(name: Const.fontMed, size: 18)
         label.textColor = .black
         label.textAlignment = .center
@@ -381,8 +382,6 @@ class CreateFeedBackVC: BaseVC {
             make.bottom.equalToSuperview().offset(-50)
         }
         
-        
-        
         starLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(20)
             make.centerX.equalToSuperview()
@@ -507,7 +506,7 @@ class CreateFeedBackVC: BaseVC {
         CarAPI.getMyCars { cars in
             self.myCars = cars
             self.setCarDropDowns()
-            self.carField.text = cars.first?.model
+//            self.carField.text = cars.first?.model
             self.loadOrders(id: cars.first?.id ?? 0)
         } failure: { error in
 //            print(error.debugDescription)
@@ -578,7 +577,7 @@ class CreateFeedBackVC: BaseVC {
     
     private func setOrderDropDowns() {
         orderDropDown.dataSource = myOrders.map({ i in
-            i.order_number ?? "" + " от " + i.date.prefix(10)
+            "\(i.id)" + " от " + i.date.prefix(10)
         })
         orderDropDown.anchorView = orderButton
         orderDropDown.direction = .bottom
