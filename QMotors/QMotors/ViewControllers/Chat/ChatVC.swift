@@ -278,6 +278,7 @@ class ChatVC: BaseVC {
         }
         attachmentFileLabel.isHidden = true
         attachmentFileLabel.text = nil
+        fileURL = nil
         removeAttachmentButton.isHidden = true
     }
     
