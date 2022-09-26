@@ -270,6 +270,34 @@ final class BaseAPI {
         }
     }
     
+    fileprivate static func chatPhotoRequest(reqMethod: RequestMethod,
+                                             data: Data,
+                                             success: @escaping (Data?) -> Void,
+                                             failure: @escaping (NetworkError?) -> Void) {
+        var headers = BaseAPI().headers
+        
+        guard let token = UserDefaultsService.sharedInstance.authToken else {
+            failure(NetworkError(.other("Токен не найден!")))
+            return
+        }
+        headers.add(.authorization(bearerToken: token))
+                authorizedSession.upload(multipartFormData: { multiPart in
+                    multiPart.append(data,
+                                     withName: "photo",
+                                     fileName: String(Int.random(in: 0...9999999)),
+                                     mimeType: "image/jpeg")
+                    
+                    
+                }, to: BaseAPI.baseAPIURL + reqMethod.path, method: .post, headers: headers).response { response in
+                    debugPrint(response)
+                    if let data = response.data {
+                        success(data)
+                    } else {
+                        failure(NetworkError(.server, code: response.response?.statusCode))
+                    }
+                }
+    }
+    
     // MARK: GET Requests
     
     // для неавторизованных запросов
@@ -319,6 +347,10 @@ final class BaseAPI {
         case .none:
             requestChatFile(reqMethod: .sendMessage(message), fieldName: "", fileURLArray: fileUrlArray, success: success, failure: failure)
         }
+    }
+    
+    static func authorizedMultipartPostChatPhoto(data: Data, success: @escaping (Data?) -> Void, failure: @escaping escapeNetworkError) {
+        chatPhotoRequest(reqMethod: .sendMessage(""), data: data, success: success, failure: failure)
     }
     
     // MARK: - PUT Requests

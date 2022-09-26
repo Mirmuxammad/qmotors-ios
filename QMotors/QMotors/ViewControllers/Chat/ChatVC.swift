@@ -17,7 +17,7 @@ class ChatVC: BaseVC {
     // MARK: - Proporties
     
     private var messages = [Message]()
-    private let supportedTypes: [UTType] = [.jpeg, .png, .video, .avi, .pdf, .mpeg]
+    private let supportedTypes: [UTType] = [.video, .avi, .pdf, .mpeg]//[.jpeg, .png, .video, .avi, .pdf, .mpeg]
     private var fileURL: URL?
     private var timer: Timer?
     private var isOpenedFirstTime = true
@@ -459,12 +459,41 @@ extension ChatVC: UIDocumentPickerDelegate {
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let filepathurl = urls.first else { return }
-        fileURL = filepathurl
-        let fileName = filepathurl.lastPathComponent
-        attachmentFileLabel.text = fileName
-        attachmentFileLabel.isHidden = false
-        removeAttachmentButton.isHidden = false
-        print(fileName)
+//        fileURL = filepathurl
+//        let fileName = filepathurl.lastPathComponent
+//        attachmentFileLabel.text = fileName
+//        attachmentFileLabel.isHidden = false
+//        removeAttachmentButton.isHidden = false
+//        print(fileName)
+        let pathExtension = filepathurl.pathExtension
+        switch pathExtension {
+        case "avi", "mp4", "mpeg":
+            ChatAPI.sendMessage(fileType: .video, message: "", fileUrlArray: [filepathurl]) { data in
+                
+                print(data["result"])
+                self.isOpenedFirstTime = true
+                self.loadMessages()
+                self.activityIndicator.stopAnimating()
+                
+            } failure: { error in
+                self.showAlert(with: error?.localizedDescription ?? "Ошибка", buttonTitle: "Ок")
+                self.activityIndicator.stopAnimating()
+                //alert
+            }
+        default:
+            ChatAPI.sendMessage(fileType: .file, message: "", fileUrlArray: [filepathurl]) { data in
+                
+                print(data["result"])
+                self.isOpenedFirstTime = true
+                self.loadMessages()
+                self.activityIndicator.stopAnimating()
+                
+            } failure: { error in
+                self.showAlert(with: error?.localizedDescription ?? "Ошибка", buttonTitle: "Ок")
+                self.activityIndicator.stopAnimating()
+                //alert
+            }
+        }
     }
     
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
@@ -583,14 +612,49 @@ extension ChatVC: UIImagePickerControllerDelegate, UINavigationControllerDelegat
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let imageURL = info[UIImagePickerController.InfoKey.imageURL] as? URL {
+        if let imageSelected = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             dismiss(animated:true , completion:nil)
-            fileURL = imageURL
-            let fileName = imageURL.lastPathComponent
-            attachmentFileLabel.text = fileName
-            attachmentFileLabel.isHidden = false
-            removeAttachmentButton.isHidden = false
-            print(fileName)
+//            fileURL = imageURL
+//            let fileName = imageURL.lastPathComponent
+//            attachmentFileLabel.text = fileName
+//            attachmentFileLabel.isHidden = false
+//            removeAttachmentButton.isHidden = false
+//            print(fileName)
+            
+//            ChatAPI.sendMessage(fileType: .photo, message: "", fileUrlArray: [imageURL]) { data in
+//
+//                print(data["result"])
+//                self.isOpenedFirstTime = true
+//                self.loadMessages()
+//                self.activityIndicator.stopAnimating()
+//
+//            } failure: { error in
+//                self.showAlert(with: error?.localizedDescription ?? "Ошибка", buttonTitle: "Ок")
+//                self.activityIndicator.stopAnimating()
+//                //alert
+//            }
+//
+            if let data = imageSelected.jpeg(.medium) {
+                
+                ChatAPI.sendPhoto(data: data) { data in
+                    
+                    print(data["result"])
+                    self.isOpenedFirstTime = true
+                    self.loadMessages()
+                    self.activityIndicator.stopAnimating()
+                    
+                } failure: { error in
+                    
+                    self.showAlert(with: error?.localizedDescription ?? "Ошибка", buttonTitle: "Ок")
+                    self.activityIndicator.stopAnimating()
+                    //alert
+                    
+                }
+
+            }
+            
+            
+            
         }
     }
 }
