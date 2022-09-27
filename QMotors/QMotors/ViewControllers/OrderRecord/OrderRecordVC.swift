@@ -17,6 +17,7 @@ class OrderRecordVC: BaseVC {
     private var orderTypes = [OrderType]()
     private var order = NewOrder()
     private var myCarOrder = MyCarOrder()
+    private var reminder = NewReminder()
     
     
     private var fileURLArray: [URL] = [] {
@@ -407,6 +408,19 @@ class OrderRecordVC: BaseVC {
         }
     }
     
+    // MARK: - Add reminder
+    
+    private func addReminder() {
+        ReminderAPI.addNewReminder(reminder: reminder) { json in
+            print(json)
+        } failure: { error in
+            let alert = UIAlertController(title: "Ошибка напоминания", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
     
     // MARK: - Private actions
     private func setDropDowns() {
@@ -451,6 +465,7 @@ class OrderRecordVC: BaseVC {
             guard let myCar = self?.myCars[index] else { return }
             self?.myCar = myCar
             self?.order.carId = String(id)
+            self?.reminder.user_car_id = id
             self?.order.carNumber = self?.myCars[index].number
             self?.userCarDropDown.hide()
             self?.carModelChevronButton.transform = .identity
@@ -497,6 +512,7 @@ class OrderRecordVC: BaseVC {
             var descriptionOfOrder = ""
             if let infoDescription = infoField.text {
                 descriptionOfOrder = infoDescription
+                self.reminder.text = infoDescription
             }
             guard let orderTypeId = order.orderTypeId else { return }
             guard let techCenterId = order.techCenterId else { return }
@@ -506,7 +522,7 @@ class OrderRecordVC: BaseVC {
             formatter.dateFormat = "yyyy-MM-dd"
             let visiteDate = formatter.string(from: newDate ?? Date())
             
-            
+            self.addReminder()
             OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, dateVisit: visiteDate, freeDiagnostics: false, guarantee: guarantee,success: { result in
                 print("Hello")
                 guard let orderId = result.result.id else { return }
@@ -578,6 +594,16 @@ class OrderRecordVC: BaseVC {
         let dateString = dateFormatter.string(from: picker.date)
         order.date = dateString
         self.myCarOrder.lastVisit = picker.date
+        
+        setDateReminder(picker: picker)
+    }
+    
+    @objc private func setDateReminder(picker: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let reminderDate = Calendar.current.date(byAdding: .day, value: -1, to: picker.date)
+        let dateString = dateFormatter.string(from: reminderDate!)
+        reminder.date = dateString
     }
     
     private func reloadCarPhotos() {

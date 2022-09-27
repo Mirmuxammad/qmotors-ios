@@ -136,7 +136,7 @@ class TechnicalCenterVC: BaseVC {
     }
     
     private func showRegisterAlert() {
-        let alert = UIAlertController(title: "Зарегистрироватся?", message: "Записаться на ТО могут только зарегистрированные пользователи", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Зарегистрироваться?", message: "Записаться на ТО могут только зарегистрированные пользователи", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Регистрация", style: .default) { _ in
             self.router?.pushRegistrationVC()
         }
