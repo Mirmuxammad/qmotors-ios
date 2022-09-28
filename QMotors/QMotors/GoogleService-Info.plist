@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>564201031148-6inqdfi78tpokb9tcs1lpbklnuvfmi41.apps.googleusercontent.com</string>
+	<string>564201031148-od9bm2rgusffp79s1b96ed207qrkaohm.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.564201031148-6inqdfi78tpokb9tcs1lpbklnuvfmi41</string>
+	<string>com.googleusercontent.apps.564201031148-od9bm2rgusffp79s1b96ed207qrkaohm</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAB3Na2owVUkJjSowjBCkAvda_1xzpNCXo</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.quality.motors</string>
+	<string>com.quality.motors2</string>
 	<key>PROJECT_ID</key>
 	<string>qmotors-app</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:564201031148:ios:79381f470b55754ede6cc9</string>
+	<string>1:564201031148:ios:affa7a45268f587cde6cc9</string>
 </dict>
 </plist>
