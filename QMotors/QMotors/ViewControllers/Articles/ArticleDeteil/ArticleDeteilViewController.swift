@@ -105,8 +105,8 @@ extension ArticleDeteilViewController {
                 self?.deteilTitle.attributedText = NSAttributedString(html: text)
             }
             self?.dateTitle.text = article.created_at.getFormattedDate()
-            let photoUrl = BaseAPI.baseURL + article.preview
-            let url = URL(string: photoUrl)
+            let photoUrl = BaseAPI.baseURL + "/" + article.previewPath
+            let url = URL(string: photoUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
             self?.artecleImage.sd_setImage(with: url)
             self?.dismissLoadingIndicator()
         } failure: { error in

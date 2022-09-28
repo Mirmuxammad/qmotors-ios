@@ -100,8 +100,8 @@ extension ArticlesViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: ArticlesTableViewCell.identifier) as! ArticlesTableViewCell
         cell.selectionStyle = .none
         let article = articles[indexPath.row]
-        let photoUrl = BaseAPI.baseURL + article.preview
-        let url = URL(string: photoUrl)
+        let photoUrl = BaseAPI.baseURL + "/" + article.previewPath
+        let url = URL(string: photoUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
         cell.setView(title: article.title,
                      date: article.created_at.getFormattedDate(),
                      deteil: article.subtitle,

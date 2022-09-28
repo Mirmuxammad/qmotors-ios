@@ -25,4 +25,16 @@ struct Article: Codable {
     let created_at: String
     let updated_at: String
     let text: String?
+    let previewPath: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case title
+        case subtitle
+        case preview
+        case created_at
+        case updated_at
+        case text
+        case previewPath = "preview_path"
+    }
 }
