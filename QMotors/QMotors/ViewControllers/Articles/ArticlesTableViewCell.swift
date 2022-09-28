@@ -31,7 +31,7 @@ class ArticlesTableViewCell: UITableViewCell {
     private let topTitle: UILabel = {
         let lable = UILabel()
         lable.font = UIFont(name: "Montserrat-SemiBold", size: 14)
-        lable.numberOfLines = 1
+        lable.numberOfLines = 0
         lable.textAlignment = .left
         return lable
     }()
