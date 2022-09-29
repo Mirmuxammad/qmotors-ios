@@ -162,11 +162,13 @@ class StockInfoVC: BaseVC {
         }
         
         contentView.snp.makeConstraints { make in
-            make.top.equalTo(backButton.snp.bottom).offset(16)
+            //make.top.equalTo(backButton.snp.bottom).offset(16)
+            make.top.equalToSuperview()
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
             make.height.equalTo(100)
             make.width.equalTo(UIScreen.main.bounds.width-40)
+            make.bottom.equalTo(stockTextLabel.snp.top)
         }
         
         stockTitle.snp.makeConstraints { make in
