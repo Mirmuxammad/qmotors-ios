@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class StockInfoVC: BaseVC {
 
@@ -14,6 +15,7 @@ class StockInfoVC: BaseVC {
     var stock: Stock? {
         didSet {
             stockTitle.text = stock?.title
+            subTitleLabel.text = stock?.subtitle
             if stock?.location == nil {
                 locationTitleLabel.isHidden = true
                 locationImageView.isHidden = true
@@ -22,10 +24,10 @@ class StockInfoVC: BaseVC {
                 locationImageView.isHidden = false
                 locationTitleLabel.text = stock?.location
             }
-            stockTextLabel.text = stock?.description
+            stockTextLabel.text = stock?.text?.htmlToString
         }
     }
-    
+        
     // MARK: - UI Elements
     
     private let logoImageView: UIImageView = {
@@ -46,6 +48,11 @@ class StockInfoVC: BaseVC {
         return button
     }()
     
+    private let scrollView: UIScrollView = {
+        let view = UIScrollView()
+        return view
+    }()
+    
     private let contentView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.init(hex: "#9CC55A")
@@ -55,12 +62,21 @@ class StockInfoVC: BaseVC {
     
     private let stockTitle: UILabel = {
          let label = UILabel()
-         label.font = UIFont(name: Const.fontBold, size: 22)
+         label.font = UIFont(name: Const.fontBold, size: 20)
          label.textColor = .white
          label.textAlignment = .left
          label.text = "Подробности акции, здесь краткое описание ации"
          label.numberOfLines = 0
          return label
+    }()
+    
+    private let subTitleLabel: UILabel = {
+       let label = UILabel()
+        label.font = UIFont(name: Const.fontReg, size: 14)
+        label.textColor = .white
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        return label
     }()
     
     private let locationImageView: UIImageView = {
@@ -85,7 +101,6 @@ class StockInfoVC: BaseVC {
         label.textColor = .black
         label.textAlignment = .left
         label.numberOfLines = 0
-        label.text = "Здесь будет текст напоминания, который ввел клиент при его создании"
         return label
     }()
     
@@ -110,15 +125,14 @@ class StockInfoVC: BaseVC {
         view.addSubview(logoImageView)
         view.addSubview(backgroundView)
         backgroundView.addSubview(backButton)
-        backgroundView.addSubview(contentView)
-        
+        backgroundView.addSubview(scrollView)
+        scrollView.addSubview(contentView)
         contentView.addSubview(stockTitle)
-        
-        backgroundView.addSubview(locationImageView)
-        backgroundView.addSubview(locationTitleLabel)
-        backgroundView.addSubview(stockTextLabel)
+        contentView.addSubview(subTitleLabel)
+        scrollView.addSubview(locationImageView)
+        scrollView.addSubview(locationTitleLabel)
+        scrollView.addSubview(stockTextLabel)
         backgroundView.addSubview(sendStockButton)
-        
     }
     
     private func setupConstraints() {
@@ -140,22 +154,37 @@ class StockInfoVC: BaseVC {
             make.top.equalToSuperview().offset(20)
         }
         
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(backButton.snp.bottom).offset(10)
+            make.left.right.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+        
         contentView.snp.makeConstraints { make in
             make.top.equalTo(backButton.snp.bottom).offset(16)
-            make.left.equalToSuperview().offset(24)
-            make.right.equalToSuperview().offset(-24)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.height.equalTo(100)
+            make.width.equalTo(UIScreen.main.bounds.width-40)
         }
         
         stockTitle.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(24)
+            make.top.equalToSuperview().offset(20)
             make.left.equalToSuperview().offset(24)
-            make.bottom.equalToSuperview().offset(-24)
+            make.bottom.equalTo(subTitleLabel.snp.top).offset(-10)
+            make.right.equalToSuperview().offset(-24)
+        }
+        
+        subTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(stockTitle.snp.bottom).offset(10)
+            make.left.equalToSuperview().offset(24)
             make.right.equalToSuperview().offset(-24)
         }
         
         locationImageView.snp.makeConstraints { make in
             make.size.equalTo(CGSize(width: 35, height: 35))
-            make.left.equalToSuperview().offset(24)
+            make.left.equalToSuperview().offset(20)
             make.top.equalTo(contentView.snp.bottom).offset(16)
         }
         
@@ -167,21 +196,23 @@ class StockInfoVC: BaseVC {
         if stock?.location == nil {
             stockTextLabel.snp.makeConstraints { make in
                 make.top.equalTo(contentView.snp.bottom).offset(16)
-                make.left.equalToSuperview().offset(24)
-                make.right.equalToSuperview().offset(-24)
+                make.left.equalToSuperview().offset(20)
+                make.right.equalToSuperview().offset(-20)
+                make.bottom.equalToSuperview()
             }
         } else {
             stockTextLabel.snp.makeConstraints { make in
                 make.top.equalTo(locationImageView.snp.bottom).offset(16)
-                make.left.equalToSuperview().offset(24)
-                make.right.equalToSuperview().offset(-24)
+                make.left.equalToSuperview().offset(20)
+                make.right.equalToSuperview().offset(-20)
+                make.bottom.equalToSuperview()
             }
         }
         sendStockButton.snp.makeConstraints { make in
-            make.top.equalTo(stockTextLabel.snp.bottom).offset(16)
-            make.height.equalTo(54)
-            make.left.equalToSuperview().offset(24)
-            make.right.equalToSuperview().offset(-24)
+            make.height.equalTo(55)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.bottom.equalToSuperview().offset(-40)
         }
     }
     

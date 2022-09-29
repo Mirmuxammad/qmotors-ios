@@ -17,7 +17,8 @@ struct OrderNet: Codable {
         let resultDescription: String?
         let date: String?
         let guarantee: Bool?
-        let userCarID, id: Int?
+        let userCarID: String?
+        let id: Int?
         let orderNumber: Int?
         let updatedAt, createdAt: String?
 

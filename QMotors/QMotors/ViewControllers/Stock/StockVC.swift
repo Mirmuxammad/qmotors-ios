@@ -137,6 +137,19 @@ class StockVC: BaseVC {
 
     }
     
+    // MARK: - Private load stock details
+    
+    private func loadStockAndPushStockInfoVC(stock: Stock) {
+        guard let id = stock.id else { return }
+        StockAPI.stockDetails(stockId: id) { [weak self] responseData in
+            print(responseData.result)
+            self?.router?.pushStockInfoVC(stock: responseData.result)
+        } failure: { error in
+            print(error?.localizedDescription)
+        }
+
+    }
+    
     // MARK: - Private actions
     
     @objc private func backButtonDidTap() {
@@ -156,23 +169,28 @@ extension StockVC: UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if stocks[indexPath.row].location == nil && stocks[indexPath.row].title?.count ?? 0 <= 18 {
-            return 125
-        } else if stocks[indexPath.row].location == nil && stocks[indexPath.row].title?.count ?? 0 >= 18 {
-            return 135
-        } else {
-            return 185
-        }
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        if stocks[indexPath.row].location == nil && stocks[indexPath.row].title?.count ?? 0 <= 18 {
+//            return 125
+//        } else if stocks[indexPath.row].location == nil && stocks[indexPath.row].title?.count ?? 0 >= 18 {
+//            return 135
+//        } else {
+//            return 185
+//        }
+//    }
     
+        func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+            UITableView.automaticDimension
+        }
 }
 // MARK: - UITableViewDelegate
 extension StockVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if UserDefaultsService.sharedInstance.authToken != nil {
-            router?.pushStockInfoVC(stock: stocks[indexPath.row])
+            
+            loadStockAndPushStockInfoVC(stock: stocks[indexPath.row])
+//            router?.pushStockInfoVC(stock: stocks[indexPath.row])
         } else {
             router?.pushRegistrationVC()
         }

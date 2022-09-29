@@ -44,6 +44,7 @@ enum RequestMethod {
     case sendOnlyMessage
     case freeDiagnosticList
     case stockList
+    case stockDetails(Int)
     case deviceToken
     
     var path: String {
@@ -116,6 +117,8 @@ enum RequestMethod {
             return "free-diagnostic"
         case .stockList:
             return "stock"
+        case .stockDetails(let id):
+            return "stock/\(id)"
         case .deviceToken:
             return "notification/device-token"
         }

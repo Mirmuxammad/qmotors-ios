@@ -528,6 +528,7 @@ class OrderRecordVC: BaseVC {
                 guard let orderId = result.result.id else { return }
                 DispatchQueue.main.async {
                     self.addPhotoToOrder(orderId: orderId)
+                    self.router?.pushOrdersForCarVC(myCar: car, openAfterRecord: true)
                 }
                 
                 self.dismissLoadingIndicator()

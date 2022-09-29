@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Stock {
+struct Stock: Decodable {
     var id: Int?
     var title: String?
     var subtitle: String?
@@ -15,4 +15,9 @@ struct Stock {
     var description: String?
     var created_at: String?
     var updated_at: String?
+    var text: String?
+}
+
+struct StockResponse: Decodable {
+    let result: Stock
 }

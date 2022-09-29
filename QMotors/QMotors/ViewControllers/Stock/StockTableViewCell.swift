@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class StockTableViewCell: UITableViewCell {
 
@@ -30,6 +31,15 @@ class StockTableViewCell: UITableViewCell {
         return label
     }()
     
+    private let subTitleLabel: UILabel = {
+       let label = UILabel()
+        label.font = UIFont(name: Const.fontReg, size: 14)
+        label.textColor = .white
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        return label
+    }()
+    
     private let locationImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "MapPinLine")
@@ -47,16 +57,13 @@ class StockTableViewCell: UITableViewCell {
     
     private let stockTextLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: Const.fontReg, size: 14)
+        label.font = UIFont(name: Const.fontMed, size: 14)
         label.textColor = .white
         label.textAlignment = .left
-        label.numberOfLines = 3
+        label.numberOfLines = 0
         label.text = "Здесь будет текст напоминания, который ввел клиент при его создании"
         return label
     }()
-    
-    
-    
     
     // MARK: - Initializers
     
@@ -76,6 +83,7 @@ class StockTableViewCell: UITableViewCell {
     private func setupViews() {
         contentView.addSubview(containerView)
         containerView.addSubview(titleLabel)
+        containerView.addSubview(subTitleLabel)
         containerView.addSubview(locationImageView)
         containerView.addSubview(locationTitleLabel)
         containerView.addSubview(stockTextLabel)
@@ -94,10 +102,18 @@ class StockTableViewCell: UITableViewCell {
             make.top.equalToSuperview().offset(24)
             make.left.equalToSuperview().offset(24)
             make.right.equalToSuperview().offset(-24)
+            make.bottom.equalTo(subTitleLabel.snp.top).offset(-10)
+        }
+        
+        subTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+            make.left.equalToSuperview().offset(24)
+            make.right.equalToSuperview().offset(-24)
+            make.bottom.equalTo(locationImageView.snp.top).offset(-16)
         }
         
         locationImageView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(16)
+            make.top.equalTo(subTitleLabel.snp.bottom).offset(16)
             make.size.equalTo(CGSize(width: 32, height: 32))
             make.left.equalToSuperview().offset(24)
             make.bottom.equalTo(stockTextLabel.snp.top).offset(-16)
@@ -113,7 +129,7 @@ class StockTableViewCell: UITableViewCell {
             make.left.equalToSuperview().offset(24)
             make.right.equalToSuperview().offset(-24)
             make.bottom.equalToSuperview().offset(-16)
-            make.height.equalTo(15)
+            make.height.greaterThanOrEqualTo(15)
         }
     }
         
@@ -121,22 +137,36 @@ class StockTableViewCell: UITableViewCell {
     
     func setupCell(stock: Stock) {
         titleLabel.text = stock.title
+        subTitleLabel.text = stock.subtitle
         if stock.location == nil {
             locationTitleLabel.isHidden = true
             locationImageView.isHidden = true
             stockTextLabel.snp.makeConstraints { make in
-                make.top.equalTo(titleLabel.snp.bottom).offset(15)
+                make.left.equalToSuperview().offset(24)
+                make.right.equalToSuperview().offset(-24)
+                make.bottom.equalToSuperview().offset(-16)
+                make.height.greaterThanOrEqualTo(15)
             }
         } else {
             locationTitleLabel.isHidden = false
             locationImageView.isHidden = false
             locationTitleLabel.text = stock.location
             titleLabel.snp.makeConstraints { make in
-                make.height.equalTo(50)
-                make.bottom.equalTo(locationImageView.snp.top).offset(-10)
+                make.top.equalToSuperview().offset(24)
+                make.left.equalToSuperview().offset(24)
+                make.right.equalToSuperview().offset(-24)
+                make.bottom.equalTo(subTitleLabel.snp.top).offset(-10)
             }
+
+            subTitleLabel.snp.makeConstraints { make in
+                make.top.equalTo(titleLabel.snp.bottom).offset(10)
+                make.left.equalToSuperview().offset(24)
+                make.right.equalToSuperview().offset(-24)
+                make.bottom.equalTo(locationImageView.snp.top).offset(16)
+            }
+            
         }
-        stockTextLabel.text = stock.subtitle
+        stockTextLabel.text = stock.description
     }
    
     
