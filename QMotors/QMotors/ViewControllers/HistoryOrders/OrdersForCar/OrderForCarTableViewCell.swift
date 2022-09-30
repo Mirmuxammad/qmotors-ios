@@ -39,32 +39,23 @@ class OrderForCarTableViewCell: UITableViewCell {
          lable.text = "пробег: не указан"//000 000 км."
          return lable
      }()
-    
-    func setTitles(order: Order) {
-        setViews()
-        numberOrderLable.text = order.order_number ?? "" + " от " + order.created_at.getFormattedDate()
-        let centerId = order.tech_center_id
-        let centerName = UserDefaultsService.sharedInstance.centras?[centerId - 1] ?? "Центр"
-        centerNameLable.text = "Тех.центр “\(centerName)”"
-        let mileage = order.mileage
-        if mileage == "0" || mileage == "00" || mileage == "000" || mileage == nil {
-            mileageLable.text = "пробег: не указан"
-        } else {
-            mileageLable.text = "пробег: \(order.mileage!) км."
-        }
-    }
-    
-    func visitHisory(order: Order) {
+        
+    func visitHistory(order: Order, car: MyCarModel) {
         setViews()
         numberOrderLable.text = order.description ?? "" + " " + order.created_at.getFormattedDate()
         let centerId = order.tech_center_id
         let centerName = UserDefaultsService.sharedInstance.centras?[centerId - 1] ?? "Центр"
         centerNameLable.text = "Тех.центр “\(centerName)”"
-        let mileage = order.mileage
-        if mileage == "0" || mileage == "00" || mileage == "000" || mileage == nil {
+
+        guard let orderMilage = order.mileage else {
+            mileageLable.text = "пробег: \(car.mileage) км"
+            return
+        }
+        
+        if orderMilage == "0" || orderMilage == "00" || orderMilage == "000" {
             mileageLable.text = "пробег: не указан"
         } else {
-            mileageLable.text = "пробег: \(order.mileage!) км."
+            mileageLable.text = "пробег: \(orderMilage) км"
         }
     }
     

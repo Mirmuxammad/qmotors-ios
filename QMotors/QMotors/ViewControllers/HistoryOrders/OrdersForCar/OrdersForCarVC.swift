@@ -158,7 +158,7 @@ extension OrdersForCarVC: UITableViewDelegate, UITableViewDataSource {
                 cell.setupTitlesForEmptyOrder()
             } else {
                 let order = ordersData[indexPath.row]
-                cell.visitHisory(order: order)
+                cell.visitHistory(order: order, car: myCar)
             }
             return cell
         }
