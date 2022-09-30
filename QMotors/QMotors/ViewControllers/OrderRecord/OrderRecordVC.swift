@@ -416,8 +416,7 @@ class OrderRecordVC: BaseVC {
         
         OrderAPI.addPhotoToOrder(orderId: orderId, fileURLArray: fileURLArray, success: { [weak self] result in
             self?.fileURLArray = []
-            self?.router?.back()
-            self?.dismissLoadingIndicator()
+//            self?.dismissLoadingIndicator()
         }) { error in
             self.dismissLoadingIndicator()
             print(error.debugDescription)
@@ -511,89 +510,81 @@ class OrderRecordVC: BaseVC {
         router?.back()
     }
     
+    private func updateLastVisit() {
+        guard
+            let car = myCar,
+            let id = myCarOrder.id,
+            let carModelId = myCarOrder.carModelId,
+            let year = myCarOrder.year,
+            let milage = myCarOrder.mileage,
+            let number = myCarOrder.number,
+            let vin = myCarOrder.vin,
+            let lastVisit = myCarOrder.lastVisit,
+            let status = myCarOrder.status else { return }
+    
+        CarAPI.editCar(carId: id, carModelId: carModelId, year: year, mileage: milage, number: number, vin: vin, lastVisit: lastVisit, status: status) { result in
+            print("Car last visit succesfully updated")
+            self.router?.pushOrdersForCarVC(myCar: car, openAfterRecord: true)
+        } failure: { error in
+            self.showAlert(with: error?.localizedDescription ?? "Ошибка", buttonTitle: "Ок")
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
     @objc private func addSendButtonTapped() {
         
-        if order.date == nil {
+        guard let orderDate = order.date else {
             let alert = UIAlertController(title: "Ошибка", message: "Выберите дату записи на ТО", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             present(alert, animated: true)
-        } else {
-            self.showLoadingIndicator()
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            let newDate = dateFormatter.date(from: order.date!)
-            guard let car = myCar else { return }
-            
-            var descriptionOfOrder = ""
-            if let infoDescription = infoField.text {
-                descriptionOfOrder = infoDescription
-                self.reminder.text = infoDescription
-            }
-            
-            var mileage = ""
-            if let orderMileage = mileageField.text {
-                mileage = orderMileage
-            } else {
-                mileage = car.mileage
-            }
-            
-            let intMileage = Int(mileage) ?? 0
-            
-            guard let orderTypeId = order.orderTypeId else { return }
-            guard let techCenterId = order.techCenterId else { return }
-            let guarantee = guaranteeSwitch.isOn
-            
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
-            let visiteDate = formatter.string(from: newDate ?? Date())
-            
-            self.addReminder()
-            OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, mileage: intMileage, dateVisit: visiteDate, freeDiagnostics: false, guarantee: guarantee,success: { result in
-                print("Hello")
-                guard let orderId = result.result.id else { return }
-                DispatchQueue.main.async {
-                    self.addPhotoToOrder(orderId: orderId)
-                    self.router?.pushOrdersForCarVC(myCar: car, openAfterRecord: true)
-                }
-                
-                self.dismissLoadingIndicator()
-                
-            }) { [weak self] error in
-                print(error?.message ?? "")
-                let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                
-                }))
-                self?.dismissLoadingIndicator()
-                self?.present(alert, animated: true, completion: nil)
-            }
+            return
+        }
         
-            // не понимаю для чего эта часть
-            guard
-                let id = myCarOrder.id,
-                let carModelId = myCarOrder.carModelId,
-                let year = myCarOrder.year,
-                let milage = myCarOrder.mileage,
-                let number = myCarOrder.number,
-                let vin = myCarOrder.vin,
-                let lastVisit = myCarOrder.lastVisit,
-                let status = myCarOrder.status else { return }
-            print("edit car")
-            CarAPI.editCar(carId: id, carModelId: carModelId, year: year, mileage: milage, number: number, vin: vin, lastVisit: lastVisit, status: status) { result in
-                print("Car last visit succesfully updated")
-//                self.showAlert(with: "Успешно", buttonTitle: "Ок")
-                self.router?.pushOrdersForCarVC(myCar: car, openAfterRecord: true)
-            } failure: { error in
-                self.showAlert(with: error?.localizedDescription ?? "Ошибка", buttonTitle: "Ок")
-                self.navigationController?.popViewController(animated: true)
+        self.showLoadingIndicator()
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let newDate = dateFormatter.date(from: orderDate)
+        let visiteDate = dateFormatter.string(from: newDate ?? Date())
+        
+        guard let car = myCar,
+              let orderTypeId = order.orderTypeId,
+              let techCenterId = order.techCenterId else { return }
+        
+        var descriptionOfOrder = ""
+        if let infoDescription = infoField.text {
+            descriptionOfOrder = infoDescription
+            self.reminder.text = infoDescription
+        }
+        
+        var mileage = ""
+        if let orderMileage = mileageField.text {
+            mileage = orderMileage
+        } else {
+            mileage = car.mileage
+        }
+        
+        let intMileage = Int(mileage) ?? 0
+        
+        let guarantee = guaranteeSwitch.isOn
+
+        self.addReminder()
+        OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, mileage: intMileage, dateVisit: visiteDate, freeDiagnostics: false, guarantee: guarantee,success: { result in
+            guard let orderId = result.result.id else { return }
+            DispatchQueue.main.async {
+                self.addPhotoToOrder(orderId: orderId)
+                self.updateLastVisit()
             }
             
             self.dismissLoadingIndicator()
             
-            self.router?.pushOrdersForCarVC(myCar: car, openAfterRecord: true)
+        }) { [weak self] error in
+            print(error?.message ?? "")
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self?.dismissLoadingIndicator()
+            self?.present(alert, animated: true, completion: nil)
         }
-        
     }
     
     @objc private func photoButtonTapped() {
@@ -701,7 +692,12 @@ extension OrderRecordVC: UITextFieldDelegate {
             let documentUrl = getDocumentsDirectory()
                 .appendingPathComponent(UUID().uuidString)
                 .appendingPathExtension("jpg")
-            try! data!.write(to: documentUrl)
+            
+            do {
+                try data?.write(to: documentUrl)
+            } catch {
+                print(error)
+            }
             
             fileURLArray.append(documentUrl)
             
