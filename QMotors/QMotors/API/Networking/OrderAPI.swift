@@ -34,12 +34,13 @@ final class OrderAPI {
         }
     }
     
-    static func addDiagnosticOrderWithStock(carId: String, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, dateVisit: String, freeDiagnostics: Bool, guarantee: Bool, stockID: Int, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
+    static func addDiagnosticOrderWithStock(carId: String, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, mileage: Int, dateVisit: String, freeDiagnostics: Bool, guarantee: Bool, stockID: Int, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
         
         let params: Parameters = [
             "order_type_id": orderTypeId,
             "tech_center_id": techCenterId,
             "description": description,
+            "mileage": mileage,
             "date": dateVisit,
             "guarantee": guarantee,
             "free_diagnstics": freeDiagnostics,
@@ -59,12 +60,13 @@ final class OrderAPI {
         }
     }
     
-    static func addDiagnosticOrder(carId: String, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, dateVisit: String, freeDiagnostics: Bool, guarantee: Bool, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
+    static func addDiagnosticOrder(carId: String, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, mileage: Int, dateVisit: String, freeDiagnostics: Bool, guarantee: Bool, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
         
         let params: Parameters = [
             "order_type_id": orderTypeId,
             "tech_center_id": techCenterId,
             "description": description,
+            "mileage": mileage,
             "date": dateVisit,
             "guarantee": guarantee,
             "free_diagnstics": freeDiagnostics,

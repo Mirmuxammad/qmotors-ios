@@ -109,6 +109,11 @@ class OrderRecordVC: BaseVC {
         return label
     }()
     
+    private let userMilageLabel: CustomLabel = {
+        let label = CustomLabel(text: "Пробег", fontWeight: .medium)
+        return label
+    }()
+    
     private let timeMarkLabel: CustomLabel = {
         let label = CustomLabel(text: "Укажите дату и время", fontWeight: .medium)
         return label
@@ -153,6 +158,12 @@ class OrderRecordVC: BaseVC {
     
     private let userCarField: CustomTextField = {
         let field = CustomTextField(placeholder: "Из спиcка ваших автомобилей")
+        return field
+    }()
+    
+    private let mileageField: CustomTextField = {
+        let field = CustomTextField(placeholder: "Укажите пробег автомобиля")
+        field.keyboardType = .numberPad
         return field
     }()
     
@@ -255,6 +266,9 @@ class OrderRecordVC: BaseVC {
         optionButon.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
         order.guarantee = false
         setupView()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -294,6 +308,8 @@ class OrderRecordVC: BaseVC {
         technicalCenterField.addSubview(carChevronButton)
         userCarField.addSubview(carModelChevronButton)
         optionField.addSubview(optionsChevronButton)
+        contentView.addSubview(userMilageLabel)
+        contentView.addSubview(mileageField)
         contentView.addSubview(timeMarkLabel)
         contentView.addSubview(dateTF)
         contentView.addSubview(datePicker)
@@ -514,6 +530,16 @@ class OrderRecordVC: BaseVC {
                 descriptionOfOrder = infoDescription
                 self.reminder.text = infoDescription
             }
+            
+            var mileage = ""
+            if let orderMileage = mileageField.text {
+                mileage = orderMileage
+            } else {
+                mileage = car.mileage
+            }
+            
+            let intMileage = Int(mileage) ?? 0
+            
             guard let orderTypeId = order.orderTypeId else { return }
             guard let techCenterId = order.techCenterId else { return }
             let guarantee = guaranteeSwitch.isOn
@@ -523,7 +549,7 @@ class OrderRecordVC: BaseVC {
             let visiteDate = formatter.string(from: newDate ?? Date())
             
             self.addReminder()
-            OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, dateVisit: visiteDate, freeDiagnostics: false, guarantee: guarantee,success: { result in
+            OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, mileage: intMileage, dateVisit: visiteDate, freeDiagnostics: false, guarantee: guarantee,success: { result in
                 print("Hello")
                 guard let orderId = result.result.id else { return }
                 DispatchQueue.main.async {
@@ -564,7 +590,10 @@ class OrderRecordVC: BaseVC {
             }
             
             self.dismissLoadingIndicator()
+            
+            self.router?.pushOrdersForCarVC(myCar: car, openAfterRecord: true)
         }
+        
     }
     
     @objc private func photoButtonTapped() {
@@ -781,8 +810,21 @@ extension OrderRecordVC {
             make.width.equalTo(54)
         }
         
+        userMilageLabel.snp.makeConstraints { make in
+            make.top.equalTo(userCarField.snp.bottom).offset(24)
+            make.left.equalToSuperview().offset(lOffset)
+            make.right.equalToSuperview().offset(rOffset)
+        }
+        
+        mileageField.snp.makeConstraints { make in
+            make.top.equalTo(userMilageLabel.snp.bottom).offset(14)
+            make.height.equalTo(54)
+            make.left.equalToSuperview().offset(lOffset)
+            make.right.equalToSuperview().offset(rOffset)
+        }
+        
         timeMarkLabel.snp.makeConstraints { make in
-            make.top.equalTo(userCarField.snp.bottom).offset(12)
+            make.top.equalTo(mileageField.snp.bottom).offset(24)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
@@ -792,14 +834,13 @@ extension OrderRecordVC {
             make.left.equalToSuperview().offset(lOffset)
         }
         optionLabel.snp.makeConstraints { make in
-            make.top.equalTo(datePicker.snp.bottom).offset(10)
-            make.height.equalTo(54)
+            make.top.equalTo(datePicker.snp.bottom).offset(24)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
         
         optionField.snp.makeConstraints { make in
-            make.top.equalTo(optionLabel.snp.bottom).offset(10)
+            make.top.equalTo(optionLabel.snp.bottom).offset(14)
             make.height.equalTo(54)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
@@ -817,28 +858,26 @@ extension OrderRecordVC {
         }
         
         infoLabel.snp.makeConstraints { make in
-            make.top.equalTo(optionField.snp.bottom).offset(10)
-            make.height.equalTo(54)
+            make.top.equalTo(optionField.snp.bottom).offset(24)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
         
         infoField.snp.makeConstraints { make in
-            make.top.equalTo(infoLabel.snp.bottom).offset(10)
+            make.top.equalTo(infoLabel.snp.bottom).offset(14)
             make.height.equalTo(54)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
         
         guaranteeInfoLabel.snp.makeConstraints { make in
-            make.top.equalTo(infoField.snp.bottom).offset(10)
-            make.height.equalTo(54)
+            make.top.equalTo(infoField.snp.bottom).offset(24)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
         
         guaranteeSwitch.snp.makeConstraints { make in
-            make.top.equalTo(guaranteeInfoLabel.snp.bottom).offset(10)
+            make.top.equalTo(guaranteeInfoLabel.snp.bottom).offset(14)
             make.left.equalToSuperview().offset(lOffset)
         }
         

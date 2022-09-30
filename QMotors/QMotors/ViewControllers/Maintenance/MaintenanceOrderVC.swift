@@ -120,6 +120,21 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
         return field
     }()
     
+    private let userMilageLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Пробег"
+        label.font = UIFont(name: "Montserrat-SemiBold", size: 16)
+        label.textColor = .black
+        label.textAlignment = .left
+        return label
+    }()
+    
+    private let milageField: CustomTextField = {
+        let field = CustomTextField(placeholder: "Укажите пробег автомобиля")
+        field.keyboardType = .numberPad
+        return field
+    }()
+    
     private let userCarDropDown: DropDown = {
         let dropDown = DropDown()
         dropDown.layer.borderWidth = 1
@@ -146,6 +161,9 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
         technicalCenterButton.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
         userCarButton.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
         sendOrderButton.setupButton(target: self, action: #selector(addSendButtonTapped))
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -255,8 +273,18 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
             
             let orderDescroption = "Запись на бесплатную диагностику, через приложение"
             print("Tapped on button")
+            
+            var mileage = ""
+            if let orderMileage = milageField.text {
+                mileage = orderMileage
+            } else {
+                mileage = car.mileage
+            }
+            
+            let intMileage = Int(mileage) ?? 0
+            
 
-            OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: order.techCenterId ?? 1, orderTypeId: 5, description: orderDescroption, dateVisit: lastVisitStr, freeDiagnostics: true, guarantee: false) { result in
+            OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: order.techCenterId ?? 1, orderTypeId: 5, description: orderDescroption, mileage: intMileage, dateVisit: lastVisitStr, freeDiagnostics: true, guarantee: false) { result in
 
 
             } failure: { error in
@@ -358,6 +386,9 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
         backgroundView.addSubview(userCarButton)
         userCarField.addSubview(carModelChevronButton)
         
+        backgroundView.addSubview(userMilageLabel)
+        backgroundView.addSubview(milageField)
+        
         backgroundView.addSubview(dateTF)
         backgroundView.addSubview(datePicker)
         backgroundView.addSubview(sendOrderButton)
@@ -438,6 +469,19 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
             make.centerY.equalToSuperview()
             make.height.equalTo(54)
             make.width.equalTo(54)
+        }
+        
+        userMilageLabel.snp.makeConstraints { make in
+            make.top.equalTo(userCarField.snp.bottom).offset(24)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+        }
+        
+        milageField.snp.makeConstraints { make in
+            make.top.equalTo(userMilageLabel.snp.bottom).offset(14)
+            make.height.equalTo(54)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
         }
         
         thirdTitleLable.snp.makeConstraints { make in

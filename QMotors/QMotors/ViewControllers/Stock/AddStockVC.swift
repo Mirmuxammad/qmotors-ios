@@ -123,6 +123,11 @@ class AddStockVC: BaseVC {
         return label
     }()
     
+    private let userMilageLabel: CustomLabel = {
+        let label = CustomLabel(text: "Пробег", fontWeight: .medium)
+        return label
+    }()
+    
     private let timeMarkLabel: CustomLabel = {
         let label = CustomLabel(text: "Укажите дату и время", fontWeight: .medium)
         return label
@@ -157,6 +162,12 @@ class AddStockVC: BaseVC {
     
     private let userCarField: CustomTextField = {
         let field = CustomTextField(placeholder: "Из спиcка ваших автомобилей")
+        return field
+    }()
+    
+    private let mileageField: CustomTextField = {
+        let field = CustomTextField(placeholder: "Укажите пробег автомобиля")
+        field.keyboardType = .numberPad
         return field
     }()
     
@@ -255,6 +266,9 @@ class AddStockVC: BaseVC {
         technicalCenterButton.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
         userCarButton.addTarget(self, action: #selector(openDropDown(_:)), for: .touchUpInside)
         setupView()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -297,6 +311,8 @@ class AddStockVC: BaseVC {
         technicalCenterField.addSubview(carChevronButton)
         userCarField.addSubview(carModelChevronButton)
         stockField.addSubview(stockChevronButton)
+        contentView.addSubview(userMilageLabel)
+        contentView.addSubview(mileageField)
         contentView.addSubview(timeMarkLabel)
         contentView.addSubview(dateTF)
         contentView.addSubview(datePicker)
@@ -510,13 +526,22 @@ class AddStockVC: BaseVC {
                 descriptionOfOrder = infoDescription
             }
             
+            var mileage = ""
+            if let orderMileage = mileageField.text {
+                mileage = orderMileage
+            } else {
+                mileage = car.mileage
+            }
+            
+            let intMileage = Int(mileage) ?? 0
+            
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd"
             let lastVisitStr = formatter.string(from: newDate ?? Date())
             
             
             
-            OrderAPI.addDiagnosticOrderWithStock(carId: String(car.id), carNumber: car.number, techCenterId: order.techCenterId ?? 0, orderTypeId: order.orderTypeId ?? 0, description: descriptionOfOrder, dateVisit: lastVisitStr, freeDiagnostics: false, guarantee: false, stockID: order.stockID ?? 0, success: { [weak self] result in
+            OrderAPI.addDiagnosticOrderWithStock(carId: String(car.id), carNumber: car.number, techCenterId: order.techCenterId ?? 0, orderTypeId: order.orderTypeId ?? 0, description: descriptionOfOrder, mileage: intMileage, dateVisit: lastVisitStr, freeDiagnostics: false, guarantee: false, stockID: order.stockID ?? 0, success: { [weak self] result in
                 guard let orderId = result.result.id else { return }
                 DispatchQueue.main.async {
                     self?.addPhotoToOrder(orderId: orderId)
@@ -767,8 +792,21 @@ extension AddStockVC {
             make.width.equalTo(54)
         }
         
+        userMilageLabel.snp.makeConstraints { make in
+            make.top.equalTo(userCarField.snp.bottom).offset(24)
+            make.left.equalToSuperview().offset(lOffset)
+            make.right.equalToSuperview().offset(rOffset)
+        }
+        
+        mileageField.snp.makeConstraints { make in
+            make.top.equalTo(userMilageLabel.snp.bottom).offset(14)
+            make.height.equalTo(54)
+            make.left.equalToSuperview().offset(lOffset)
+            make.right.equalToSuperview().offset(rOffset)
+        }
+        
         timeMarkLabel.snp.makeConstraints { make in
-            make.top.equalTo(userCarField.snp.bottom).offset(12)
+            make.top.equalTo(mileageField.snp.bottom).offset(24)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
@@ -797,14 +835,13 @@ extension AddStockVC {
         
         
         infoLabel.snp.makeConstraints { make in
-            make.top.equalTo(technicalCenterField.snp.bottom).offset(10)
-            make.height.equalTo(54)
+            make.top.equalTo(technicalCenterField.snp.bottom).offset(24)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)
         }
         
         infoField.snp.makeConstraints { make in
-            make.top.equalTo(infoLabel.snp.bottom).offset(10)
+            make.top.equalTo(infoLabel.snp.bottom).offset(14)
             make.height.equalTo(54)
             make.left.equalToSuperview().offset(lOffset)
             make.right.equalToSuperview().offset(rOffset)

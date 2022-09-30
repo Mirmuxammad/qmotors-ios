@@ -198,6 +198,8 @@ class ProfileVC: BaseVC {
         scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height + 2000)
 //        scrollView.frame = self.view.bounds
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
         
     // MARK: - Private functions

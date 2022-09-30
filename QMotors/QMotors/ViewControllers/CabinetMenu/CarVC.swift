@@ -311,6 +311,9 @@ class CarVC: BaseVC {
             self?.activityIndicator.stopAnimating()
         }
         setupView()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
