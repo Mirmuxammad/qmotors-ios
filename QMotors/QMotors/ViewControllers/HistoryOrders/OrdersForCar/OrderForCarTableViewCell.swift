@@ -42,20 +42,26 @@ class OrderForCarTableViewCell: UITableViewCell {
         
     func visitHistory(order: Order, car: MyCarModel) {
         setViews()
-        numberOrderLable.text = order.description ?? "" + " " + order.created_at.getFormattedDate()
+        
+        if let description = order.description {
+            numberOrderLable.text = "\(description) на \(order.date.getFormattedDate())"
+        } else {
+            numberOrderLable.text = "на \(order.date.getFormattedDate())"
+        }
+        
         let centerId = order.tech_center_id
         let centerName = UserDefaultsService.sharedInstance.centras?[centerId - 1] ?? "Центр"
         centerNameLable.text = "Тех.центр “\(centerName)”"
 
         guard let orderMilage = order.mileage else {
-            mileageLable.text = "пробег: \(car.mileage) км"
+            mileageLable.text = "пробег: \(Int(car.mileage)?.formattedWithSeparator ?? "") км"
             return
         }
         
         if orderMilage == "0" || orderMilage == "00" || orderMilage == "000" {
             mileageLable.text = "пробег: не указан"
         } else {
-            mileageLable.text = "пробег: \(orderMilage) км"
+            mileageLable.text = "пробег: \(Int(orderMilage)?.formattedWithSeparator ?? "") км"
         }
     }
     
