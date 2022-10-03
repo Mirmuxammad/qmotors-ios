@@ -55,6 +55,8 @@ class AddStockVC: BaseVC {
         let picker = UIDatePicker()
         let localeID = Locale.preferredLanguages.first
         picker.locale = Locale(identifier: localeID!)
+        picker.minimumDate = Calendar.current.date(byAdding: .day, value: 1, to: Date())
+        picker.minuteInterval = 10
         return picker
     }()
     

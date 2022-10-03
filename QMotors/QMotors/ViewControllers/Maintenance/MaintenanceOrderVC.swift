@@ -34,6 +34,8 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
         let picker = UIDatePicker()
         let localeID = Locale.preferredLanguages.first
         picker.locale = Locale(identifier: localeID!)
+        picker.minimumDate = Calendar.current.date(byAdding: .day, value: 1, to: Date())
+        picker.minuteInterval = 10
         return picker
     }()
     
@@ -74,7 +76,7 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
     private let thirdTitleLable: UILabel = {
         let label = UILabel()
         label.text = "Укажите дату и время"
-        label.font = UIFont(name: "Montserrat-SemiBold", size: 16)
+        label.font = UIFont(name: "Montserrat-Medium", size: 16)
         label.textColor = .black
         label.textAlignment = .left
         return label
@@ -109,7 +111,7 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
     private let secondTitleLable: UILabel = {
         let label = UILabel()
         label.text = "Ваш автомобиль"
-        label.font = UIFont(name: "Montserrat-SemiBold", size: 16)
+        label.font = UIFont(name: "Montserrat-Medium", size: 16)
         label.textColor = .black
         label.textAlignment = .left
         return label
@@ -123,7 +125,7 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
     private let userMilageLabel: UILabel = {
         let label = UILabel()
         label.text = "Пробег"
-        label.font = UIFont(name: "Montserrat-SemiBold", size: 16)
+        label.font = UIFont(name: "Montserrat-Medium", size: 16)
         label.textColor = .black
         label.textAlignment = .left
         return label
@@ -485,7 +487,7 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
         }
         
         thirdTitleLable.snp.makeConstraints { make in
-            make.top.equalTo(userCarField.snp.bottom).offset(20)
+            make.top.equalTo(milageField.snp.bottom).offset(24)
             make.height.equalTo(22)
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
