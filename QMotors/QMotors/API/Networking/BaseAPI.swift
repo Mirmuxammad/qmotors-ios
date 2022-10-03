@@ -207,9 +207,42 @@ final class BaseAPI {
         }
     }
     
-    fileprivate static func requestChatFile(reqMethod: RequestMethod,
+    fileprivate static func request(reqMethod: RequestMethod,
                                     fieldName: String,
-                                    fileURLArray: [URL],
+                                    dataArray: [Data],
+                                    success: @escaping (Data?) -> Void,
+                                    failure: @escaping (NetworkError?) -> Void) {
+        var headers = BaseAPI().headers
+        
+        guard let token = UserDefaultsService.sharedInstance.authToken else {
+            failure(NetworkError(.other("Токен не найден!")))
+            return
+        }
+        headers.add(.authorization(bearerToken: token))
+        
+        for data in dataArray {
+            authorizedSession.upload(multipartFormData: { multiPart in
+                multiPart.append(data,
+                                 withName: fieldName,
+                                 fileName: UUID().uuidString,
+                                 mimeType: "image/jpeg")
+                
+                
+            }, to: BaseAPI.baseAPIURL + reqMethod.path, method: .post, headers: headers).response { response in
+                debugPrint(response)
+                if let data = response.data {
+                    success(data)
+                } else {
+                    failure(NetworkError(.server, code: response.response?.statusCode))
+                }
+            }
+            
+        }
+    }
+    
+    fileprivate static func requestChatFile(reqMethod: RequestMethod,
+                                            fieldName: String,
+                                            fileURLArray: [URL],
                                     success: @escaping (Data?) -> Void,
                                     failure: @escaping (NetworkError?) -> Void) {
         var headers = BaseAPI().headers
@@ -329,6 +362,11 @@ final class BaseAPI {
     static func authorizedMultipartPostRequest(carId: Int, fieldName: String, fileURLArray: [URL], success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
         request(reqMethod: .addCarPhoto(carId), fieldName: fieldName, fileURLArray: fileURLArray, success: success, failure: failure)
     }
+    
+    static func authorizedMultipartPostRequestForOrder(orderId: Int, fieldName: String, dataArray: [Data], success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
+        request(reqMethod: .orderPhoto(orderId), fieldName: fieldName, dataArray: dataArray, success: success, failure: failure)
+    }
+    
     // загрузка фото для авторизованных пользователей для сервиса
     static func authorizedMultipartPostRequestForOrder(orderId: Int, fieldName: String, fileURLArray: [URL], success: @escaping (Data?) -> Void, failure: @escaping (NetworkError?) -> Void) {
         request(reqMethod: .orderPhoto(orderId), fieldName: fieldName, fileURLArray: fileURLArray, success: success, failure: failure)

@@ -101,6 +101,22 @@ final class OrderAPI {
         }
     }
     
+    static func addPhotoToOrder(orderId: Int, dataArray: [Data], success: @escaping (JSON) -> Void, failure: @escaping escapeNetworkError) {
+        BaseAPI.authorizedMultipartPostRequestForOrder(orderId: orderId, fieldName: "photo", dataArray: dataArray, success: { data in
+            guard let data = data else { return }
+            let jsonData = JSON(data)
+            let errors = jsonData["errors"]
+            if errors.type == .null {
+                print("Photo goes")
+                success(jsonData["result"])
+            } else {
+                failure(NetworkError(.other(errors.stringValue)))
+            }
+        }) { error in
+            failure(error)
+        }
+    }
+    
     static func orderList(userCarId: Int, success: @escaping (CarOrderResponce) -> Void, failure: @escaping escapeNetworkError) {
         let params: Parameters = [:]
         

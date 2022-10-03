@@ -26,6 +26,8 @@ class OrderRecordVC: BaseVC {
         }
     }
     
+    private var photos: [Data] = []
+    
     private var carModelIdForUpdate: String = ""
     var myCar: MyCarModel?
     
@@ -414,8 +416,9 @@ class OrderRecordVC: BaseVC {
     
     private func addPhotoToOrder(orderId: Int) {
         
-        OrderAPI.addPhotoToOrder(orderId: orderId, fileURLArray: fileURLArray, success: { [weak self] result in
+        OrderAPI.addPhotoToOrder(orderId: orderId, dataArray: photos, success: { [weak self] result in
             self?.fileURLArray = []
+            self?.photos = []
 //            self?.dismissLoadingIndicator()
         }) { error in
             self.dismissLoadingIndicator()
@@ -601,10 +604,13 @@ class OrderRecordVC: BaseVC {
         photoView.photo = UIImage(named: "empty-photo")!
         if photoView == firstPhotoView {
             fileURLArray.remove(at: 0)
+            photos.remove(at: 0)
         } else if photoView == secondPhotoView {
             fileURLArray.remove(at: 1)
+            photos.remove(at: 1)
         } else if photoView == thirdPhotoView {
             fileURLArray.remove(at: 2)
+            photos.remove(at: 2)
         }
         reloadCarPhotos()
     }
@@ -628,27 +634,27 @@ class OrderRecordVC: BaseVC {
     }
     
     private func reloadCarPhotos() {
-        if fileURLArray.isEmpty {
+        if photos.isEmpty {
             firstPhotoView.photo = UIImage(named: "empty-photo")!
             secondPhotoView.photo = UIImage(named: "empty-photo")!
             thirdPhotoView.photo = UIImage(named: "empty-photo")!
             return
         }
-        let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
-        firstPhotoView.photo = UIImage(data: firstPhotoData)!
-        if fileURLArray.count < 2 {
+//        let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
+        firstPhotoView.photo = UIImage(data: photos[0])!
+        if photos.count < 2 {
             secondPhotoView.photo = UIImage(named: "empty-photo")!
             thirdPhotoView.photo = UIImage(named: "empty-photo")!
             return
         }
-        let secondPhotoData = try! Data(contentsOf: fileURLArray[1])
-        secondPhotoView.photo = UIImage(data: secondPhotoData)!
-        if fileURLArray.count < 3 {
+//        let secondPhotoData = try! Data(contentsOf: fileURLArray[1])
+        secondPhotoView.photo = UIImage(data: photos[1])!
+        if photos.count < 3 {
             thirdPhotoView.photo = UIImage(named: "empty-photo")!
             return
         }
-        let thirdPhotoData = try! Data(contentsOf: fileURLArray[2])
-        thirdPhotoView.photo = UIImage(data: thirdPhotoData)!
+//        let thirdPhotoData = try! Data(contentsOf: fileURLArray[2])
+        thirdPhotoView.photo = UIImage(data: photos[2])!
     }
     
     @objc private func openDropDown(_ sender: UIButton) {
@@ -687,7 +693,7 @@ extension OrderRecordVC: UITextFieldDelegate {
     extension OrderRecordVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
         
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            guard let image = info[.editedImage] as? UIImage else { return }
+            guard let image = info[.editedImage] as? UIImage/*, let selectedData = info[.editedImage] as? Data */else { return }
             let data = image.jpegData(compressionQuality: 0.8)
             let documentUrl = getDocumentsDirectory()
                 .appendingPathComponent(UUID().uuidString)
@@ -701,6 +707,9 @@ extension OrderRecordVC: UITextFieldDelegate {
             
             fileURLArray.append(documentUrl)
             
+            if let data = data {
+                photos.append(data)
+            }
             
             dismiss(animated: true) { [weak self] in
                 if let data = data, let image = UIImage(data: data) {
