@@ -17,6 +17,7 @@ class AddStockVC: BaseVC {
     private var orderTypes = [OrderType]()
     private var order = NewOrder()
     private var myCarOrder = MyCarOrder()
+    private var reminder = NewReminder()
     
     
     private var fileURLArray: [URL] = [] {
@@ -37,6 +38,7 @@ class AddStockVC: BaseVC {
         }
     }
     var stocks: [Stock] = [Stock]()
+    private var photos: [Data] = []
     
     // MARK: - UI Elements
     private let logoImageView: UIImageView = {
@@ -427,16 +429,51 @@ class AddStockVC: BaseVC {
     
     private func addPhotoToOrder(orderId: Int) {
         
-        OrderAPI.addPhotoToOrder(orderId: orderId, fileURLArray: fileURLArray, success: { [weak self] result in
-            self?.fileURLArray = []
-            self?.router?.back()
-            self?.dismissLoadingIndicator()
+        OrderAPI.addPhotoToOrder(orderId: orderId, dataArray: photos, success: { [weak self] result in
+            guard let self = self else { return }
+            self.fileURLArray = []
+            self.photos = []
+            self.dismissLoadingIndicator()
         }) { error in
             self.dismissLoadingIndicator()
             print(error.debugDescription)
         }
     }
     
+    private func updateLastVisit() {
+        guard
+            let car = myCar,
+            let id = myCarOrder.id,
+            let carModelId = myCarOrder.carModelId,
+            let year = myCarOrder.year,
+            let milage = myCarOrder.mileage,
+            let number = myCarOrder.number,
+            let vin = myCarOrder.vin,
+            let lastVisit = myCarOrder.lastVisit,
+            let status = myCarOrder.status else { return }
+    
+        CarAPI.editCar(carId: id, carModelId: carModelId, year: year, mileage: milage, number: number, vin: vin, lastVisit: lastVisit, status: status) { result in
+            print("Car last visit succesfully updated")
+            self.router?.pushOrdersForCarVC(myCar: car, openAfterRecord: true)
+        } failure: { error in
+            self.showAlert(with: error?.localizedDescription ?? "Ошибка", buttonTitle: "Ок")
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    // MARK: - Add reminder
+    
+    private func addReminder() {
+        ReminderAPI.addNewReminder(reminder: reminder) { json in
+            print(json)
+        } failure: { error in
+            let alert = UIAlertController(title: "Ошибка напоминания", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
     
     // MARK: - Private actions
     private func setDropDowns() {
@@ -488,6 +525,7 @@ class AddStockVC: BaseVC {
             guard let myCar = self?.myCars[index] else { return }
             self?.myCar = myCar
             self?.order.carId = String(id)
+            self?.reminder.user_car_id = id
             self?.order.carNumber = self?.myCars[index].number
             self?.userCarDropDown.hide()
             self?.carModelChevronButton.transform = .identity
@@ -510,75 +548,56 @@ class AddStockVC: BaseVC {
     }
     
     @objc private func addSendButtonTapped() {
-        
-        if order.date == nil {
+                
+        guard let orderDate = order.date else {
             let alert = UIAlertController(title: "Ошибка", message: "Выберите дату записи на ТО", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             present(alert, animated: true)
-        } else {
-            self.showLoadingIndicator()
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            let newDate = dateFormatter.date(from: order.date!)
-            guard let car = myCar else { return }
-            
-            var descriptionOfOrder = ""
-            if let infoDescription = infoField.text {
-                descriptionOfOrder = infoDescription
-            }
-            
-            var mileage = ""
-            if let orderMileage = mileageField.text {
-                mileage = orderMileage
-            } else {
-                mileage = car.mileage
-            }
-            
-            let intMileage = Int(mileage) ?? 0
-            
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd"
-            let lastVisitStr = formatter.string(from: newDate ?? Date())
-            
-            
-            
-            OrderAPI.addDiagnosticOrderWithStock(carId: String(car.id), carNumber: car.number, techCenterId: order.techCenterId ?? 0, orderTypeId: order.orderTypeId ?? 0, description: descriptionOfOrder, mileage: intMileage, dateVisit: lastVisitStr, freeDiagnostics: false, guarantee: false, stockID: order.stockID ?? 0, success: { [weak self] result in
-                guard let orderId = result.result.id else { return }
-                DispatchQueue.main.async {
-                    self?.addPhotoToOrder(orderId: orderId)
-                }
-                self?.dismissLoadingIndicator()
-
-            }) { [weak self] error in
-                print(error?.message ?? "")
-                let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-
-                }))
-                self?.dismissLoadingIndicator()
-                self?.present(alert, animated: true, completion: nil)
-            }
+            return
+        }
         
-            // не понимаю для чего эта часть
-            guard
-                let id = myCarOrder.id,
-                let carModelId = myCarOrder.carModelId,
-                let year = myCarOrder.year,
-                let milage = myCarOrder.mileage,
-                let number = myCarOrder.number,
-                let vin = myCarOrder.vin,
-                let lastVisit = myCarOrder.lastVisit,
-                let status = myCarOrder.status else { return }
-            
-            CarAPI.editCar(carId: id, carModelId: carModelId, year: year, mileage: milage, number: number, vin: vin, lastVisit: lastVisit, status: status) { result in
-                print("Car last visit succesfully updated")
-            } failure: { error in
-                print(error?.localizedDescription ?? "")
+        self.showLoadingIndicator()
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let newDate = dateFormatter.date(from: orderDate)
+        let visiteDate = dateFormatter.string(from: newDate ?? Date())
+        
+        guard let car = myCar else { return }
+        
+        var descriptionOfOrder = ""
+        if let infoDescription = infoField.text {
+            descriptionOfOrder = infoDescription
+            self.reminder.text = infoDescription
+        }
+        
+        var mileage = ""
+        if let orderMileage = mileageField.text {
+            mileage = orderMileage
+        } else {
+            mileage = car.mileage
+        }
+        
+        let intMileage = Int(mileage) ?? 0
+        
+        self.addReminder()
+        
+        OrderAPI.addDiagnosticOrderWithStock(carId: String(car.id), carNumber: car.number, techCenterId: order.techCenterId ?? 0, orderTypeId: order.orderTypeId ?? 0, description: descriptionOfOrder, mileage: intMileage, dateVisit: visiteDate, freeDiagnostics: false, guarantee: false, stockID: order.stockID ?? 0, success: { [weak self] result in
+            guard let orderId = result.result.id else { return }
+            DispatchQueue.main.async {
+                self?.addPhotoToOrder(orderId: orderId)
+                self?.updateLastVisit()
             }
-            
-            self.dismissLoadingIndicator()
-            self.navigationController?.popViewController(animated: true)
+            self?.dismissLoadingIndicator()
+
+        }) { [weak self] error in
+            print(error?.message ?? "")
+            let alert = UIAlertController(title: "Ошибка", message: error?.message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+
+            }))
+            self?.dismissLoadingIndicator()
+            self?.present(alert, animated: true, completion: nil)
         }
     }
     
@@ -596,10 +615,13 @@ class AddStockVC: BaseVC {
         photoView.photo = UIImage(named: "empty-photo")!
         if photoView == firstPhotoView {
             fileURLArray.remove(at: 0)
+            photos.remove(at: 0)
         } else if photoView == secondPhotoView {
             fileURLArray.remove(at: 1)
+            photos.remove(at: 1)
         } else if photoView == thirdPhotoView {
             fileURLArray.remove(at: 2)
+            photos.remove(at: 2)
         }
         reloadCarPhotos()
     }
@@ -610,30 +632,40 @@ class AddStockVC: BaseVC {
         let dateString = dateFormatter.string(from: picker.date)
         order.date = dateString
         self.myCarOrder.lastVisit = picker.date
+        
+        setDateReminder(picker: picker)
+    }
+    
+    @objc private func setDateReminder(picker: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let reminderDate = Calendar.current.date(byAdding: .day, value: -1, to: picker.date)
+        let dateString = dateFormatter.string(from: reminderDate!)
+        reminder.date = dateString
     }
     
     private func reloadCarPhotos() {
-        if fileURLArray.isEmpty {
+        if photos.isEmpty {
             firstPhotoView.photo = UIImage(named: "empty-photo")!
             secondPhotoView.photo = UIImage(named: "empty-photo")!
             thirdPhotoView.photo = UIImage(named: "empty-photo")!
             return
         }
-        let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
-        firstPhotoView.photo = UIImage(data: firstPhotoData)!
-        if fileURLArray.count < 2 {
+//        let firstPhotoData = try! Data(contentsOf: fileURLArray[0])
+        firstPhotoView.photo = UIImage(data: photos[0])!
+        if photos.count < 2 {
             secondPhotoView.photo = UIImage(named: "empty-photo")!
             thirdPhotoView.photo = UIImage(named: "empty-photo")!
             return
         }
-        let secondPhotoData = try! Data(contentsOf: fileURLArray[1])
-        secondPhotoView.photo = UIImage(data: secondPhotoData)!
-        if fileURLArray.count < 3 {
+//        let secondPhotoData = try! Data(contentsOf: fileURLArray[1])
+        secondPhotoView.photo = UIImage(data: photos[1])!
+        if photos.count < 3 {
             thirdPhotoView.photo = UIImage(named: "empty-photo")!
             return
         }
-        let thirdPhotoData = try! Data(contentsOf: fileURLArray[2])
-        thirdPhotoView.photo = UIImage(data: thirdPhotoData)!
+//        let thirdPhotoData = try! Data(contentsOf: fileURLArray[2])
+        thirdPhotoView.photo = UIImage(data: photos[2])!
     }
     
     @objc private func openDropDown(_ sender: UIButton) {
@@ -677,10 +709,18 @@ extension AddStockVC: UITextFieldDelegate {
             let documentUrl = getDocumentsDirectory()
                 .appendingPathComponent(UUID().uuidString)
                 .appendingPathExtension("jpg")
-            try! data!.write(to: documentUrl)
+            
+            do {
+                try data?.write(to: documentUrl)
+            } catch {
+                print(error)
+            }
             
             fileURLArray.append(documentUrl)
             
+            if let data = data {
+                photos.append(data)
+            }
             
             dismiss(animated: true) { [weak self] in
                 if let data = data, let image = UIImage(data: data) {
