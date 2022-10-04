@@ -166,6 +166,12 @@ class ProfileVC: BaseVC {
         return button
     }()
     
+    private let deleteAccountButton: DeleteAccountButton = {
+        let button = DeleteAccountButton()
+        button.setupButton(target: self, action: #selector(deleteAccountButtonDidTap))
+        return button
+    }()
+    
     private let activityIndicator: UIActivityIndicatorView = {
         let view = UIActivityIndicatorView()
         view.hidesWhenStopped = true
@@ -233,6 +239,7 @@ class ProfileVC: BaseVC {
         
         
         view.addSubview(saveProfileButton)
+        view.addSubview(deleteAccountButton)
 
     }
 
@@ -370,13 +377,20 @@ class ProfileVC: BaseVC {
         
         mobileDataView.snp.makeConstraints { make in
             make.top.equalTo(callView.snp.bottom).offset(20)
-            make.bottom.equalToSuperview().offset(-100)
+            make.bottom.equalToSuperview().offset(-180)
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
             make.height.equalTo(35)
         }
         
         saveProfileButton.snp.makeConstraints { make in
+            make.height.equalTo(55)
+            make.left.equalToSuperview().offset(20)
+            make.right.equalToSuperview().offset(-20)
+            make.bottom.equalTo(deleteAccountButton.snp.top).offset(-20)
+        }
+        
+        deleteAccountButton.snp.makeConstraints { make in
             make.height.equalTo(55)
             make.left.equalToSuperview().offset(20)
             make.right.equalToSuperview().offset(-20)
@@ -477,6 +491,22 @@ class ProfileVC: BaseVC {
         }
     }
     
+    private func showDeleteAccountAlert() {
+        let alert = UIAlertController(title: "Удалить", message: "Вы точно хотите удалить аккаунт?", preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+            UserDefaultsService.sharedInstance.removeAuthToken()
+            self?.router?.pushMainVC()
+            isOpenedChat = false
+        }
+        
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+        
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        
+        self.present(alert, animated: true)
+    }
 
     // MARK: - Private actions
     
@@ -596,6 +626,11 @@ class ProfileVC: BaseVC {
             self?.activityIndicator.stopAnimating()
         }
     }
+
+    @objc private func deleteAccountButtonDidTap() {
+        showDeleteAccountAlert()
+    }
+    
 }
 
 // MARK: - UIImagePickerControllerDelegate

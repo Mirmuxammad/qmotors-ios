@@ -72,6 +72,7 @@
 		8456BA6B28815AF200684AF5 /* PhoneCallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8456BA6A28815AF200684AF5 /* PhoneCallView.swift */; };
 		8456BA6E2881659E00684AF5 /* PhoneCallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8456BA6D2881659E00684AF5 /* PhoneCallButton.swift */; };
 		8456BA702881786600684AF5 /* RequestCallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8456BA6F2881786600684AF5 /* RequestCallButton.swift */; };
+		848794E128EC189900E87DAA /* DeleteAccountButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848794E028EC189900E87DAA /* DeleteAccountButton.swift */; };
 		848D9AAF28804C6A00C4BC3F /* RouteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848D9AAE28804C6A00C4BC3F /* RouteButton.swift */; };
 		848D9AB1288054FF00C4BC3F /* SideMenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848D9AB0288054FF00C4BC3F /* SideMenuButton.swift */; };
 		849836312886974800EF47D0 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849836302886974800EF47D0 /* BackButton.swift */; };
@@ -242,6 +243,7 @@
 		8456BA6A28815AF200684AF5 /* PhoneCallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneCallView.swift; sourceTree = "<group>"; };
 		8456BA6D2881659E00684AF5 /* PhoneCallButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneCallButton.swift; sourceTree = "<group>"; };
 		8456BA6F2881786600684AF5 /* RequestCallButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCallButton.swift; sourceTree = "<group>"; };
+		848794E028EC189900E87DAA /* DeleteAccountButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountButton.swift; sourceTree = "<group>"; };
 		848D9AAE28804C6A00C4BC3F /* RouteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteButton.swift; sourceTree = "<group>"; };
 		848D9AB0288054FF00C4BC3F /* SideMenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuButton.swift; sourceTree = "<group>"; };
 		849836302886974800EF47D0 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
@@ -691,6 +693,7 @@
 				84ACAF2E289185060012508C /* CustomTextField.swift */,
 				84AE2738288BD45E000870D4 /* SmallBackButton.swift */,
 				84A4AB6A2889CCB900B657F1 /* LogoutButton.swift */,
+				848794E028EC189900E87DAA /* DeleteAccountButton.swift */,
 				84A4AB6C2889CFB800B657F1 /* PersonalAreaButton.swift */,
 				84AE273E288D2AFF000870D4 /* CarNumberView.swift */,
 				4006221F28A3CC2200E55C04 /* CarInfoNumberView.swift */,
@@ -1142,6 +1145,7 @@
 				84ACAF4328927D970012508C /* CustomPhotoView.swift in Sources */,
 				0422FF8728DB2C6200D4D27A /* ChatPhotoView.swift in Sources */,
 				84D94F57288559D90023AA02 /* RegistrationVC.swift in Sources */,
+				848794E128EC189900E87DAA /* DeleteAccountButton.swift in Sources */,
 				406B18C428BFEB9C00112178 /* NotificationAPI.swift in Sources */,
 				4001C70C28C7246D004D25A9 /* StockVC.swift in Sources */,
 				4001C70E28C725F7004D25A9 /* StockTableViewCell.swift in Sources */,
