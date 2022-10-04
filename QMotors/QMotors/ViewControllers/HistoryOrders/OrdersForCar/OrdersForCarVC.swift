@@ -69,6 +69,9 @@ class OrdersForCarVC: BaseVC {
         backButton.setupAction(target: self, action: #selector(backButtonDidTap))
         tableView.dataSource = self
         tableView.delegate = self
+        
+        addViews()
+        addConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,12 +79,7 @@ class OrdersForCarVC: BaseVC {
 //        self.showLoadingIndicator()
         loadOrders()
     }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        addViews()
-        addConstraints()
-    }
+
 }
 // MARK: - Other Methods
 extension OrdersForCarVC {

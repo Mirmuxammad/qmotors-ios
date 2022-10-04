@@ -63,6 +63,9 @@ class HistoryCarsVC: BaseVC {
         backButton.setupAction(target: self, action: #selector(backButtonDidTap))
         tableView.dataSource = self
         tableView.delegate = self
+        
+        addViews()
+        addConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,11 +73,6 @@ class HistoryCarsVC: BaseVC {
         loadMyCar()
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        addViews()
-        addConstraints()
-    }
 }
 // MARK: - private Methods
 extension HistoryCarsVC {
