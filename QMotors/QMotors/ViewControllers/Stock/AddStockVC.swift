@@ -446,15 +446,17 @@ class AddStockVC: BaseVC {
             let id = myCarOrder.id,
             let carModelId = myCarOrder.carModelId,
             let year = myCarOrder.year,
-            let milage = myCarOrder.mileage,
+            let milage = mileageField.text,
             let number = myCarOrder.number,
             let vin = myCarOrder.vin,
             let lastVisit = myCarOrder.lastVisit,
             let status = myCarOrder.status else { return }
+        
+        guard let intMileage = Int(milage) else { return }
     
-        CarAPI.editCar(carId: id, carModelId: carModelId, year: year, mileage: milage, number: number, vin: vin, lastVisit: lastVisit, status: status) { result in
+        CarAPI.editCar(carId: id, carModelId: carModelId, year: year, mileage: intMileage, number: number, vin: vin, lastVisit: lastVisit, status: status) { [weak self] result in
             print("Car last visit succesfully updated")
-            self.router?.pushOrdersForCarVC(myCar: car, openAfterRecord: true)
+            self?.router?.pushOrdersForCarVC(myCar: car, openAfterRecord: true)
         } failure: { error in
             self.showAlert(with: error?.localizedDescription ?? "Ошибка", buttonTitle: "Ок")
             self.navigationController?.popViewController(animated: true)

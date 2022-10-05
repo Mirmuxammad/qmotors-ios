@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Stock: Decodable {
+struct Stock: Codable {
     var id: Int?
     var title: String?
     var subtitle: String?
@@ -18,6 +18,6 @@ struct Stock: Decodable {
     var text: String?
 }
 
-struct StockResponse: Decodable {
+struct StockResponse: Codable {
     let result: Stock
 }

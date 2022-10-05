@@ -172,6 +172,10 @@ extension OrdersForCarVC: UITableViewDelegate, UITableViewDataSource {
          */
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
+    }
+    
 }
 
 // MARK: - Layout Subviews

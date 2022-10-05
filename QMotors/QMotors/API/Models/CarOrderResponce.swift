@@ -43,4 +43,6 @@ struct Order: Codable {
     let order_number: String?
     let status: Int
     let order_type_id: Int
+    let free_diagnostics: Bool
+    let stock: Stock?
 }
