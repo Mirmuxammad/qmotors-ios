@@ -441,7 +441,7 @@ class ProfileVC: BaseVC {
         let surname = user.surname ?? ""
         let patronymic = user.patronymic ?? ""
         fullNameView.textField.text = String("\(surname) \(name) \(patronymic)")
-        if user.gender == 0 {
+        if user.gender == 1 {
             maleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
             famaleGenderSwitch.smallElipce.backgroundColor = .clear
         } else {
@@ -522,11 +522,11 @@ class ProfileVC: BaseVC {
             gender = 1
         }
         if gender == 0 {
-            maleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
-            famaleGenderSwitch.smallElipce.backgroundColor = .clear
-        } else if gender == 1 {
             maleGenderSwitch.smallElipce.backgroundColor = .clear
             famaleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
+        } else if gender == 1 {
+            maleGenderSwitch.smallElipce.backgroundColor = UIColor.init(hex: "#9CC55A")
+            famaleGenderSwitch.smallElipce.backgroundColor = .clear
         }
     }
     
