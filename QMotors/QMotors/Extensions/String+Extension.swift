@@ -78,7 +78,7 @@ extension String {
     func getCarRegionNumber() -> String {
         let regionNumberthree = self.suffix(3)
         let regionNumberTwo = self.suffix(2)
-        if self.count == 9 {
+        if self.count > 8 {
             return String(regionNumberthree)
         } else {
             return String(regionNumberTwo)
