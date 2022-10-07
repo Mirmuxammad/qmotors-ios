@@ -128,8 +128,8 @@ enum RequestMethod {
 
 final class BaseAPI {
     
-    static let baseURL: String = "http://App2.qrenta.ru"
-    static let baseAPIURL: String = "http://App2.qrenta.ru/api/"
+    static let baseURL: String = "https://App2.qrenta.ru"
+    static let baseAPIURL: String = "https://App2.qrenta.ru/api/"
     static let authorizedSession = Session(interceptor: RequestInterceptor())
     
     private let headers: HTTPHeaders = {
