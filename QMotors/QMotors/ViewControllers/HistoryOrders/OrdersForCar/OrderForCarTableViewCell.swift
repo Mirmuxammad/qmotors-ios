@@ -38,7 +38,7 @@ class OrderForCarTableViewCell: UITableViewCell {
     private let centerNameLable: UILabel = {
         let lable = UILabel()
          lable.font = UIFont(name: "Montserrat-Regular", size: 14)
-         lable.text = "Тех.центр “Центр”"
+//         lable.text = "Тех.центр “Центр”"
          return lable
      }()
     
@@ -59,8 +59,8 @@ class OrderForCarTableViewCell: UITableViewCell {
         }
         
         let centerId = order.tech_center_id
-        let centerName = UserDefaultsService.sharedInstance.centras?[centerId - 1] ?? "Центр"
-        centerNameLable.text = "Тех.центр “\(centerName)”"
+        let centerName = UserDefaultsService.sharedInstance.centras?[centerId - 1] ?? ""
+        centerNameLable.text = "Автосервис: “\(centerName)”"
 
         guard let orderMilage = order.mileage else {
             mileageLable.text = "Пробег: \(Int(car.mileage)?.formattedWithSeparator ?? "") км"

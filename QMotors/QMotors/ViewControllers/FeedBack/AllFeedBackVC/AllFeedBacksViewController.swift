@@ -39,7 +39,7 @@ class AllFeedBacksViewController: BaseVC {
     }()
     
     private let technicalCenterLable: CustomLabel = {
-        let label = CustomLabel(text: "Технический центр", fontWeight: .medium)
+        let label = CustomLabel(text: "Автосервис", fontWeight: .medium)
         return label
     }()
     
