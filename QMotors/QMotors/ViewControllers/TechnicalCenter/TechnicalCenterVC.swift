@@ -38,7 +38,7 @@ class TechnicalCenterVC: BaseVC {
     
     private let titleLable: UILabel = {
         let label = UILabel()
-        label.text = "Техцентры"
+        label.text = "Автосервисы"
         label.font = UIFont(name: "Montserrat-SemiBold", size: 22)
         label.textColor = .black
         label.textAlignment = .left
