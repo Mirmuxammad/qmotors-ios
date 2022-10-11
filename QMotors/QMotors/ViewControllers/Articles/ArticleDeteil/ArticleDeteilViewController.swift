@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import SDWebImage
+import WebKit
 
 class ArticleDeteilViewController: BaseVC {
     
@@ -42,6 +43,7 @@ class ArticleDeteilViewController: BaseVC {
         let scrollView = UIScrollView()
         scrollView.backgroundColor = UIColor(red: 0.971, green: 0.971, blue: 0.971, alpha: 1)
         scrollView.layer.cornerRadius = 5
+        scrollView.showsVerticalScrollIndicator = false
         return scrollView
     }()
     
@@ -59,6 +61,15 @@ class ArticleDeteilViewController: BaseVC {
         return image
     }()
     
+    private let webView: WKWebView = {
+        let webView = WKWebView()
+        webView.backgroundColor = .clear
+        webView.isOpaque = false
+        webView.scrollView.showsVerticalScrollIndicator = false
+        webView.scrollView.isScrollEnabled = false
+        return webView
+    }()
+    
     private let deteilTitle: UILabel = {
         let lable = UILabel()
         lable.font = UIFont(name: "Montserrat-Regular", size: 14)
@@ -72,6 +83,7 @@ class ArticleDeteilViewController: BaseVC {
         super.viewDidLoad()
         backButton.setupAction(target: self, action: #selector(backButtonDidTap))
         loadArticle()
+        webView.navigationDelegate = self
     }
     
     override func viewWillLayoutSubviews() {
@@ -102,7 +114,8 @@ extension ArticleDeteilViewController {
         ArticleAPI.getArticle(id: articleID) { [weak self] article in
             self?.titleLable.text = article.title
             if let text = article.text {
-                self?.deteilTitle.attributedText = NSAttributedString(html: text)
+//                self?.deteilTitle.attributedText = NSAttributedString(html: text)
+                self?.webView.loadHTMLString(text, baseURL: URL(string: BaseAPI.baseURL))
             }
             self?.dateTitle.text = article.created_at.getFormattedDate()
             let photoUrl = BaseAPI.baseURL + "/" + article.previewPath
@@ -118,6 +131,20 @@ extension ArticleDeteilViewController {
     
 }
 
+extension ArticleDeteilViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.webView.snp.remakeConstraints { make in
+                make.height.equalTo(webView.scrollView.contentSize.height / 2)
+                make.top.equalTo(self.artecleImage.snp.bottom).offset(24)
+                make.centerX.equalToSuperview()
+                make.left.equalToSuperview().offset(24)
+                make.bottom.equalToSuperview().offset(-24)
+            }
+        }
+    }
+}
+
 // MARK: - Setup Constreints
 extension ArticleDeteilViewController {
     private func addViews() {
@@ -128,7 +155,8 @@ extension ArticleDeteilViewController {
         backgroundView.addSubview(scrollView)
         scrollView.addSubview(dateTitle)
         scrollView.addSubview(artecleImage)
-        scrollView.addSubview(deteilTitle)
+//        scrollView.addSubview(deteilTitle)
+        scrollView.addSubview(webView)
     }
     
     private func addConstraints() {
@@ -173,7 +201,7 @@ extension ArticleDeteilViewController {
             make.height.equalTo(114)
         }
         
-        deteilTitle.snp.makeConstraints { make in
+        webView.snp.makeConstraints { make in
             make.top.equalTo(artecleImage.snp.bottom).offset(24)
             make.centerX.equalToSuperview()
             make.left.equalToSuperview().offset(24)

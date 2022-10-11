@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import WebKit
 
 class StockInfoVC: BaseVC {
 
@@ -24,7 +25,12 @@ class StockInfoVC: BaseVC {
                 locationImageView.isHidden = false
                 locationTitleLabel.text = stock?.location
             }
-            stockTextLabel.text = stock?.text?.htmlToString
+//            stockTextLabel.attributedText = NSAttributedString(html: stock?.text ?? "")//stock?.text?.htmlToAttributedString
+            
+            if let text = stock?.text {
+//                self.stockTextLabel.attributedText = NSAttributedString(html: text)
+                self.webView.loadHTMLString(text, baseURL: URL(string: BaseAPI.baseURL))
+            }
         }
     }
         
@@ -104,6 +110,15 @@ class StockInfoVC: BaseVC {
         return label
     }()
     
+    private let webView: WKWebView = {
+        let webView = WKWebView()
+        webView.backgroundColor = .clear
+        webView.isOpaque = false
+        webView.scrollView.showsVerticalScrollIndicator = false
+        webView.scrollView.isScrollEnabled = false
+        return webView
+    }()
+    
     private let sendStockButton: ActionButton = {
         let button = ActionButton()
         button.setupTitle(title: "ЗАКАЗАТЬ АКЦИЮ")
@@ -117,6 +132,7 @@ class StockInfoVC: BaseVC {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        webView.navigationDelegate = self
     }
     
     // MARK: - Private functions
@@ -131,7 +147,8 @@ class StockInfoVC: BaseVC {
         contentView.addSubview(subTitleLabel)
         scrollView.addSubview(locationImageView)
         scrollView.addSubview(locationTitleLabel)
-        scrollView.addSubview(stockTextLabel)
+//        scrollView.addSubview(stockTextLabel)
+        scrollView.addSubview(webView)
         backgroundView.addSubview(sendStockButton)
     }
     
@@ -168,7 +185,7 @@ class StockInfoVC: BaseVC {
             make.right.equalToSuperview().offset(-20)
             make.height.equalTo(100)
             make.width.equalTo(UIScreen.main.bounds.width-40)
-            make.bottom.equalTo(stockTextLabel.snp.top)
+            make.bottom.equalTo(webView.snp.top)
         }
         
         stockTitle.snp.makeConstraints { make in
@@ -196,14 +213,14 @@ class StockInfoVC: BaseVC {
             make.height.equalTo(14)
         }
         if stock?.location == nil {
-            stockTextLabel.snp.makeConstraints { make in
+            webView.snp.makeConstraints { make in
                 make.top.equalTo(contentView.snp.bottom).offset(16)
                 make.left.equalToSuperview().offset(20)
                 make.right.equalToSuperview().offset(-20)
                 make.bottom.equalToSuperview()
             }
         } else {
-            stockTextLabel.snp.makeConstraints { make in
+            webView.snp.makeConstraints { make in
                 make.top.equalTo(locationImageView.snp.bottom).offset(16)
                 make.left.equalToSuperview().offset(20)
                 make.right.equalToSuperview().offset(-20)
@@ -228,5 +245,29 @@ class StockInfoVC: BaseVC {
     @objc private func addSendButtonTapped() {
         guard let stock = stock else { return }
         router?.pushAddStockVC(stock: stock)
+    }
+}
+
+extension StockInfoVC: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            if self.stock?.location == nil {
+                self.webView.snp.remakeConstraints { make in
+                    make.height.equalTo(webView.scrollView.contentSize.height / 2)
+                    make.top.equalTo(self.contentView.snp.bottom).offset(16)
+                    make.left.equalToSuperview().offset(20)
+                    make.right.equalToSuperview().offset(-20)
+                    make.bottom.equalToSuperview()
+                }
+            } else {
+                self.webView.snp.remakeConstraints { make in
+                    make.height.equalTo(webView.scrollView.contentSize.height / 2)
+                    make.top.equalTo(self.locationImageView.snp.bottom).offset(16)
+                    make.left.equalToSuperview().offset(20)
+                    make.right.equalToSuperview().offset(-20)
+                    make.bottom.equalToSuperview()
+                }
+            }
+        }
     }
 }
