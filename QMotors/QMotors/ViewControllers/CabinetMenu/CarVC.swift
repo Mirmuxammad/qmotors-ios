@@ -451,7 +451,7 @@ class CarVC: BaseVC {
         
         group.enter()
         CarAPI.carMarkList(success: { [weak self] carMarks in
-            self?.carMarkDataStore = carMarks
+            self?.carMarkDataStore = carMarks.sorted {$0 < $1}
             group.leave()
         }) { error in
             print(error)
