@@ -123,7 +123,7 @@ class MainVC: BaseVC {
         promoButton.setupButton(title: "АКЦИИ", target: self, action: #selector(promoButtonDidTap), logoImage: promoButtonImage, backgroundImage: promoBackgroundButtonImage)
         maintenanceRecordButton.setupButton(title: "ЗАПИСЬ", target: self, action: #selector(maintenanceRecordButtonDidTap), logoImage: maintenanceRecordButtonImage, backgroundImage: nil)
         bonusButton.setupButton(title: "БОНУСЫ", target: self, action: #selector(bonusButtonDidTap), logoImage: bonusButtonImage, backgroundImage: nil)
-        technicalСenterButton.setupButton(title: "ТЕХЦЕНТРЫ", target: self, action: #selector(technicalСenterButtonDidTap), logoImage: technicalCenterButtonImage, backgroundImage: nil)
+        technicalСenterButton.setupButton(title: "АВТОСЕРВИСЫ", target: self, action: #selector(technicalСenterButtonDidTap), logoImage: technicalCenterButtonImage, backgroundImage: nil)
         personalAreaButton.setupButton(title: "ЛИЧНЫЙ КАБИНЕТ", target: self, action: #selector(personalAreaButtonDidTap), logoImage: personalAreaButtonImage, backgroundImage: nil)
     }
     

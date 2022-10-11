@@ -83,7 +83,7 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
     }()
     
     private let technicalCenterLable: CustomLabel = {
-        let label = CustomLabel(text: "Технический центр", fontWeight: .medium)
+        let label = CustomLabel(text: "Автосервис", fontWeight: .medium)
         return label
     }()
     
@@ -252,7 +252,7 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             present(alert, animated: true)
         } else if order.techCenterId == nil {
-            let alert = UIAlertController(title: "Ошибка", message: "Выберите технический центр", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Ошибка", message: "Выберите автосервис", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             present(alert, animated: true)
         } else if myCar == nil {

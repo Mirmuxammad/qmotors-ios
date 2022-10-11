@@ -12,7 +12,11 @@ struct CarMarkResponse: Codable {
     let error: CustomError?
 }
 
-struct CarMark: Codable {
+struct CarMark: Codable, Comparable {
     let id: Int
     let name: String
+    
+    static func < (lhs: CarMark, rhs: CarMark) -> Bool {
+        return lhs.name < rhs.name
+    }
 }

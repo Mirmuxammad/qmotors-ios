@@ -118,7 +118,7 @@ class AddStockVC: BaseVC {
     }()
     
     private let technicalCenterLable: CustomLabel = {
-        let label = CustomLabel(text: "Выберите тех. сервис", fontWeight: .medium)
+        let label = CustomLabel(text: "Выберите автосервис", fontWeight: .medium)
         return label
     }()
     
