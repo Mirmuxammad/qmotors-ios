@@ -89,6 +89,7 @@ class StockInfoVC: BaseVC {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "MapPinLine_Black")
         imageView.tintColor = .black
+        imageView.isHidden = true
         return imageView
     }()
         
