@@ -115,7 +115,22 @@ extension ArticleDeteilViewController {
             self?.titleLable.text = article.title
             if let text = article.text {
 //                self?.deteilTitle.attributedText = NSAttributedString(html: text)
-                self?.webView.loadHTMLString(text, baseURL: URL(string: BaseAPI.baseURL))
+                
+                let header = """
+                        <head>
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+                            <style>
+                                body {
+                                    font-family: "Avenir";
+                                    font-size: 14px;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                        """
+                self?.webView.loadHTMLString(header + text + "</body>", baseURL: nil)
+                
+                //self?.webView.loadHTMLString(text, baseURL: URL(string: BaseAPI.baseURL))
             }
             self?.dateTitle.text = article.created_at.getFormattedDate()
             let photoUrl = BaseAPI.baseURL + "/" + article.previewPath
@@ -135,14 +150,37 @@ extension ArticleDeteilViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.webView.snp.remakeConstraints { make in
-                make.height.equalTo(webView.scrollView.contentSize.height / 2)
+                make.height.equalTo(webView.scrollView.contentSize.height)
                 make.top.equalTo(self.artecleImage.snp.bottom).offset(24)
                 make.centerX.equalToSuperview()
                 make.left.equalToSuperview().offset(24)
                 make.bottom.equalToSuperview().offset(-24)
             }
         }
+     
     }
+    public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+            let url = navigationAction.request.url
+            guard url != nil else {
+                decisionHandler(.allow)
+                return
+            }
+
+            if url!.description.lowercased().starts(with: "http://") ||
+                url!.description.lowercased().starts(with: "https://")  {
+                decisionHandler(.cancel)
+                UIApplication.shared.open(url!, options: [:], completionHandler: nil)
+            } else {
+                decisionHandler(.allow)
+            }
+    }
+    
+    
+//    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+//        let jscript = "var meta = document.createElement('meta'); meta.setAttribute('name', 'viewport'); meta.setAttribute('content', 'width=device-width'); document.getElementsByTagName('head')[0].appendChild(meta);"
+//        webView.evaluateJavaScript(jscript)
+//    }
+    
 }
 
 // MARK: - Setup Constreints
