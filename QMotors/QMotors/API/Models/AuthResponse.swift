@@ -28,7 +28,8 @@ struct ProfileResponse: Codable {
 // MARK: - User
 struct User: Codable {
     let id: Int
-    let email, encryptedPassword, phoneNumber: String
+    let encryptedPassword, phoneNumber: String
+    let email: String?
     let isComplete: Bool
     let resetPasswordToken, resetPasswordSentAt, rememberCreatedAt: String?
     let createdAt, updatedAt: String

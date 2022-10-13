@@ -89,6 +89,7 @@ class StockInfoVC: BaseVC {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "MapPinLine_Black")
         imageView.tintColor = .black
+        imageView.isHidden = true
         return imageView
     }()
         
@@ -253,7 +254,7 @@ extension StockInfoVC: WKNavigationDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             if self.stock?.location == nil {
                 self.webView.snp.remakeConstraints { make in
-                    make.height.equalTo(webView.scrollView.contentSize.height / 2)
+                    make.height.equalTo(webView.scrollView.contentSize.height)
                     make.top.equalTo(self.contentView.snp.bottom).offset(16)
                     make.left.equalToSuperview().offset(20)
                     make.right.equalToSuperview().offset(-20)
@@ -261,7 +262,7 @@ extension StockInfoVC: WKNavigationDelegate {
                 }
             } else {
                 self.webView.snp.remakeConstraints { make in
-                    make.height.equalTo(webView.scrollView.contentSize.height / 2)
+                    make.height.equalTo(webView.scrollView.contentSize.height )
                     make.top.equalTo(self.locationImageView.snp.bottom).offset(16)
                     make.left.equalToSuperview().offset(20)
                     make.right.equalToSuperview().offset(-20)
