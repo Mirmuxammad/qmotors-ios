@@ -24,7 +24,7 @@ struct MyCarModel {
     let mileage: String
     let created_at: String
     let updated_at: String
-    let number: String
+    let number: String?
     let user_car_photos: [CarPhoto]?
     let model: String
     let mark: String

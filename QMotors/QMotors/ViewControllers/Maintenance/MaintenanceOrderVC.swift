@@ -286,7 +286,7 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
             let intMileage = Int(mileage) ?? 0
             
 
-            OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: order.techCenterId ?? 1, orderTypeId: 5, description: orderDescroption, mileage: intMileage, dateVisit: lastVisitStr, freeDiagnostics: true, guarantee: false) { result in
+            OrderAPI.addDiagnosticOrder(carId: String(car.id), techCenterId: order.techCenterId ?? 1, orderTypeId: 5, description: orderDescroption, mileage: intMileage, dateVisit: lastVisitStr, freeDiagnostics: true, guarantee: false) { result in
 
 
             } failure: { error in
@@ -322,7 +322,7 @@ class MaintenanceOrderVC: BaseVC, UITextFieldDelegate {
             i.title
         })
         userCarDropDown.dataSource = myCars.map({ i in
-            i.mark + " " + i.model + " " + i.number
+            i.mark + " " + i.model + " " + (i.number ?? "")
         })
         
         technicalCenterDropDown.anchorView = technicalCenterButton

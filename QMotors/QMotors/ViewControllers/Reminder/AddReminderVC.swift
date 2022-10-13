@@ -194,7 +194,7 @@ class AddReminderVC: BaseVC {
     private func setDropDowns() {
         
         userCarDropDown.dataSource = myCars.map({ i in
-            i.mark + " " + i.model + " " + i.number
+            i.mark + " " + i.model + " " + (i.number ?? "")
         })
         userCarDropDown.anchorView = userCarButton
         

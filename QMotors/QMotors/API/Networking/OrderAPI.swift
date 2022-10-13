@@ -34,7 +34,7 @@ final class OrderAPI {
         }
     }
     
-    static func addDiagnosticOrderWithStock(carId: String, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, mileage: Int, dateVisit: String, freeDiagnostics: Bool, guarantee: Bool, stockID: Int, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
+    static func addDiagnosticOrderWithStock(carId: String, techCenterId: Int, orderTypeId: Int, description: String, mileage: Int, dateVisit: String, freeDiagnostics: Bool, guarantee: Bool, stockID: Int, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
         
         let params: Parameters = [
             "order_type_id": orderTypeId,
@@ -45,7 +45,6 @@ final class OrderAPI {
             "guarantee": guarantee,
             "free_diagnstics": freeDiagnostics,
             "user_car_id": carId,
-            "number": carNumber,
             "stock_id": stockID
         ]
         
@@ -60,7 +59,7 @@ final class OrderAPI {
         }
     }
     
-    static func addDiagnosticOrder(carId: String, carNumber: String, techCenterId: Int, orderTypeId: Int, description: String, mileage: Int, dateVisit: String, freeDiagnostics: Bool, guarantee: Bool, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
+    static func addDiagnosticOrder(carId: String, techCenterId: Int, orderTypeId: Int, description: String, mileage: Int, dateVisit: String, freeDiagnostics: Bool, guarantee: Bool, success: @escaping (OrderResponse) -> Void, failure: @escaping escapeNetworkError) {
         
         let params: Parameters = [
             "order_type_id": orderTypeId,
@@ -71,7 +70,6 @@ final class OrderAPI {
             "guarantee": guarantee,
             "free_diagnstics": freeDiagnostics,
             "user_car_id": carId,
-            "number": carNumber
         ]
         
         BaseAPI.authorizedPostRequest(reqMethod: .order, parameters: params, success: { data in
@@ -131,7 +129,7 @@ final class OrderAPI {
                     let decod = try decoder.decode(CarOrderResponce.self, from: data)
                     success(decod)
                 } catch let error {
-                    print(error.localizedDescription)
+                    print(error)
                 }
             } else {
                 failure(NetworkError(.other(errors.stringValue)))

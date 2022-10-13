@@ -22,7 +22,6 @@ class OrderForCarTableViewCell: UITableViewCell {
        let lable = UILabel()
         lable.font = UIFont(name: "Montserrat-Bold", size: 14)
         lable.textColor = UIColor.init(hex: "#5A80C0")
-        lable.text = "A00000000000000" + " от " + "00.00.0000"
         lable.numberOfLines = 0
         return lable
     }()
@@ -31,21 +30,18 @@ class OrderForCarTableViewCell: UITableViewCell {
        let lable = UILabel()
         lable.font = UIFont(name: "Montserrat-Regular", size: 14)
         lable.numberOfLines = 0
-        lable.text = "Акция: тест тест тест тест тест тест тест тест тест тест тест тест тест тест"
         return lable
     }()
     
     private let centerNameLable: UILabel = {
         let lable = UILabel()
          lable.font = UIFont(name: "Montserrat-Regular", size: 14)
-//         lable.text = "Тех.центр “Центр”"
          return lable
      }()
     
     private let mileageLable: UILabel = {
         let lable = UILabel()
          lable.font = UIFont(name: "Montserrat-Regular", size: 14)
-         lable.text = "пробег: не указан"//000 000 км."
          return lable
      }()
         
@@ -108,7 +104,7 @@ class OrderForCarTableViewCell: UITableViewCell {
     
     func setupTitlesForEmptyOrder() {
         setViews()
-//        numberOrderLable.text = "Нет истории посещения"
+        numberOrderLable.text = "Нет истории посещения"
 //        centerNameLable.text = ""
 //        mileageLable.text = ""
     }

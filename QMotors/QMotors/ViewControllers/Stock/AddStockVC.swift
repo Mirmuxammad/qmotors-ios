@@ -487,7 +487,7 @@ class AddStockVC: BaseVC {
             i.title
         })
         userCarDropDown.dataSource = myCars.map({ i in
-            i.mark + " " + i.model + " " + i.number
+            i.mark + " " + i.model + " " + (i.number ?? "")
         })
         
         
@@ -584,7 +584,7 @@ class AddStockVC: BaseVC {
         
         self.addReminder()
         
-        OrderAPI.addDiagnosticOrderWithStock(carId: String(car.id), carNumber: car.number, techCenterId: order.techCenterId ?? 0, orderTypeId: order.orderTypeId ?? 0, description: descriptionOfOrder, mileage: intMileage, dateVisit: visiteDate, freeDiagnostics: false, guarantee: false, stockID: order.stockID ?? 0, success: { [weak self] result in
+        OrderAPI.addDiagnosticOrderWithStock(carId: String(car.id), techCenterId: order.techCenterId ?? 0, orderTypeId: order.orderTypeId ?? 0, description: descriptionOfOrder, mileage: intMileage, dateVisit: visiteDate, freeDiagnostics: false, guarantee: false, stockID: order.stockID ?? 0, success: { [weak self] result in
             guard let orderId = result.result.id else { return }
             DispatchQueue.main.async {
                 self?.addPhotoToOrder(orderId: orderId)

@@ -448,7 +448,7 @@ class OrderRecordVC: BaseVC {
             i.title
         })
         userCarDropDown.dataSource = myCars.map({ i in
-            i.mark + " " + i.model + " " + i.number
+            i.mark + " " + i.model + " " + (i.number ?? "")
         })
         
         optionDropDown.dataSource = orderTypes.map({ i in
@@ -576,7 +576,7 @@ class OrderRecordVC: BaseVC {
         let guarantee = guaranteeSwitch.isOn
 
         self.addReminder()
-        OrderAPI.addDiagnosticOrder(carId: String(car.id), carNumber: car.number, techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, mileage: intMileage, dateVisit: visiteDate, freeDiagnostics: false, guarantee: guarantee,success: { result in
+        OrderAPI.addDiagnosticOrder(carId: String(car.id), techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, mileage: intMileage, dateVisit: visiteDate, freeDiagnostics: false, guarantee: guarantee,success: { result in
             guard let orderId = result.result.id else { return }
             DispatchQueue.main.async {
                 self.addPhotoToOrder(orderId: orderId)

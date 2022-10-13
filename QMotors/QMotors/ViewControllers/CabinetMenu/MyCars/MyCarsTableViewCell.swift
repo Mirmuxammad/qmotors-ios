@@ -122,8 +122,13 @@ class MyCarsTableViewCell: UITableViewCell {
         if let inMillage = Int(with.mileage) {
             mileageLabel.text = "\(inMillage.formattedWithSeparator) км"
         }
-        carNumberView.numberTitle.text = with.number.getCarNumber()
-        carNumberView.regionNumber.text = with.number.getCarRegionNumber()
+        
+        if let carNumber = with.number {
+            carNumberView.numberTitle.text = carNumber.getCarNumber()
+            carNumberView.regionNumber.text = carNumber.getCarRegionNumber()
+        } else {
+            carNumberView.isHidden = true
+        }
         
         switch with.status {
         case 0:
