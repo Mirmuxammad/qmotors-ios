@@ -407,7 +407,8 @@ class OrderRecordVC: BaseVC {
         dg.notify(queue: .main) {
             
             if let id = self.order.techCenterId {
-                let centerName = self.technicalCentersData[id - 1].title
+                let centers = self.technicalCentersData.filter {$0.id == id}
+                let centerName = centers.first?.title
                 self.technicalCenterField.text = centerName
             }
             self.setDropDowns()
