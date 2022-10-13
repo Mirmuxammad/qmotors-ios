@@ -163,6 +163,9 @@ final class BaseAPI {
         
         authorizedSession.request(URL(string: BaseAPI.baseAPIURL + reqMethod.path)!, method: method, parameters: parameters, encoding: encoding, headers: headers).response { response in
             debugPrint(response)
+            if response.response?.statusCode == 401 {
+                UserDefaultsService.sharedInstance.removeAuthToken()
+            }
             print("ReqMethod: \(reqMethod)\nJSON Status: \(String(describing: response.response?.statusCode))\nResponse:", JSON(response.data ?? ""))
             if let data = response.data {
                 success(data)
