@@ -517,7 +517,6 @@ class OrderRecordVC: BaseVC {
     
     private func updateLastVisit() {
         guard
-            let car = myCar,
             let id = myCarOrder.id,
             let carModelId = myCarOrder.carModelId,
             let year = myCarOrder.year,
@@ -531,7 +530,6 @@ class OrderRecordVC: BaseVC {
     
         CarAPI.editCar(carId: id, carModelId: carModelId, year: year, mileage: intMileage, number: number, vin: vin, lastVisit: lastVisit, status: status) { [weak self] result in
             print("Car last visit succesfully updated")
-            self?.router?.pushOrdersForCarVC(myCar: car, openAfterRecord: true)
         } failure: { error in
             self.showAlert(with: error?.localizedDescription ?? "Ошибка", buttonTitle: "Ок")
             self.navigationController?.popViewController(animated: true)
@@ -576,11 +574,13 @@ class OrderRecordVC: BaseVC {
         let guarantee = guaranteeSwitch.isOn
 
         self.addReminder()
-        OrderAPI.addDiagnosticOrder(carId: String(car.id), techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, mileage: intMileage, dateVisit: visiteDate, freeDiagnostics: false, guarantee: guarantee,success: { result in
+        OrderAPI.addDiagnosticOrder(carId: String(car.id), techCenterId: techCenterId, orderTypeId: orderTypeId, description: descriptionOfOrder, mileage: intMileage, dateVisit: visiteDate, freeDiagnostics: false, guarantee: guarantee,success: { [weak self] result in
+            guard let self = self else { return }
             guard let orderId = result.result.id else { return }
             DispatchQueue.main.async {
                 self.addPhotoToOrder(orderId: orderId)
                 self.updateLastVisit()
+                self.router?.pushOrdersForCarVC(myCar: car, openAfterRecord: true)
             }
             
             self.dismissLoadingIndicator()
