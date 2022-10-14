@@ -550,7 +550,7 @@ class OrderRecordVC: BaseVC {
         self.showLoadingIndicator()
         
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let newDate = dateFormatter.date(from: orderDate)
         let visiteDate = dateFormatter.string(from: newDate ?? Date())
         
@@ -621,7 +621,7 @@ class OrderRecordVC: BaseVC {
     
     @objc private func setDate(picker: UIDatePicker) {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let dateString = dateFormatter.string(from: picker.date)
         order.date = dateString
         self.myCarOrder.lastVisit = picker.date
