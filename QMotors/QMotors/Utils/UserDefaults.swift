@@ -30,16 +30,22 @@ class UserDefaultsService {
         }
     }
     
-    var centras: [String]? {
+    var centras: [TechnicalCenter]? {
         get {
-            let centras = UserDefaults.standard.value(forKey: Keys.techCenters) as? [String]
-            return centras ?? nil
+            do {
+                return try UserDefaults.standard.getObject(forKey: Keys.techCenters, castTo: [TechnicalCenter].self)
+            } catch {
+                print(error.localizedDescription)
+                return nil
+            }
         }
         set {
-            UserDefaults.standard.setValue(newValue, forKey: Keys.techCenters)
+            do {
+                try UserDefaults.standard.setObject(newValue, forKey: Keys.techCenters)
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
 
 }
-
-

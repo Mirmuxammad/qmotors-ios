@@ -55,8 +55,10 @@ class OrderForCarTableViewCell: UITableViewCell {
         }
         
         let centerId = order.tech_center_id
-        let centerName = UserDefaultsService.sharedInstance.centras?[centerId - 1] ?? ""
-        centerNameLable.text = "Автосервис: “\(centerName)”"
+        let centers = UserDefaultsService.sharedInstance.centras?.filter {$0.id == centerId}
+        if let centerName = centers?.first?.title {
+            centerNameLable.text = "Автосервис: “\(centerName)”"
+        }
 
         guard let orderMilage = order.mileage else {
             mileageLable.text = "Пробег: \(Int(car.mileage)?.formattedWithSeparator ?? "") км"

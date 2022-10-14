@@ -112,6 +112,8 @@ extension OrdersForCarVC {
     private func backButtonDidTap() {
         print("backButtonDidTap")
         
+        self.dismissLoadingIndicator()
+        
         if openedAfterRecordOrder {
             router?.back()
             router?.back()

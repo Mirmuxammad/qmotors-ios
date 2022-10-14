@@ -19,7 +19,6 @@ final class TechCenterAPI {
             let errors = jsonData["errors"]
             if errors.type == .null {
                 var techCenters = [TechnicalCenter]()
-                var userDefTechCenters = [String]()
                 for techCenter in jsonData["result"].arrayValue {
                     techCenters.append(TechnicalCenter(id: techCenter["id"].intValue,
                                                        title: techCenter["title"].stringValue,
@@ -27,9 +26,8 @@ final class TechCenterAPI {
                                                        phone: techCenter["phone"].stringValue,
                                                        latitude: techCenter["lat"].stringValue,
                                                        longitude: techCenter["lng"].stringValue))
-                    userDefTechCenters.append(techCenter["title"].stringValue)
                 }
-                UserDefaultsService.sharedInstance.centras = userDefTechCenters
+                UserDefaultsService.sharedInstance.centras = techCenters
                 success(techCenters)
             } else {
                 failure(NetworkError(.other(errors.stringValue)))
