@@ -45,8 +45,6 @@ class MainScreenButton: UIView {
         
         setupViews()
         setupConstraints()
-        
-        UIColor.init(hex: <#T##String#>)
     }
     
     required init?(coder: NSCoder) {
